@@ -6,12 +6,11 @@ require_once(PATH_TO_CLASSES. "/cls_db_mysql.inc"); // dodawanie pliku konfiguru
 require_once(PATH_TO_CLASSES. "/cls_phpmailer.php"); // dodawanie pliku konfigurujacego bibliotekê wysy³ania mail'i
 require_once(PATH_TO_CLASSES. "/cls_fast_template.php");
 
-if (is_file('administration/inc/config.php'))
-{
+if(is_file('administration/inc/config.php')) {
 	require_once("administration/inc/config.php");
 }
 
-if( !defined("CORE_INSTALLED") ) {
+if(!defined("CORE_INSTALLED")) {
 	header("Location: install/install");
 	exit;
 }
@@ -104,7 +103,7 @@ switch($p){
 	case '2': 
 		include('modules/comments_view.php');
 		if(is_numeric($_GET['id'])) {
-			if($dbase->num_rows() !== 0) {
+			if($db->num_rows() !== 0) {
 			
 				$ft->parse('MAIN', array("comments_main", "main"));
 			} else {
