@@ -36,7 +36,7 @@ if($action == "add") {
 	// Przypisanie zmiennej $id
 	$id = $d_b->f("0");
 	
-	if($_FILES['file'] !== '') {
+	if(!empty($_FILES['file']['name'])) {
 		
 		$up = new upload;
 		$upload_dir = "../photos";
