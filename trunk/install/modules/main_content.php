@@ -6,6 +6,8 @@ $action = empty($_GET['action']) ? '' : $_GET['action'];
 switch ($action) {
 	
 	case "send":
+		
+		define('SQL_SCHEMA', 'dbschema');
 	
 		$monit	= ""; // zmienna przechowuj±ca b³êdy
 	
@@ -35,11 +37,11 @@ switch ($action) {
 		switch ($rdbms) {
 			
 			case 'mysql4':
-				$db_schema = '../core-mysql40.sql';
+				$db_schema = SQL_SCHEMA . '/core-mysql40.sql';
 				break;
 				
 			case 'mysql41':
-				$db_schema = '../core-mysql41.sql';
+				$db_schema = SQL_SCHEMA . '/core-mysql41.sql';
 				break;
 		}	
 					
