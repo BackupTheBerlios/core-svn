@@ -79,3 +79,9 @@ a:hover {
 span {
 	color: #FF0000;
 }
+
+select {
+	background-color: #FFF;
+	font: 11px tahoma, verdana, arial;
+	color: #505050;
+}	
