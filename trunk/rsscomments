@@ -3,71 +3,61 @@
 header("Content-type: application/xml");
 
 echo('<?xml version="1.0" encoding="iso-8859-2"?>');
-echo "\n<rss version=\"2.0\">\n\n";
+echo "\n<rss version=\"2.0\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\">\n\n";
 
 define("PATH_TO_CLASSES", "administration/classes");
 define("PATH_TO_CONFIG", "administration/inc");
 
 require(PATH_TO_CLASSES. "/cls_db_mysql.inc"); // dodawanie pliku konfigurujacego bibliotekę baz danych
 require(PATH_TO_CONFIG. "/config.php");
+require("inc/main_functions.php");
 	
 // wartość początkowa zmiennej $start -> potrzebna przy stronnicowaniu
 $start = ( isset($_GET['start']) ) ? intval($_GET['start']) : 0;
 
-include("inc/main_pagination.php");
+$db = new MySQL_DB;
+$query = "	SELECT 
+				b.*, a.id, a.title 
+			FROM 
+				$mysql_data[db_table_comments] b 
+			LEFT JOIN 
+				$mysql_data[db_table] a 
+			ON 
+				b.comments_id = a.id 
+			GROUP BY 
+				date 
+			DESC LIMIT 10";
 
-$data_base = new MySQL_DB;
-$data_base->query("	SELECT b.*, a.id, a.title 
-					FROM $mysql_data[db_table_comments] b 
-					LEFT JOIN $mysql_data[db_table] a 
-					ON b.comments_id = a.id 
-					GROUP BY date 
-					DESC LIMIT 10");
+$db->query($query);
 
 echo "	
 <channel>
 	<title>./dev-log - comments RSS feed</title>
-	<link>http://dev.no1-else.com</link>
+	<link>http://" . $_SERVER['HTTP_HOST'] . "</link>
 	<description>./dev-log | about work</description>
 	<language>pl</language> 
 	<copyright>Copyright (c) 2004 core | Łukasz Skowroń</copyright>
 ";
 
-while($data_base->next_record()) {
+while($db->next_record()) {
 	
-	$date 			= $data_base->f("date");
-	$title 			= $data_base->f("title");
-	$text 			= $data_base->f("text");
-	$author 		= $data_base->f("author");
-	$id 			= $data_base->f("id");
-	$c_id			= $data_base->f("c_id");
-	$image			= $data_base->f("image");
-	$comments_allow = $data_base->f("comments_allow");
+	$date 			= $db->f("date");
+	$title 			= $db->f("title");
+	$text 			= $db->f("text");
+	$author 		= $db->f("author");
+	$id 			= $db->f("id");
+	$c_id			= $db->f("c_id");
+	$image			= $db->f("image");
+	$comments_allow = $db->f("comments_allow");
 	
-	$c_name = $data_base->f("category_name");
-	$c_id 	= $data_base->f("category_id");
+	$c_name 		= $db->f("category_name");
+	$c_id 			= $db->f("category_id");
 	 
 	// Przypisanie zmiennej $comments
-	$comments 	= $data_base->f("comments");
+	$comments 		= $db->f("comments");
 	
 	// zmiana formatu wyświetlania daty
-	$newdate	= explode(' ', $date);
-	
-	$date_ex	= explode('-', $newdate[0]);
-	if($date_ex[1] == '01') $date_ex[1] = "Jan";
-	if($date_ex[1] == '02') $date_ex[1] = "Feb";
-	if($date_ex[1] == '03') $date_ex[1] = "Mar";
-	if($date_ex[1] == '04') $date_ex[1] = "Apr";
-	if($date_ex[1] == '05') $date_ex[1] = "May";
-	if($date_ex[1] == '06') $date_ex[1] = "Jun";
-	if($date_ex[1] == '07') $date_ex[1] = "Jul";
-	if($date_ex[1] == '08') $date_ex[1] = "Aug";
-	if($date_ex[1] == '09') $date_ex[1] = "Sep";
-	if($date_ex[1] == '10') $date_ex[1] = "Oct";
-	if($date_ex[1] == '11') $date_ex[1] = "Nov";
-	if($date_ex[1] == '12') $date_ex[1] = "Dec";
-	
-	$date		= $date_ex[2] . " " . $date_ex[1] . " " . $date_ex[0] . " " . $newdate[1];
+	$date	= coreRssDateConvert($date);
 	
 	$text = strip_tags($text, '<br><a>');
 	
@@ -83,8 +73,9 @@ while($data_base->next_record()) {
 	echo "<item>\n";
 	echo "	<pubDate>" . $date . " GMT</pubDate>\n";
 	echo "	<title>" . $title . "</title>\n";
-	echo "	<link>http://dev.no1-else.com/1," . $id . ",1,item.html</link>\n";
-	echo "	<description>" . $text . "&lt;br /&gt;&lt;br /&gt;&lt;b&gt;" . $author . "&lt;/b&gt;</description>\n";
+	echo "	<dc:creator>" . $author . "</dc:creator>\n";
+	echo "	<link>http://" . $_SERVER['HTTP_HOST'] . "/1," . $id . ",1,item.html</link>\n";
+	echo "	<description>" . $text . "</description>\n";
 	echo "</item>\n\n";
 }
 
