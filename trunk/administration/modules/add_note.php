@@ -3,6 +3,9 @@
 // deklaracja zmiennej $action::form
 $action = empty($_GET['action']) ? '' : $_GET['action'];
 
+// inicjalizacja instancji klasy MySQL_DB
+$db = new MySQL_DB;
+
 // g³ówny switcher::action
 if($action == "add") {
 	
@@ -25,16 +28,13 @@ if($action == "add") {
 	$comments_allow = $_POST['comments_allow'];
 	$published 		= $_POST['published'];
 	
-	$data_base = new MySQL_DB;
-	$data_base->query("INSERT INTO $mysql_data[db_table] VALUES ('','$category_id', '$date','$title','$author','$text', '', '$comments_allow', '$published')");
-	$data_base->next_record();
+	$db->query("INSERT INTO $mysql_data[db_table] VALUES ('','$category_id', '$date','$title','$author','$text', '', '$comments_allow', '$published')");
 	
-	$d_b = new MySQL_DB;
- 	$d_b->query("SELECT max(id) as maxid FROM $mysql_data[db_table]");
- 	$d_b->next_record();
+ 	$db->query("SELECT max(id) as maxid FROM $mysql_data[db_table]");
+ 	$db->next_record();
 		
 	// Przypisanie zmiennej $id
-	$id = $d_b->f("0");
+	$id = $db->f("0");
 	
 	if(!empty($_FILES['file']['name'])) {
 		
@@ -48,11 +48,10 @@ if($action == "add") {
 			echo $up->error;
 		} else {
 		
- 			$d_base = new MySQL_DB;
- 			$d_base->query("UPDATE $mysql_data[db_table] 
+ 			$db->query("UPDATE $mysql_data[db_table] 
  							SET image='$file' 
  							WHERE (id='$id')");
-			$d_base->next_record();
+			$db->next_record();
 			
 			$ft->assign('CONFIRM', "Zdjêcie zosta³o dodane.<br />");
 			$ft->parse('ROWS',	".result_note");
@@ -65,12 +64,11 @@ if($action == "add") {
 	//print "<p align=\"center\"><a href=\"index2.php?p=mail\">Wyœlij potwierdzenie</a>";
 } else {
 	
-	$dbase = new MySQL_DB;
-	$dbase->query("SELECT category_id, category_name FROM $mysql_data[db_table_category]");
-	while($dbase->next_record()) {
+	$db->query("SELECT category_id, category_name FROM $mysql_data[db_table_category]");
+	while($db->next_record()) {
 		
-		$c_id 	= $dbase->f("category_id");
-		$c_name = $dbase->f("category_name");
+		$c_id 	= $db->f("category_id");
+		$c_name = $db->f("category_name");
 	
 		$ft->assign(array(	'C_ID'		=>$c_id,
 							'C_NAME'	=>$c_name));
