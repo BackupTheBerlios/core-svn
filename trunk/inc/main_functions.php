@@ -217,4 +217,9 @@ function get_editpage_cat($page_id, $level) {
 	}
 }
 
+function str_getext($file, $with_dot = true)
+{ 
+  return substr($file, strrpos($file, '.') - (int)$with_dot + 1);
+}
+
 ?>
