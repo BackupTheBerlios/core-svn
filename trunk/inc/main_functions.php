@@ -143,6 +143,8 @@ function get_addpage_cat($page_id, $level) {
 
 	$db = new MySQL_DB;
 	$db->query($query);
+	
+	$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 		
 	while($db->next_record()) {
 	
@@ -171,8 +173,6 @@ function get_editpage_cat($page_id, $level) {
 					$mysql_data[db_table_pages] 
 				WHERE 
 					parent_id = '$page_id' 
-				AND 
-					published = 'Y' 
 				ORDER BY 
 					id 
 				ASC";
@@ -217,30 +217,29 @@ function get_editpage_cat($page_id, $level) {
 	}
 }
 
-function str_getext($file, $with_dot = true)
-{ 
-  $p = pathinfo($file);
-  if ($with_dot)
-  {
-    return '.' . $p['extension'];
-  }
-  return $p['extension'];
+function str_getext($file, $with_dot = true) {
+	
+	$p = pathinfo($file);
+	if ($with_dot) {
+		
+		return '.' . $p['extension'];
+	}
+	return $p['extension'];
 }
 
-function get_root()
-{
-  $p = pathinfo(__file__);
-  return dirname($p['dirname']);
+function get_root() {
+	
+	$p = pathinfo(__file__);
+	return dirname($p['dirname']);
 }
 
-function v_array($array, $exit = 0)
-{ 
-  printf('<pre>%s</pre>', print_r($array, 1));
-  
-  if ($exit)
-  {
-    exit;
-  }
+function v_array($array, $exit = 0) { 
+	
+	printf('<pre>%s</pre>', print_r($array, 1));
+	
+	if ($exit) {
+		
+		exit;
+	}
 }
-
 ?>
