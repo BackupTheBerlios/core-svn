@@ -11,11 +11,16 @@ RewriteRule ^(.*),(.*),action.html$ main?p=$2&action=$1 [L]
 RewriteRule ^(.*),(.*),(.*),edit.html$ main?p=$3&action=$1&id=$2 [L]
 
 RewriteRule ^index\.login$ index?p=log [L]
+RewriteRule ^logout$ logout [L]
 
 <Files index>
 ForceType application/x-httpd-php
 </Files>
 
 <Files main>
+ForceType application/x-httpd-php
+</Files>
+
+<Files logout>
 ForceType application/x-httpd-php
 </Files>
