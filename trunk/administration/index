@@ -37,7 +37,7 @@ $p = empty($_GET['p']) ? '' : $_GET['p'];
 if ($p == "log") {
 	
 	$login		= $_POST['login'];
-	$password	= $_POST['password'];
+	$password	= md5($_POST['password']);
 	
 	if(empty($login) OR empty($password)) {
 		
