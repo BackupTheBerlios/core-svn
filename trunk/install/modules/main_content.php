@@ -118,6 +118,7 @@ switch ($action) {
 			$t1		= $dbprefix . 'users';
 			$t2		= $dbprefix . 'category';
 			$t3		= $dbprefix . 'counter';
+			$t4		= $dbprefix . 'config';
 			
 			// wstawiamy pocz±tkowego u¿ytkownika
 			$query = "	INSERT INTO 
@@ -139,11 +140,43 @@ switch ($action) {
 			$query = "	INSERT INTO 
 							$t3 
 						VALUES
-							('', '', '0')";
+							('', 'hit', '0')";
 			
 			$db->query($query);
 			
-			$err .= "Instalacja przebig³a pomy¶lnie.";
+			// Ustawiamy ilo¶æ postów na stronie w administracji
+			$query = "	INSERT INTO 
+							$t4 
+						VALUES
+							('editposts_per_page', '15')";
+			
+			$db->query($query);
+			
+			// Ustawiamy ilo¶æ postów na stronie g³ównej
+			$query = "	INSERT INTO 
+							$t4 
+						VALUES
+							('mainposts_per_page', '4')";
+			
+			$db->query($query);
+			
+			// Ustawiamy ilo¶æ postów najczê¶ciej komentowanych wpisów
+			$query = "	INSERT INTO 
+							$t4 
+						VALUES
+							('mostcomments_on_page', '20')";
+			
+			$db->query($query);
+			
+			// Ustawiamy tytu³ strony
+			$query = "	INSERT INTO 
+							$t4 
+						VALUES
+							('title_page', './DEV-LOG')";
+			
+			$db->query($query);
+			
+			$err .= "Instalacja przebieg³a pomy¶lnie.";
 			
 			$ft->assign('MONIT', $err);
 			$ft->define('monit_content', "monit_content.tpl");
