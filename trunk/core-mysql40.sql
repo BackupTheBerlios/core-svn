@@ -134,7 +134,7 @@ CREATE TABLE devlog_session (
 
 CREATE TABLE devlog_users (
   id int(5) NOT NULL auto_increment,
-  login varchar(15) default '0',
+  login varchar(32) default '0',
   `password` varchar(15) default '0',
   email varchar(30) NOT NULL default '',
   active enum('Y','N') NOT NULL default 'N',
