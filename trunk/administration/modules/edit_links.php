@@ -8,11 +8,12 @@ $db = new MySQL_DB;
 switch ($action)
 {
 	case "show": // wy¶wietlanie wpisu pobranego do modyfikacji
-		$db->query("SELECT * 
+		$query = "SELECT * 
 					FROM 
 						$mysql_data[db_table_links] 
 					WHERE 
-						id = '$_GET[id]'");
+						id = '$_GET[id]'";
+		$db->query($query);
 		
 		$db->next_record();
 		
@@ -32,23 +33,25 @@ switch ($action)
 		$ft->define('form_linkadd', "form_linkadd.tpl");
 		$ft->parse('ROWS',	".form_linkadd");
 		break;
+
 	case "edit":// edycja wybranego wpisu
 		$link_name	= $_POST['link_name'];
 		$link_url	= $_POST['link_url'];
 		
-		$db->query("UPDATE 
+		$query = "UPDATE 
 						$mysql_data[db_table_links] 
 					SET 
 						title	= '$link_name', 
 						url		= '$link_url' 
 					WHERE 
-						id = '$_GET[id]'");
-		$db->next_record();
+						id = '$_GET[id]'";
+		$db->query($query);
 		
 		$ft->assign(array(	'CONFIRM'	=>"Link zosta³ zmodyfikowany."));
 
 		$ft->parse('ROWS',	".result_note");
 		break;
+
 	case "delete":// usuwanie wybranego wpisu
 		$db->query("DELETE FROM 
 						$mysql_data[db_table_links] 
@@ -59,12 +62,14 @@ switch ($action)
 
 		$ft->parse('ROWS', ".result_note");
 		break;
+
 	default:
-		$db->query("SELECT * FROM 
+		$query = "SELECT * FROM 
 						$mysql_data[db_table_links] 
 					ORDER BY 
 						id 
-					ASC");
+					ASC";
+		$db->query($query);
 	
 	
 		// Pêtla wyswietlaj¹ca wszystkie wpisy + stronnicowanie ich
