@@ -1,5 +1,3 @@
-#Main RewriteRule's
-
 Options FollowSymLinks
 
 RewriteEngine On
@@ -18,22 +16,6 @@ RewriteRule ^index$ index [L]
 RewriteRule ^rss$ rss [L]
 RewriteRule ^source\.(.*)$ source?id=$1 [L]
 
-<Files index>
+<FilesMatch ^[a-z]*$>
 ForceType application/x-httpd-php
-</Files>
-
-<Files design>
-ForceType application/x-httpd-php
-</Files>
-
-<Files source>
-ForceType application/x-httpd-php
-</Files>
-
-<Files rss>
-ForceType application/x-httpd-php
-</Files>
-
-<Files rsscomments>
-ForceType application/x-httpd-php
-</Files>
+</FilesMatch>
