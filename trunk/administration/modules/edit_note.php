@@ -11,7 +11,13 @@ $db = new MySQL_DB;
 switch ($action) {
 	
 	case "show":// wy¶wietlanie wpisu pobranego do modyfikacji
-		$db->query("SELECT * FROM $mysql_data[db_table] WHERE id='$_GET[id]'");
+	
+		$query = "	SELECT * FROM 
+						$mysql_data[db_table] 
+					WHERE 
+						id='$_GET[id]'";
+		
+		$db->query($query);
 		$db->next_record();
 		
 		$date 		= $db->f("date");
@@ -19,6 +25,7 @@ switch ($action) {
 		$text 		= $db->f("text");
 		$author		= $db->f("author");
 		$published	= $db->f("published");
+		$category	= $db->f("c_id");
 		
 		$date	= substr($date, 0, 16);
 		$dat1	= explode(" ", $date);
@@ -44,44 +51,94 @@ switch ($action) {
 			$ft->assign(array(	'CHECKBOX_YES'	=>'<input style="border: 0px;" type="radio" name="published" value="Y" align="top" />',
 								'CHECKBOX_NO'	=>'<input style="border: 0px;" type="radio" name="published" value="N" align="top" checked="checked" />'));
 		}
+		
+		$query = "	SELECT 
+						category_id, category_name 
+					FROM 
+						$mysql_data[db_table_category]";
+		
+		$db->query($query);
+		while($db->next_record()) {
+			
+			$c_id 	= $db->f("category_id");
+			$c_name = $db->f("category_name");
+			
+			if($c_id == $category) {
+				
+				$ft->assign('CURRENT_CAT', 'selected="selected"');
+			} else {
+				$ft->assign('CURRENT_CAT', '');
+			}
+		
+			$ft->assign(array(	'C_ID'		=>$c_id,
+								'C_NAME'	=>$c_name));
+								
+							
+			$ft->define('form_categoryoption', "form_categoryoption.tpl");
+			$ft->parse('CATEGORY_ROWS', ".form_categoryoption");					
+		
+		}
 
 		$ft->define('form_noteedit', "form_noteedit.tpl");
 		$ft->parse('ROWS',	".form_noteedit");
 		break;
 		
 	case "edit": // edycja wybranego wpisu
+	
 		$text		= str_nl2br($_POST['text']);
 		$title		= $_POST['title'];
 		$author		= $_POST['author'];
 		$published	= $_POST['published'];
+		$c_id		= $_POST['category_id'];
 		
-		$db->query(	"UPDATE $mysql_data[db_table] SET title='$title', author='$author', text='$text', published='$published' WHERE id='$_GET[id]'");
+		$query = "	UPDATE 
+						$mysql_data[db_table] 
+					SET 
+						title = '$title', 
+						author = '$author', 
+						text = '$text', 
+						published = '$published', 
+						c_id = '$c_id' 
+					WHERE 
+						id = '$_GET[id]'";
+		$db->query($query);
 		
-		$ft->assign(array(	'CONFIRM'	=>"Wpis zosta³ zmodyfikowany."));
-
+		$ft->assign('CONFIRM', "Wpis zosta³ zmodyfikowany.");
 		$ft->parse('ROWS',	".result_note");
 		break;
 		
 	case "delete": // usuwanie wybranego wpisu
-		$db->query("DELETE FROM $mysql_data[db_table] WHERE id='$_GET[id]'");
+	
+		$query = "	DELETE FROM 
+						$mysql_data[db_table] 
+					WHERE 
+						id = '$_GET[id]'";
+		$db->query($query);
 		
-		$ft->assign(array(	'CONFIRM'	=>"Wpis zosta³ usuniêty."));
-
+		$ft->assign('CONFIRM', "Wpis zosta³ usuniêty.");
 		$ft->parse('ROWS', ".result_note");
 		break;
 		
 	default:
-		$db->query("SELECT * FROM $mysql_data[db_table_config] WHERE config_name = 'editposts_per_page'");
+	
+		$query = "	SELECT * FROM 
+						$mysql_data[db_table_config] 
+					WHERE 
+						config_name = 'editposts_per_page'";
+		$db->query($query);
 		$db->next_record();
 			
 		$editposts_per_page = $db->f("config_value");
-		if (empty($editposts_per_page)) {
-
-			$editposts_per_page = 10;
-		}
+		$editposts_per_page = empty($editposts_per_page) ? 10 : $editposts_per_page;
 		
-		
-		$db->query("SELECT * FROM $mysql_data[db_table] ORDER BY date DESC LIMIT $start, $editposts_per_page");
+		$query = "	SELECT * FROM 
+						$mysql_data[db_table] 
+					ORDER BY 
+						date 
+					DESC 
+					LIMIT 
+						$start, $editposts_per_page";
+		$db->query($query);
 		
 		// Sprawdzamy, czy w bazie danych s± ju¿ jakie¶ wpisy
 		if($db->num_rows() > 0) {
@@ -140,10 +197,8 @@ switch ($action) {
 			$ft->parse('ROWS',	".header_notelist");
 		} else {
 		
-			$ft->assign(array(	'CONFIRM'	=>"W bazie danych nie ma ¿adnych wpisów"));
-
+			$ft->assign('CONFIRM', "W bazie danych nie ma ¿adnych wpisów");
 			$ft->parse('ROWS',	".result_note");
 		}
 }
-
 ?>
