@@ -1,13 +1,13 @@
-{DOCTYPE}
-{HTML}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 	<head>
 		<title>{TITLE}</title>
 		<link rel="alternate" title="./dev-log RSS Newsfeed" href="/rss" type="application/rss+xml" />
 
 		<style type="text/css">
-			@import url('{CSS_HREF}');
+			@import url('style/style.css');
 		</style>
-		<meta http-equiv="Content-Type" content="{HEADER_ENCODING}" />
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2" />
 		<script type="text/javascript" src="js_functions/functions.js"></script>
 	</head>
 <body>
@@ -15,7 +15,7 @@
 	<div class="header" id="cat_menu">{CATEGORY_LIST}</div>
 	<div style="height: 80px;"><a href="./"><img src="layout/default/03.jpg" width="154" height="45" alt="./dev-log" /></a></div>
 	
-	<div style="float:left; height: 20px;">{CONTENT_MENU}</div>
+	<div style="float:left; height: 20px;"><a href=\"./\"><b>INDEX</b></a></div>
 	<div style="float:right;"><a href="rss"><img src="layout/default/rss_icon.gif" width="34" height="12" align="middle" alt="/rss Feed" /></a> / text&nbsp;<a href="javascript:text_resize('content',-1)"><b>-</b></a>&nbsp;<a href="javascript:text_resize('content',1)"><b>+</b></a></div>
 	<div style="clear: both;">
 		<div id="content">
@@ -63,7 +63,7 @@
 					<a class="referer" href="http://feedvalidator.org/check.cgi?url=http://dev.no1-else.com/rss" target="_blank">rss</a> &nbsp;
 				</div>
 											
-				<br />{STATISTICS}<br />
+				<br /><span class="counter">{STATISTICS}</span><br />
 									
 				<span><b>WYSZUKAJ</b></span><br />
 				Interesującą Cię frazę wpisz w pole formularza i naciśnij 'wyszukaj'.
