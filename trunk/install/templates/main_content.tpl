@@ -54,6 +54,14 @@
 			</td>
 		</tr>
 		<tr>
+			<td width="50%">
+			<label for="dbprefix">Prefix:</label>
+			</td>
+			<td width="50%">
+			<input class="short" type="text" id="dbprefix" name="dbprefix" value="{PREFIX}" />
+			</td>
+		</tr>
+		<tr>
 			<td width="100%" colspan="2">
 			<br /><br />
 			</td>
