@@ -77,7 +77,7 @@ switch ($action) {
 		$editposts_per_page = $db->f("config_value");
 		if (empty($editposts_per_page)) {
 
-			$editposts_per_page = 0;
+			$editposts_per_page = 10;
 		}
 		
 		
