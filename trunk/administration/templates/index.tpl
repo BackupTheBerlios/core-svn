@@ -50,7 +50,7 @@
 							<dl>
 								<dt>U¿ytkownicy</dt>
 									<dd><a href="1,7,item.html">Dodaj nowego u¿ytkownika</a></dd>
-									<dd>Edycja/Usuwanie u¿ytkowników</dd>
+									<dd><a href="1,13,item.html">Edycja/Usuwanie u¿ytkowników</a></dd>
 									<br />
 									<dd>Uprawnienia</dd>
 							</dl>
