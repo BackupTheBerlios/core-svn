@@ -9,19 +9,20 @@ class MySQL_DB extends DB_Sql {
 	
 }
 
-$mysql_data = array( 	'db_table' 				=>"devlog",
-						'db_table_users'		=>"devlog_users",
-						'db_table_comments'		=>"devlog_comments",
-						'db_table_config'		=>"devlog_config",
-						'db_table_counter'		=>"devlog_counter",
-						'db_table_newsletter'	=>"devlog_newsletter",
-						'db_table_category'		=>"devlog_category",
-						'db_table_pages'		=>"devlog_pages",
-						'db_table_links'		=>"devlog_links");
+define('PREFIX', 'devlog_');
+
+$mysql_data = array('db_table' 				=>"devlog",
+					'db_table_users'		=>PREFIX . "users",
+					'db_table_comments'		=>PREFIX . "comments",
+					'db_table_config'		=>PREFIX . "config",
+					'db_table_counter'		=>PREFIX . "counter",
+					'db_table_newsletter'	=>PREFIX . "newsletter",
+					'db_table_category'		=>PREFIX . "category",
+					'db_table_pages'		=>PREFIX . "pages",
+					'db_table_links'		=>PREFIX . "links");
 
 
 
-$stats_per_page = 20; // liczba wpisów statystyk jednoczesnie pokazywana na stronie
 $days_to = 360; // liczba dni po których zaczyna dzialac archwium
 
 ?>
