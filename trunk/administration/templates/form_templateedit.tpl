@@ -9,6 +9,11 @@
 		</td>
 	</tr>
 	<tr>
+		<td class="form" width="100%" align="left" valign="top" colspan="3">
+		<input type="hidden" name="template_name" size="30" maxlength="130" value="{TEMPLATE_NAME}">
+		</td>
+	</tr>
+	<tr>
 		<td class="form" width="324" align="right" colspan="2"></td>
 		<td class="form" width="110" align="left"><img src="layout/arrow_blue.gif" alt="Core | CMS" align="middle" height="5" hspace="5" vspace="2" width="5" /><a href="#" onclick="checkForm()">Zapisz szablon</a></td>
 	</tr>
