@@ -37,10 +37,19 @@ span.black {
 #content {
 	padding-left: 41px;
 	padding-top: 10px;
-	width: 600px;
 	height: 350px;
 	min-height: 400px !important;
 	padding-bottom: 20px;
+}
+
+#left {
+	float: left;
+	width: 600px;
+}
+
+right {
+	float: left;
+	width: 400px;
 }
 
 #footer {
