@@ -16,7 +16,8 @@ $mysql_data = array( 	'db_table' 				=>"devlog",
 						'db_table_counter'		=>"devlog_counter",
 						'db_table_newsletter'	=>"devlog_newsletter",
 						'db_table_category'		=>"devlog_category",
-						'db_table_pages'		=>"devlog_pages");
+						'db_table_pages'		=>"devlog_pages",
+						'db_table_links'		=>"devlog_links_category");
 
 
 
