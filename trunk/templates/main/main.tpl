@@ -26,7 +26,7 @@
 		<br />
 		
 		<!-- page list/page list template parsed -->
-		<!-- if nothing printed, nothing parsed -->
+		<!-- if nothing printed -> nothing parsed -->
 			{PAGES_HEADER}
 		<!-- end page list -->
 		
@@ -56,6 +56,15 @@
 		<ul>
 			<li><a href="./rss">rss</a></li>
 			<li><a href="./rsscomments">rss komentarze</a></li>
+		</ul>
+		<br />
+		
+		<span class="title">czasami czytane</span>
+		<br />
+		<ul>
+		<!-- links list/links list template parsed -->
+			{LINKS_LIST}
+		<!-- end links list -->
 		</ul>
 		<br />
 		
