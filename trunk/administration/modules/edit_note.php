@@ -50,7 +50,7 @@ switch ($action) {
 		break;
 		
 	case "edit": // edycja wybranego wpisu
-		$text		= nl2br($_POST['text']);
+		$text		= str_nl2br($_POST['text']);
 		$title		= $_POST['title'];
 		$author		= $_POST['author'];
 		$published	= $_POST['published'];
