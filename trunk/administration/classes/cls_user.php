@@ -84,16 +84,16 @@ class user {
 		}
 	
 		// sprawdzanie dozwolonych nazw
-		if(eregi(	"^((root)|(bin)|(daemon)|(adm)|(lp)|(sync)|(shutdown)|(halt)|(mail)|(news)" 
-					. "|(uucp)|(operator)|(games)|(mysql)|(httpd)|(nobody)|(dummy)" 
-					. "|(www)|(cvs)|(shell)|(ftp)|(irc)|(debian)|(ns)|(download))$", $name)) {
-					
+		$unav_logins = array('root', 'bin', 'daemon', 'adm', 'lp', 'sync', 'shutdown', 'halt',
+			'mail', 'news', 'uucp', 'operator', 'games', 'mysql', 'httpd', 'nobody', 'dummy',
+			'www', 'cvs', 'shell', 'ftp', 'irc', 'debian', 'ns', 'download');
+		if(in_array($name, $unav_logins)) {
 			$this->monit .= "Podana nazwa u¿ytkownika jest zarezerwowana.<br />";
 			return FALSE;
 		}
 	
 		// sprawdzanie nazwy zarezerwowanej dla cvs
-		if(eregi("^(anoncvs_)",$name)) {
+		if(substr($name, 0, 8) == 'anoncvs_') {
 		
 			$this->monit .= "Podana nazwa jest zarezerwowana dla CVS.<br />";
 			return FALSE;
