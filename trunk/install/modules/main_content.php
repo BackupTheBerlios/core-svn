@@ -181,7 +181,7 @@ switch ($action) {
 			if($fp == FALSE) {
 				
 				$err .= "Instalator nie móg³ stworzyæ pliku konfiguracyjnego.<br />";
-				$err .= "W katalogu <span class=\"black\">administration/inc/</span> stwórz plik config.php o tre¶ci:<br /><br />";
+				$err .= "W katalogu <span class=\"black\">administration/inc/</span> stwórz plik <span class=\"black\">config.php</span> o tre¶ci:<br /><br />";
 				
 				$file = str_replace('<', '&lt;', $file);
 				$err .= "<div class=\"code\">" . str_nl2br($file) . "</div>";
@@ -193,11 +193,12 @@ switch ($action) {
 			}
 			
 			if(!is_writable('../photos')) {
+				$photos_dir = realpath('./../') . '/photos/';
 				
-				$err .= "Brak prawa do zapisu w katalogu" . dirname($_SERVER['SCRIPT_FILENAME']) . "'photos/'";
-				$err .= " - aby umozliwiæ wgrywanie zdjêæ, musisz daæ prawo do zapisu do tego";
-				$err .= " katalogu (np. zaloguj sie na konto, i wydaj komende:";
-				$err .= " chmod 777 " . dirname($_SERVER['SCRIPT_FILENAME']) . "'photos/'";
+				$err .= "Brak prawa do zapisu w katalogu <span class=\"black\">$photos_dir</span>\n";
+				$err .= "Aby umozliwiæ wgrywanie zdjêæ, musisz daæ prawo do zapisu do tego";
+				$err .= " katalogu (np. zaloguj sie na konto, i wydaj komende:\n";
+				$err .= " <div class=\"code\">chmod 777 $photos_dir</div>";
 			}
 
 			
