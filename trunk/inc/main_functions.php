@@ -54,8 +54,8 @@ function coreDateConvert($date) {
 	return $date;
 }
 
-function str_nl2br($s)
-{
+function str_nl2br($s) {
+	
 	return str_replace(array("\r\n", "\r", "\n"), '<br />', $s);
 }
 
