@@ -103,6 +103,7 @@ switch ($action) {
 			$file .= "\t" . "'db_table_category'	=>PREFIX . 'category',\n";
 			$file .= "\t" . "'db_table_pages'		=>PREFIX . 'pages',\n";
 			$file .= "\t" . "'db_table_links'		=>PREFIX . 'links',\n";
+			$file .= "\t" . "'db_table_newsletter'	=>PREFIX . 'newsletter',\n";
 			$file .= ");\n\n";
 			
 			$file .= 'define(\'CORE_INSTALLED\', true);'."\n\n";
@@ -202,6 +203,5 @@ switch ($action) {
 		$ft->define('main_content', "main_content.tpl");
 		$ft->parse('ROWS', ".main_content");
 		break;
-}	
-
+}
 ?>
