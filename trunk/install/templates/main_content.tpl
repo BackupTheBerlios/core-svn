@@ -14,7 +14,7 @@
 		<input class="short" type="text" id="dbpass_2" name="dbpass_2" size="30" />
 		<p class="clear"></p>
 		<label for="dbprefix">Prefix:</label>
-		<input class="short" type="text" id="dbprefix" name="dbprefix" size="30" value="core_" />
+		<input class="short" type="text" id="dbprefix" name="dbprefix" size="30" value="{PREFIX}" />
 		<p class="clear">
 			<br />
 		</p>
