@@ -13,10 +13,10 @@
 <body>
 <div id="container">
 	<div class="header" id="cat_menu">{CATEGORY_LIST}</div>
-	<div style="height: 80px;"><a href="./"><img src="layout/03.jpg" width="154" height="45" alt="./dev-log" /></a></div>
+	<div style="height: 80px;"><a href="./"><img src="layout/default/03.jpg" width="154" height="45" alt="./dev-log" /></a></div>
 	
 	<div style="float:left; height: 20px;">{CONTENT_MENU}</div>
-	<div style="float:right;"><a href="rss"><img src="layout/rss_icon.gif" width="34" height="12" align="middle" alt="/rss Feed" /></a> / text&nbsp;<a href="javascript:text_resize('content',-1)"><b>-</b></a>&nbsp;<a href="javascript:text_resize('content',1)"><b>+</b></a></div>
+	<div style="float:right;"><a href="rss"><img src="layout/default/rss_icon.gif" width="34" height="12" align="middle" alt="/rss Feed" /></a> / text&nbsp;<a href="javascript:text_resize('content',-1)"><b>-</b></a>&nbsp;<a href="javascript:text_resize('content',1)"><b>+</b></a></div>
 	<div style="clear: both;">
 		<div id="content">
 			<div style="padding-right: 14px;">
@@ -27,7 +27,7 @@
 		</div>	
 			
 		<div style="float:right; width: 176px;">
-			<div><img src="layout/06.jpg" width="176" height="15" alt="./dev-log" />
+			<div><img src="layout/default/06.jpg" width="176" height="15" alt="./dev-log" />
 				<span><b>NEWSLETTER</b></span><br />
 				Chcesz wiedzieæ, co siê u mnie dzieje? E-mail poproszê.
 				<form style="margin-top:5px;" name="newsletter_form" action="#">

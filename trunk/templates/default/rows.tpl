@@ -11,6 +11,6 @@
 <div class="category">
 	<b>Kategoria:</b> <a href="1,{NEWS_CATEGORY},4,item.html">{CATEGORY_NAME}</a>
 </div>
-<img src="layout/07.jpg" width="460" height="5" alt="./dev-log" />
+<img src="layout/default/07.jpg" width="460" height="5" alt="./dev-log" />
 <br /><br />
 
