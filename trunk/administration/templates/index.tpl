@@ -42,6 +42,12 @@
 							</dl>
 							
 							<dl>
+								<dt>Linki</dt>
+									<dd><a href="1,11,item.html">Dodaj nowy link</a></dd>
+									<dd><a href="1,12,item.html">Edycja/Usuwanie linków</a></dd>
+							</dl>
+							
+							<dl>
 								<dt>U¿ytkownicy</dt>
 									<dd><a href="1,7,item.html">Dodaj nowego u¿ytkownika</a></dd>
 									<dd>Edycja/Usuwanie u¿ytkowników</dd>
