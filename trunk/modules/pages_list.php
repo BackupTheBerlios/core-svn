@@ -18,7 +18,7 @@ $sql->query($query);
 $ft->define(array(	'pages_header'	=>"pages_header.tpl",
 					'pages_list'	=>"pages_list.tpl"));
 					
-if($sql->num_rows() !== 0) {
+if($sql->num_rows() > 0) {
 
 	while($sql->next_record()) {
 	
