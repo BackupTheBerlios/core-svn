@@ -54,88 +54,79 @@ switch($p){
 	// dodawanie kolejnego wpisu
 	case '1': 
 		include('modules/add_note.php');
-		$ft->parse('MAIN', array("main_loader", "index"));
 		break;
 
 	// edycja/usuwanie istniej±cych wpisów
 	case '2': 
 		include('modules/edit_note.php');
-		$ft->parse('MAIN', array("main_loader", "index"));
 		break;
 		
 	// dodawanie kolejnej strony
 	case '3': 
 		include('modules/add_page.php');
-		$ft->parse('MAIN', array("main_loader", "index"));
 		break;
 
 	// edycja/usuwanie istniej±cych wpisów
 	case '4': 
 		include('modules/edit_page.php');
-		$ft->parse('MAIN', array("main_loader", "index"));
 		break;
 		
 	// edycja/usuwanie istniej±cych komentarzy
 	case '5': 
 		include('modules/edit_comments.php');
-		$ft->parse('MAIN', array("main_loader", "index"));
 		break;
 		
 	// statystycznie najczê¶ciej komentowane wpisy
 	case '6': 
 		include('modules/most_comments.php');
-		$ft->parse('MAIN', array("main_loader", "index"));
 		break;	
 		
 	// dodanie nowego u¿ytkownika systemu	
 	case '7': 
 		include('modules/add_user.php');
-		$ft->parse('MAIN', array("main_loader", "index"));
 		break;
 		
 	// dodanie nowej kategorii	
 	case '8': 
 		include('modules/add_category.php');
-		$ft->parse('MAIN', array("main_loader", "index"));
 		break;
 		
 	// edycja|usuwanie istniej±cych kategorii	
 	case '9': 
 		include('modules/edit_category.php');
-		$ft->parse('MAIN', array("main_loader", "index"));
 		break;
 		
 	// konfiguracja core	
 	case '10': 
 		include('modules/core_configuration.php');
-		$ft->parse('MAIN', array("main_loader", "index"));
 		break;
 		
 	// dodanie nowego linku	
 	case '11': 
 		include('modules/add_links.php');
-		$ft->parse('MAIN', array("main_loader", "index"));
 		break;
 		
 	// edycja|usuwanie istniej±cych linków	
 	case '12': 
 		include('modules/edit_links.php');
-		$ft->parse('MAIN', array("main_loader", "index"));
 		break;
 		
 	// edycja|usuwanie u¿ytkowników	
 	case '13': 
 		include('modules/edit_users.php');
-		$ft->parse('MAIN', array("main_loader", "index"));
-		break;	
+		break;
+		
+	// edycja|usuwanie szablonów	
+	case '14': 
+		include('modules/edit_templates.php');
+		break;
 	
 	// domy¶lnie	
 	default:
 		include('modules/main.php');
-		$ft->parse('MAIN', array("main_loader", "index"));
 		break;
 }	
-
+$ft->parse('MAIN_CONTENT', array("main_loader", "index"));
 $ft->FastPrint();
 exit;
 ?>
