@@ -43,7 +43,7 @@ switch($action) {
 		
 		// Zabronimy FT ukrywanie nie przydzielonych zmiennych
 		// dziêki temu widaæ je przy edycji danego szablonu
-		$ft->STRICT = true;
+		$ft->no_strict();
 		
 		$ft->assign(array(	'FILE_CONTENT'	=>$file_content,
 							'TEMPLATE'		=>"/ " . $tpl . ".tpl",
@@ -70,13 +70,9 @@ if(!isset($_GET['path'])) {
 		
 $dir = @dir($path);
 while($file = $dir->read()) {
-			
-	if(!ereg(".php", $file) 
-		&& !ereg(".txt", $file) 
-		&& !ereg(".html", $file) 
-		&& $file != '.' 
-		&& $file != '..') {
-				
+  $ext = str_getext($file, false);
+  
+  if(!in_array($ext, array('php', 'txt', 'html')) && !in_array($file, array('.', '..'))) {
 		$file = explode('.', $file);
 				
 		$ft->assign(array(	'FILE'		=>$file[0] . "." . $file[1],
