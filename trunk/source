@@ -1,0 +1,7 @@
+<?php
+
+$id= ( isset($_GET['id']) ) ? intval($_GET['id']) : 0;
+
+highlight_file("sources/" . $_GET['id'] . ".php");
+
+?>

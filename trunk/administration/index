@@ -1,0 +1,96 @@
+<?php
+session_register("login");
+session_register("password");
+session_register("loggedIn");
+setlocale(LC_CTYPE, "pl_PL");
+if(isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === TRUE){
+	
+	header("Location: main");
+	break;
+}
+
+require("classes/cls_db_mysql.inc"); // dodawanie pliku konfigurujacego bibliotekê baz danych
+require("classes/cls_phpmailer.php"); // dodawanie pliku konfigurujacego bibliotekê wysy³ania mail'i
+require("inc/config.php");
+require("classes/cls_fast_template.php");
+
+// warto¶æ pocz±tkowa zmiennej $start -> potrzebna przy stronnicowaniu
+$start = ( isset($_GET['start']) ) ? intval($_GET['start']) : 0;
+
+// inicjowanie klasy, wkazanie katalogu przechowuj±cego szablony
+$ft = new FastTemplate("./templates");
+
+$ft->define(array(  'main' 		        =>"main.tpl",
+		    		'main_loader'		=>"main_loader.tpl",
+		    		'rows'				=>"rows.tpl",
+		    		'form_login'		=>"form_login.tpl"));
+		
+$ft->assign(array(  'DOCTYPE'			=>"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">",
+		    		'TITLE'		        =>"./DEV-LOG",
+		    		'CSS_HREF'			=>"style/style.css",
+		    		'ENCODING'			=>"text/html; charset=iso-8859-2",
+		    		'ERROR_MSG'			=>""));
+
+// deklaracja zmiennej $p
+$p = empty($_GET['p']) ? '' : $_GET['p'];
+
+if ($p == "log") {
+	
+	$login		= $_POST['login'];
+	$password	= $_POST['password'];
+	
+	if(empty($login) OR empty($password)) {
+		
+		// U¿ytkownik nie uzupe³ni³ wszystkich pól::form
+		$ft->assign(array(  'ERROR_MSG'     =>"Nie uzupe³niono wszystkich pól"));
+		$ft->parse('ROWS', ".form_login");
+		$ft->parse('MAIN', array("main_loader", "main"));
+	} else {
+		
+		$db_base = new MySQL_DB;
+		$db_base->query("	SELECT login, password, active 
+							FROM $mysql_data[db_table_users] 
+							WHERE login = '$login' 
+							AND password = '$password'");
+		$db_base->next_record();
+	
+		$user 	= $db_base->f("login");
+		
+		if($db_base->num_rows() > 0) {
+			
+			if(($active = $db_base->f("active")) !== "N") {
+				
+				// Rejestrujemy zmienne sesyjne
+				$_SESSION["login"]		= $login;
+				$_SESSION["password"]	= $password;
+				$_SESSION["loggedIn"]	= TRUE;
+		
+				if(isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === TRUE){
+				
+					header("Location: main");
+					break;
+				}
+			} else {
+				
+				// U¿ytkownik nie zaaktywowa³ konta::db
+				$ft->assign(array(	'ERROR_MSG'		=>"Konto nie zosta³o jeszcze aktywowane"));
+				$ft->parse('ROWS', ".form_login");
+				$ft->parse('MAIN', array("main_loader", "main"));
+			}
+		} else {
+		
+			// Niepoprawne dane wejœcia<->wyj¶cia::form, db
+			$ft->assign(array(  'ERROR_MSG'		=>"B³êdna nazwa u¿ytkownika, lub b³êdne has³o"));
+			$ft->parse('ROWS', ".form_login");
+			$ft->parse('MAIN', array("main_loader", "main"));
+		}
+	}
+} else {
+		
+	include("modules/login.php");
+	$ft->parse('MAIN', array("main_loader", "main"));
+}
+
+$ft->FastPrint();
+exit;
+?>

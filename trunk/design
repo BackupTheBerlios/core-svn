@@ -1,0 +1,33 @@
+<?php
+
+$ctime = time()+2592000;
+$cname 	= "devlog_design";
+
+$val = empty($val) ? '' : $val;
+
+$issue = empty($_GET['issue']) ? '' : $_GET['issue'];
+switch($issue){
+	
+	case '1':
+		
+		$val 	= "1";
+		setcookie($cname, $val, $ctime);
+		header("Location: http://".$_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']));
+		exit;
+		
+	case '2':
+	
+		$val 	= "2";
+		setcookie($cname, $val, $ctime);
+		header("Location: http://".$_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']));
+		exit;
+		
+	default:
+
+		$value 	= "2";
+		setcookie($cname, $val, $ctime);
+		header("Location: http://".$_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']));
+		exit;
+}
+
+?>

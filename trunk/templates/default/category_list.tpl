@@ -1,0 +1,1 @@
+&nbsp;<a href="1,{NEWS_CAT},4,item.html">{CAT_NAME}</a>

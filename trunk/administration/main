@@ -1,0 +1,141 @@
+<?php
+
+session_register("login");
+session_register("password");
+session_register("loggedIn");
+
+if(!isset($_SESSION["loggedIn"])){
+	
+	header("Location: index");
+	exit;
+}
+
+// warto¶æ pocz±tkowa zmiennej $start -> potrzebna przy stronnicowaniu
+$start = ( isset($_GET['start']) ) ? intval($_GET['start']) : 0;
+
+require("classes/cls_db_mysql.inc"); // dodawanie pliku konfigurujacego bibliotekê baz danych
+require("classes/cls_upload.php"); // dodawanie pliku konfigurujacego bibliotekê uploadu plików
+require("classes/cls_phpmailer.php"); // dodawanie pliku konfigurujacego bibliotekê wysy³ania mail'i
+require("inc/config.php");
+include("../inc/main_pagination.php");
+require("classes/cls_fast_template.php");
+
+// inicjowanie klasy, wkazanie katalogu przechowuj±cego szablony
+$ft = new FastTemplate("./templates");
+
+// tablica definicji u¿ytych plików *.tpl
+$ft->define(array(	// g³ówne szablony parsowane w celu wy¶wietlenia strony
+					'index' 					=>"index.tpl",
+					'main_loader'				=>"main_loader.tpl",
+					'main_site'					=>"main_site.tpl",
+					
+					// forms for display/editing data::user
+					'form_category'				=>"form_category.tpl",
+					'form_categoryoption'		=>"form_categoryoption.tpl",
+					'form_commentsedit'			=>"form_commentsedit.tpl",
+					'form_configuration'		=>"form_configuration.tpl",
+					'form_login'				=>"form_login.tpl",
+					'form_noteadd'				=>"form_noteadd.tpl",
+					'form_noteedit'				=>"form_noteedit.tpl",
+					'form_pageadd'				=>"form_pageadd.tpl",
+					'form_pageedit'				=>"form_pageedit.tpl",
+					'form_useradd'				=>"form_useradd.tpl",
+					
+					// table headers for list data::db
+					'header_commentslist'		=>"header_commentslist.tpl",
+					'header_categorylist'		=>"header_categorylist.tpl",
+					'header_notelist'			=>"header_notelist.tpl",
+					'header_pagelist'			=>"header_pagelist.tpl",
+					'header_mostcommentslist'	=>"header_mostcommentslist.tpl",
+					
+					// table bodys for list data::db
+					'table_categorylist'		=>"table_categorylist.tpl",
+					'table_commentslist'		=>"table_commentslist.tpl",
+					'table_mostcommentslist'	=>"table_mostcommentslist.tpl",
+					'table_notelist'			=>"table_notelist.tpl",
+					'table_pagelist'			=>"table_pagelist.tpl",
+					
+					// szablon obs³uguj±cy error handlera, jak i dodatkowe komunikaty
+					'result_note'				=>"result_note.tpl"));
+		
+$ft->assign(array(	'DOCTYPE'			=>"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"en\" xml:lang=\"en\">",
+					'TITLE'				=>"./DEV-LOG - panel administracyjny",
+					'CSS_HREF'			=>"style/style.css",
+					'ENCODING'			=>"text/html; charset=iso-8859-2",
+					'ERROR_MSG'			=>"Przekierowanie zadzia³a³o",
+					'LOGGED_IN'			=>$_SESSION['login']));
+					
+// prze³±cznica ³adowanej tre¶ci					
+$p = empty($_GET['p']) ? '' : $_GET['p'];
+switch($p){
+	
+	// dodawanie kolejnego wpisu
+	case 'addnote': 
+		include('modules/add_note.php');
+		$ft->parse('MAIN', array("main_loader", "index"));
+		break;
+
+	// edycja/usuwanie istniej±cych wpisów
+	case 'editnote': 
+		include('modules/edit_note.php');
+		$ft->parse('MAIN', array("main_loader", "index"));
+		break;
+		
+	// dodawanie kolejnego wpisu
+	case 'addpage': 
+		include('modules/add_page.php');
+		$ft->parse('MAIN', array("main_loader", "index"));
+		break;
+
+	// edycja/usuwanie istniej±cych wpisów
+	case 'editpage': 
+		include('modules/edit_page.php');
+		$ft->parse('MAIN', array("main_loader", "index"));
+		break;
+		
+	// edycja/usuwanie istniej±cych komentarzy
+	case 'editcomments': 
+		include('modules/edit_comments.php');
+		$ft->parse('MAIN', array("main_loader", "index"));
+		break;
+		
+	// statystycznie najczê¶ciej komentowane wpisy
+	case 'mostcomments': 
+		include('modules/most_comments.php');
+		$ft->parse('MAIN', array("main_loader", "index"));
+		break;	
+		
+	// dodanie nowego u¿ytkownika systemu	
+	case 'adduser': 
+		include('modules/add_user.php');
+		$ft->parse('MAIN', array("main_loader", "index"));
+		break;
+		
+	// dodanie nowej kategorii	
+	case 'addcategory': 
+		include('modules/add_category.php');
+		$ft->parse('MAIN', array("main_loader", "index"));
+		break;
+		
+	// edycja|usuwanie istniej±cych kategorii	
+	case 'editcategory': 
+		include('modules/edit_category.php');
+		$ft->parse('MAIN', array("main_loader", "index"));
+		break;
+		
+	// konfiguracja core	
+	case 'configuration': 
+		include('modules/core_configuration.php');
+		$ft->parse('MAIN', array("main_loader", "index"));
+		break;	
+	
+	// domy¶lnie	
+	default:
+		include('modules/main.php');
+		$ft->parse('MAIN', array("main_loader", "index"));
+		break;
+}	
+
+$ft->FastPrint();
+exit;
+?>

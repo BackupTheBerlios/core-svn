@@ -1,0 +1,166 @@
+<?php
+
+define("PATH_TO_CLASSES",	"administration/classes");
+
+require_once(PATH_TO_CLASSES. "/cls_db_mysql.inc"); // dodawanie pliku konfigurujacego bibliotekê baz danych
+require_once(PATH_TO_CLASSES. "/cls_phpmailer.php"); // dodawanie pliku konfigurujacego bibliotekê wysy³ania mail'i
+require_once(PATH_TO_CLASSES. "/cls_fast_template.php");
+require_once(PATH_TO_CLASSES. "/cls_rss_parser.php");
+
+require_once("administration/inc/config.php");
+require_once("counter/addhit.php");
+
+require_once("inc/main_functions.php");
+	
+// warto¶æ pocz¹tkowa zmiennej $start -> potrzebna przy stronnicowaniu
+$start = ( isset($_GET['start']) ) ? intval($_GET['start']) : 0;
+
+include("inc/main_pagination.php");
+
+$ctime = time()+2592000;
+$cname 	= "devlog_design";
+
+$val = empty($val) ? '' : $val;
+
+if(!isset($_COOKIE['devlog_design'])){
+			
+	setcookie($cname, '2', $ctime);
+}
+
+$design = empty($_COOKIE['devlog_design']) ? '' : $_COOKIE['devlog_design'];
+
+switch ($design) {
+	
+	case '1':
+		
+		$d = "default/";
+		break;
+		
+	case '2':
+
+		$d = "main/";
+		break;
+		
+	default:
+			
+		$d = "main/";
+		break;
+}		
+
+// inicjowanie klasy, wkazanie katalogu przechowuj±cego szablony
+$ft = new FastTemplate("./templates/" . $d . "");
+
+$ft->define(array(	'main' 					=>"main.tpl",
+					'note_main'				=>"note_main.tpl",
+					'rss_view'				=>"rss_view.tpl",
+					'main_denied'			=>"main_denied.tpl",
+					'comments_main'			=>"comments_main.tpl",
+					'comments_alter'		=>"comments_alter.tpl",
+					'rows'					=>"rows.tpl",
+					'single_rows'			=>"single_rows.tpl",
+					'comments_form'			=>"comments_form.tpl",
+					'comments_rows'			=>"comments_rows.tpl",
+					'comments_submit'		=>"comments_submit.tpl",
+					'category_list'			=>"category_list.tpl",
+					'newsletter'			=>"newsletter.tpl",
+					'query_failed'			=>"query_failed.tpl"));
+					
+// egzemplarz klasy pobieraj±cej ustawienia Core
+$sql = new MySQL_DB;
+					
+// set {TITLE} variable
+// tytu³ strony, wy¶wietlany w miejscu title::db
+$sql->query("	SELECT config_value 
+				FROM $mysql_data[db_table_config] 
+				WHERE config_name = 'title_page'");
+	
+$sql->next_record();
+$title_page = $sql->f("config_value");				
+		
+$ft->assign(array(	'DOCTYPE'			=>"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">",
+					'HTML'				=>"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"en\" xml:lang=\"en\">",
+					'TITLE'				=>$title_page,
+					'CSS_HREF'			=>"style/style.css",
+					'HEADER_ENCODING'	=>"text/html; charset=iso-8859-2",
+					'DENIED'			=>"Access Denied",
+					'STATISTICS'		=>"<span style=\"color: #F7F7F5; \">Wizyty: " . $hitnumber . "</span>",
+					'CREDITS'			=>"<a href=\"javascript:visit('lark.no1-else.com');\">lark</a>",
+					'CONTENT_MENU'		=>"<a href=\"./\"><b>INDEX</b></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>ARCHIWUM</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>O MNIE</b>",
+					'ENGINE_VERSION'	=>"<a href=\"javascript:mail('lark', 'no1-else.com', 'core_engine');\">core engine</a>: 1.0RC1a"));
+
+// modu³ listujacy kategoriê - niezale¿ny od ca³ej strony					
+include('modules/category_list.php');
+
+// modu³ listujacy dodatkowe podstrony - niezale¿ny od ca³ej strony					
+include('modules/pages_list.php');
+					
+// G³ówna prze³¹cznica includowanej treœci
+$p = empty($_GET['p']) ? '' : $_GET['p'];
+switch($p){
+			
+	case '1': 
+		include('modules/alter_view.php');
+		$ft->parse('MAIN', array("note_main", "main"));
+		break;
+		
+	case '2': 
+		include('modules/comments_view.php');
+		if(is_numeric($_GET['id'])) {
+			if($dbase->num_rows() !== 0) {
+			
+				$ft->parse('MAIN', array("comments_main", "main"));
+			} else {
+			
+				$ft->parse('MAIN', array("note_main", "main"));
+			}
+		} else {
+			
+			$ft->parse('MAIN', array("note_main", "main"));
+		}
+		break;
+		
+	case '3':
+		include('modules/comments_add.php');
+		if(empty($_GET['action'])) {
+				
+			$ft->parse('MAIN', array("comments_alter", "main"));
+		} else {
+				
+			$ft->parse('MAIN', array("comments_submit", "main"));
+		}
+		break;
+		
+	case '4':
+		include('modules/category_view.php');
+		$ft->parse('MAIN', array("note_main", "main"));
+		break;
+		
+	case '5':
+		include('modules/pages_view.php');
+		$ft->parse('MAIN', array("note_main", "main"));
+		break;
+		
+	case '6':
+		include('modules/articles_view.php');
+		$ft->parse('MAIN', array("note_main", "main"));
+		break;		
+		
+	case 'newsletter':
+		include('modules/newsletter.php');
+		$ft->parse('MAIN', array("newsletter", "main"));
+		break;
+		
+	case 'search':
+		include('modules/search.php');
+		$ft->parse('MAIN', array("note_main", "main"));
+		break;
+		
+	default:
+		include("modules/main_view.php");
+		$ft->parse('MAIN', array("note_main", "main"));
+}
+
+
+$ft->FastPrint();
+exit;
+?>

@@ -1,0 +1,21 @@
+<?php
+
+session_register("login");
+session_register("password");
+session_register("loggedIn");
+
+if(!isset($_SESSION["loggedIn"])){
+				
+	header("Location: index");
+	exit;
+}
+
+unset($_SESSION["login"]);
+unset($_SESSION["password"]);
+unset($_SESSION["loggedIn"]);
+
+session_destroy();
+
+header("Location: index");
+exit;
+?>
