@@ -1,10 +1,11 @@
 <?php
 
-$query = "	SELECT * FROM 
+$query = sprintf("
+			SELECT * FROM 
 				$mysql_data[db_table] 
 			WHERE 
-				id = '$_GET[id]' 
-			LIMIT 1";
+				id = '%1\$d' 
+			LIMIT 1", $_GET['id']);
 
 $db->query($query);
 $db->next_record();

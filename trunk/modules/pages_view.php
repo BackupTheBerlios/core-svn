@@ -1,12 +1,13 @@
 <?php
 
-$query = "	SELECT * FROM 
+$query = sprintf("
+			SELECT * FROM 
 				$mysql_data[db_table_pages] 
 			WHERE 
-				id = '$_GET[id]' 
+				id = '%1\$d' 
 			AND 
 				published = 'Y' 
-			LIMIT 1";
+			LIMIT 1", $_GET['id']);
 
 $db->query($query);
 
@@ -14,14 +15,14 @@ if($db->num_rows() !== 0) {
 
 	$db->next_record();
 
-	$title 			= $db->f("title");
-	$text 			= $db->f("text");
-	$id 			= $db->f("id");
-	$image			= $db->f("image");
+	$title 	= $db->f("title");
+	$text 	= $db->f("text");
+	$id 	= $db->f("id");
+	$image	= $db->f("image");
 	
-	$ft->assign(array(	'PAGE_TITLE'		=>ucfirst(strtolower($title)),
-						'PAGE_TEXT'			=>$text,
-						'PAGE_ID'			=>$id));
+	$ft->assign(array(	'PAGE_TITLE'	=>ucfirst(strtolower($title)),
+						'PAGE_TEXT'		=>$text,
+						'PAGE_ID'		=>$id));
 	
 	if(empty($image)) {
 

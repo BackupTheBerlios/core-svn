@@ -2,11 +2,12 @@
 
 if(is_numeric($_GET['id'])) {
 
-	$query = "	SELECT * FROM 
+	$query = sprintf("	
+				SELECT * FROM 
 					$mysql_data[db_table] 
 				WHERE 
-					id = '$_GET[id]' 
-				LIMIT 1";
+					id = '%1\$d' 
+				LIMIT 1", $_GET['id']);
 	
 	$db->query($query);
 
@@ -29,12 +30,13 @@ if(is_numeric($_GET['id'])) {
 							'COMMENTS_ADD'	=>"<a class=\"comments\" href=\"1," . $id . ",3,item.html\">Dodaj komentarz</a>"
 			));
 				
-			$query = "	SELECT * FROM 
+			$query = sprintf("	
+						SELECT * FROM 
 							$mysql_data[db_table_comments] 
 						WHERE 
-							comments_id = '$_GET[id]' 
+							comments_id = '%1\$d' 
 						ORDER BY 
-							date";
+							date", $_GET['id']);
 			
 			$db->query($query);
 	

@@ -5,7 +5,8 @@ if(is_numeric($_GET['id'])) {
 	// inicjowanie funkcji stronnicujacej wpisy
 	main_pagination('category.' . $_GET['id'] . '.', 'c_id=' . $_GET['id'] . ' AND ', 'mainposts_per_page', 'AND published = \'Y\'', 'db_table');
 	
-	$query = "	SELECT 
+	$query = sprintf("	
+				SELECT 
 					a.*, b.*, c.comments_id, count(c.id) AS comments 
 				FROM 
 					$mysql_data[db_table] a, $mysql_data[db_table_category] b 
@@ -14,15 +15,15 @@ if(is_numeric($_GET['id'])) {
 				ON 
 					a.id = c.comments_id
 				WHERE 
-					a.c_id='$_GET[id]' 
+					a.c_id='%1\$d' 
 				AND 
-					b.category_id='$_GET[id]' 
+					b.category_id='%1\$d' 
 				AND 
 					published = 'Y' 
 				GROUP BY 
 					a.date 
 				DESC LIMIT 
-					$start, $mainposts_per_page";
+					%2\$d, %3\$d", $_GET['id'], $start, $mainposts_per_page);
 	
 	$db->query($query);
 	
