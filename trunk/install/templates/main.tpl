@@ -10,7 +10,9 @@
 	<div id="header">
 		Core / Instalator
 	</div>
+	<div id="content">
 		{ROWS}
+	</div>	
 	<div id="footer">
 		Core - System Zarz±dzania Tre¶ci±
 	</div>
