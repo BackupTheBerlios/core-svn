@@ -1,4 +1,4 @@
-<script type="text/javascript" src="../js_functions/textarea.js"></script>
+<script type="text/javascript" src="./templates/js/textarea.js"></script>
 
 <form enctype="multipart/form-data" method="post" name="post" action="edit,{ID},2,edit.html">
 <table width="100%" align="left">
