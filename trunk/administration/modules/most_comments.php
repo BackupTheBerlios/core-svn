@@ -27,10 +27,10 @@ switch ($action)
 		$date	= substr($date, 0, 16);
 		$dat1	= explode(" ", $date);
 		$dat	= explode("-", $dat1[0]);
-		$date	= "$dat[2]-$dat[1]-$dat[0] <b>$dat1[1]</b>";
+		$date	= "$dat[2]-$dat[1]-$dat[0] $dat1[1]";
 		
 		$text = str_replace("<br />", "\r\n", $text);
-		$text = preg_replace("/(\r\n)+/g", "\1\1", $text);
+		$text = preg_replace("/(\r\n)+/", "\\1\\1", $text);
 
 		
 		$ft->assign(array(	'AUTHOR'	=>$author,
