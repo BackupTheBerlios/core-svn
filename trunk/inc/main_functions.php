@@ -88,4 +88,40 @@ function str_nl2br($s) {
 	return str_replace(array("\r\n", "\r", "\n"), '<br />', $s);
 }
 
+
+function get_cat($page_id, $separator) {
+	
+	global $mysql_data, $ft;
+
+	$query = "	SELECT 
+					id, parent_id, title 
+				FROM 
+					$mysql_data[db_table_pages] 
+				WHERE 
+					parent_id = '$page_id' 
+				AND 
+					published = 'Y' 
+				ORDER BY 
+					id 
+				ASC";
+
+	$db = new MySQL_DB;
+	$db->query($query);
+		
+	while($db->next_record()) {
+	
+		$page_id 	= $db->f("id");
+		$parent_id 	= $db->f("parent_id");
+		$page_name 	= $db->f("title");
+	
+		$ft->assign(array(	'PAGE_NAME'	=>$page_name,
+							'PAGE_ID'	=>$page_id,
+							'PARENT'	=>$separator));
+
+				
+		$ft->parse('PAGES_LIST', ".pages_list");
+		get_cat($page_id, ' &nbsp; &nbsp;- ');
+	}
+}
+
 ?>
