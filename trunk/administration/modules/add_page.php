@@ -3,6 +3,8 @@
 // deklaracja zmiennej $action::form
 $action = empty($_GET['action']) ? '' : $_GET['action'];
 
+$db = new MySQL_DB;
+
 // g³ówny switcher::action
 if($action == "add") {
 	
@@ -11,8 +13,6 @@ if($action == "add") {
 	$title 		= $_POST['title'];
 	$published 	= $_POST['published'];
 	$page_id	= $_POST['category_id'];
-	
-	$db = new MySQL_DB;
 	
 	$query = "	INSERT INTO 
 					$mysql_data[db_table_pages] 
@@ -66,7 +66,6 @@ if($action == "add") {
 	
 } else {
 	
-	$db 	= new MySQL_DB;
 	$query	= "	SELECT 
 					id, parent_id, title 
 				FROM 
