@@ -1,17 +1,23 @@
 	<span>Uwaga:</span> Wszystkie pola musz± zostaæ wype³nione
 	<br /><br />
-	<form name="" action="add,1,install.html" method="post">
+	<form name="" action="doinstall" method="post">
 		<label for="dbname">Nazwa bazy danych:</label>
 		<input type="text" id="dbname" name="dbname" size="30" maxlength="130" />
+		<p class="clear"></p>
+		<label for="rdbms">Wersja bazy danych:</label>
+		<select id="rdbms" name="rdbms">
+			<option value="mysql4">MySQL 4.0.x</option>
+			<option value="mysql41">MySQL 4.1.x</option>
+		</select>	
+		<p class="clear"></p>
+		<label for="dbhost">Host bazy danych:</label>
+		<input type="text" id="dbhost" name="dbhost" size="30" maxlength="130" value="{HOST}" />
 		<p class="clear"></p>
 		<label for="dbuser">Uprawniony u¿ytkownik:</label>
 		<input type="text" id="dbuser" name="dbuser" size="30" />
 		<p class="clear"></p>
-		<label for="dbpass_1">Has³o:</label>
-		<input class="short" type="text" id="dbpass_1" name="dbpass_1" size="30" maxlength="130" />
-		<p class="clear"></p>
-		<label for="dbpass_2">Powtórz has³o:</label>
-		<input class="short" type="text" id="dbpass_2" name="dbpass_2" size="30" />
+		<label for="dbpass">Has³o:</label>
+		<input class="short" type="text" id="dbpass" name="dbpass" size="30" maxlength="130" />
 		<p class="clear"></p>
 		<label for="dbprefix">Prefix:</label>
 		<input class="short" type="text" id="dbprefix" name="dbprefix" size="30" value="{PREFIX}" />
