@@ -11,15 +11,17 @@ class MySQL_DB extends DB_Sql {
 
 define('PREFIX', 'devlog_');
 
-$mysql_data = array('db_table' 				=>"devlog",
-					'db_table_users'		=>PREFIX . "users",
-					'db_table_comments'		=>PREFIX . "comments",
-					'db_table_config'		=>PREFIX . "config",
-					'db_table_counter'		=>PREFIX . "counter",
-					'db_table_newsletter'	=>PREFIX . "newsletter",
-					'db_table_category'		=>PREFIX . "category",
-					'db_table_pages'		=>PREFIX . "pages",
-					'db_table_links'		=>PREFIX . "links");
+$mysql_data = array(
+	'db_table' 				=>PREFIX . "devlog",
+	'db_table_users'		=>PREFIX . "users",
+	'db_table_comments'		=>PREFIX . "comments",
+	'db_table_config'		=>PREFIX . "config",
+	'db_table_counter'		=>PREFIX . "counter",
+	'db_table_newsletter'	=>PREFIX . "newsletter",
+	'db_table_category'		=>PREFIX . "category",
+	'db_table_pages'		=>PREFIX . "pages",
+	'db_table_links'		=>PREFIX . "links"
+);
 
 
 
