@@ -36,6 +36,14 @@
 		<td class="form" width="364" align="left" valign="top" colspan="2"><textarea name="text" cols="60" rows="12" style="background: url(./layout/bg3.jpg); BACKGROUND-REPEAT: repeat-x;">{TEXT}</textarea></td>
 	</tr>
 	<tr>
+		<td class="form" width="80" align="right" valign="top">Kategoria :&nbsp;</td>
+		<td class="form" width="364" align="left" valign="top" colspan="2">
+		<select name="category_id" style="BACKGROUND-COLOR: #FFF; FONT-FAMILY: tahoma, verdana, arial; FONT-SIZE: 11px; color: #505050">
+		{CATEGORY_ROWS}
+		</select>
+		</td>
+	</tr>
+	<tr>
 		<td class="form" width="80" align="right">Publikowana:&nbsp;</td>
 		<td class="form" width="224" align="left">{CHECKBOX_YES}- tak&nbsp;{CHECKBOX_NO}- nie</td>
 	</tr>
