@@ -18,6 +18,7 @@ require("classes/cls_upload.php"); // dodawanie pliku konfigurujacego bibliotekê
 require("classes/cls_phpmailer.php"); // dodawanie pliku konfigurujacego bibliotekê wysy³ania mail'i
 require("inc/config.php");
 include("../inc/main_pagination.php");
+include("../inc/main_functions.php");
 require("classes/cls_fast_template.php");
 
 // inicjowanie klasy, wkazanie katalogu przechowuj±cego szablony
