@@ -1,30 +1,31 @@
 <?php
 
 // inicjowanie funkcji stronnicuj±cej wpisy
-main_pagination('index.', '', 'mainposts_per_page', 'AND published = \'Y\'', 'db_table');
+$pagination = main_pagination('index.', '', 'mainposts_per_page', 'AND published = \'Y\'', 'db_table');
 
 $db = new MySQL_DB;
-$query = "	SELECT 
-				a.*, b.*, c.comments_id, count(c.id) 
-			AS 
-				comments 
-			FROM 
-				$mysql_data[db_table] a 
-			LEFT JOIN 
-				$mysql_data[db_table_category] b 
-			ON 
-				b.category_id = a.c_id 
-			LEFT JOIN 
-				$mysql_data[db_table_comments] c 
-			ON 
-				a.id = c.comments_id
-			WHERE 
-				published = 'Y' 
-			GROUP BY 
-				a.date 
-			DESC 
-			LIMIT 
-				$start, $mainposts_per_page";
+$query = "
+	SELECT 
+		a.*,
+		b.*,
+		c.comments_id,
+		count(c.id) AS comments 
+	FROM 
+		$mysql_data[db_table] a 
+	LEFT JOIN 
+		$mysql_data[db_table_category] b 
+	ON 
+		b.category_id = a.c_id 
+	LEFT JOIN 
+		$mysql_data[db_table_comments] c 
+	ON 
+		a.id = c.comments_id
+	WHERE 
+		published = 'Y' 
+	GROUP BY 
+		a.date 
+	DESC 
+	LIMIT $start, $pagination[mainposts_per_page]";
 
 $db->query($query);
 

@@ -3,29 +3,31 @@
 function main_pagination($url, $q, $p, $published, $table) {
 	
 	global $days_to, $mysql_data, $mainposts_per_page, $page_string;
+
+	$ret = array();
 	
 	// Egzemplarz klasy obs³uguj±cej konfiguracjê wy¶wietlanych wpisów
-	$data_b = new MySQL_DB;
-	$data_b->query("SELECT * FROM $mysql_data[db_table_config] WHERE config_name = '$p'");
-	$data_b->next_record();
+	$db = new MySQL_DB;
+	$db->query("SELECT * FROM $mysql_data[db_table_config] WHERE config_name = '$p'");
+	$db->next_record();
 		
-	$mainposts_per_page = $data_b->f("config_value");
+	$mainposts_per_page = $db->f("config_value");
 
-	$data_b->query("SELECT count(*) AS id 
+	$db->query("SELECT count(*) AS id 
 					FROM $mysql_data[$table] 
 					WHERE $q 
 					TO_DAYS(NOW()) - TO_DAYS(date) <= $days_to $published 
 					ORDER BY date");
 	
-	$data_b->next_record();
-	$num_items 	= $data_b->f("0");
+	$db->next_record();
+	$num_items 	= $db->f("0");
 
 	$total_pages = empty($total_pages) ? '' : $total_pages;
 
 	$start = ( isset($_GET['start']) ) ? intval($_GET['start']) : 0;
 	
 	// Obliczanie liczby stron
-	if ($mainposts_per_page != 0) {
+	if (!empty($mainposts_per_page) && $mainposts_per_page > 0) {
 		
 		if ($num_items > $mainposts_per_page) {	
 		
@@ -35,7 +37,7 @@ function main_pagination($url, $q, $p, $published, $table) {
 		// Obliczanie strony, na której obecnie jestesmy
 		$on_page = floor($start / $mainposts_per_page) + 1;
 	} else {
-
+		$mainposts_per_page = 0;
 		$total_pages = 0;
 		$on_page = 0;
 	}
@@ -120,6 +122,13 @@ function main_pagination($url, $q, $p, $published, $table) {
 			
 		$page_string .= '&nbsp;&nbsp;<a href="' . $url . ( $on_page * $mainposts_per_page ) . '">' . "<b>\$i++</b> " . '</a>';
 	}
+
+	$ret['days_to'] = $days_to;
+	$ret['mysql_data'] = $mysql_data;
+	$ret['mainposts_per_page'] = $mainposts_per_page;
+	$ret['page_string'] = $page_string;
+
+	return $ret;
 }
 
 ?>
