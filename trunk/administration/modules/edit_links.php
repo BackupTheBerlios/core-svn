@@ -37,6 +37,11 @@ switch ($action)
 	case "edit":// edycja wybranego wpisu
 		$link_name	= $_POST['link_name'];
 		$link_url	= $_POST['link_url'];
+
+		if (substr($link_url, 0, 7) != 'http://' && substr($link_url, 0, 6) != 'ftp://' && substr($link_url, 0, 8) != 'https://')
+		{
+			$link_url = 'http://' . $link_url;
+		}
 		
 		$query = "UPDATE 
 						$mysql_data[db_table_links] 

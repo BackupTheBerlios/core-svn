@@ -8,11 +8,17 @@ switch ($action)
 	case "add":
 		$link_name	= $_POST['link_name'];
 		$link_url	= $_POST['link_url'];
+
+		if (substr($link_url, 0, 7) != 'http://' && substr($link_url, 0, 6) != 'ftp://' && substr($link_url, 0, 8) != 'https://')
+		{
+			$link_url = 'http://' . $link_url;
+		}
 			
 		// egzemplarz klasy ³aduj±cej komentarz do bazy danych
 		$db = new MySQL_DB;
 			
-		$db->query("INSERT INTO $mysql_data[db_table_links] VALUES ('', '$link_name', '$link_url')");
+		$query = "INSERT INTO $mysql_data[db_table_links] VALUES ('', '$link_name', '$link_url')";
+		$db->query($query);
 			
 		$ft->assign('CONFIRM', "Link zosta³ dodany do bazy danych");
 		$ft->parse('ROWS', ".result_note");
