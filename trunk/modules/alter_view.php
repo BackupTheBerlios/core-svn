@@ -38,19 +38,15 @@ if($db->num_rows() > 0) {
 	$image			= $db->f("image");
 	$comments_allow = $db->f("comments_allow");
 	
-	$c_name 		= $db->f("category_name");
 	$c_id 			= $db->f("category_id");
+	
+	$c_name	= str_replace('&', '&amp;', $db->f("category_name"));
 		
 	// Przypisanie zmiennej $comments
 	$comments 		= $db->f("comments");
 
 	// konwersja daty na bardziej ludzki format
 	$date			= coreDateConvert($date);
-	
-	if($c_name === "art&design") { 
-		
-		$c_name = "art&amp;design";
-	}
 	
 	$ft->assign(array(	'DATE'				=>$date,
 						'NEWS_TITLE'		=>$title,
@@ -87,26 +83,28 @@ if($db->num_rows() > 0) {
 		$ft->assign(array('IMAGE' =>""));
 	} else {
 		
-		list($width, $height) = getimagesize("photos/" . $image);
+		if(is_file('photos/' . $image)) {
+			list($width, $height) = getimagesize("photos/" . $image);
 		
-		// wysoko뜻, szeroko뜻 obrazka
-		$ft->assign(array(	'WIDTH'		=>$width,
-							'HEIGHT'	=>$height));
+			// wysoko뜻, szeroko뜻 obrazka
+			$ft->assign(array(	'WIDTH'		=>$width,
+								'HEIGHT'	=>$height));
 		
-		if($width > 440) {
+			if($width > 440) {
 			
-			// template prepare
-			$ft->define('image_alter', "image_alter.tpl");
-			$ft->assign('UID', $id);
+				// template prepare
+				$ft->define('image_alter', "image_alter.tpl");
+				$ft->assign('UID', $id);
 				
-			$ft->parse('IMAGE', "image_alter");
-		} else {
+				$ft->parse('IMAGE', "image_alter");
+			} else {
 			
-			// template prepare
-			$ft->define('image_main', "image_main.tpl");
-			$ft->assign('IMAGE_NAME', $image);
+				// template prepare
+				$ft->define('image_main', "image_main.tpl");
+				$ft->assign('IMAGE_NAME', $image);
 
-			$ft->parse('IMAGE', "image_main");
+				$ft->parse('IMAGE', "image_main");
+			}
 		}
 	}
 
