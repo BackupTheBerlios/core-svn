@@ -10,8 +10,15 @@ switch($action) {
 	
 	case "add":
 	
-		$ft->define('form_templateedit', "form_templateedit.tpl");
-		$ft->parse('ROWS',	".form_templateedit");
+		$template   = $_POST['template_name'];
+		$text		= $_POST['text'];
+		
+		$fp		= @fopen('../templates/main/tpl/' . $template . '.tpl', 'w');
+		$result = @fputs($fp, $text, strlen($text));
+		@fclose($fp);
+	
+		$ft->assign('CONFIRM', "Szablon zosta³ Zapisany.");
+		$ft->parse('ROWS',	".result_note");
 		break;
 		
 	case "show":
@@ -21,9 +28,18 @@ switch($action) {
 		
 		$file_content = file_get_contents($template);
 		
+		// Sztywna obs³uga </textarea> w szablonie, aby by³
+		// on wy¶wietlany poprawnie w polu formularza
+		$file_content = str_replace('</textarea>', '&lt;/textarea>', $file_content);
+		
+		// Zabronimy FT ukrywanie nie przydzielonych zmiennych
+		// dziêki temu widaæ je przy edycji danego szablonu
 		$ft->STRICT = true;
+		
 		$ft->assign(array(	'FILE_CONTENT'	=>$file_content,
-							'TEMPLATE'		=>"/ " . $tpl . ".tpl"));
+							'TEMPLATE'		=>"/ " . $tpl . ".tpl",
+							'TEMPLATE_NAME'	=>$tpl));
+							
 		$ft->define('form_templateedit', "form_templateedit.tpl");
 		$ft->parse('ROWS',	".form_templateedit");
 		break;
@@ -46,7 +62,11 @@ if(!isset($_GET['path'])) {
 $dir = @dir($path);
 while($file = $dir->read()) {
 			
-	if(!ereg(".php", $file) && !ereg(".txt", $file) && !ereg(".html", $file) && $file != '.' && $file != '..') {
+	if(!ereg(".php", $file) 
+		&& !ereg(".txt", $file) 
+		&& !ereg(".html", $file) 
+		&& $file != '.' 
+		&& $file != '..') {
 				
 		$file = explode('.', $file);
 				
