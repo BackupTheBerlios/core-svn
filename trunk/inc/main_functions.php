@@ -219,7 +219,28 @@ function get_editpage_cat($page_id, $level) {
 
 function str_getext($file, $with_dot = true)
 { 
-  return substr($file, strrpos($file, '.') - (int)$with_dot + 1);
+  $p = pathinfo($file);
+  if ($with_dot)
+  {
+    return '.' . $p['extension'];
+  }
+  return $p['extension'];
+}
+
+function get_root()
+{
+  $p = pathinfo(__file__);
+  return dirname($p['dirname']);
+}
+
+function v_array($array, $exit = 0)
+{ 
+  printf('<pre>%s</pre>', print_r($array, 1));
+  
+  if ($exit)
+  {
+    exit;
+  }
 }
 
 ?>
