@@ -3,35 +3,49 @@
 // inicjowanie funkcji stronnicuj±cej wpisy
 main_pagination('index.', '', 'mainposts_per_page', 'AND published = \'Y\'', 'db_table');
 
-$data_base = new MySQL_DB;
-$data_base->query("	SELECT a.*, b.*, c.comments_id, count(c.id) AS comments 
-					FROM $mysql_data[db_table] a 
-					LEFT JOIN $mysql_data[db_table_category] b 
-					ON b.category_id = a.c_id 
-					LEFT JOIN $mysql_data[db_table_comments] c 
-					ON a.id = c.comments_id
-					WHERE published = 'Y' 
-					GROUP BY a.date 
-					DESC LIMIT $start, $mainposts_per_page");
+$db = new MySQL_DB;
+$query = "	SELECT 
+				a.*, b.*, c.comments_id, count(c.id) 
+			AS 
+				comments 
+			FROM 
+				$mysql_data[db_table] a 
+			LEFT JOIN 
+				$mysql_data[db_table_category] b 
+			ON 
+				b.category_id = a.c_id 
+			LEFT JOIN 
+				$mysql_data[db_table_comments] c 
+			ON 
+				a.id = c.comments_id
+			WHERE 
+				published = 'Y' 
+			GROUP BY 
+				a.date 
+			DESC 
+			LIMIT 
+				$start, $mainposts_per_page";
+
+$db->query($query);
 
 // Sprawdzamy, czy w bazie danych s± ju¿ jakie¶ wpisy
-if($data_base->num_rows() !== 0) {
+if($db->num_rows() !== 0) {
 
-	while($data_base->next_record()) {
+	while($db->next_record()) {
 	
-		$date 			= $data_base->f("date");
-		$title 			= $data_base->f("title");
-		$text 			= $data_base->f("text");
-		$author 		= $data_base->f("author");
-		$id 			= $data_base->f("id");
-		$c_id			= $data_base->f("c_id");
-		$image			= $data_base->f("image");
-		$comments_allow = $data_base->f("comments_allow");
+		$date 			= $db->f("date");
+		$title 			= $db->f("title");
+		$text 			= $db->f("text");
+		$author 		= $db->f("author");
+		$id 			= $db->f("id");
+		$c_id			= $db->f("c_id");
+		$image			= $db->f("image");
+		$comments_allow = $db->f("comments_allow");
 	
-		$c_name 		= $data_base->f("category_name");
-		$c_id 			= $data_base->f("category_id");
+		$c_name 		= $db->f("category_name");
+		$c_id 			= $db->f("category_id");
 	
-		$comments 		= $data_base->f("comments");
+		$comments 		= $db->f("comments");
 	
 		// konwersja daty na bardziej ludzki format
 		$date		= coreDateConvert($date);
