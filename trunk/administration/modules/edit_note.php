@@ -20,12 +20,13 @@ switch ($action) {
 		$db->query($query);
 		$db->next_record();
 		
-		$date 		= $db->f("date");
-		$title 		= $db->f("title");
-		$text 		= $db->f("text");
-		$author		= $db->f("author");
-		$published	= $db->f("published");
-		$category	= $db->f("c_id");
+		$date 			= $db->f("date");
+		$title 			= $db->f("title");
+		$text 			= $db->f("text");
+		$author			= $db->f("author");
+		$published		= $db->f("published");
+		$category		= $db->f("c_id");
+		$comments_allow = $db->f("comments_allow");
 		
 		$date	= substr($date, 0, 16);
 		$dat1	= explode(" ", $date);
@@ -41,7 +42,17 @@ switch ($action) {
 							'ID'			=>$_GET['id'],
 							'TITLE'			=>$title,
 							'TEXT'			=>$text));
-							
+
+		if($comments_allow == 1) {
+
+			$ft->assign(array(	'COMMENTS_YES'	=>'<input style="border: 0px;" type="radio" name="comments_allow" value="1" align="top" checked="checked" />',
+								'COMMENTS_NO'	=>'<input style="border: 0px;" type="radio" name="comments_allow" value="0" align="top" />'));
+		} else {
+			
+			$ft->assign(array(	'COMMENTS_YES'	=>'<input style="border: 0px;" type="radio" name="comments_allow" value="1" align="top" />',
+								'COMMENTS_NO'	=>'<input style="border: 0px;" type="radio" name="comments_allow" value="0" align="top" checked="checked" />'));
+		}					
+								
 		if($published == "Y") {
 
 			$ft->assign(array(	'CHECKBOX_YES'	=>'<input style="border: 0px;" type="radio" name="published" value="Y" align="top" checked="checked" />',
@@ -91,6 +102,8 @@ switch ($action) {
 		$published	= $_POST['published'];
 		$c_id		= $_POST['category_id'];
 		
+		$comments_allow = $_POST['comments_allow'];
+		
 		$query = "	UPDATE 
 						$mysql_data[db_table] 
 					SET 
@@ -98,7 +111,8 @@ switch ($action) {
 						author = '$author', 
 						text = '$text', 
 						published = '$published', 
-						c_id = '$c_id' 
+						c_id = '$c_id', 
+						comments_allow = '$comments_allow'  
 					WHERE 
 						id = '$_GET[id]'";
 		$db->query($query);
