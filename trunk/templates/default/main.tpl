@@ -48,6 +48,13 @@
 					<dd class="link"><a href="./rss">rss</a></dd>
 					<dd class="link"><a href="./rsscomments">rss - comments</a></dd>
 				</dl>
+				
+				<span><b>CZASAMI CZYTANE</b></span><br />
+				<dl>
+					<!-- links list/links list template parsed -->
+						{LINKS_LIST}
+					<!-- end links list -->
+				</dl>
 									
 				<span><b>CZASAMI CZYTANE</b></span><br />
 				<dl>
