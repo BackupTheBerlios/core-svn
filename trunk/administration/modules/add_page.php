@@ -5,67 +5,65 @@ $action = empty($_GET['action']) ? '' : $_GET['action'];
 
 $db = new MySQL_DB;
 
-// g³ówny switcher::action
-if($action == "add") {
-	
-	$text = nl2br($_POST['text']);
-	
-	$title 		= $_POST['title'];
-	$published 	= $_POST['published'];
-	$page_id	= $_POST['category_id'];
-	
-	$query = "	INSERT INTO 
-					$mysql_data[db_table_pages] 
-				VALUES 
-					('', '$page_id', '$title', '$text', '', '$published')";
-	
-	$db->query($query);
-	$db->next_record();
-	
-	
-	$query = "	SELECT MAX(id) 
-					as maxid 
-				FROM 
-					$mysql_data[db_table_pages]";
-	
- 	$db->query($query);
- 	$db->next_record();
+switch ($action)
+{
+	case "add":
+		$text = nl2br($_POST['text']);
 		
-	// Przypisanie zmiennej $id
-	$id = $db->f("0");
-	
-	if(!empty($_FILES['file']['name'])) {
+		$title 		= $_POST['title'];
+		$published 	= $_POST['published'];
+		$page_id	= $_POST['category_id'];
 		
-		$up = new upload;
-		$upload_dir = "../photos";
+		$query = "	INSERT INTO 
+						$mysql_data[db_table_pages] 
+					VALUES 
+						('', '$page_id', '$title', '$text', '', '$published')";
 		
-		// upload file.
-		$file = $up->upload_file($upload_dir, 'file', true, true, 0, "jpg|jpeg|gif");
-		if($file == false) {
+		$db->query($query);
+		
+		
+		$query = "	SELECT MAX(id) 
+						as maxid 
+					FROM 
+						$mysql_data[db_table_pages]";
+		
+ 		$db->query($query);
+ 		$db->next_record();
 			
-			echo $up->error;
-		} else {
+		// Przypisanie zmiennej $id
+		$id = $db->f("0");
 		
-			$query = "	UPDATE 
-							$mysql_data[db_table_pages] 
-						SET 
-							image = '$file' 
-						WHERE 
-							id = '$id'";
+		if(!empty($_FILES['file']['name'])) {
 			
-			$db->query($query);
-			$db->next_record();
+			$up = new upload;
+			$upload_dir = "../photos";
 			
-			$ft->assign('CONFIRM', "Zdjêcie zosta³o dodane.<br />");
-			$ft->parse('ROWS',	".result_note");
+			// upload file.
+			$file = $up->upload_file($upload_dir, 'file', true, true, 0, "jpg|jpeg|gif");
+			if($file == false) {
+				
+				echo $up->error;
+			} else {
+			
+				$query = "	UPDATE 
+								$mysql_data[db_table_pages] 
+							SET 
+								image = '$file' 
+							WHERE 
+								id = '$id'";
+				
+				$db->query($query);
+				
+				$ft->assign('CONFIRM', "Zdjêcie zosta³o dodane.<br />");
+				$ft->parse('ROWS',	".result_note");
+			}
 		}
-	}
-	
-	$ft->assign('CONFIRM', "Strona zosta³a dodana");
-	$ft->parse('ROWS',	".result_note");
-	
-} else {
-	
+		
+		$ft->assign('CONFIRM', "Strona zosta³a dodana");
+		$ft->parse('ROWS',	".result_note");
+		break;
+
+	default:
 	$query	= "	SELECT 
 					id, parent_id, title 
 				FROM 
