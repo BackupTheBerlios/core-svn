@@ -1,33 +1,19 @@
 <?php
 
-$ctime = time()+3600*8760;
-$cname 	= "devlog_design";
+if(isset($_GET['issue']) && is_dir('./templates/' . $_GET['issue'] . '/tpl/')){
+			
+	$theme = $_GET['issue'];
+} elseif (is_dir('./templates/main/tpl')) {
 
-$val = empty($val) ? '' : $val;
-
-$issue = empty($_GET['issue']) ? '' : $_GET['issue'];
-switch($issue){
+	$theme = 'main';
+} else {
 	
-	case '1':
-		
-		$val 	= "1";
-		setcookie($cname, $val, $ctime);
-		header("Location: http://".$_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']));
-		exit;
-		
-	case '2':
-	
-		$val 	= "2";
-		setcookie($cname, $val, $ctime);
-		header("Location: http://".$_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']));
-		exit;
-		
-	default:
-
-		$value 	= "2";
-		setcookie($cname, $val, $ctime);
-		header("Location: http://".$_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']));
-		exit;
+	echo '<div style="font-family: Arial, sans-serif; font-size: 16px; background-color: #ccc; border: 1px solid red; padding: 15px; text-align: center;">Brak wybranego skina do systemu <strong>CORE</strong></div>';
+	exit;
 }
 
+@setcookie('devlog_design', $theme, time() + 3600 * 24 * 365);
+
+header("Location: http://".$_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']));
+exit;
 ?>
