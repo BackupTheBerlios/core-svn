@@ -5,7 +5,7 @@ $action = empty($_GET['action']) ? '' : $_GET['action'];
 
 $db = new MySQL_DB;
 
-if (empty($action)) {
+if(empty($action)) {
 	
 	$query = " 	SELECT 
 					n.id, n.title, n.date, 
@@ -100,7 +100,6 @@ if ($action == "show") {
 	$date	= "$dat[2]-$dat[1]-$dat[0] <b>$dat1[1]</b>";
 	
 	$text = str_replace("<br />", "\r\n", $text);
-	//$text = ereg_replace("(\r\n)+", "\r\n\r\n", $text);
 	$text = preg_replace("/(\r\n)+/g", "\1\1", $text);
 
 	
