@@ -38,9 +38,8 @@ if ($p == "log") {
 	if(empty($login) OR empty($password)) {
 		
 		// U¿ytkownik nie uzupe³ni³ wszystkich pól::form
-		$ft->assign(array('ERROR_MSG', "Nie uzupe³niono wszystkich pól"));
+		$ft->assign('ERROR_MSG', "Nie uzupe³niono wszystkich pól");
 		$ft->parse('ROWS', ".form_login");
-		$ft->parse('MAIN', array("main_loader", "main"));
 	} else {
 		
 		$db = new MySQL_DB;
@@ -58,7 +57,7 @@ if ($p == "log") {
 		$user 	= $db->f("login");
 		
 		if($db->num_rows() > 0) {
-			
+
 			if(($active = $db->f("active")) !== "N") {
 				
 				// Rejestrujemy zmienne sesyjne
@@ -73,24 +72,22 @@ if ($p == "log") {
 			} else {
 				
 				// U¿ytkownik nie zaaktywowa³ konta::db
-				$ft->assign(array('ERROR_MSG', "Konto nie zosta³o jeszcze aktywowane"));
+				$ft->assign('ERROR_MSG', "Konto nie zosta³o jeszcze aktywowane");
 				$ft->parse('ROWS', ".form_login");
-				$ft->parse('MAIN', array("main_loader", "main"));
 			}
 		} else {
-		
 			// Niepoprawne dane wej¶cia<->wyj¶cia::form, db
-			$ft->assign(array('ERROR_MSG', "B³êdna nazwa u¿ytkownika, lub b³êdne has³o"));
+			$ft->assign('ERROR_MSG', "B³êdna nazwa u¿ytkownika, lub b³êdne has³o");
 			$ft->parse('ROWS', ".form_login");
-			$ft->parse('MAIN', array("main_loader", "main"));
 		}
 	}
 } else {
 		
 	include("modules/login.php");
-	$ft->parse('MAIN', array("main_loader", "main"));
+	
 }
 
+$ft->parse('MAIN', array("main_loader", "main"));
 $ft->FastPrint();
 exit;
 ?>
