@@ -55,21 +55,6 @@
 						{LINKS_LIST}
 					<!-- end links list -->
 				</dl>
-									
-				<span><b>CZASAMI CZYTANE</b></span><br />
-				<dl>
-					<dd class="link"><a href="http://czasopismo.pl" target="_blank">czasopismo.pl</a></dd>
-					<dd class="link"><a href="http://opi.pegasos.pl" target="_blank">opi.pegasos.pl</a></dd>
-					<dd class="link"><a href="http://diary.e-gandalf.net" target="_blank">diary.e-gandalf.net</a></dd>
-					<dd class="link"><a href="http://diary.urzenia.net" target="_blank">diary.urzenia.net</a></dd>
-					<dd class="link"><a href="http://marcoos.jogger.pl" target="_blank">marcoos.jogger.pl</a></dd>
-					<dd class="link"><a href="http://antymon.jogger.pl/" target="_blank">antymon.jogger.pl</a></dd>
-					<dd class="link"><a href="http://usagi.pl/secret/diary/" target="_blank">usagi.pl/secret/diary</a></dd>
-					<dd class="link"><a href="http://joanne.no1-else.com/diary/" target="_blank">joanne.no1-else.com/diary</a></dd>
-					<dd class="link"><a href="http://slasher.tq.pl" target="_blank">slasher.tq.pl</a></dd>
-					<dd class="link"><a href="http://lovebeer.blog.pl" target="_blank">lovebeer.blog.pl</a></dd>
-					<dd class="link"><a href="http://bocznica.blox.pl/" target="_blank">bocznica.blox.pl</a></dd>
-				</dl>
 				
 				<div class="referer">
 					<strong>valid:</strong>
