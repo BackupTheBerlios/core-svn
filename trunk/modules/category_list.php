@@ -1,18 +1,24 @@
 <?php
 
-$sql = new MySQL_DB;
-$sql->query("	SELECT * 
-				FROM $mysql_data[db_table_category]");
+$db = new MySQL_DB;
+$query = sprintf("
+    SELECT
+        *
+    FROM
+        %s",
 
-while($sql->next_record()) {
-	
-	$c_id 	= $sql->f("category_id");
-	$c_name = str_replace('&', '&amp;', $sql->f("category_name"));
-	
-	$ft->assign(array(	'CAT_NAME'		=>$c_name,
-						'NEWS_CAT'		=>$c_id));
+    $mysql_data['db_table_category']
+);
+$db->query($query);
 
-	$ft->parse('CATEGORY_LIST', ".category_list");
+while($db->next_record()) {
+
+    $ft->assign(array(
+        'CAT_NAME' => str_replace('&', '&amp;', $sql->f('category_name')),
+        'NEWS_CAT' => $db->f('category_id')
+    ));
+
+    $ft->parse('CATEGORY_LIST', '.category_list');
 }
 
 ?>
