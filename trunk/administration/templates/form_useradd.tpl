@@ -1,5 +1,5 @@
 <img src="layout/main.gif" width="14" height="14" align="middle" hspace="2"><b>U¿ytkownicy - dodaj nowego u¿ytkownika</b><br /><br />
-<form enctype="multipart/form-data" method="post" action="note.adduser">
+<form enctype="multipart/form-data" method="post" action="add,7,action.html">
 <table width="100%" align="left">
 	<tr>
 		<td class="form" width="80" align="right">Login:&nbsp;</td>
