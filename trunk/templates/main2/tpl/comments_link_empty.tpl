@@ -1,0 +1,1 @@
+<a class="comments" href="1,{NEWS_ID},3,item.html">skomentuj ten post</a>
