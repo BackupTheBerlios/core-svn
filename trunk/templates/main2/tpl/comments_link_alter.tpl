@@ -1,1 +1,0 @@
-<a class="comments" href="1,{NEWS_ID},2,item.html">komentarze ({COMMENTS})</a>
