@@ -9,9 +9,9 @@ $action = empty($_GET['action']) ? '' : $_GET['action'];
 // inicjalizacja instancji klasy MySQL_DB
 $db = new MySQL_DB;
 
-switch ($action)
-{
-	case "show":// wy¶wietlanie wpisu pobranego do modyfikacji
+switch ($action) {
+	
+	case "show": // wy¶wietlanie wpisu pobranego do modyfikacji
 		$db->query("SELECT * FROM $mysql_data[db_table_comments] WHERE id = '$_GET[id]'");
 		$db->next_record();
 		
@@ -28,7 +28,7 @@ switch ($action)
 		$date	= "$dat[2]-$dat[1]-$dat[0] $dat1[1]";
 		
 		$text = str_replace("<br />", "\r\n", $text);
-		$text = preg_replace("/(\r\n)+/g", "\1\1", $text);
+		$text = preg_replace("/(\r\n)+/", "\\1\\1", $text);
 		
 		$ft->assign(array(	'AUTHOR'		=>$author,
 							'DATE' 			=>$date,
@@ -38,7 +38,7 @@ switch ($action)
 		$ft->parse('ROWS',	".form_commentsedit");
 		break;
 	
-	case "edit":// edycja wybranego wpisu
+	case "edit": // edycja wybranego wpisu
 		$text		= nl2br($_POST['text']);
 		$author		= $_POST['author'];
 		
@@ -49,7 +49,7 @@ switch ($action)
 		$ft->parse('ROWS',	".result_note");
 		break;
 	
-	case "delete":// usuwanie wybranego wpisu
+	case "delete": // usuwanie wybranego wpisu
 		$db->query("DELETE FROM $mysql_data[db_table_comments] WHERE id='$_GET[id]'");
 		
 		$ft->assign(array(	'CONFIRM'	=>"Komentarz zosta³ usuniêty."));
