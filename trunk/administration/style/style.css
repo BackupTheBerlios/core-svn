@@ -38,7 +38,9 @@ span.black {
 	padding-left: 41px;
 	padding-top: 10px;
 	width: 600px;
-	min-height: 400px;
+	height: 350px;
+	min-height: 400px !important;
+	padding-bottom: 20px;
 }
 
 #footer {
