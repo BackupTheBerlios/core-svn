@@ -1,7 +1,7 @@
 <?php
 
 // inicjowanie funkcji stronnicuj±cej wpisy
-main_pagination('start,2,', '', 'editposts_per_page', '', 'db_table');
+$pagination = main_pagination('start,2,', '', 'editposts_per_page', '', 'db_table');
 
 // deklaracja zmiennej $action::form
 $action = empty($_GET['action']) ? '' : $_GET['action'];
@@ -75,6 +75,10 @@ switch ($action) {
 		$db->next_record();
 			
 		$editposts_per_page = $db->f("config_value");
+		if (empty($editposts_per_page)) {
+
+			$editposts_per_page = 0;
+		}
 		
 		
 		$db->query("SELECT * FROM $mysql_data[db_table] ORDER BY date DESC LIMIT $start, $editposts_per_page");
