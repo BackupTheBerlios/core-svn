@@ -3,13 +3,9 @@
 if(isset($_GET['issue']) && is_dir('./templates/' . $_GET['issue'] . '/tpl/')){
 			
 	$theme = $_GET['issue'];
-} elseif (is_dir('./templates/main/tpl')) {
+} else {
 
 	$theme = 'main';
-} else {
-	
-	echo '<div style="font-family: Arial, sans-serif; font-size: 16px; background-color: #ccc; border: 1px solid red; padding: 15px; text-align: center;">Brak wybranego skina do systemu <strong>CORE</strong></div>';
-	exit;
 }
 
 @setcookie('devlog_design', $theme, time() + 3600 * 24 * 365);
