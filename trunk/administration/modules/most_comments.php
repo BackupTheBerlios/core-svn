@@ -1,25 +1,11 @@
 <?php
 
-// inicjowanie funkcji stronnicuj±cej wpisy
-main_pagination('mostcomments.', '', 'editposts_per_page', '', 'db_table_comments');
-
 // deklaracja zmiennej $action::form
 $action = empty($_GET['action']) ? '' : $_GET['action'];
 
 $db = new MySQL_DB;
 
 if (empty($action)) {
-	
-	$query = "	SELECT * 
-				FROM 
-					$mysql_data[db_table_config] 
-				WHERE 
-					config_name = 'editposts_per_page'";
-	
-	$db->query($query);
-	$db->next_record();
-		
-	$editposts_per_page = $db->f("config_value");
 	
 	$query = " 	SELECT 
 					n.id, n.title, n.date, 
@@ -34,11 +20,13 @@ if (empty($action)) {
 					n.id = c.comments_id 
 				GROUP BY 
 					n.id 
+				HAVING 
+					count(c.id) > 0 	
 				ORDER BY 
 					comments 
 				DESC 
 				LIMIT 
-					$start, $editposts_per_page";
+					20";
 	
 	$db->query($query);
 	
@@ -58,15 +46,7 @@ if (empty($action)) {
 			$ft->assign(array(	'ID'		=>$id,
 								'TITLE'		=>$title,
 								'DATE'		=>$date[0],
-								'COMMENTS'	=>$comments));	
-							
-			if($page_string !== "") {
-		
-				$ft->assign('STRING', "<b>Id¼ do strony:</b> " . $page_string);
-			} else {
-		
-				$ft->assign('STRING', $page_string);
-			}					
+								'COMMENTS'	=>$comments));				
 		
 			// deklaracja zmiennej $idx1::color switcher
 			$idx1 = empty($idx1) ? '' : $idx1;
