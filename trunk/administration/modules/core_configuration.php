@@ -3,50 +3,49 @@
 // deklaracja zmiennej $action::form
 $action = empty($_GET['action']) ? '' : $_GET['action'];
 
-if (empty($action)) {
+// inicjalizacja instancji klasy MySQL_DB
+$db = new MySQL_DB;
 	
-	// egzemplarz klasy pobieraj±cej ustawienia Core
-	$sql = new MySQL_DB;
+
+if (empty($action)) {
 	
 	// set {MAINPOSTS_PER_PAGE} variable
 	// liczba listowanych wpisów w na stronie g³ównej::db
-	$sql->query("	SELECT config_value 
+	$db->query("	SELECT config_value 
 					FROM $mysql_data[db_table_config]
 					WHERE config_name = 'mainposts_per_page'");
 	
-	$sql->next_record();
-	$mainposts_per_page = $sql->f("config_value");
+	$db->next_record();
+	$mainposts_per_page = $db->f("config_value");
 		
 	$ft->assign('MAINPOSTS_PER_PAGE', $mainposts_per_page);
 	
 	// set {EDITPOSTS_PER_PAGE} variable
 	// liczba listowanych wpisów w czê¶ci administracyjnej::db
-	$sql->query("	SELECT config_value 
+	$db->query("	SELECT config_value 
 					FROM $mysql_data[db_table_config] 
 					WHERE config_name = 'editposts_per_page'");
 	
-	$sql->next_record();
-	$editposts_per_page = $sql->f("config_value");
+	$db->next_record();
+	$editposts_per_page = $db->f("config_value");
 	
 	$ft->assign('EDITPOSTS_PER_PAGE', $editposts_per_page);
 	
 	// set {TITLE_PAGE} variable
 	// tytu³ strony, wy¶wietlany w miejscu title::db
-	$sql->query("	SELECT config_value 
+	$db->query("	SELECT config_value 
 					FROM $mysql_data[db_table_config] 
 					WHERE config_name = 'title_page'");
 	
-	$sql->next_record();
-	$title_page = $sql->f("config_value");
+	$db->next_record();
+	$title_page = $db->f("config_value");
 	
 	$ft->assign('TITLE_PAGE', $title_page);
 		
 	// w przypadku braku akcji wy¶wietlanie formularza
 	$ft->parse('ROWS', ".form_configuration");
 	
-}
-
-if($action == "add") {
+} elseif ($action == "add") {
 	
 	class configValidate {
 		
@@ -83,33 +82,23 @@ if($action == "add") {
 	
 	if(empty($conf->monit)) {
 		
-		// egzemplarz klasy pobieraj±cej ustawienia Core
-		$sql = new MySQL_DB;
-		
 		// set {MAINPOSTS_PER_PAGE} variable
 		// liczba listowanych wpisów w na stronie g³ównej::db
-		$sql->query("	UPDATE $mysql_data[db_table_config] 
+		$db->query("	UPDATE $mysql_data[db_table_config] 
 						SET config_value = '$_POST[mainposts_per_page]' 
 						WHERE config_name = 'mainposts_per_page'");
-		
-		$sql->next_record();
-	
 	
 		// set {TITLE_PAGE} variable
 		// liczba listowanych wpisów w na stronie g³ównej::db
-		$sql->query("	UPDATE $mysql_data[db_table_config] 
+		$db->query("	UPDATE $mysql_data[db_table_config] 
 						SET config_value = '$_POST[title_page]' 
 						WHERE config_name = 'title_page'");
 	
-		$sql->next_record();
-	
 		// set {EDITOSTS_PER_PAGE} variable
 		// liczba listowanych wpisów w na stronie g³ównej::db
-		$sql->query("	UPDATE $mysql_data[db_table_config] 
+		$db->query("	UPDATE $mysql_data[db_table_config] 
 						SET config_value = '$_POST[editposts_per_page]' 
 						WHERE config_name = 'editposts_per_page'");
-	
-		$sql->next_record();
 	
 		$ft->assign('CONFIRM', "Dane zosta³y zmodyfikowane.");
 	
