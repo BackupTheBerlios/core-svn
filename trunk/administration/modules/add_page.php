@@ -5,8 +5,8 @@ $action = empty($_GET['action']) ? '' : $_GET['action'];
 
 $db = new MySQL_DB;
 
-switch ($action)
-{
+switch($action) {
+	
 	case "add":
 		$text = nl2br($_POST['text']);
 		
@@ -20,7 +20,6 @@ switch ($action)
 						('', '$page_id', '$title', '$text', '', '$published')";
 		
 		$db->query($query);
-		
 		
 		$query = "	SELECT MAX(id) 
 						as maxid 
@@ -63,7 +62,7 @@ switch ($action)
 		$ft->parse('ROWS',	".result_note");
 		break;
 
-	default:
+	default:	
 	$query	= "	SELECT 
 					id, parent_id, title 
 				FROM 
@@ -79,16 +78,16 @@ switch ($action)
 	$db->query($query);
 	while($db->next_record()) {
 		
-		$id 		= $db->f("id");
-		$parent_id 	= $db->f("parent_id");
-		$title 		= $db->f("title");
+		$page_id 		= $db->f("id");
+		$parent_id 		= $db->f("parent_id");
+		$title 			= $db->f("title");
 	
-		$ft->assign(array(	'C_ID'		=>$id,
+		$ft->assign(array(	'C_ID'		=>$page_id,
 							'C_NAME'	=>$title));
 							
-		$ft->define('page_categoryoption', "page_categoryoption.tpl");
-						
-		$ft->parse('CATEGORY_ROWS', ".page_categoryoption");					
+		$ft->define('page_categoryoption', "page_categoryoption.tpl");				
+		$ft->parse('CATEGORY_ROWS', ".page_categoryoption");
+		get_addpage_cat($page_id, 2);				
 	
 	}
 
