@@ -26,33 +26,23 @@ include("inc/main_pagination.php");
 
 $val = empty($val) ? '' : $val;
 
-if(!isset($_COOKIE['devlog_design'])){
+
+if(isset($_COOKIE['devlog_design']) && is_dir('./templates/' . $_COOKIE['devlog_design'] . '/tpl/')){
 			
-	setcookie("devlog_design", '2', time()+2592000);
+	$theme = $_COOKIE['devlog_design'];
+} elseif (is_dir('./templates/main/tpl')) {
+
+	$theme = 'main';
+} else {
+	
+	echo 'Brak wybranego skina do systemu <span class="black">CORE</span>';
+	exit;
 }
 
-$design = empty($_COOKIE['devlog_design']) ? '' : $_COOKIE['devlog_design'];
-
-switch ($design) {
-	
-	case '1':
-		
-		$d = "default/";
-		break;
-		
-	case '2':
-
-		$d = "main/";
-		break;
-		
-	default:
-			
-		$d = "main/";
-		break;
-}		
+@setcookie('devlog_design', $theme, time() + 3600 * 24 * 365);
 
 // inicjowanie klasy, wkazanie katalogu przechowuj±cego szablony
-$ft = new FastTemplate("./templates/" . $d . "/tpl/");
+$ft = new FastTemplate("./templates/" . $theme . "/tpl/");
 
 $ft->define(array(	
 		'main' 					=>"main.tpl",
