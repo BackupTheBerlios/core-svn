@@ -1,7 +1,7 @@
 <?php
 
 // inicjowanie funkcji stronnicuj±cej wpisy
-main_pagination('editnote.', '', 'editposts_per_page', '', 'db_table');
+main_pagination('start,2,', '', 'editposts_per_page', '', 'db_table');
 
 // deklaracja zmiennej $action::form
 $action = empty($_GET['action']) ? '' : $_GET['action'];
