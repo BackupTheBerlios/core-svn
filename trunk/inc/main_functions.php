@@ -45,7 +45,8 @@ function coreDateConvert($date) {
 		'10' => 'Pa¼dziernika',
 		'11' => 'Listopada',
 		'12' => 'Grudnia'
-	)
+	);
+	
 	$date_ex[1] = $months[$date_ex[1]];
 	
 	$date		= $date_ex[2] . " " . $date_ex[1] . ", " . $date_ex[0] . "&nbsp;&nbsp;" . $newdate[1];
