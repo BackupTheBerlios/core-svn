@@ -25,7 +25,7 @@ abbr, acronym {
 	color: #838383;
 	padding-right: 10px;
 	cursor: help;
-	background: url(./../layout/bg_acronym.gif) no-repeat 100% 0;
+	background: url(./../layout/default/bg_acronym.gif) no-repeat 100% 0;
 	white-space: nowrap;
 }
 
@@ -37,7 +37,7 @@ abbr, acronym {
 }
 
 .footer {
-	background: url(./../layout/08.jpg);
+	background: url(./../layout/default/08.jpg);
 	background-repeat: no-repeat;
 	width: 650px;
 	margin-bottom: 0px;
@@ -53,7 +53,7 @@ abbr, acronym {
 }
 
 .header {
-	background: url(./../layout/02.jpg);
+	background: url(./../layout/default/02.jpg);
 	background-repeat: no-repeat;
 	padding-top: 16px;
 	text-align: right;
@@ -83,7 +83,7 @@ abbr, acronym {
 }
 
 #content {
-	background: url(./../layout/05.jpg);
+	background: url(./../layout/default/05.jpg);
 	background-repeat: no-repeat;
 	padding-top: 15px;
 	float: left;
@@ -106,7 +106,7 @@ a:hover {
 }
 
 .author {
-	background: url(./../layout/bullet_author.gif) no-repeat 0 50%;
+	background: url(./../layout/default/bullet_author.gif) no-repeat 0 50%;
 	padding-left: 14px;
 	color: #8F8F88;
 }
@@ -114,28 +114,28 @@ a:hover {
 a.comments:link, a.comments:visited, a.comments:active {
 	color: #0070A8; 
 	text-decoration: none;
-	background: url(./../layout/bullet_saysomething.gif) no-repeat 0 50%;
+	background: url(./../layout/default/bullet_saysomething.gif) no-repeat 0 50%;
 	padding-left: 14px;
 }
 
 a.comments:hover { 
 	color: #555; 
 	text-decoration: underline;
-	background: url(./../layout/bullet_saysomething.gif) no-repeat 0 50%;
+	background: url(./../layout/default/bullet_saysomething.gif) no-repeat 0 50%;
 	padding-left: 14px;
 }
 
 a.date:link, a.date:visited, a.date:active {
 	color: #0070A8; 
 	text-decoration: none;
-	background: url(./../layout/bullet_comments.gif) no-repeat 0 50%;
+	background: url(./../layout/default/bullet_comments.gif) no-repeat 0 50%;
 	padding-left: 14px;
 }
 
 a.date:hover { 
 	color: #555; 
 	text-decoration: underline;
-	background: url(./../layout/bullet_comments.gif) no-repeat 0 50%;
+	background: url(./../layout/default/bullet_comments.gif) no-repeat 0 50%;
 	padding-left: 14px;
 }
 
@@ -145,7 +145,7 @@ a.referer:link, a.referer:visited, a.referer:active {
 	font-weight: bold;
 	margin-left: 3px;
 	padding-left: 10px; 
-	background:url(./../layout/validate.gif) no-repeat 0 50%;
+	background:url(./../layout/default/validate.gif) no-repeat 0 50%;
 }
 
 a.referer:hover { 
@@ -193,14 +193,14 @@ dt {
 
 dd {
 	border-bottom: 1px solid #F0F0F0;
-	background: url('./../layout/arrow_blue.gif') no-repeat 0 4px;
+	background: url('./../layout/default/arrow_blue.gif') no-repeat 0 4px;
 	margin: 3px 0px 5px 10px;
 	padding: 0 0 3px 13px;
 }
 
 dd.link {
 	border-bottom: 1px solid #F0F0F0;
-	background: url('./../layout/bullet_out.gif') no-repeat 0 4px;
+	background: url('./../layout/default/bullet_out.gif') no-repeat 0 4px;
 	margin: 0 0 2px 10px;
 	padding: 0 0 1px 13px;
 }
