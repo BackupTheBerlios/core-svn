@@ -1,5 +1,5 @@
 <img src="layout/main.gif" width="14" height="14" align="middle" hspace="2"><b>Konfiguracja - edycja/modyfikacja ustawieñ core &copy;</b><br /><br />
-<form enctype="multipart/form-data" method="post" action="note.modifyconfig">
+<form enctype="multipart/form-data" method="post" action="add,10,action.html">
 <table width="100%" align="left">
 	<tr>
 		<td class="form" width="200" align="right">Liczba postów na stronê:&nbsp;</td>
