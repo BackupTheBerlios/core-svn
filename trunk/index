@@ -93,6 +93,9 @@ include('modules/category_list.php');
 
 // modu³ listujacy dodatkowe podstrony - niezale¿ny od ca³ej strony					
 include('modules/pages_list.php');
+
+// modu³ listujacy linki i ich kategorie					
+include('modules/links_list.php');
 					
 // G³ówna prze³¹cznica includowanej treœci
 $p = empty($_GET['p']) ? '' : $_GET['p'];
