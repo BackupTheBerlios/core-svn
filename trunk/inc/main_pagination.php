@@ -5,13 +5,12 @@ function main_pagination($url, $q, $p, $published, $table) {
 	global $start, $days_to, $mysql_data, $mainposts_per_page, $page_string;
 	
 	// Egzemplarz klasy obs³uguj±cej konfiguracjê wy¶wietlanych wpisów
-	$data_base_config = new MySQL_DB;
-	$data_base_config->query("SELECT * FROM $mysql_data[db_table_config] WHERE config_name = '$p'");
-	$data_base_config->next_record();
-		
-	$mainposts_per_page = $data_base_config->f("config_value");
-	// Egzemplarz klasy obs³ugujacy stronnicowanie
 	$data_b = new MySQL_DB;
+	$data_b->query("SELECT * FROM $mysql_data[db_table_config] WHERE config_name = '$p'");
+	$data_b->next_record();
+		
+	$mainposts_per_page = $data_b->f("config_value");
+
 	$data_b->query("SELECT count(*) AS id 
 					FROM $mysql_data[$table] 
 					WHERE $q 
