@@ -10,9 +10,7 @@ if (empty($action)) {
 	// w przypadku braku akcji wy¶wietlanie formularza
 	$ft->parse('ROWS', ".form_useradd");
 	
-}
-
-if($action == "add") {
+} elseif ($action == "add") {
 	
 	// egzemplarz klasy user
 	$valid_user = new user();
@@ -32,18 +30,17 @@ if($action == "add") {
 		
 	} else {
 		
-		$tmp		= time();
-		$date		= date("Y-m-d H:i:s", $tmp);
+		$date		= date("Y-m-d H:i:s");
 		
 		$login		= $_POST['login_name'];
 		$password	= $_POST['password'];
 		$email		= $_POST['email'];
 		
 		// egzemplarz klasy ³aduj±cej komentarz do bazy danych
-		$d_base = new MySQL_DB;
+		$db = new MySQL_DB;
 		
-		$d_base->query("INSERT INTO $mysql_data[db_table_users] VALUES ('', '$login', '$password', '$email', 'N')");
-		$d_base->next_record();
+		$db->query("INSERT INTO $mysql_data[db_table_users] VALUES ('', '$login', '$password', '$email', 'N')");
+		$db->next_record();
 		
 		$ft->assign('CONFIRM', "U¿ytkownik zosta³ dodany do bazy danych");
 		$ft->parse('ROWS', ".result_note");
