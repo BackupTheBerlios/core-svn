@@ -8,11 +8,12 @@ $db = new MySQL_DB;
 switch ($action) {
 	
 	case "show": // wy¶wietlanie wpisu pobranego do modyfikacji
-		$query = "	SELECT * 
-					FROM 
+	
+		$query = sprintf("
+					SELECT * FROM 
 						$mysql_data[db_table_pages] 
 					WHERE 
-						id = '$_GET[id]'";
+						id = '%1\$d'", $_GET['id']);
 		
 		$db->query($query);
 		$db->next_record();
@@ -36,25 +37,27 @@ switch ($action) {
 			
 			$ft->assign(array(	'CHECKBOX_YES'	=>'<input style="border: 0px;" type="radio" name="published" value="Y" align="top" />',
 								'CHECKBOX_NO'	=>'<input style="border: 0px;" type="radio" name="published" value="N" align="top" checked="checked" />'));
-		}
+		}			
 
 		$ft->define('form_pageedit', "form_pageedit.tpl");
 		$ft->parse('ROWS',	".form_pageedit");
 		break;
 
 	case "edit": // edycja wybranego wpisu
+	
 		$text		= nl2br($_POST['text']);
 		$title		= $_POST['title'];
 		$published	= $_POST['published'];
 		
-		$query = "	UPDATE 
+		$query = sprintf("
+					UPDATE 
 						$mysql_data[db_table_pages] 
 					SET 
-						title = '$title', 
-						text = '$text', 
-						published = '$published' 
+						title		= '$title', 
+						text		= '$text', 
+						published	= '$published' 
 					WHERE 
-						id='$_GET[id]'";
+						id = '%1\$d'", $_GET['id']);
 		
 		$db->query($query);
 		
@@ -63,10 +66,12 @@ switch ($action) {
 		break;
 
 	case "delete": // usuwanie wybranego wpisu
-		$query = "	DELETE FROM 
+	
+		$query = sprintf("
+					DELETE FROM 
 						$mysql_data[db_table_pages] 
 					WHERE 
-						id = '$_GET[id]'";
+						id = '%1\$d'", $_GET['id']);
 		
 		$db->query($query);
 		
@@ -75,25 +80,26 @@ switch ($action) {
 		break;
 
 	default:
-		$query = "	SELECT * 
-					FROM 
+	
+		$query = sprintf("
+					SELECT * FROM 
 						$mysql_data[db_table_config] 
 					WHERE 
-						config_name = 'editposts_per_page'";
+						config_name = '%1\$s'", "editposts_per_page");
 		
 		$db->query($query);
 		$db->next_record();
 			
 		$editposts_per_page = $db->f("config_value");
 		
-		$query = "	SELECT * 
-					FROM 
+		$query = sprintf("
+					SELECT * FROM 
 						$mysql_data[db_table_pages] 
 					WHERE
-						parent_id = '0' 	
+						parent_id = '%1\$d' 	
 					ORDER BY 
 						id 
-					ASC";
+					ASC", 0);
 		
 		$db->query($query);
 		

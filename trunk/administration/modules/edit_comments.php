@@ -12,7 +12,14 @@ $db = new MySQL_DB;
 switch ($action) {
 	
 	case "show": // wy¶wietlanie wpisu pobranego do modyfikacji
-		$db->query("SELECT * FROM $mysql_data[db_table_comments] WHERE id = '$_GET[id]'");
+	
+		$query = sprintf("
+					SELECT * FROM 
+						$mysql_data[db_table_comments] 
+					WHERE 
+						id = '%1\$d'", $_GET['id']);
+		
+		$db->query($query);
 		$db->next_record();
 		
 		$date 		= $db->f("date");
@@ -40,32 +47,61 @@ switch ($action) {
 		break;
 	
 	case "edit": // edycja wybranego wpisu
+	
 		$text		= nl2br($_POST['text']);
 		$author		= $_POST['author'];
 		
-		$db->query(	"UPDATE $mysql_data[db_table_comments] SET author='$author', text='$text' WHERE id='$_GET[id]'");
+		$query = sprintf("
+					UPDATE 
+						$mysql_data[db_table_comments] 
+					SET 
+						author	= '$author', 
+						text	= '$text' 
+					WHERE 
+						id = '%1\$d'", $_GET['id']);
 		
-		$ft->assign(array(	'CONFIRM'	=>"Komentarz zosta³ zmodyfikowany."));
-
+		$db->query($query);
+		
+		$ft->assign('CONFIRM', "Komentarz zosta³ zmodyfikowany.");
 		$ft->parse('ROWS',	".result_note");
 		break;
 	
 	case "delete": // usuwanie wybranego wpisu
-		$db->query("DELETE FROM $mysql_data[db_table_comments] WHERE id='$_GET[id]'");
+	
+		$query = sprintf("
+					DELETE FROM 
+						$mysql_data[db_table_comments] 
+					WHERE 
+						id = '%1\$d'", $_GET['id']);
 		
-		$ft->assign(array(	'CONFIRM'	=>"Komentarz zosta³ usuniêty."));
-
+		$db->query($query);
+		
+		$ft->assign('CONFIRM', "Komentarz zosta³ usuniêty.");
 		$ft->parse('ROWS', ".result_note");
 		break;
 
 	default:
-		$db->query("SELECT * FROM $mysql_data[db_table_config] WHERE config_name = 'editposts_per_page'");
+	
+		$query = sprintf("
+					SELECT * FROM 
+						$mysql_data[db_table_config] 
+					WHERE 
+						config_name = '%1\$s'", "editposts_per_page");
+		
+		$db->query($query);
 		$db->next_record();
 			
 		$editposts_per_page = $db->f("config_value");
 		
+		$query = sprintf("
+					SELECT * FROM 
+						$mysql_data[db_table_comments] 
+					ORDER BY 
+						date 
+					DESC LIMIT 
+						%1\$d, %2\$d", $start, $editposts_per_page);
 		
-		$db->query("SELECT * FROM $mysql_data[db_table_comments] ORDER BY date DESC LIMIT $start, $editposts_per_page");
+		$db->query($query);
 		
 		// Sprawdzamy, czy w bazie danych s± ju¿ jakie¶ wpisy
 		if($db->num_rows() > 0) {

@@ -12,10 +12,11 @@ switch ($action) {
 	
 	case "show":// wy¶wietlanie wpisu pobranego do modyfikacji
 	
-		$query = "	SELECT * FROM 
+		$query = sprintf("
+					SELECT * FROM 
 						$mysql_data[db_table] 
 					WHERE 
-						id='$_GET[id]'";
+						id = '%1\$d'", $_GET['id']);
 		
 		$db->query($query);
 		$db->next_record();
@@ -104,17 +105,18 @@ switch ($action) {
 		
 		$comments_allow = $_POST['comments_allow'];
 		
-		$query = "	UPDATE 
+		$query = sprintf("
+					UPDATE 
 						$mysql_data[db_table] 
 					SET 
-						title = '$title', 
-						author = '$author', 
-						text = '$text', 
-						published = '$published', 
-						c_id = '$c_id', 
-						comments_allow = '$comments_allow'  
+						title			= '$title', 
+						author			= '$author', 
+						text			= '$text', 
+						published		= '$published', 
+						c_id			= '$c_id', 
+						comments_allow	= '$comments_allow'  
 					WHERE 
-						id = '$_GET[id]'";
+						id = '%1\$d'", $_GET['id']);
 		$db->query($query);
 		
 		$ft->assign('CONFIRM', "Wpis zosta³ zmodyfikowany.");
@@ -123,10 +125,12 @@ switch ($action) {
 		
 	case "delete": // usuwanie wybranego wpisu
 	
-		$query = "	DELETE FROM 
+		$query = sprintf("
+					DELETE FROM 
 						$mysql_data[db_table] 
 					WHERE 
-						id = '$_GET[id]'";
+						id = '%1\$d'", $_GET['id']);
+		
 		$db->query($query);
 		
 		$ft->assign('CONFIRM', "Wpis zosta³ usuniêty.");
@@ -135,23 +139,27 @@ switch ($action) {
 		
 	default:
 	
-		$query = "	SELECT * FROM 
+		$query = sprintf("
+					SELECT * FROM 
 						$mysql_data[db_table_config] 
 					WHERE 
-						config_name = 'editposts_per_page'";
+						config_name = '%1\$s'", "editposts_per_page");
+		
 		$db->query($query);
 		$db->next_record();
 			
 		$editposts_per_page = $db->f("config_value");
 		$editposts_per_page = empty($editposts_per_page) ? 10 : $editposts_per_page;
 		
-		$query = "	SELECT * FROM 
+		$query = sprintf("
+					SELECT * FROM 
 						$mysql_data[db_table] 
 					ORDER BY 
 						date 
 					DESC 
 					LIMIT 
-						$start, $editposts_per_page";
+						%1\$d, %2\$d", $start, $editposts_per_page);
+		
 		$db->query($query);
 		
 		// Sprawdzamy, czy w bazie danych s± ju¿ jakie¶ wpisy

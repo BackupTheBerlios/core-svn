@@ -5,16 +5,17 @@ $action = empty($_GET['action']) ? '' : $_GET['action'];
 
 $db = new MySQL_DB;
 
-switch ($action)
-{
+switch ($action) {
+	
 	case "show": // wy¶wietlanie wpisu pobranego do modyfikacji
-		$query = "SELECT * 
-					FROM 
+	
+		$query = sprintf("
+					SELECT * FROM 
 						$mysql_data[db_table_users] 
 					WHERE 
-						id = '$_GET[id]'";
-		$db->query($query);
+						id = '%1\$d'", $_GET['id']);
 		
+		$db->query($query);
 		$db->next_record();
 		
 		$user_id		= $db->f("id");
@@ -39,39 +40,43 @@ switch ($action)
 		$user_name	= $_POST['login_name'];
 		$user_email	= $_POST['email'];
 		
-		$query = "UPDATE 
+		$query = sprintf("
+					UPDATE 
 						$mysql_data[db_table_users] 
 					SET 
 						login	= '$user_name', 
 						email	= '$user_email' 
 					WHERE 
-						id = '$_GET[id]'";
+						id = '%1\$d'", $_GET['id']);
+		
 		$db->query($query);
 		
-		$ft->assign(array(	'CONFIRM'	=>"U¿ytkownik zosta³ zmodyfikowany."));
-
+		$ft->assign('CONFIRM', "U¿ytkownik zosta³ zmodyfikowany.");
 		$ft->parse('ROWS',	".result_note");
 		break;
 
 	case "delete":// usuwanie wybranego wpisu
-		$db->query("DELETE FROM 
+	
+		$query = sprintf("
+					DELETE FROM 
 						$mysql_data[db_table_users] 
 					WHERE 
-						id = '$_GET[id]'");
+						id = '%1\$d'", $_GET['id']);
 		
-		$ft->assign(array(	'CONFIRM'	=>"U¿ytkownik zosta³ usuniêty."));
-
+		$db->query($query);
+		
+		$ft->assign('CONFIRM', "U¿ytkownik zosta³ usuniêty.");
 		$ft->parse('ROWS', ".result_note");
 		break;
 
 	default:
-		$query = "SELECT * FROM 
+	
+		$query = "	SELECT * FROM 
 						$mysql_data[db_table_users] 
 					ORDER BY 
 						id 
 					ASC";
 		$db->query($query);
-	
 	
 		// Pêtla wyswietlaj¹ca wszystkie wpisy + stronnicowanie ich
 		while($db->next_record()) {

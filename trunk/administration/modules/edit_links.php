@@ -6,12 +6,14 @@ $action = empty($_GET['action']) ? '' : $_GET['action'];
 $db = new MySQL_DB;
 
 switch ($action) {
+	
 	case "show": // wy¶wietlanie wpisu pobranego do modyfikacji
 	
-		$query = "	SELECT * FROM 
+		$query = sprintf("
+					SELECT * FROM 
 						$mysql_data[db_table_links] 
 					WHERE 
-						id = '$_GET[id]'";
+						id = '%1\$d'", $_GET['id']);
 		
 		$db->query($query);
 		$db->next_record();
@@ -36,6 +38,7 @@ switch ($action) {
 		break;
 
 	case "edit":// edycja wybranego wpisu
+	
 		$link_name	= $_POST['link_name'];
 		$link_url	= $_POST['link_url'];
 
@@ -61,17 +64,18 @@ switch ($action) {
 		
 		if(empty($monit)) {
 		
-			$query = "	UPDATE 
+			$query = sprintf("
+						UPDATE 
 							$mysql_data[db_table_links] 
 						SET 
 							title	= '$link_name', 
 							url		= '$link_url' 
 						WHERE 
-							id = '$_GET[id]'";
+							id = '%1\$d'", $_GET['id']);
 			
 			$db->query($query);
 		
-			$ft->assign(array(	'CONFIRM'	=>"Link zosta³ zmodyfikowany."));
+			$ft->assign('CONFIRM', "Link zosta³ zmodyfikowany.");
 		} else {
 			
 			$monit .= "<br /><a href=\"javascript:history.back(-1);\">powrót</a>";
@@ -82,16 +86,21 @@ switch ($action) {
 		break;
 
 	case "delete":// usuwanie wybranego wpisu
-		$db->query("DELETE FROM 
+	
+		$query = sprintf("
+					DELETE FROM 
 						$mysql_data[db_table_links] 
 					WHERE 
-						id = '$_GET[id]'");
+						id = '%1\$d'", $_GET['id']);
+		
+		$db->query($query);
 		
 		$ft->assign('CONFIRM', "Link zosta³ usuniêty.");
 		$ft->parse('ROWS', ".result_note");
 		break;
 
 	default:
+	
 		$query = "	SELECT * FROM 
 						$mysql_data[db_table_links] 
 					ORDER BY 

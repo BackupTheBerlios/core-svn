@@ -5,10 +5,17 @@ $action = empty($_GET['action']) ? '' : $_GET['action'];
 
 $db = new MySQL_DB;
 
-switch ($action)
-{
+switch ($action) {
+	
 	case "show": // wy¶wietlanie wpisu pobranego do modyfikacji
-		$db->query("SELECT * FROM $mysql_data[db_table_category] WHERE category_id = '$_GET[id]'");
+	
+		$query = sprintf("
+					SELECT * FROM 
+						$mysql_data[db_table_category] 
+					WHERE 
+						category_id = '%1\$d'", $_GET['id']);
+		
+		$db->query($query);
 		$db->next_record();
 		
 		$category_id			= $db->f("category_id");
@@ -30,32 +37,58 @@ switch ($action)
 		$ft->define('form_category', "form_category.tpl");
 		$ft->parse('ROWS',	".form_category");
 		break;
+		
 	case "edit":// edycja wybranego wpisu
+	
 		$category_description	= nl2br($_POST['category_description']);
 		$category_name			= $_POST['category_name'];
 		
-		$db->query(	"UPDATE $mysql_data[db_table_category] SET category_name='$category_name', category_description='$category_description' WHERE category_id='$_GET[id]'");
-		$db->next_record();
+		$query = sprintf("
+					UPDATE 
+						$mysql_data[db_table_category] 
+					SET 
+						category_name = '$category_name', 
+						category_description = '$category_description' 
+					WHERE 
+						category_id='%1\$d'", $_GET['id']);
 		
-		$ft->assign(array(	'CONFIRM'	=>"Kategoria zosta³a zmodyfikowana."));
-
+		$db->query($query);
+		
+		$ft->assign('CONFIRM', "Kategoria zosta³a zmodyfikowana.");
 		$ft->parse('ROWS',	".result_note");
 		break;
-	case "delete":// usuwanie wybranego wpisu
-		$db->query("DELETE FROM $mysql_data[db_table_category] WHERE category_id='$_GET[id]'");
 		
-		$ft->assign(array(	'CONFIRM'	=>"Kategoria zosta³a usuniêta."));
-
+	case "delete":// usuwanie wybranego wpisu
+	
+		$query = sprintf("
+					DELETE FROM 
+						$mysql_data[db_table_category] 
+					WHERE 
+						category_id = '%1\$d'", $_GET['id']);
+		
+		$db->query($query);
+		
+		$ft->assign('CONFIRM', "Kategoria zosta³a usuniêta.");
 		$ft->parse('ROWS', ".result_note");
 		break;
+		
 	default:
-		$db->query("	SELECT a.*, count(b.id) AS count 
-						FROM $mysql_data[db_table_category] a 
-						LEFT JOIN $mysql_data[db_table] b 
-						ON a.category_id = b.c_id 
-						GROUP BY category_id
-						ORDER BY category_id ASC");
 	
+		$query = "	SELECT 
+						a.*, count(b.id) AS count 
+					FROM 
+						$mysql_data[db_table_category] a 
+					LEFT JOIN 
+						$mysql_data[db_table] b 
+					ON 
+						a.category_id = b.c_id 
+					GROUP BY 
+						category_id
+					ORDER BY 
+						category_id 
+					ASC";
+		
+		$db->query($query);
 	
 		// Pêtla wyswietlaj¹ca wszystkie wpisy + stronnicowanie ich
 		while($db->next_record()) {
