@@ -27,23 +27,23 @@
 						<div>
 							<dl>
 								<dt>Aktualno¶ci</dt>
-									<dd><a href="main.addnote">Dodaj kolejny wpis</a></dd>
-									<dd><a href="main.editnote">Edycja/Usuwanie wpisów</a></dd>
-									<dd><a href="main.configuration">Konfiguracja wy¶wietlanych wpisów</a></dd>
+									<dd><a href="1,1,item.html">Dodaj kolejny wpis</a></dd>
+									<dd><a href="1,2,item.html">Edycja/Usuwanie wpisów</a></dd>
+									<dd><a href="1,10,item.html">Konfiguracja wy¶wietlanych wpisów</a></dd>
 									<br />
-									<dd><a href="main.mostcomments">Najczê¶ciej komentowane wpisy</a></dd>
-									<dd><a href="main.editcomments">Edycja/Usuwanie komentarzy</a></dd>
+									<dd><a href="1,6,item.html">Najczê¶ciej komentowane wpisy</a></dd>
+									<dd><a href="1,5,item.html">Edycja/Usuwanie komentarzy</a></dd>
 							</dl>
 							
 							<dl>
 								<dt>Strony</dt>
-									<dd><a href="main.addpage">Dodaj now± stronê</a></dd>
-									<dd><a href="main.editpage">Edycja/Usuwanie stron</a></dd>
+									<dd><a href="1,3,item.html">Dodaj now± stronê</a></dd>
+									<dd><a href="1,4,item.html">Edycja/Usuwanie stron</a></dd>
 							</dl>
 							
 							<dl>
 								<dt>U¿ytkownicy</dt>
-									<dd><a href="main.adduser">Dodaj nowego u¿ytkownika</a></dd>
+									<dd><a href="1,7,item.html">Dodaj nowego u¿ytkownika</a></dd>
 									<dd>Edycja/Usuwanie u¿ytkowników</dd>
 									<br />
 									<dd>Uprawnienia</dd>
@@ -51,8 +51,8 @@
 							
 							<dl>
 								<dt>Kategorie Wpisów</dt>
-									<dd><a href="main.addcategory">Dodaj now± kategoriê</a></dd>
-									<dd><a href="main.editcategory">Edycja/Usuwanie kategorii</a></dd>
+									<dd><a href="1,8,item.html">Dodaj now± kategoriê</a></dd>
+									<dd><a href="1,9,item.html">Edycja/Usuwanie kategorii</a></dd>
 									<br />
 									<dd>Transfer wpisów</dd>
 							</dl>
