@@ -70,61 +70,61 @@ $p = empty($_GET['p']) ? '' : $_GET['p'];
 switch($p){
 	
 	// dodawanie kolejnego wpisu
-	case 'addnote': 
+	case '1': 
 		include('modules/add_note.php');
 		$ft->parse('MAIN', array("main_loader", "index"));
 		break;
 
 	// edycja/usuwanie istniej±cych wpisów
-	case 'editnote': 
+	case '2': 
 		include('modules/edit_note.php');
 		$ft->parse('MAIN', array("main_loader", "index"));
 		break;
 		
-	// dodawanie kolejnego wpisu
-	case 'addpage': 
+	// dodawanie kolejnej strony
+	case '3': 
 		include('modules/add_page.php');
 		$ft->parse('MAIN', array("main_loader", "index"));
 		break;
 
 	// edycja/usuwanie istniej±cych wpisów
-	case 'editpage': 
+	case '4': 
 		include('modules/edit_page.php');
 		$ft->parse('MAIN', array("main_loader", "index"));
 		break;
 		
 	// edycja/usuwanie istniej±cych komentarzy
-	case 'editcomments': 
+	case '5': 
 		include('modules/edit_comments.php');
 		$ft->parse('MAIN', array("main_loader", "index"));
 		break;
 		
 	// statystycznie najczê¶ciej komentowane wpisy
-	case 'mostcomments': 
+	case '6': 
 		include('modules/most_comments.php');
 		$ft->parse('MAIN', array("main_loader", "index"));
 		break;	
 		
 	// dodanie nowego u¿ytkownika systemu	
-	case 'adduser': 
+	case '7': 
 		include('modules/add_user.php');
 		$ft->parse('MAIN', array("main_loader", "index"));
 		break;
 		
 	// dodanie nowej kategorii	
-	case 'addcategory': 
+	case '8': 
 		include('modules/add_category.php');
 		$ft->parse('MAIN', array("main_loader", "index"));
 		break;
 		
 	// edycja|usuwanie istniej±cych kategorii	
-	case 'editcategory': 
+	case '9': 
 		include('modules/edit_category.php');
 		$ft->parse('MAIN', array("main_loader", "index"));
 		break;
 		
 	// konfiguracja core	
-	case 'configuration': 
+	case '10': 
 		include('modules/core_configuration.php');
 		$ft->parse('MAIN', array("main_loader", "index"));
 		break;	
