@@ -10,13 +10,14 @@ if($action == "add") {
 	
 	$title 		= $_POST['title'];
 	$published 	= $_POST['published'];
+	$page_id	= $_POST['category_id'];
 	
 	$db = new MySQL_DB;
 	
 	$query = "	INSERT INTO 
 					$mysql_data[db_table_pages] 
 				VALUES 
-					('', '$title', '$text', '', '$published')";
+					('', '$page_id', '$title', '$text', '', '$published')";
 	
 	$db->query($query);
 	$db->next_record();
@@ -64,6 +65,35 @@ if($action == "add") {
 	$ft->parse('ROWS',	".result_note");
 	
 } else {
+	
+	$db 	= new MySQL_DB;
+	$query	= "	SELECT 
+					id, parent_id, title 
+				FROM 
+					$mysql_data[db_table_pages] 
+				WHERE 
+					published = 'Y' 
+				AND 
+					parent_id = '0'
+				ORDER BY 
+					id 
+				ASC";
+	
+	$db->query($query);
+	while($db->next_record()) {
+		
+		$id 		= $db->f("id");
+		$parent_id 	= $db->f("parent_id");
+		$title 		= $db->f("title");
+	
+		$ft->assign(array(	'C_ID'		=>$id,
+							'C_NAME'	=>$title));
+							
+		$ft->define('page_categoryoption', "page_categoryoption.tpl");
+						
+		$ft->parse('CATEGORY_ROWS', ".page_categoryoption");					
+	
+	}
 
 	$ft->parse('ROWS',	".form_pageadd");
 }
