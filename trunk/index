@@ -49,7 +49,7 @@ switch ($design) {
 }		
 
 // inicjowanie klasy, wkazanie katalogu przechowuj±cego szablony
-$ft = new FastTemplate("./templates/" . $d . "");
+$ft = new FastTemplate("./templates/" . $d . "/tpl/");
 
 $ft->define(array(	
 		'main' 					=>"main.tpl",
