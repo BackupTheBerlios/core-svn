@@ -140,3 +140,18 @@ CREATE TABLE devlog_users (
   active enum('Y','N') NOT NULL default 'N',
   PRIMARY KEY  (id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla  'devlog_links_category'
+-- 
+
+CREATE TABLE `devlog_links_category` (
+  `id` mediumint(7) NOT NULL auto_increment,
+  `parent_id` mediumint(7) NOT NULL default '0',
+  `title` varchar(40) NOT NULL default '',
+  `url` varchar(255) NOT NULL default '',
+  PRIMARY KEY  (`id`),
+  KEY `id` (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
