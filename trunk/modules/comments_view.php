@@ -2,44 +2,51 @@
 
 if(is_numeric($_GET['id'])) {
 
-	// Tworzymy egzemplarz nowej klasy dla drugiego zapytania
-	$dbase = new MySQL_DB;
-	$dbase->query("SELECT * FROM $mysql_data[db_table] WHERE id = '$_GET[id]' LIMIT 1");
+	$query = "	SELECT * FROM 
+					$mysql_data[db_table] 
+				WHERE 
+					id = '$_GET[id]' 
+				LIMIT 1";
+	
+	$db->query($query);
 
-	if($dbase->num_rows() !== 0) {
+	if($db->num_rows() !== 0) {
 	
 		$page_string = empty($page_string) ? '' : $page_string;
 		
 		// Wy¶wietlamy tuty³, którego dotyczyæ bêdzie komentarz
-		while($dbase->next_record()) {
+		while($db->next_record()) {
 	
-			$id 			= $dbase->f("id");
-			$title 			= $dbase->f("title");
-			$comments_id 	= $dbase->f("id");
+			$id 			= $db->f("id");
+			$title 			= $db->f("title");
+			$comments_id 	= $db->f("id");
 
-			$ft->assign(array(	'NEWS_TITLE'	=>$title,
-								'NEWS_ID'		=>$id,
-								'COMMENTS_ID'	=>$id,
-								'STRING'		=>$page_string,
-								//'ROWS'			=>$rows,
-								'COMMENTS_ADD'	=>"<a class=\"comments\" href=\"1," . $id . ",3,item.html\">Dodaj komentarz</a>"));
+			$ft->assign(array(
+							'NEWS_TITLE'	=>$title,
+							'NEWS_ID'		=>$id,
+							'COMMENTS_ID'	=>$id,
+							'STRING'		=>$page_string,
+							'COMMENTS_ADD'	=>"<a class=\"comments\" href=\"1," . $id . ",3,item.html\">Dodaj komentarz</a>"
+			));
 				
-			// Tworzymy egzemplarz nowej klasy
-			$data_base2 = new MySQL_DB;
-			$data_base2->query("SELECT * 
-								FROM $mysql_data[db_table_comments] 
-								WHERE comments_id = '$_GET[id]' 
-								ORDER BY date");
+			$query = "	SELECT * FROM 
+							$mysql_data[db_table_comments] 
+						WHERE 
+							comments_id = '$_GET[id]' 
+						ORDER BY 
+							date";
+			
+			$db->query($query);
 	
 			// Wy¶wietlamy komentarze do konkretnego wpisu
-			while($data_base2->next_record()) {
+			while($db->next_record()) {
 	
-				$date 			= $data_base2->f("date");
-				$text 			= $data_base2->f("text");
-				$author 		= $data_base2->f("author");
-				$comments_id 	= $data_base2->f("comments_id");
-				$email			= $data_base2->f("email");
-				$id 			= $data_base2->f("id");
+				$date 			= $db->f("date");
+				$text 			= $db->f("text");
+				$author 		= $db->f("author");
+				$comments_id 	= $db->f("comments_id");
+				$email			= $db->f("email");
+				$id 			= $db->f("id");
 				
 				// konwersja daty na bardziej ludzki format
 				$date			= coreDateConvert($date);
@@ -59,14 +66,16 @@ if(is_numeric($_GET['id'])) {
 								
 				$text = preg_replace($search, $replace, $text);
 		
-				$ft->assign(array(	'DATE'				=>$date,
-									'COMMENTS_TEXT'		=>$text,
-									'COMMENTS_AUTHOR'	=>$author,
-									'COMMENTS_ID'		=>$comments_id,
-									'AUTHOR_EMAIL'		=>$email,
-									'STRING'			=>$page_string,
-									'ID'				=>$id,
-									'COMMENTS_QUOTE'	=>"<a class=\"comments\" href=\"1," . $comments_id . ",3," . $id . ",1,quote.html" . "\">odpowiedz cytuj±c</a>"));
+				$ft->assign(array(
+								'DATE'				=>$date,
+								'COMMENTS_TEXT'		=>$text,
+								'COMMENTS_AUTHOR'	=>$author,
+								'COMMENTS_ID'		=>$comments_id,
+								'AUTHOR_EMAIL'		=>$email,
+								'STRING'			=>$page_string,
+								'ID'				=>$id,
+								'COMMENTS_QUOTE'	=>"<a class=\"comments\" href=\"1," . $comments_id . ",3," . $id . ",1,quote.html" . "\">odpowiedz cytuj±c</a>"
+				));
 					
 				$ft->parse('ROWS', ".comments_rows");
 			}	
