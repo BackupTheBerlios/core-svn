@@ -35,7 +35,14 @@ switch($action) {
 		$ft->define('form_templateedit', "form_templateedit.tpl");
 			
 		$tpl 		= empty($_GET['id']) ? '' : $_GET['id'];
-		$template 	= "../templates/main/tpl/" . $tpl . ".tpl";
+		$template 	= get_root() . "/templates/main/tpl/" . $tpl . ".tpl";
+    if (!is_writeable($template)) {
+      
+      $ft->assign('WRITE_ERROR', 'Brak mo¿liwo¶ci zapisu zmian w tym szablonie!');
+    } else {
+
+      $ft->assign('WRITE_ERROR', '');
+    }
 		
 		$file_content = @file_get_contents($template);
     if ($file_content) {
@@ -68,6 +75,9 @@ switch($action) {
 
 }
 
+
+
+//lista szablonów
 if(!isset($_GET['path'])) {
 			
 	$path = "../templates/main/tpl/";
@@ -75,18 +85,33 @@ if(!isset($_GET['path'])) {
 			
 	$path = "../templates/" . $_GET['path'] . "/tpl/";
 }
-		
+
+$dir_write = is_writeable($path);
 $dir = @dir($path);
 while($file = $dir->read()) {
   $ext = str_getext($file, false);
   
-  if(!in_array($ext, array('php', 'txt', 'html')) && !in_array($file, array('.', '..', '.svn'))) {
+  if(
+      !in_array($ext, array('php', 'txt', 'html'))
+      //&& !in_array($file, array('.', '..', '.svn'))
+      && is_file($path . $file)
+  ) {
 		$file = explode('.', $file);
 				
 		$ft->assign(array(	'FILE'		=>$file[0] . "." . $file[1],
 							'FILE_PATH'	=>$file[0]));
 									
-		$ft->define('filelist', "filelist.tpl");
+    
+    //jesli plik nie jest zapisywalny, albo katalog, to tpl z gwiazdka
+    if ($dir_write && is_writeable($path . $file)) {
+
+      $ft->define('filelist', "filelist.tpl");
+    } else {
+
+      $ft->define('filelist', "filelist_closed.tpl");
+    }
+      
+    
 		$ft->parse('FILEBOX_CONTENT', ".filelist");
 	}
 }

@@ -230,6 +230,10 @@ a.file:hover {
 	color: #FFF; 
 	text-decoration: none;
 }
+a.file span {
+  color: red;
+  font-weight: bold;
+}
 
 textarea#file {
 	font-family: Courier;
@@ -239,4 +243,9 @@ textarea#file {
 	padding: 0px 0px 0px 5px;
 	border: 1px solid #D1D1D1;
 	height: 310px;
+}
+
+.warning {
+  color: red;
+  font-weight: bold;
 }

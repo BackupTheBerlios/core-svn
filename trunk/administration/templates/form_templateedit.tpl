@@ -1,4 +1,5 @@
 <img src="layout/main.gif" width="14" height="14" align="top" hspace="2"><b>Szablony - edycja szablonu</b> {TEMPLATE}<br /><br />
+<span class="warning">{WRITE_ERROR}</span><br />
 
 <script type="text/javascript" src="./templates/js/textarea.js"></script>
 <form action="add,14,action.html" enctype="multipart/form-data" name="post" method="post">
