@@ -148,7 +148,7 @@ if (@$_GET['action']=="add") {
 		$email			= $_POST['email'];
 		$author_ip		= $_SERVER['REMOTE_ADDR'];
 		
-		$cl = time()+2592000;
+		$cl = time()+3600*8760;
 		
 		$cn 	= "devlog_comment_user";
 		$value 	= $author;
