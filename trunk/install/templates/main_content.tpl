@@ -17,7 +17,7 @@
 		<input type="text" id="dbuser" name="dbuser" size="30" />
 		<p class="clear"></p>
 		<label for="dbpass">Has³o:</label>
-		<input class="short" type="text" id="dbpass" name="dbpass" size="30" maxlength="130" />
+		<input class="short" type="password" id="dbpass" name="dbpass" size="30" maxlength="130" />
 		<p class="clear"></p>
 		<label for="dbprefix">Prefix:</label>
 		<input class="short" type="text" id="dbprefix" name="dbprefix" size="30" value="{PREFIX}" />
@@ -31,10 +31,10 @@
 		<input type="text" id="coremail" name="coremail" size="30" />
 		<p class="clear"></p>
 		<label for="corepass_1">Has³o:</label>
-		<input class="short" type="text" id="corepass_1" name="corepass_1" size="30" maxlength="130" />
+		<input class="short" type="password" id="corepass_1" name="corepass_1" size="30" maxlength="130" />
 		<p class="clear"></p>
 		<label for="corepass_2">Powtórz has³o:</label>
-		<input class="short" type="text" id="corepass_2" name="corepass_2" size="30" />
+		<input class="short" type="password" id="corepass_2" name="corepass_2" size="30" />
 		<p class="clear"></p>
 		<div class="right"><a href="javascript:document.forms[0].submit()">Instaluj Core</a></div>
 	</form>
