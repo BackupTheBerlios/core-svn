@@ -1,0 +1,24 @@
+- regu³y dla plików s± poprawione i przede wszystkim jest ich o wiele mniej. Mam nadziejê, 
+¿e s± czytelne. Jakby tak nie by³o, to mów i propnuj zmianê :-)
+
+- tak siê zastanawiam nad tym, aby w³a¶nie wszelakie linki trzymaæ w jakiej¶ tablicy i 
+includowaæ. Wiem, ¿e jest z tym trochê pieprzenia, ale my¶lê ¿e mo¿e siê to zwróciæ na 
+przysz³o¶æ jak bêdzie siê co¶ zmieniaæ. W szablonach trzyma³oby siê tylko odpowiednie 
+zmienne.
+
+- pierwsze w kolejce - zrobiê to jako¶ na dniach to przechowywanie linków w bazie danych 
+i pêtl± wywalanie na stronê. User nie bêdzie musia³ modyfikowaæ szablonu = user szczê¶liwy
+
+- informacjê o alternatywnych szablonach te¿ proponujê zrobiæ na bazie danych. Upload ca³ego 
+ca³ego katalogu via ftp, a w panelu wskazywa³oby siê tylko ¶cie¿kê do niego i na g³ównej 
+dodawa³by siê automatycznie do listy.
+
+- wiêkszo¶æ(czytaj: prawie wszystkie) szablonów definiowanych jest w pliku main(mam na my¶li 
+administracjê). Przyda³oby siê je z tego pliku wywaliæ, bo niepotrzebnie od razu zajmuj± 
+tablicê, a definiowaæ poszczególne szablony w poszczególnych modu³ach. Jak Ci siê chce i masz 
+czas to mo¿esz to zrobiæ, jak nie to ja siê tym zajmê ;-)
+
+- jakie¶ zarz±dzanie zuploadowanymi plikami siê by zda³o. Nie wiem póki co, jak mia³oby
+to wygl±daæ, w ka¿dym razie przyda³oby siê.
+
+chwilowo tyle ;-)
