@@ -6,41 +6,48 @@ $db = new MySQL_DB;
 switch($m){
 	
 	case 'sign_in':
-	$email	= $_POST['email'];
+		$email	= $_POST['email'];
 	
-	$query	= "	SELECT * FROM 
+		$query	= "	SELECT * FROM 
 					$mysql_data[db_table_newsletter] 
 				WHERE 
 					email = '$email'";
-	$db->query($query);
-	
-	if($db->next_record() > 0) {
-		
-		$ft->assign(array(	'CONFIRM'	=>"Twój email znajduje siê ju¿ w bazie danych.",
-							'STRING'	=>""));
-	} else {
-		
-		$query	= "	INSERT INTO 
-						$mysql_data[db_table_newsletter] 
-					VALUES('$email')";
 		$db->query($query);
 	
-		if($db->next_record() == 0) {
+		if($db->next_record() > 0) {
 		
-			$ft->assign(array(	'CONFIRM'	=>"Twój adres zosta³ dodany do bazy danych.",
-								'STRING'	=>""));
-		
+			$ft->assign(array(	'CONFIRM'	=>"Twój email znajduje siê ju¿ w bazie danych.",
+							'STRING'	=>""));
 		} else {
 		
-			$ft->assign(array(	'CONFIRM'	=>"Twój adres nie zosta³ dodany do bazy danych.",
+			$query	= "	INSERT INTO 
+						$mysql_data[db_table_newsletter] 
+					VALUES('$email')";
+			$db->query($query);
+	
+			if($db->next_record() == 0) {
+		
+				$ft->assign(array(	'CONFIRM'	=>"Twój adres zosta³ dodany do bazy danych.",
 								'STRING'	=>""));
+		
+			} else {
+		
+				$ft->assign(array(	'CONFIRM'	=>"Twój adres nie zosta³ dodany do bazy danych.",
+								'STRING'	=>""));
+			}
 		}
-	}
 	
 	break;
 	
 	case 'sign_out':
-	$email	= $_POST['email'];
+		if (isset($_POST['email']))
+		{
+			$email	= $_POST['email'];
+		}
+		else
+		{
+			$email = '';
+		}
 	
 	$query	= "	SELECT * FROM 
 					$mysql_data[db_table_newsletter] 
