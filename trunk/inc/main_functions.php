@@ -151,7 +151,7 @@ function get_addpage_cat($page_id, $level) {
 		$title 		= $db->f("title");
 	
 		$ft->assign(array(	'C_ID'		=>$page_id,
-							'C_NAME'	=>str_repeat('&nbsp; ', $level) . $title));
+							'C_NAME'	=>str_repeat('&nbsp; ', $level) . "- " .$title));
 
 		$ft->define('page_categoryoption', "page_categoryoption.tpl");		
 		$ft->parse('CATEGORY_ROWS', ".page_categoryoption");
@@ -187,7 +187,7 @@ function get_editpage_cat($page_id, $level) {
 		$published	= $db->f("published");
 	
 		$ft->assign(array(	'ID'		=>$page_id,
-							'TITLE'		=>str_repeat('&nbsp; ', $level) . $title));
+							'TITLE'		=>str_repeat('&nbsp; ', $level) . "<img src=\"layout/ar.gif\" />&nbsp;" . $title));
 							
 		if($published == 'Y') {
 
