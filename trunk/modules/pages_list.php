@@ -16,42 +16,9 @@ $query = "	SELECT
 $sql->query($query);
 
 $ft->define(array(	'pages_header'	=>"pages_header.tpl",
+					'pages_parent'	=>"pages_parent.tpl",
 					'pages_list'	=>"pages_list.tpl"));
 					
-function get_cat($page_id, $separator) {
-	
-	global $mysql_data, $ft;
-
-	$query = "	SELECT 
-					id, parent_id, title 
-				FROM 
-					$mysql_data[db_table_pages] 
-				WHERE 
-					parent_id = '$page_id' 
-				AND 
-					published = 'Y' 
-				ORDER BY 
-					id 
-				ASC";
-
-	$db = new MySQL_DB;
-	$db->query($query);
-		
-	while($db->next_record()) {
-	
-		$page_id 	= $db->f("id");
-		$parent_id 	= $db->f("parent_id");
-		$page_name 	= $db->f("title");
-	
-		$ft->assign(array(	'PAGE_NAME'		=>$page_name,
-							'PAGE_ID'		=>$page_id,
-							'PARENT'		=>$separator));
-
-				
-		$ft->parse('PAGES_LIST', ".pages_list");
-		get_cat($page_id, ' &nbsp; &nbsp;- ');
-	}
-}
 					
 if($sql->num_rows() > 0) {
 
@@ -62,12 +29,12 @@ if($sql->num_rows() > 0) {
 		$page_name 	= $sql->f("title");
 	
 		$ft->assign(array(	'PAGE_NAME'		=>$page_name,
-							'PAGE_ID'		=>$page_id,
-							'PARENT'		=>''));
-				
-		$ft->parse('PAGES_LIST', ".pages_list");
+							'PAGE_ID'		=>$page_id));
+
+		// Parsowanie nazw stron rodzicielskich::parent	
+		$ft->parse('PAGES_LIST', ".pages_parent");
 		
-		// funkcja pobieraj±ca rekurencyjnie kategorie
+		// funkcja pobieraj±ca rekurencyjnie strony dziedzicz±ce::child
 		get_cat($page_id, ' &nbsp; &nbsp;- ');
 	}
 
