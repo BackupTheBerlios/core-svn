@@ -133,6 +133,10 @@ input {
   	font-size: 11px;
 	background-color: #FFFFFF;
 }
+
+input.short {
+	width: 30px;
+}	
 			
 textarea {
 	font-family: tahoma; 
