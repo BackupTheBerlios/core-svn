@@ -6,33 +6,52 @@ main_pagination('mostcomments.', '', 'editposts_per_page', '', 'db_table_comment
 // deklaracja zmiennej $action::form
 $action = empty($_GET['action']) ? '' : $_GET['action'];
 
+$db = new MySQL_DB;
+
 if (empty($action)) {
 	
-	$data_base_config = new MySQL_DB;
-	$data_base_config->query("SELECT * FROM $mysql_data[db_table_config] WHERE config_name = 'editposts_per_page'");
-	$data_base_config->next_record();
+	$query = "	SELECT * 
+				FROM 
+					$mysql_data[db_table_config] 
+				WHERE 
+					config_name = 'editposts_per_page'";
+	
+	$db->query($query);
+	$db->next_record();
 		
-	$editposts_per_page = $data_base_config->f("config_value");
+	$editposts_per_page = $db->f("config_value");
 	
-	$data_base = new MySQL_DB;
+	$query = " 	SELECT 
+					n.id, n.title, n.date, 
+					count(DISTINCT c.id) 
+				AS 
+					comments 
+				FROM 
+					$mysql_data[db_table] n 
+				LEFT JOIN 
+					$mysql_data[db_table_comments] c 
+				ON 
+					n.id = c.comments_id 
+				GROUP BY 
+					n.id 
+				ORDER BY 
+					comments 
+				DESC 
+				LIMIT 
+					$start, $editposts_per_page";
 	
-	$data_base->query(	"SELECT n.id, n.title, n.date, count(DISTINCT c.id) AS comments 
-						FROM $mysql_data[db_table] n LEFT JOIN $mysql_data[db_table_comments] c 
-						ON n.id = c.comments_id 
-						GROUP BY n.id 
-						ORDER BY comments DESC
-						LIMIT $start, $editposts_per_page");
+	$db->query($query);
 	
 	// Sprawdzamy, czy w bazie danych s± ju¿ jakie¶ wpisy
-	if($data_base->num_rows() !== 0) {
+	if($db->num_rows() !== 0) {
 	
 		// Pêtla wyswietlaj¹ca wszystkie wpisy + stronnicowanie ich
-		while($data_base->next_record()) {
+		while($db->next_record()) {
 	
-			$id 		= $data_base->f("id");
-			$title 		= $data_base->f("title");
-			$date 		= $data_base->f("date");
-			$comments 	= $data_base->f("comments");
+			$id 		= $db->f("id");
+			$title 		= $db->f("title");
+			$date 		= $db->f("date");
+			$comments 	= $db->f("comments");
 		
 			$date = explode(' ', $date);
 		
@@ -70,7 +89,7 @@ if (empty($action)) {
 		$ft->parse('ROWS',	".header_mostcommentslist");
 	} else {
 	
-		$ft->assign(array(	'CONFIRM'	=>"W bazie danych nie ma ¿adnych wpisów"));
+		$ft->assign('CONFIRM', "W bazie danych nie ma ¿adnych wpisów");
 
 		$ft->parse('ROWS',	".result_note");
 	}
@@ -79,15 +98,20 @@ if (empty($action)) {
 // wy¶wietlanie wpisu pobranego do modyfikacji
 if ($action == "show") {
 	
-	$db_base = new MySQL_DB;
-	$db_base->query("SELECT * FROM $mysql_data[db_table_comments] WHERE id='$_GET[id]'");
-	$db_base->next_record();
+	$query = "	SELECT * 
+				FROM 
+					$mysql_data[db_table_comments] 
+				WHERE 
+					id = '$_GET[id]'";
 	
-	$date 		= $db_base->f("date");
-	$title 		= $db_base->f("title");
-	$text 		= $db_base->f("text");
-	$author		= $db_base->f("author");
-	$published	= $db_base->f("published");
+	$db->query($query);
+	$db->next_record();
+	
+	$date 		= $db->f("date");
+	$title 		= $db->f("title");
+	$text 		= $db->f("text");
+	$author		= $db->f("author");
+	$published	= $db->f("published");
 
 	
 	$date	= substr($date, 0, 16);
@@ -98,10 +122,10 @@ if ($action == "show") {
 	$text = str_replace("<br />", "\r\n", $text);
 	$text = ereg_replace("(\r\n)+", "\r\n\r\n", $text);
 	
-	$ft->assign(array(	'AUTHOR'		=>$author,
-						'DATE' 			=>$date,
-						'ID'			=>$_GET['id'],
-						'TEXT'			=>$text));
+	$ft->assign(array(	'AUTHOR'	=>$author,
+						'DATE' 		=>$date,
+						'ID'		=>$_GET['id'],
+						'TEXT'		=>$text));
 
 	$ft->parse('ROWS',	".form_commentsedit");
 	
@@ -113,11 +137,18 @@ if ($action == "edit") {
 	$text		= nl2br($_POST['text']);
 	$author		= $_POST['author'];
 	
-	$d_base = new MySQL_DB;
-	$d_base->query(	"UPDATE $mysql_data[db_table_comments] SET author = '$author', text = '$text' WHERE id = '$_GET[id]'");
-	$d_base->next_record();
+	$query = "	UPDATE 
+					$mysql_data[db_table_comments] 
+				SET 
+					author = '$author', 
+					text = '$text' 
+				WHERE 
+					id = '$_GET[id]'";
 	
-	$ft->assign(array(	'CONFIRM'	=>"Komentarz zosta³ zmodyfikowany."));
+	$db->query($query);
+	$db->next_record();
+	
+	$ft->assign('CONFIRM', "Komentarz zosta³ zmodyfikowany.");
 
 	$ft->parse('ROWS',	".result_note");
 	
@@ -126,11 +157,16 @@ if ($action == "edit") {
 // usuwanie wybranego wpisu
 if ($action == "delete") {
 	
-	$d_base = new MySQL_DB;
-	$d_base->query("DELETE FROM $mysql_data[db_table_comments] WHERE id='$_GET[id]'");
-	$d_base->next_record();
+	$query = "	DELETE 
+				FROM 
+					$mysql_data[db_table_comments] 
+				WHERE 
+					id = '$_GET[id]'";
 	
-	$ft->assign(array(	'CONFIRM'	=>"Komentarz zosta³ usuniêty."));
+	$db->query($query);
+	$db->next_record();
+	
+	$ft->assign('CONFIRM', "Komentarz zosta³ usuniêty.");
 
 	$ft->parse('ROWS', ".result_note");
 	
