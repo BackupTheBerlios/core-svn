@@ -7,6 +7,7 @@ switch ($action) {
 	
 	case "send":
 		
+		include("../inc/main_functions.php");
 		define('SQL_SCHEMA', 'dbschema');
 		
 		$err	= ""; // zmienna przechowuj±ca b³edy
@@ -84,7 +85,7 @@ switch ($action) {
 				$db->query($sql[$i]);
 			}
 				
-			$file = '<?php'."\n\n";
+			$file = '<?php'."\n";
 			$file .= "\n// Core - plik konfiguracyjny wygenerowany automatycznie\n\n";
 			$file .= "class MySQL_DB extends DB_Sql {\n\n";
 			$file .= "\t" . 'var $Host = \'' . $dbhost . '\';' . "\n";
@@ -111,7 +112,7 @@ switch ($action) {
 			$file .= '$days_to = 360;' . "\n\n";
 			$file .= '?' . '>';
 				
-			$fp = @fopen('../administration/inc/config.php', 'w');
+			$fp		= @fopen('../administration/inc/config.php', 'w');
 			$result = @fputs($fp, $file, strlen($file));
 			@fclose($fp);
 			
@@ -180,9 +181,11 @@ switch ($action) {
 			if($fp == FALSE) {
 				
 				$err .= "Instalator nie móg³ stworzyæ pliku konfiguracyjnego.<br />";
-				$err .= "W katalogu administration/inc/ stwórz plik config.php o tre¶ci:<br /><br />";
+				$err .= "W katalogu <span class=\"black\">administration/inc/</span> stwórz plik config.php o tre¶ci:<br /><br />";
 				
-				$err .= str_nl2br($file);
+				$file = str_replace('<', '&lt;', $file);
+				$err .= "<div class=\"code\">" . str_nl2br($file) . "</div>";
+				$err .= "<br /><br />";
 			} else {
 			
 				$err .= "Instalacja przebieg³a pomy¶lnie.<br />";
