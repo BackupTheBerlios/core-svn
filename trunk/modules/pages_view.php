@@ -1,20 +1,23 @@
 <?php
 
-$data_base = new MySQL_DB;
-$data_base->query("	SELECT * 
-					FROM $mysql_data[db_table_pages] 
-					WHERE id='$_GET[id]' 
-					AND published = 'Y' 
-					LIMIT 1");
+$query = "	SELECT * FROM 
+				$mysql_data[db_table_pages] 
+			WHERE 
+				id = '$_GET[id]' 
+			AND 
+				published = 'Y' 
+			LIMIT 1";
 
-if($data_base->num_rows() !== 0) {
+$db->query($query);
 
-	$data_base->next_record();
+if($db->num_rows() !== 0) {
 
-	$title 			= $data_base->f("title");
-	$text 			= $data_base->f("text");
-	$id 			= $data_base->f("id");
-	$image			= $data_base->f("image");
+	$db->next_record();
+
+	$title 			= $db->f("title");
+	$text 			= $db->f("text");
+	$id 			= $db->f("id");
+	$image			= $db->f("image");
 	
 	$ft->assign(array(	'PAGE_TITLE'		=>ucfirst(strtolower($title)),
 						'PAGE_TEXT'			=>$text,
@@ -25,26 +28,29 @@ if($data_base->num_rows() !== 0) {
 		$ft->assign(array('IMAGE' =>""));
 	} else {
 		
-		list($width, $height) = getimagesize("photos/" . $image);
-		
-		// wysoko뜻, szeroko뜻 obrazka
-		$ft->assign(array(	'WIDTH'		=>$width,
-							'HEIGHT'	=>$height));
-		
-		if($width > 440) {
+		if(is_file('photos/' . $image)) {
 			
-			// template prepare
-			$ft->define('image_alter', "image_alter.tpl");
-			$ft->assign('UID', $id);
+			list($width, $height) = getimagesize('photos/' . $image);
+		
+			// wysoko뜻, szeroko뜻 obrazka
+			$ft->assign(array(	'WIDTH'		=>$width,
+								'HEIGHT'	=>$height));
+		
+			if($width > 440) {
+			
+				// template prepare
+				$ft->define('image_alter', "image_alter.tpl");
+				$ft->assign('UID', $id);
 				
-			$ft->parse('IMAGE', "image_alter");
-		} else {
+				$ft->parse('IMAGE', "image_alter");
+			} else {
 			
-			// template prepare
-			$ft->define('image_main', "image_main.tpl");
-			$ft->assign('IMAGE_NAME', $image);
+				// template prepare
+				$ft->define('image_main', "image_main.tpl");
+				$ft->assign('IMAGE_NAME', $image);
 
-			$ft->parse('IMAGE', "image_main");
+				$ft->parse('IMAGE', "image_main");
+			}
 		}
 	}
 	
