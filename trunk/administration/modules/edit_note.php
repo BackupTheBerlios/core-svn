@@ -26,6 +26,8 @@ switch ($action) {
 		$dat	= explode("-", $dat1[0]);
 		$date	= "$dat[2]-$dat[1]-$dat[0] $dat1[1]";
 		
+		str_nl2br($text);
+		
 		$text = str_replace("<br />", "\r\n", $text);
 		$text = preg_replace("/(\r\n){2,}/", "\\1\\1", $text);
 		
