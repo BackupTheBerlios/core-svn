@@ -82,14 +82,16 @@ $ft->assign(array(
 		'ENGINE_VERSION'	=>"<a href=\"javascript:mail('lark', 'no1-else.com', 'core_engine');\">core engine</a>: 1.0RC1a"
 ));
 
-// modu³ listujacy kategoriê - niezale¿ny od ca³ej strony					
-include('modules/category_list.php');
+$inc_modules = array(
+		"category_list",
+		"pages_list",
+		"links_list");
 
-// modu³ listujacy dodatkowe podstrony - niezale¿ny od ca³ej strony					
-include('modules/pages_list.php');
-
-// modu³ listujacy linki i ich kategorie					
-include('modules/links_list.php');
+foreach($inc_modules as $module) {
+	
+	// ³adowanie dodatkowych modu³ów
+	include('modules/' . $module . '.php');
+}
 					
 // G³ówna prze³¹cznica includowanej treœci
 $p = empty($_GET['p']) ? '' : $_GET['p'];
