@@ -251,3 +251,15 @@ dd.link {
 	font-size: 14pt;
 	font-family: Arial;
 }
+
+ul {
+	list-style: none;
+	margin: 0;
+	padding-left: 15px;
+	padding-top: 10px;
+}
+
+li {
+	margin: 0 0 0px 0px;
+	padding: 0px 0 2px 0px;
+}
