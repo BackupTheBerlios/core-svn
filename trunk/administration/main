@@ -141,6 +141,12 @@ switch($p){
 		include('modules/edit_links.php');
 		$ft->parse('MAIN', array("main_loader", "index"));
 		break;
+		
+	// edycja|usuwanie u¿ytkowników	
+	case '13': 
+		include('modules/edit_users.php');
+		$ft->parse('MAIN', array("main_loader", "index"));
+		break;	
 	
 	// domy¶lnie	
 	default:
