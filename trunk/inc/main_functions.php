@@ -89,7 +89,7 @@ function str_nl2br($s) {
 }
 
 
-function get_cat($page_id, $separator) {
+function get_cat($page_id, $level) {
 	
 	global $mysql_data, $ft;
 
@@ -116,11 +116,104 @@ function get_cat($page_id, $separator) {
 	
 		$ft->assign(array(	'PAGE_NAME'	=>$page_name,
 							'PAGE_ID'	=>$page_id,
-							'PARENT'	=>$separator));
+							'PARENT'	=>str_repeat('&nbsp; ', $level)));
 
 				
 		$ft->parse('PAGES_LIST', ".pages_list");
-		get_cat($page_id, ' &nbsp; &nbsp;- ');
+		get_cat($page_id, $level+2);
+	}
+}
+
+
+function get_addpage_cat($page_id, $level) {
+	
+	global $mysql_data, $ft;
+
+	$query = "	SELECT 
+					id, parent_id, title 
+				FROM 
+					$mysql_data[db_table_pages] 
+				WHERE 
+					parent_id = '$page_id' 
+				AND 
+					published = 'Y' 
+				ORDER BY 
+					id 
+				ASC";
+
+	$db = new MySQL_DB;
+	$db->query($query);
+		
+	while($db->next_record()) {
+	
+		$page_id 	= $db->f("id");
+		$parent_id 	= $db->f("parent_id");
+		$title 		= $db->f("title");
+	
+		$ft->assign(array(	'C_ID'		=>$page_id,
+							'C_NAME'	=>str_repeat('&nbsp; ', $level) . $title));
+
+		$ft->define('page_categoryoption', "page_categoryoption.tpl");		
+		$ft->parse('CATEGORY_ROWS', ".page_categoryoption");
+		
+		get_addpage_cat($page_id, $level+2);
+	}
+}
+
+
+function get_editpage_cat($page_id, $level) {
+	
+	global $mysql_data, $ft, $idx1;
+
+	$query = "	SELECT 
+					id, parent_id, title, published 
+				FROM 
+					$mysql_data[db_table_pages] 
+				WHERE 
+					parent_id = '$page_id' 
+				AND 
+					published = 'Y' 
+				ORDER BY 
+					id 
+				ASC";
+
+	$db = new MySQL_DB;
+	$db->query($query);
+		
+	while($db->next_record()) {
+	
+		$page_id 	= $db->f("id");
+		$title 		= $db->f("title");
+		$published	= $db->f("published");
+	
+		$ft->assign(array(	'ID'		=>$page_id,
+							'TITLE'		=>str_repeat('&nbsp; ', $level) . $title));
+							
+		if($published == 'Y') {
+
+			$ft->assign('PUBLISHED', "Tak");
+		} else {
+				
+			$ft->assign('PUBLISHED', "Nie");
+		}
+		
+		// deklaracja zmiennej $idx1::color switcher
+		$idx1 = empty($idx1) ? '' : $idx1;
+				
+		$idx1++;
+			
+		// naprzemienne kolorowanie wierszy tabeli
+		if (($idx1%2)==1) {
+				
+			$ft->assign('ID_CLASS', "id=\"mainList\"");
+			$ft->parse('NOTE_ROWS',	".table_pagelist");
+		} else {
+				
+			$ft->assign('ID_CLASS', "id=\"mainListAlter\"");
+			$ft->parse('NOTE_ROWS',	".table_pagelist");
+		}
+		
+		get_editpage_cat($page_id, $level+2);
 	}
 }
 
