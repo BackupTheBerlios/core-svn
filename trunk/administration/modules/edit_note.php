@@ -8,18 +8,17 @@ $action = empty($_GET['action']) ? '' : $_GET['action'];
 
 if (empty($action)) {
 	
-	$data_base_config = new MySQL_DB;
-	$data_base_config->query("SELECT * FROM $mysql_data[db_table_config] WHERE config_name = 'editposts_per_page'");
-	$data_base_config->next_record();
-		
-	$editposts_per_page = $data_base_config->f("config_value");
-	
-	
 	$data_base = new MySQL_DB;
+	$data_base->query("SELECT * FROM $mysql_data[db_table_config] WHERE config_name = 'editposts_per_page'");
+	$data_base->next_record();
+		
+	$editposts_per_page = $data_base->f("config_value");
+	
+	
 	$data_base->query("SELECT * FROM $mysql_data[db_table] ORDER BY date DESC LIMIT $start, $editposts_per_page");
 	
 	// Sprawdzamy, czy w bazie danych s± ju¿ jakie¶ wpisy
-	if($data_base->num_rows() !== 0) {
+	if($data_base->num_rows() > 0) {
 	
 		// Pêtla wyswietlaj¹ca wszystkie wpisy + stronnicowanie ich
 		while($data_base->next_record()) {
@@ -76,11 +75,7 @@ if (empty($action)) {
 
 		$ft->parse('ROWS',	".result_note");
 	}
-}
-
-
-// wy¶wietlanie wpisu pobranego do modyfikacji
-if ($action == "show") {
+} elseif ($action == "show") {// wy¶wietlanie wpisu pobranego do modyfikacji
 	
 	$db_base = new MySQL_DB;
 	$db_base->query("SELECT * FROM $mysql_data[db_table] WHERE id='$_GET[id]'");
@@ -120,10 +115,7 @@ if ($action == "show") {
 
 	$ft->parse('ROWS',	".form_noteedit");
 	
-}
-
-// edycja wybranego wpisu
-if ($action == "edit") {
+} elseif ($action == "edit") {// edycja wybranego wpisu
 	
 	$text		= nl2br($_POST['text']);
 	$title		= $_POST['title'];
@@ -138,10 +130,7 @@ if ($action == "edit") {
 
 	$ft->parse('ROWS',	".result_note");
 	
-}
-
-// usuwanie wybranego wpisu
-if ($action == "delete") {
+} elseif ($action == "delete") {// usuwanie wybranego wpisu
 	
 	$d_base = new MySQL_DB;
 	$d_base->query("DELETE FROM $mysql_data[db_table] WHERE id='$_GET[id]'");
