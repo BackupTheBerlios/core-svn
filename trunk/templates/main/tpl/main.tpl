@@ -73,7 +73,7 @@
 		<br />
 		<ul>
 		<!-- alternate design list/alternate design list template parsed -->
-			<li><a href="2,1,item.html">1</a></li>
+			<li><a href="2,2,item.html">1</a></li>
 			<!-- <li><a href="2,2,item.html">2</a></li> -->
 		<!-- end alternate design list -->	
 		</ul>
