@@ -1,34 +1,48 @@
 <?php
 
-$data_base = new MySQL_DB;
-$data_base->query("	SELECT a.*, b.*, c.comments_id, count(c.id) AS comments 
-					FROM $mysql_data[db_table] a, $mysql_data[db_table_category] b 
-					LEFT JOIN $mysql_data[db_table_comments] c 
-					ON a.id = c.comments_id
-					WHERE a.id='$_GET[id]' 
-					AND b.category_id=a.c_id 
-					AND published = 'Y' 
-					GROUP BY a.date 
-					DESC LIMIT 1");
+$db = new MySQL_DB;
+$query = "	SELECT 
+				a.*, b.*, c.comments_id, count(c.id) 
+			AS 
+				comments 
+			FROM 
+				$mysql_data[db_table] a, $mysql_data[db_table_category] b 
+			LEFT JOIN 
+				$mysql_data[db_table_comments] c 
+			ON 
+				a.id = c.comments_id
+			WHERE 
+				a.id = '$_GET[id]' 
+			AND 
+				b.category_id = a.c_id 
+			AND 
+				published = 'Y' 
+			GROUP BY 
+				a.date 
+			DESC 
+			LIMIT 
+				1";
 
-if($data_base->num_rows() !== 0) {
+$db->query($query);
 
-	$data_base->next_record();
+if($db->num_rows() !== 0) {
 
-	$date 			= $data_base->f("date");
-	$title 			= $data_base->f("title");
-	$text 			= $data_base->f("text");
-	$author 		= $data_base->f("author");
-	$id 			= $data_base->f("id");
-	$c_id 			= $data_base->f("c_id");
-	$image			= $data_base->f("image");
-	$comments_allow = $data_base->f("comments_allow");
+	$db->next_record();
+
+	$date 			= $db->f("date");
+	$title 			= $db->f("title");
+	$text 			= $db->f("text");
+	$author 		= $db->f("author");
+	$id 			= $db->f("id");
+	$c_id 			= $db->f("c_id");
+	$image			= $db->f("image");
+	$comments_allow = $db->f("comments_allow");
 	
-	$c_name 		= $data_base->f("category_name");
-	$c_id 			= $data_base->f("category_id");
+	$c_name 		= $db->f("category_name");
+	$c_id 			= $db->f("category_id");
 		
 	// Przypisanie zmiennej $comments
-	$comments 		= $data_base->f("comments");
+	$comments 		= $db->f("comments");
 
 	// konwersja daty na bardziej ludzki format
 	$date			= coreDateConvert($date);
