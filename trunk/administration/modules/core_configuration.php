@@ -6,8 +6,7 @@ $action = empty($_GET['action']) ? '' : $_GET['action'];
 // inicjalizacja instancji klasy MySQL_DB
 $db = new MySQL_DB;
 
-switch ($action)
-{
+switch ($action) {
 	case "add":
 		class configValidate {
 			
@@ -38,9 +37,9 @@ switch ($action)
 		// egzemplarz klasy validuj±cej ustawienia core
 		$conf = new configValidate();
 		
-		$conf->checkNumeric($_POST['mainposts_per_page']);
-		$conf->checkValue($_POST['mainposts_per_page'], 3, 10, "na stronie g³ównej");
-		$conf->checkValue($_POST['editposts_per_page'], 15, 25, "w czê¶ci administracyjnej");
+		//$conf->checkNumeric($_POST['mainposts_per_page']);
+		//$conf->checkValue($_POST['mainposts_per_page'], 3, 10, "na stronie g³ównej");
+		//$conf->checkValue($_POST['editposts_per_page'], 15, 25, "w czê¶ci administracyjnej");
 		
 		if(empty($conf->monit)) {
 			
@@ -49,7 +48,7 @@ switch ($action)
 			$db->query("	UPDATE $mysql_data[db_table_config] 
 							SET config_value = '$_POST[mainposts_per_page]' 
 							WHERE config_name = 'mainposts_per_page'");
-		
+			
 			// set {TITLE_PAGE} variable
 			// liczba listowanych wpisów w na stronie g³ównej::db
 			$db->query("	UPDATE $mysql_data[db_table_config] 
