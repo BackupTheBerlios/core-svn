@@ -222,8 +222,8 @@ switch ($action) {
                     id = '%d'
                     LIMIT 1",
 
-                $mysql_data[db_table] ,
-                $_GET[id]
+                $mysql_data['db_table'], 
+                $_GET['id']
             );
 
             $db->query($query);
