@@ -27,7 +27,7 @@ switch ($action) {
 		$date	= "$dat[2]-$dat[1]-$dat[0] $dat1[1]";
 		
 		$text = str_replace("<br />", "\r\n", $text);
-		$text = preg_replace("/(\r\n)+/", "\\1\\1", $text);
+		$text = preg_replace("/(\r\n){2,}/", "\\1\\1", $text);
 		
 		$ft->assign(array(	'SESSION_LOGIN'	=>$_SESSION['login'],
 							'AUTHOR'		=>$author,
