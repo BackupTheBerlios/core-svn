@@ -147,9 +147,8 @@ CREATE TABLE devlog_users (
 -- Struktura tabeli dla  'devlog_links_category'
 -- 
 
-CREATE TABLE `devlog_links_category` (
+CREATE TABLE `devlog_links` (
   `id` mediumint(7) NOT NULL auto_increment,
-  `parent_id` mediumint(7) NOT NULL default '0',
   `title` varchar(40) NOT NULL default '',
   `url` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`id`),
