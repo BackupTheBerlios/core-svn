@@ -8,10 +8,21 @@ function main_pagination($url, $q, $p, $published, $table) {
 	
 	// Egzemplarz klasy obs³uguj±cej konfiguracjê wy¶wietlanych wpisów
 	$db = new MySQL_DB;
-	$db->query("SELECT * FROM $mysql_data[db_table_config] WHERE config_name = '$p'");
+	$query = "
+		SELECT
+			*
+		FROM
+			$mysql_data[db_table_config]
+		WHERE
+		config_name = '$p'";
+	$db->query($query);
 	$db->next_record();
 		
 	$mainposts_per_page = $db->f("config_value");
+	if (empty($mainposts_per_page)) {
+
+		$mainposts_per_page = 10;
+	}
 
 	$db->query("SELECT count(*) AS id 
 					FROM $mysql_data[$table] 
@@ -27,7 +38,7 @@ function main_pagination($url, $q, $p, $published, $table) {
 	$start = ( isset($_GET['start']) ) ? intval($_GET['start']) : 0;
 	
 	// Obliczanie liczby stron
-	if (!empty($mainposts_per_page) && $mainposts_per_page > 0) {
+	if ($mainposts_per_page > 0) {
 		
 		if ($num_items > $mainposts_per_page) {	
 		
@@ -37,7 +48,6 @@ function main_pagination($url, $q, $p, $published, $table) {
 		// Obliczanie strony, na której obecnie jestesmy
 		$on_page = floor($start / $mainposts_per_page) + 1;
 	} else {
-		$mainposts_per_page = 0;
 		$total_pages = 0;
 		$on_page = 0;
 	}
