@@ -15,11 +15,7 @@ switch ($action) {
 
         // Obs³uga formularza, jesli go zatwierdzono
         if(!eregi('^([^0-9]+){2,}$', $_POST['author'])) {
-
-            /*
-             *komunikaty do bazy/osobnego pliku/konfiga/gettext
-             *
-             */
+            
             $monit = 'Proszê podaæ swoje imiê, ewentualnie nick.<br />';
         }
 
@@ -27,11 +23,7 @@ switch ($action) {
 
             // Sprawdzenie poprawnosci adresu e-mail
             if(!eregi('^[^@\s]+@([-a-z0-9]+\.)+([a-z]{2,})$', $_POST['email'])) {
-
-                /*
-                 *komunikaty do bazy/osobnego pliku/konfiga/gettext
-                 *
-                 */
+                
                 $monit .= 'Proszê podaæ poprawny adres e-mail.<br />';
             }
         }
@@ -86,7 +78,7 @@ switch ($action) {
                 INSERT INTO
                     %s
                 VALUES
-                ('','%s','%d','%s','%s','%s','%s')",
+                    ('','%s','%d','%s','%s','%s','%s')",
 
                 $mysql_data['db_table_comments'],
                 $date,
@@ -112,21 +104,13 @@ switch ($action) {
 
             $ft->parse('ROWS','.comments_submit');
         } else {
-
-            /*
-             *html do .tpl
-             *
-             */
+            
             $monit .= '<br /><a href="javascript:history.back(-1);">powrót</a>';
 
             // przydzielanie zmiennych i parsowanie szablonu, je¶li próba dodania komentarza siê nie powiedzie
             $ft->assign(array(
                 'NEWS_ID'       =>$_POST['id'],
                 'STRING'        =>$page_string,
-                /*
-                 *html -> .tpl
-                 *
-                 */
                 'CONFIRMATION'  =>'<span>' . $monit . '</span>'
             ));
 
@@ -160,25 +144,10 @@ switch ($action) {
             $cite   = $db->f('text');
             $author = $db->f('author');
 
-            /*
-             *czy w ogole preg_match_all i for ponizej sa potrzebne?
-             *sam str_replace powinien wymienic wszystkie te stringi na ich odpowiedniki...
-             *
-             */
-            /*
-             *to jest niebezpieczne - ktos zmieni sobie szablon, ten div
-             *bedzie inaczej wygladal, i od razu regexp nic nie bedzie robil
-             *
-             */
             $match_count = preg_match_all('#\<div class="quote"\>(.*?)\</div\>#si', $cite, $matches);
 
             for ($i = 0; $i < $match_count; $i++) {
 
-                /*
-                 *to jest niebezpieczne - ktos zmieni sobie szablon, ten div
-                 *bedzie inaczej wygladal, i od razu regexp nic nie bedzie robil
-                 *
-                 */
                 $cite = str_replace(array('<div class="quote">', '</div>'), array('[quote]', '[/quote]'), $cite);
             }
 

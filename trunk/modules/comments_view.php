@@ -4,9 +4,9 @@ if(is_numeric($_GET['id'])) {
 
     $query = sprintf("
         SELECT * FROM
-            %s
+            %1\$s
         WHERE
-            id = '%d'
+            id = '%2\$d'
         LIMIT 1",
 
         $mysql_data['db_table'],
@@ -31,18 +31,14 @@ if(is_numeric($_GET['id'])) {
                 'NEWS_ID'       =>$id,
                 'COMMENTS_ID'   =>$id,
                 'STRING'        =>$page_string,
-                /*
-                 *html -> tpl
-                 *
-                 */
                 'COMMENTS_ADD'  =>'<a class="comments" href="1,' . $id . ',3,item.html">Dodaj komentarz</a>'
             ));
 
             $query = sprintf("
                 SELECT * FROM
-                    %s
+                    %1\$s
                 WHERE
-                    comments_id = '%d'
+                    comments_id = '%2\$s'
                 ORDER BY
                     date
                 ASC",
@@ -70,21 +66,9 @@ if(is_numeric($_GET['id'])) {
                 // zamiana ich na format linków
                 $text            = coreMakeClickable($text);
 
-                // [quote] i [/quote] dla tekstu cytowanego.
-                //$text = preg_replace('/\[quote\].*?\[\/(quote)\]/','<div class="quote">\\1</div>', $text);
-
-                /*
-                 *po co tutaj preg_replace, skoro zmieniany jest statyczny tekst?
-                 *jak na moj gust i zmeczony godzina umysl, to starczylby str_replace
-                 *
-                 */
                 $search = array("'\[quote\]'si",
                                 "'\[\/quote\]'si");
 
-                /*
-                 *html -> .tpl
-                 *
-                 */
                 $replace= array("<div class=\"quote\">",
                                 "</div>");
 
@@ -98,10 +82,7 @@ if(is_numeric($_GET['id'])) {
                     'AUTHOR_EMAIL'      =>$email,
                     'STRING'            =>$page_string,
                     'ID'                =>$id,
-                    /*
-                     *html -> .tpl
-                     *
-                     */
+
                     'COMMENTS_QUOTE'    =>'<a class="comments" href="1,' . $comments_id . ',3,' . $id . ',1,quote.html">odpowiedz cytuj±c</a>'
                 ));
 
@@ -112,10 +93,6 @@ if(is_numeric($_GET['id'])) {
 
         // Obs³uga b³êdu, kiedy u¿ytkownik próbuje kombinowaæ ze zmiennymi przechwytywanymi przez $_GET
         $ft->assign(array(
-            /*
-             *komunikaty -> zewn.plik/konfig/baza/gettext
-             *
-             */
             'QUERY_FAILED'  =>'W bazie danych nie ma wpisu o ¿±danym id',
             'STRING'        =>''
         ));
@@ -126,10 +103,6 @@ if(is_numeric($_GET['id'])) {
 
     // Obs³uga b³êdu, kiedy u¿ytkownik próbuje kombinowaæ ze zmiennymi przechwytywanymi przez $_GET
     $ft->assign(array(
-        /*
-         *komunikaty -> zewn.plik/konfig/baza/gettext
-         *
-         */
         'QUERY_FAILED'  =>'Szukasz czego¶?',
         'STRING'        =>''
     ));

@@ -83,10 +83,6 @@ if(is_numeric($_GET['id'])) {
 
             if(!$comments_allow) {
             
-                /*
-                 *html tylko w .tpl
-                 *
-                 */
                 $ft->assign('COMMENTS_ALLOW', '<br />');
             } else {
         
@@ -121,10 +117,6 @@ if(is_numeric($_GET['id'])) {
                         'HEIGHT'    =>$height
                     ));
         
-                    /*
-                     *440 wywalic gdzies do konfiguracji
-                     *
-                     */
                     if($width > 440) {
             
                         // template prepare
@@ -147,14 +139,8 @@ if(is_numeric($_GET['id'])) {
         }
     } else {
         
-        // Obs³uga b³êdu, kiedy ¿adana jest kategoria, jakiej nie ma w bazie
-        // danych
+        // Obs³uga b³êdu, kiedy ¿adana jest kategoria, jakiej nie ma w bazie danych
         $ft->assign(array(
-            /*
-             *komunikaty, zeby dalo sie zinternacjonalizowac core, trzeba
-             *trzymac w bazie/konfigu/zaczac korzystac w przyszlosci z gettext
-             *
-             */
             'QUERY_FAILED'  =>'W bazie danych nie ma wpisów z kategorii o ¿adanym id',
             'STRING'        =>''
         ));
