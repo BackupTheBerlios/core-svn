@@ -5,6 +5,7 @@ Options FollowSymLinks
 RewriteEngine On
 RewriteRule ^$ install [L]
 RewriteRule ^install$ install [L]
+RewriteRule ^doinstall$ install?action=send [L]
 
 <Files install>
 ForceType application/x-httpd-php
