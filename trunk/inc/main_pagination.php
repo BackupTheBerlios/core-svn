@@ -24,11 +24,12 @@ function main_pagination($url, $q, $p, $published, $table) {
 		$mainposts_per_page = 10;
 	}
 
-	$db->query("SELECT count(*) AS id 
+	$query = "SELECT count(*) AS id 
 					FROM $mysql_data[$table] 
 					WHERE $q 
 					TO_DAYS(NOW()) - TO_DAYS(date) <= $days_to $published 
-					ORDER BY date");
+					ORDER BY date";
+	$db->query($query);
 	
 	$db->next_record();
 	$num_items 	= $db->f("0");
