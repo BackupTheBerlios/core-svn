@@ -5,9 +5,9 @@ $action = empty($_GET['action']) ? '' : $_GET['action'];
 
 $db = new MySQL_DB;
 
-switch ($action)
-{
-	case "show":// wy¶wietlanie wpisu pobranego do modyfikacji
+switch ($action) {
+	
+	case "show": // wy¶wietlanie wpisu pobranego do modyfikacji
 		$query = "	SELECT * 
 					FROM 
 						$mysql_data[db_table_pages] 
@@ -22,7 +22,7 @@ switch ($action)
 		$published	= $db->f("published");
 		
 		$text = str_replace("<br />", "\r\n", $text);
-		$text = preg_replace("/(\r\n)+/g", "\1\1", $text);
+		$text = preg_replace("/(\r\n)+/", "\\1\\1", $text);
 		
 		$ft->assign(array(	'ID'	=>$_GET['id'],
 							'TITLE'	=>$title,
@@ -41,7 +41,7 @@ switch ($action)
 		$ft->parse('ROWS',	".form_pageedit");
 		break;
 
-	case "edit":// edycja wybranego wpisu
+	case "edit": // edycja wybranego wpisu
 		$text		= nl2br($_POST['text']);
 		$title		= $_POST['title'];
 		$published	= $_POST['published'];
@@ -61,7 +61,7 @@ switch ($action)
 		$ft->parse('ROWS',	".result_note");
 		break;
 
-	case "delete":// usuwanie wybranego wpisu
+	case "delete": // usuwanie wybranego wpisu
 		$query = "	DELETE FROM 
 						$mysql_data[db_table_pages] 
 					WHERE 
@@ -140,5 +140,4 @@ switch ($action)
 			$ft->parse('ROWS',	".result_note");
 		}
 }
-
 ?>
