@@ -98,27 +98,29 @@ if($db->num_rows() !== 0) {
 			$ft->assign('IMAGE', '');
 
 		} else {
-		
-			list($width, $height) = getimagesize("photos/" . $image);
 			
-			// wysoko뜻, szeroko뜻 obrazka
-			$ft->assign(array(	'WIDTH'		=>$width,
-								'HEIGHT'	=>$height));
-		
-			if($width > 440) {
-				
-				// template prepare
-				$ft->define('image_alter', "image_alter.tpl");
-				$ft->assign('UID', $id);
-				
-				$ft->parse('IMAGE', "image_alter");
-			} else {
+			if(is_file('photos/' . $image)) {
+				list($width, $height) = getimagesize("photos/" . $image);
 			
-				// template prepare
-				$ft->define('image_main', "image_main.tpl");
-				$ft->assign('IMAGE_NAME', $image);
+				// wysoko뜻, szeroko뜻 obrazka
+				$ft->assign(array(	'WIDTH'		=>$width,
+									'HEIGHT'	=>$height));
+		
+				if($width > 440) {
+				
+					// template prepare
+					$ft->define('image_alter', "image_alter.tpl");
+					$ft->assign('UID', $id);
+				
+					$ft->parse('IMAGE', "image_alter");
+				} else {
+			
+					// template prepare
+					$ft->define('image_main', "image_main.tpl");
+					$ft->assign('IMAGE_NAME', $image);
 
-				$ft->parse('IMAGE', "image_main");
+					$ft->parse('IMAGE', "image_main");
+				}
 			}
 		}		
 				
