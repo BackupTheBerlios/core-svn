@@ -15,6 +15,9 @@ if(!defined("CORE_INSTALLED")) {
 	exit;
 }
 
+// egzemplarz klasy obs³uguj±cej bazê danych Core
+$db = new MySQL_DB;
+
 require_once("inc/main_functions.php");
 require_once("counter/addhit.php");
 	
@@ -60,37 +63,42 @@ $ft->define(array(
 		'newsletter'			=>"newsletter.tpl",
 		'query_failed'			=>"query_failed.tpl"
 ));
+
 					
-// egzemplarz klasy pobieraj±cej ustawienia Core
-$sql = new MySQL_DB;
-					
-// set {TITLE} variable
-// tytu³ strony, wy¶wietlany w miejscu title::db
-$sql->query("	SELECT 
-					config_value 
-				FROM 
-					$mysql_data[db_table_config] 
-				WHERE 
-					config_name = 'title_page'");
+// ustawiamy {TITLE}
+$query = sprintf("
+            SELECT 
+                config_value 
+            FROM 
+                %1\$s 
+            WHERE 
+                config_name = '%2\$s'", 
+            
+            $mysql_data['db_table_config'], 
+            "title_page"
+);
 	
-$sql->next_record();
-$title_page = $sql->f("config_value");				
+$db->query($query);
+$db->next_record();
+
+$title_page = $db->f("config_value");				
 		
-$ft->assign(array(	
-		'TITLE'				=>$title_page,
-		'STATISTICS'		=>"Wizyty: " . $hitnumber,
-		'ENGINE_VERSION'	=>"<a href=\"javascript:mail('lark', 'no1-else.com', 'core_engine');\">core engine</a>: 1.0RC1a"
+$ft->assign(array(
+    'TITLE'             =>$title_page,
+    'STATISTICS'        =>"Wizyty: " . $hitnumber,
+    'ENGINE_VERSION'    =>"<a href=\"javascript:mail('lark', 'no1-else.com', 'core_engine');\">core engine</a>: 1.0RC1a"
 ));
 
 $inc_modules = array(
-		"category_list",
-		"pages_list",
-		"links_list");
+    "category_list",
+    "pages_list",
+    "links_list"
+);
 
 foreach($inc_modules as $module) {
-	
-	// ³adowanie dodatkowych modu³ów
-	include('modules/' . $module . '.php');
+    
+    // ³adowanie dodatkowych modu³ów
+    include('modules/' . $module . '.php');
 }
 					
 // G³ówna prze³¹cznica includowanej treœci
