@@ -38,7 +38,7 @@ switch ($action) {
 			$err .= $monit['strlenuser'] . "<br />";
 		}
 		
-		if(!eregi("^([[:alnum:]]|_|\.|-)+@([[:alnum:]]|\.|-)+(\.)([a-z]{2,4})$", $coremail)) {
+		if(!eregi("^([[:alnum:]]|_|\.|-)+@(([[:alnum:]]|\.|-)+(\.)([a-z]{2,4})|localhost)$", $coremail)){
 			
 			$err .= $monit['validemail'] . "<br />";
 		}
@@ -73,7 +73,7 @@ switch ($action) {
 				
 			
 			$sql_query = @fread(@fopen($db_schema, 'r'), @filesize($db_schema));
-			$sql_query = preg_replace('/core_/', $dbprefix, $sql_query);
+			$sql_query = str_replace('/core_/', $dbprefix, $sql_query);
 		
 			$delimiter = ';';
 		
@@ -177,7 +177,17 @@ switch ($action) {
 			
 			$db->query($query);
 			
-			$err .= "Instalacja przebieg³a pomy¶lnie.";
+			if($fp == FALSE) {
+				
+				$err .= "Instalator nie móg³ stworzyæ pliku konfiguracyjnego.<br />";
+				$err .= "W katalogu administration/inc/ stwórz plik config.php o tre¶ci:<br /><br />";
+				
+				$err .= str_nl2br($file);
+			} else {
+			
+				$err .= "Instalacja przebieg³a pomy¶lnie.<br />";
+				$err .= "Mo¿esz przej¶æ na <a href=\"../\">stronê g³ówn±.";
+			}
 			
 			$ft->assign('MONIT', $err);
 			$ft->define('monit_content', "monit_content.tpl");
