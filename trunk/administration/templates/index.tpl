@@ -22,7 +22,13 @@
 </div>
 
 <div id="content">
-	{ROWS}
+	<div id="left">
+		{ROWS}
+	</div>
+
+	<div id="right">
+		{SUB_CONTENT}
+	</div>
 </div>
 
 <div id="footer">
