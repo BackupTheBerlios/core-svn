@@ -189,8 +189,17 @@ switch ($action) {
 			} else {
 			
 				$err .= "Instalacja przebieg³a pomy¶lnie.<br />";
-				$err .= "Mo¿esz przej¶æ na <a href=\"../\">stronê g³ówn±.";
+				$err .= "Mo¿esz przej¶æ na <a href=\"../\">stronê g³ówn±.<br /><br />";
 			}
+			
+			if(!is_writable('../photos')) {
+				
+				$err .= "Brak prawa do zapisu w katalogu" . dirname($_SERVER['SCRIPT_FILENAME']) . "'photos/'";
+				$err .= " - aby umozliwiæ wgrywanie zdjêæ, musisz daæ prawo do zapisu do tego";
+				$err .= " katalogu (np. zaloguj sie na konto, i wydaj komende:";
+				$err .= " chmod 777 " . dirname($_SERVER['SCRIPT_FILENAME']) . "'photos/'";
+			}
+
 			
 			$ft->assign('MONIT', $err);
 			$ft->define('monit_content', "monit_content.tpl");
