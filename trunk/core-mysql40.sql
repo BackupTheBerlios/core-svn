@@ -27,7 +27,7 @@ CREATE TABLE devlog (
   comments_allow char(1) NOT NULL default '1',
   published enum('Y','N') NOT NULL default 'Y',
   PRIMARY KEY  (id,c_id)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+);
 
 -- --------------------------------------------------------
 
@@ -41,7 +41,7 @@ CREATE TABLE devlog_category (
   category_description text NOT NULL,
   PRIMARY KEY  (category_id),
   KEY id (category_id)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+);
 
 -- --------------------------------------------------------
 
@@ -59,7 +59,7 @@ CREATE TABLE devlog_comments (
   `text` mediumtext NOT NULL,
   PRIMARY KEY  (id,comments_id),
   KEY id (comments_id,id)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+);
 
 -- --------------------------------------------------------
 
@@ -71,7 +71,7 @@ CREATE TABLE devlog_config (
   config_name varchar(255) NOT NULL default '',
   config_value varchar(255) NOT NULL default '',
   PRIMARY KEY  (config_name)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+);
 
 -- --------------------------------------------------------
 
@@ -84,7 +84,7 @@ CREATE TABLE devlog_counter (
   hit text,
   hitnumber int(11) default NULL,
   PRIMARY KEY  (id)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+);
 
 -- --------------------------------------------------------
 
@@ -94,7 +94,7 @@ CREATE TABLE devlog_counter (
 
 CREATE TABLE devlog_newsletter (
   email varchar(40) NOT NULL default ''
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+);
 
 -- --------------------------------------------------------
 
@@ -110,7 +110,7 @@ CREATE TABLE devlog_pages (
   image varchar(255) NOT NULL default '',
   published enum('Y','N') NOT NULL default 'Y',
   PRIMARY KEY  (id)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+);
 
 -- --------------------------------------------------------
 
@@ -124,7 +124,7 @@ CREATE TABLE devlog_session (
   session_log_in_time int(10) unsigned NOT NULL default '0',
   session_running_time int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (session_id)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+);
 
 -- --------------------------------------------------------
 
@@ -139,4 +139,4 @@ CREATE TABLE devlog_users (
   email varchar(30) NOT NULL default '',
   active enum('Y','N') NOT NULL default 'N',
   PRIMARY KEY  (id)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+);
