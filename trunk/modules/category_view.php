@@ -12,29 +12,27 @@ if(is_numeric($_GET['id'])) {
             c.comments_id,
             count(c.id) AS comments 
         FROM 
-            %s a,
-            %s b
+            %1\$s a,
+            %2\$s b
         LEFT JOIN 
-            %s  c 
+            %3\$s  c 
         ON 
             a.id = c.comments_id
         WHERE 
-            a.c_id='%d' 
+            a.c_id='%4\$d' 
         AND 
-            b.category_id='%d' 
+            b.category_id='%4\$d' 
         AND 
             published = 'Y' 
         GROUP BY 
             a.date 
         DESC
-        LIMIT  %d, %d",
+        LIMIT  $start, $mainposts_per_page",
         
         $mysql_data['db_table'],
-        $mysql_data['db_table_category']
-        $mysql_data['db_table_comments']
-        $_GET['id'],
-        $start,
-        $mainposts_per_page
+        $mysql_data['db_table_category'],
+        $mysql_data['db_table_comments'],
+        $_GET['id']
     );
     
     $db->query($query);
