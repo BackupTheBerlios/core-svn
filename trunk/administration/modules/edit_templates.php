@@ -86,7 +86,6 @@ if(!isset($_GET['path'])) {
 	$path = "../templates/" . $_GET['path'] . "/tpl/";
 }
 
-$dir_write = is_writeable($path);
 $dir = @dir($path);
 while($file = $dir->read()) {
   $ext = str_getext($file, false);
@@ -102,8 +101,8 @@ while($file = $dir->read()) {
 							'FILE_PATH'	=>$file[0]));
 									
     
-    //jesli plik nie jest zapisywalny, albo katalog, to tpl z gwiazdka
-    if ($dir_write && is_writeable($path . $file)) {
+    //jesli plik nie jest zapisywalny, to tpl z gwiazdka
+    if (is_writeable($path . $file)) {
 
       $ft->define('filelist', "filelist.tpl");
     } else {
