@@ -6,5 +6,6 @@
 	<li {CAT_CURRENT}><a href="1,8,item.html">Kategorie Wpisów</a></li>
 	<li {NEWSLETTER_CURRENT}><a href="#">Newsletter</a></li>
 	<li {USERS_CURRENT}><a href="1,7,item.html">U¿ytkownicy</a></li>
+	<li {TEMPLATES_CURRENT}><a href="1,14,item.html">Szablony</a></li>
 	<li {CONFIG_CURRENT}><a href="1,10,item.html">Konfiguracja</a></li>
 </ul>
