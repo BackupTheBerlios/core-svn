@@ -10,8 +10,6 @@ $search_word = trim($search_word);
 main_pagination('search.' . $search_word . '.', '', 'mainposts_per_page', 'AND published = \'Y\' AND text LIKE \'%' . $search_word . '%\' OR title LIKE \'%' . $search_word . '%\'', 'db_table');
 
 if(!empty($search_word)) {
-
-	$db = new MySQL_DB;
 	
 	$query = "	SELECT 
 					a.*, b.*, c.comments_id, count(c.id) AS comments 

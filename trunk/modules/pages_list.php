@@ -1,6 +1,5 @@
 <?php
 
-$db = new MySQL_DB;
 $query = "	SELECT 
 				id, parent_id, title 
 			FROM 

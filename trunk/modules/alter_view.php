@@ -1,7 +1,5 @@
 <?php
 
-$db = new MySQL_DB;
-
 $query = sprintf("
     SELECT
         a.*,
