@@ -90,7 +90,7 @@ if(is_numeric($_GET['id'])) {
                 $ft->assign('COMMENTS_ALLOW', '<br />');
             } else {
         
-                if(!$comments == 0) {
+                if($comments == 0) {
             
                     // template prepare
                     $ft->define('comments_link_empty', 'comments_link_empty.tpl');
