@@ -21,14 +21,11 @@ $start = ( isset($_GET['start']) ) ? intval($_GET['start']) : 0;
 
 include("inc/main_pagination.php");
 
-$ctime = time()+2592000;
-$cname 	= "devlog_design";
-
 $val = empty($val) ? '' : $val;
 
 if(!isset($_COOKIE['devlog_design'])){
 			
-	setcookie($cname, '2', $ctime);
+	setcookie("devlog_design", '2', time()+2592000);
 }
 
 $design = empty($_COOKIE['devlog_design']) ? '' : $_COOKIE['devlog_design'];
