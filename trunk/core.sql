@@ -104,6 +104,7 @@ CREATE TABLE devlog_newsletter (
 
 CREATE TABLE devlog_pages (
   id mediumint(7) NOT NULL auto_increment,
+  parent_id mediumint(7) NOT NULL default '0',
   title varchar(50) NOT NULL default '',
   `text` mediumtext NOT NULL,
   image varchar(255) NOT NULL default '',
