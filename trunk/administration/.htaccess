@@ -7,17 +7,9 @@ Options FollowSymLinks
 RewriteEngine On
 
 RewriteRule ^$ index [L]
-RewriteRule ^main\.(.*)$ main?p=$1 [L]
-RewriteRule ^editnote\.(.*)$ main?p=editnote&start=$1 [L]
-RewriteRule ^editcomments\.(.*)$ main?p=editcomments&start=$1 [L]
-RewriteRule ^note\.add$ main?p=addnote&action=add [L]
-RewriteRule ^page\.add$ main?p=addpage&action=add [L]
-RewriteRule ^note\.adduser$ main?p=adduser&action=add [L]
-RewriteRule ^note\.addcategory$ main?p=addcategory&action=add [L]
-RewriteRule ^note\.modifyconfig$ main?p=configuration&action=add [L]
-RewriteRule ^note\.(.*)\.(.*)$ main?p=editnote&action=$1&id=$2 [L]
-RewriteRule ^page\.(.*)\.(.*)$ main?p=editpage&action=$1&id=$2 [L]
-RewriteRule ^category\.(.*)\.(.*)$ main?p=editcategory&action=$1&id=$2 [L]
-RewriteRule ^comments\.(.*)\.(.*)$ main?p=editcomments&action=$1&id=$2 [L]
+RewriteRule ^1,(.*),item.html$ main?p=$1 [L]
+RewriteRule ^start,(.*),(.*)$ main?p=$1&start=$2 [L]
+RewriteRule ^(.*),(.*),action.html$ main?p=$2&action=$1 [L]
+RewriteRule ^(.*),(.*),(.*),edit.html$ main?p=$3&action=$1&id=$2 [L]
+
 RewriteRule ^index\.login$ index?p=log [L]
-RewriteRule ^note\.(.*)\.(.*)$ main?p=editnote&action=$1&id=$2 [L]
