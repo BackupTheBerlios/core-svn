@@ -3,34 +3,42 @@
 // deklaracja zmiennej $action::form
 $action = empty($_GET['action']) ? '' : $_GET['action'];
 
+$db = new MySQL_DB;
+
 if (empty($action)) {
 	
-	$data_base_config = new MySQL_DB;
-	$data_base_config->query("	SELECT * 
-								FROM $mysql_data[db_table_config] 
-								WHERE config_name = 'editposts_per_page'");
-	$data_base_config->next_record();
+	$query = "	SELECT * 
+				FROM 
+					$mysql_data[db_table_config] 
+				WHERE 
+					config_name = 'editposts_per_page'";
+	
+	$db->query($query);
+	$db->next_record();
 		
-	$editposts_per_page = $data_base_config->f("config_value");
+	$editposts_per_page = $db->f("config_value");
 	
+	$query = "	SELECT * 
+				FROM 
+					$mysql_data[db_table_pages] 
+				ORDER BY 
+					id 
+				DESC";
 	
-	$data_base = new MySQL_DB;
-	$data_base->query("	SELECT * 
-						FROM $mysql_data[db_table_pages] 
-						ORDER BY id DESC");
+	$db->query($query);
 	
 	// Sprawdzamy, czy w bazie danych s± ju¿ jakie¶ wpisy
-	if($data_base->num_rows() !== 0) {
+	if($db->num_rows() !== 0) {
 	
 		// Pêtla wyswietlaj¹ca wszystkie wpisy + stronnicowanie ich
-		while($data_base->next_record()) {
+		while($db->next_record()) {
 	
-			$id 		= $data_base->f("id");
-			$title 		= $data_base->f("title");
-			$published	= $data_base->f("published");
+			$id 		= $db->f("id");
+			$title 		= $db->f("title");
+			$published	= $db->f("published");
 		
-			$ft->assign(array(	'ID'		=>$id,
-								'TITLE'		=>$title));
+			$ft->assign(array(	'ID'	=>$id,
+								'TITLE'	=>$title));
 							
 			if($published == 'Y') {
 
@@ -61,8 +69,7 @@ if (empty($action)) {
 		$ft->parse('ROWS',	".header_pagelist");
 	} else {
 	
-		$ft->assign(array(	'CONFIRM'	=>"W bazie danych nie ma ¿adnych wpisów"));
-
+		$ft->assign('CONFIRM', "W bazie danych nie ma ¿adnych wpisów");
 		$ft->parse('ROWS',	".result_note");
 	}
 }
@@ -71,22 +78,25 @@ if (empty($action)) {
 // wy¶wietlanie wpisu pobranego do modyfikacji
 if ($action == "show") {
 	
-	$db_base = new MySQL_DB;
-	$db_base->query("	SELECT * 
-						FROM $mysql_data[db_table_pages] 
-						WHERE id='$_GET[id]'");
-	$db_base->next_record();
+	$query = "	SELECT * 
+				FROM 
+					$mysql_data[db_table_pages] 
+				WHERE 
+					id = '$_GET[id]'";
 	
-	$title 		= $db_base->f("title");
-	$text 		= $db_base->f("text");
-	$published	= $db_base->f("published");
+	$db->query($query);
+	$db->next_record();
+	
+	$title 		= $db->f("title");
+	$text 		= $db->f("text");
+	$published	= $db->f("published");
 	
 	$text = str_replace("<br />", "\r\n", $text);
 	$text = ereg_replace("(\r\n)+", "\r\n\r\n", $text);
 	
-	$ft->assign(array(	'ID'			=>$_GET['id'],
-						'TITLE'			=>$title,
-						'TEXT'			=>$text));
+	$ft->assign(array(	'ID'	=>$_GET['id'],
+						'TITLE'	=>$title,
+						'TEXT'	=>$text));
 						
 	if($published == "Y") {
 
@@ -109,14 +119,19 @@ if ($action == "edit") {
 	$title		= $_POST['title'];
 	$published	= $_POST['published'];
 	
-	$d_base = new MySQL_DB;
-	$d_base->query("UPDATE $mysql_data[db_table_pages] 
-					SET title='$title', text='$text', published='$published' 
-					WHERE id='$_GET[id]'");
-	$d_base->next_record();
+	$query = "	UPDATE 
+					$mysql_data[db_table_pages] 
+				SET 
+					title = '$title', 
+					text = '$text', 
+					published = '$published' 
+				WHERE 
+					id='$_GET[id]'";
 	
-	$ft->assign(array(	'CONFIRM'	=>"Wpis zosta³ zmodyfikowany."));
-
+	$db->query($query);
+	$db->next_record();
+	
+	$ft->assign('CONFIRM', "Strona zosta³a zmodyfikowana.");
 	$ft->parse('ROWS',	".result_note");
 	
 }
@@ -124,14 +139,15 @@ if ($action == "edit") {
 // usuwanie wybranego wpisu
 if ($action == "delete") {
 	
-	$d_base = new MySQL_DB;
-	$d_base->query("DELETE FROM $mysql_data[db_table_pages] 
-					WHERE id='$_GET[id]'");
-	$d_base->next_record();
+	$query = "	DELETE FROM 
+					$mysql_data[db_table_pages] 
+				WHERE 
+					id = '$_GET[id]'";
 	
-	$ft->assign(array(	'CONFIRM'	=>"Wpis zosta³ usuniêty."));
-
+	$db->query($query);
+	$db->next_record();
+	
+	$ft->assign('CONFIRM', "Strona zosta³a usuniêta.");
 	$ft->parse('ROWS', ".result_note");
-	
 }
 ?>
