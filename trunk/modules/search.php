@@ -11,119 +11,116 @@ main_pagination('search.' . $search_word . '.', '', 'mainposts_per_page', 'AND p
 
 if(!empty($search_word)) {
 
-	$data_base = new MySQL_DB;
+	$db = new MySQL_DB;
 	
-	$data_base->query("	SELECT a.*, b.*, c.comments_id, count(c.id) AS comments 
-						FROM $mysql_data[db_table] a 
-						LEFT JOIN $mysql_data[db_table_category] b 
-						ON b.category_id = a.c_id 
-						LEFT JOIN $mysql_data[db_table_comments] c 
-						ON a.id = c.comments_id
-						WHERE published = 'Y' 
-						AND a.text LIKE '%" . $search_word . "%' 
-						OR a.title LIKE '%" . $search_word . "%' 
-						GROUP BY a.date 
-						DESC LIMIT $start, $mainposts_per_page");
+	$query = "	SELECT 
+					a.*, b.*, c.comments_id, count(c.id) AS comments 
+				FROM 
+					$mysql_data[db_table] a 
+				LEFT JOIN 
+					$mysql_data[db_table_category] b 
+				ON 
+					b.category_id = a.c_id 
+				LEFT JOIN 
+					$mysql_data[db_table_comments] c 
+				ON 
+					a.id = c.comments_id
+				WHERE 
+					published = 'Y' 
+				AND 
+					a.text LIKE '%" . $search_word . "%' 
+				OR 
+					a.title LIKE '%" . $search_word . "%' 
+				GROUP BY 
+					a.date 
+				DESC LIMIT 
+					$start, $mainposts_per_page";
 	
-	function highlight($words, $haystack){
+	$db->query($query);
 	
-		global $common;
-	
-		if (trim($words) != '') {
+	class search {
 		
-			$term = @explode(' ', trim($words));
-			$count = count($term);
-			for ($i = 0; $i < $count; $i++) {
+		var $common = array();
+		
+		function highlight($words, $haystack){
+	
+			if (trim($words) != '') {
+		
+				$term = @explode(' ', trim($words));
+				$count = count($term);
+				for ($i = 0; $i < $count; $i++) {
 			
-				if (strlen($term[$i]) >= 2 && !grep_values($term[$i], $common)) {
+					if (strlen($term[$i]) >= 2 && !$this->grep_values($term[$i], $this->common)) {
 				
-					$terms[] = $term[$i];
-				} else {
-					continue;
-				} 
-			}
+						$terms[] = $term[$i];
+					} else {
+						continue;
+					} 
+				}
 		
-			if (isset($terms)) {
+				if (isset($terms)) {
 			
-				foreach ($terms as $key => $value) {
+					foreach ($terms as $key => $value) {
 					
-					$pattern[] = "/" . preg_quote($value, "/") . "/i";
-					$replacement[] = '<span class="search">' . $value . '</span>';
-				} 
+						$pattern[] = "/" . preg_quote($value, "/") . "/i";
+						$replacement[] = '<span class="search">' . $value . '</span>';
+					} 
             
-				ksort($replacement);
-				ksort($pattern);
-				$haystack = preg_replace($pattern, $replacement, $haystack);
+					ksort($replacement);
+					ksort($pattern);
+					$haystack = preg_replace($pattern, $replacement, $haystack);
             
-				return stripslashes($haystack);
-			} else {
+					return stripslashes($haystack);
+				} else {
 				
+					return stripslashes($haystack);
+				}
+			} else {
+		
 				return stripslashes($haystack);
 			}
-		} else {
-		
-			return stripslashes($haystack);
-		}
-	} 
+		} 
 
 
-	function common_words($words) {
+		function grep_values($pattern, $array) {
 	
-		global $common;
-	
-		$word	= @explode(' ', $words);
-		
-		$term	= array();
-		foreach($word as $value) {
-		
-			if (grep_values($value, $common)) {
+			$newarray = Array();
+			while (list($key, $val) = each($newarray)) {
 			
-				$term[] = $value;
+				$pattern = urlencode($pattern);
+				if (preg_match("/" . $pattern . "/i", $val)) {
+			
+					$newarray[$key] = $val;
+				}
 			}
-		}
 	
-		return $term;
-	}	
-
-
-	function grep_values($pattern, $array) {
-	
-		$newarray = Array();
-		while (list($key, $val) = each($newarray)) {
-			
-			$pattern = urlencode($pattern);
-			if (preg_match("/" . $pattern . "/i", $val)) {
-			
-				$newarray[$key] = $val;
-			}
-		}
-	
-		return $newarray;
+			return $newarray;
+		}	
 	}
-
-
-	if($data_base->num_rows() !== 0) {
 	
-		while($data_base->next_record()) {
-			
-			$c_id		= $data_base->f("c_id");
-			$c_name		= $data_base->f("category_name");
-			$c_id		= $data_base->f("category_id");
+	$search = new search();
 
-			$comments 	= $data_base->f("comments");
+
+	if($db->num_rows() !== 0) {
 	
-			if($c_name === "art&design") { 
-		
-				$c_name = "art&amp;design";
-			}
+		while($db->next_record()) {
 			
-			$date 			= $data_base->f("date");
-			$title 			= $data_base->f("title");
-			$text 			= $data_base->f("text");
-			$author 		= $data_base->f("author");
-			$id 			= $data_base->f("id");
-			$image			= $data_base->f("image");
-			$comments_allow = $data_base->f("comments_allow");
+			$c_id		= $db->f("c_id");
+			$c_name		= $db->f("category_name");
+			$c_id		= $db->f("category_id");
+
+			$comments 	= $db->f("comments");
+	
+			// Zmiana '&' na ampersand - xhtml
+			$c_name 	= str_replace('&', '&amp;', $c_name);
+			
+			$date 			= $db->f("date");
+			$title 			= $db->f("title");
+			$text 			= $db->f("text");
+			$author 		= $db->f("author");
+			$id 			= $db->f("id");
+			$image			= $db->f("image");
+			$comments_allow = $db->f("comments_allow");
 			
 			// konwersja daty na bardziej ludzki format
 			$date			= coreDateConvert($date);
@@ -131,8 +128,8 @@ if(!empty($search_word)) {
 			$text			= strip_tags($text, '<br>');
 			
 			$ft->assign(array(	'DATE'				=>$date,
-								'NEWS_TITLE'		=>highlight($search_word, $title),
-								'NEWS_TEXT'			=>highlight($search_word, $text),
+								'NEWS_TITLE'		=>$search->highlight($search_word, $title),
+								'NEWS_TEXT'			=>$search->highlight($search_word, $text),
 								'NEWS_AUTHOR'		=>$author,
 								'NEWS_ID'			=>$id,
 								'CATEGORY_NAME'		=>$c_name,
