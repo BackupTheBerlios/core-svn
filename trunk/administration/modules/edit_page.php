@@ -102,11 +102,11 @@ switch ($action) {
 			// Pêtla wyswietlaj¹ca wszystkie wpisy + stronnicowanie ich
 			while($db->next_record()) {
 		
-				$id 		= $db->f("id");
-				$title 		= $db->f("title");
-				$published	= $db->f("published");
+				$page_id 		= $db->f("id");
+				$title 			= $db->f("title");
+				$published		= $db->f("published");
 			
-				$ft->assign(array(	'ID'	=>$id,
+				$ft->assign(array(	'ID'	=>$page_id,
 									'TITLE'	=>$title));
 								
 				if($published == 'Y') {
@@ -133,50 +133,7 @@ switch ($action) {
 					$ft->parse('NOTE_ROWS',	".table_pagelist");
 				}
 				
-				$query = "	SELECT * 
-							FROM 
-								$mysql_data[db_table_pages] 
-							WHERE
-								parent_id = '$id' 	
-							ORDER BY 
-								id 
-							ASC";
-				
-				$sql = new MySQL_DB;
-				$sql->query($query);
-				while($sql->next_record()) {
-					
-					$id 		= $sql->f("id");
-					$title 		= $sql->f("title");
-					$published	= $sql->f("published");
-			
-					$ft->assign(array(	'ID'	=>$id,
-										'TITLE'	=>"&nbsp; &nbsp;- " . $title));
-								
-					if($published == 'Y') {
-
-						$ft->assign('PUBLISHED', "Tak");
-					} else {
-				
-						$ft->assign('PUBLISHED', "Nie");
-					}						
-			
-					// deklaracja zmiennej $idx1::color switcher
-					$idx1 = empty($idx1) ? '' : $idx1;
-				
-					$idx1++;
-			
-					// naprzemienne kolorowanie wierszy tabeli
-					if (($idx1%2)==1) {
-				
-						$ft->assign('ID_CLASS', "id=\"mainList\"");
-						$ft->parse('NOTE_ROWS',	".table_pagelist");
-					} else {
-				
-						$ft->assign('ID_CLASS', "id=\"mainListAlter\"");
-						$ft->parse('NOTE_ROWS',	".table_pagelist");
-					}
-				}
+				get_editpage_cat($page_id, 2);
 			}
 		
 			$ft->parse('ROWS',	".header_pagelist");
