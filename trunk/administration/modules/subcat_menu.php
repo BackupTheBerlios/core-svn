@@ -38,7 +38,12 @@ switch($p){
 	case '12':
 		$ft->define('menu_links', "menu_links.tpl");
 		$ft->parse('SUBCAT_MENU', ".menu_links");
-		break;	
+		break;
+		
+	case '14':
+		$ft->define('menu_templates', "menu_templates.tpl");
+		$ft->parse('SUBCAT_MENU', ".menu_templates");
+		break;
 	
 	default:
 		break;

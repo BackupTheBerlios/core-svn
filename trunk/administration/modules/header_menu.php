@@ -32,7 +32,11 @@ switch($p){
 	case '11':
 	case '12':
 		$ft->assign('LINKS_CURRENT', 'id="current"');
-		break;	
+		break;
+		
+	case '14':
+		$ft->assign('TEMPLATES_CURRENT', 'id="current"');
+		break;
 	
 	default:
 		$ft->assign('MAIN_CURRENT', 'id="current"');
