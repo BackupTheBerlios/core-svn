@@ -31,25 +31,33 @@ switch($action) {
 		break;
 		
 	case "show":
+
+		$ft->define('form_templateedit', "form_templateedit.tpl");
 			
 		$tpl 		= empty($_GET['id']) ? '' : $_GET['id'];
 		$template 	= "../templates/main/tpl/" . $tpl . ".tpl";
 		
-		$file_content = file_get_contents($template);
+		$file_content = @file_get_contents($template);
+    if ($file_content) {
 		
-		// Sztywna obs³uga </textarea> w szablonie, aby by³
-		// on wy¶wietlany poprawnie w polu formularza
-		$file_content = str_replace('</textarea>', '&lt;/textarea>', $file_content);
-		
-		// Zabronimy FT ukrywanie nie przydzielonych zmiennych
-		// dziêki temu widaæ je przy edycji danego szablonu
-		$ft->strict();
-		
-		$ft->assign(array(	'FILE_CONTENT'	=>$file_content,
-							'TEMPLATE'		=>"/ " . $tpl . ".tpl",
-							'TEMPLATE_NAME'	=>$tpl));
+      // Sztywna obs³uga </textarea> w szablonie, aby by³
+      // on wy¶wietlany poprawnie w polu formularza
+      $file_content = str_replace('</textarea>', '&lt;/textarea>', $file_content);
+      
+      // Zabronimy FT ukrywanie nie przydzielonych zmiennych
+      // dziêki temu widaæ je przy edycji danego szablonu
+      $ft->strict();
+      
+      $ft->assign(array(	'FILE_CONTENT'	=>$file_content,
+                'TEMPLATE'		=>"/ " . $tpl . ".tpl",
+                'TEMPLATE_NAME'	=>$tpl));
+    } else {
+
+      $ft->assign(array(	'FILE_CONTENT'	=> '',
+                'TEMPLATE'		=> '',
+                'TEMPLATE_NAME'	=> ''));
+    }
 							
-		$ft->define('form_templateedit', "form_templateedit.tpl");
 		$ft->parse('ROWS',	".form_templateedit");
 		break;
 
@@ -72,7 +80,7 @@ $dir = @dir($path);
 while($file = $dir->read()) {
   $ext = str_getext($file, false);
   
-  if(!in_array($ext, array('php', 'txt', 'html')) && !in_array($file, array('.', '..'))) {
+  if(!in_array($ext, array('php', 'txt', 'html')) && !in_array($file, array('.', '..', '.svn'))) {
 		$file = explode('.', $file);
 				
 		$ft->assign(array(	'FILE'		=>$file[0] . "." . $file[1],
