@@ -1,1 +1,1 @@
-<dd class="link"><a href="1,{PAGE_ID},5,item.html">{PAGE_NAME}</a></dd>
+<li>{PARENT}<a href="1,{PAGE_ID},5,item.html">{PAGE_NAME}</a></li>

@@ -1,5 +1,4 @@
 <span><b>MENU</b></span><br />
-<br />
-<dl>
+<ul>
 {PAGES_LIST}
-</dl>
+</ul>
