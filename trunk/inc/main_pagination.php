@@ -2,7 +2,7 @@
 
 function main_pagination($url, $q, $p, $published, $table) {
 	
-	global $start, $days_to, $mysql_data, $mainposts_per_page, $page_string;
+	global $days_to, $mysql_data, $mainposts_per_page, $page_string;
 	
 	// Egzemplarz klasy obs³uguj±cej konfiguracjê wy¶wietlanych wpisów
 	$data_b = new MySQL_DB;
@@ -32,6 +32,8 @@ function main_pagination($url, $q, $p, $published, $table) {
 		
 		echo '';
 	}
+	
+	$start = ( isset($_GET['start']) ) ? intval($_GET['start']) : 0;
 	
 	// Obliczanie strony, na której obecnie jestesmy
 	$on_page = floor($start / $mainposts_per_page) + 1;
