@@ -1,13 +1,5 @@
 #Main RewriteRule's
 
-<Files index>
-ForceType application/x-httpd-php
-</Files>
-
-<Files design>
-ForceType application/x-httpd-php
-</Files>
-
 Options FollowSymLinks
 
 RewriteEngine On
@@ -26,11 +18,20 @@ RewriteRule ^search\.(.*)\.(.*)$ index?p=search&search_word=$1&start=$2 [L]
 RewriteRule ^index\.(.*)$ index?start=$1 [L]
 RewriteRule ^2,(.*),item.html$ design?issue=$1 [L]
 RewriteRule ^index$ index [L]
+RewriteRule ^rss$ rss [L]
+RewriteRule ^source\.(.*)$ source?id=$1 [L]
+
+<Files index>
+ForceType application/x-httpd-php
+</Files>
+
+<Files design>
+ForceType application/x-httpd-php
+</Files>
 
 <Files source>
 ForceType application/x-httpd-php
 </Files>
-RewriteRule ^source\.(.*)$ source?id=$1 [L]
 
 <Files rss>
 ForceType application/x-httpd-php
@@ -39,8 +40,3 @@ ForceType application/x-httpd-php
 <Files rsscomments>
 ForceType application/x-httpd-php
 </Files>
-
-Options FollowSymLinks
-
-RewriteEngine On
-RewriteRule ^rss$ rss [L]
