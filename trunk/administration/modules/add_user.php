@@ -45,6 +45,9 @@ switch ($action)
 
 	default:
 		// w przypadku braku akcji wy¶wietlanie formularza
+		$ft->assign(array(
+			'SUBMIT_HREF_DESC'	=>"Dodaj u¿ytkownika",
+			'SUBMIT_URL'		=>"add,7,action.html"));
 		$ft->parse('ROWS', ".form_useradd");
 }
 
