@@ -17,7 +17,7 @@ if(is_numeric($_GET['id'])) {
 						GROUP BY a.date 
 						DESC LIMIT $start, $mainposts_per_page");
 	
-	if($data_base->num_rows() !== 0) {
+	if($data_base->num_rows() > 0) {
 
 		while($data_base->next_record()) {
 	
@@ -57,7 +57,7 @@ if(is_numeric($_GET['id'])) {
 
 			if(($comments_allow) == 0 ) {
 			
-				$ft->assign(array('COMMENTS_ALLOW'	=>"<br />"));
+				$ft->assign('COMMENTS_ALLOW', "<br />");
 			} else {
 		
 				if($comments == 0) {
