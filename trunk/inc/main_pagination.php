@@ -21,11 +21,23 @@ function main_pagination($url, $q, $p, $published, $table) {
 	$num_items 	= $data_b->f("0");
 
 	$total_pages = empty($total_pages) ? '' : $total_pages;
+
+	$start = ( isset($_GET['start']) ) ? intval($_GET['start']) : 0;
 	
 	// Obliczanie liczby stron
-	if ($num_items > $mainposts_per_page) {	
+	if ($mainposts_per_page != 0) {
 		
-		$total_pages = ceil($num_items/$mainposts_per_page);
+		if ($num_items > $mainposts_per_page) {	
+		
+			$total_pages = ceil($num_items/$mainposts_per_page);
+		}
+
+		// Obliczanie strony, na której obecnie jestesmy
+		$on_page = floor($start / $mainposts_per_page) + 1;
+	} else {
+
+		$total_pages = 0;
+		$on_page = 0;
 	}
 	
 	if ( $total_pages == 1 ) {
@@ -33,11 +45,6 @@ function main_pagination($url, $q, $p, $published, $table) {
 		echo '';
 	}
 	
-	$start = ( isset($_GET['start']) ) ? intval($_GET['start']) : 0;
-	
-	// Obliczanie strony, na której obecnie jestesmy
-	$on_page = floor($start / $mainposts_per_page) + 1;
-
 	$page_string = '';
 	
 	if ( $total_pages > 6 ) {
