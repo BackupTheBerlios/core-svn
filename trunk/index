@@ -1,6 +1,6 @@
 <?php
 
-define('PATH_TO_CLASSES',    get_root() . 'administration/classes');
+define('PATH_TO_CLASSES', 'administration/classes');
 
 require_once(PATH_TO_CLASSES. '/cls_db_mysql.inc'); // dodawanie pliku konfigurujacego bibliotekê baz danych
 require_once(PATH_TO_CLASSES. '/cls_phpmailer.php'); // dodawanie pliku konfigurujacego bibliotekê wysy³ania mail'i
@@ -118,7 +118,7 @@ switch($p){
     case '2': 
         include('modules/comments_view.php');
         if(is_numeric($_GET['id'])) {
-            if($db->num_rows() > ) {
+            if($db->num_rows()) {
             
                 $ft->parse('MAIN', array('comments_main', 'main'));
             } else {
