@@ -1,6 +1,6 @@
 <?php
 
-$ctime = time()+2592000;
+$ctime = time()+3600*86400;
 $cname 	= "devlog_design";
 
 $val = empty($val) ? '' : $val;
