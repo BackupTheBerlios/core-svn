@@ -1,0 +1,54 @@
+<?php
+
+require("administration/classes/cls_db_mysql.inc"); // dodawanie pliku konfigurujacego bibliotekê baz danych
+require("administration/classes/cls_fast_template.php");
+require("administration/inc/config.php");
+
+if(isset($_COOKIE['devlog_design']) && is_dir('./templates/' . $_COOKIE['devlog_design'] . '/tpl/')){
+			
+	$theme = $_COOKIE['devlog_design'];
+} elseif (is_dir('./templates/main/tpl')) {
+
+	$theme = 'main';
+} else {
+	
+	echo '<div style="font-family: Arial, sans-serif; font-size: 16px; background-color: #ccc; border: 1px solid red; padding: 15px; text-align: center;">Brak wybranego skina do systemu <strong>CORE</strong></div>';
+	exit;
+}
+
+@setcookie('devlog_design', $theme, time() + 3600 * 24 * 365);
+
+
+// inicjowanie klasy, wkazanie katalogu przechowuj±cego szablony
+$ft = new FastTemplate("./templates/" . $theme . "/tpl/");
+
+$db = new MySQL_DB;
+
+$ft->define(array(	
+		'photo_main' 			=>"photo_main.tpl",
+		'note_main'				=>"note_main.tpl",
+		'rows'					=>"rows.tpl",
+		'query_failed'			=>"query_failed.tpl"
+));
+
+// set {TITLE} variable
+// tytu³ strony, wy¶wietlany w miejscu title::db
+$query = "	SELECT 
+				config_value 
+			FROM 
+				$mysql_data[db_table_config] 
+			WHERE 
+				config_name = 'title_page'";
+	
+$db->query($query);
+$db->next_record();
+$title_page = $db->f("config_value");				
+		
+$ft->assign('TITLE', $title_page);
+
+include("modules/photo_view.php");
+$ft->parse('MAIN', array("note_main", "photo_main"));
+$ft->FastPrint();
+exit;
+
+?>
