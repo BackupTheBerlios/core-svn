@@ -64,12 +64,12 @@ if($db->num_rows() !== 0) {
 							'CATEGORY_NAME'		=>$c_name,
 							'NEWS_CATEGORY'		=>$c_id));
 
-		if($page_string !== "") {
+		if($pagination['page_string'] !== "") {
 		
-			$ft->assign('STRING', "<b>Id¼ do strony:</b> " . $page_string);
+			$ft->assign('STRING', "<b>Id¼ do strony:</b> " . $pagination['page_string']);
 		} else {
 		
-			$ft->assign('STRING', $page_string);
+			$ft->assign('STRING', $pagination['page_string']);
 		}
 	
 		if(($comments_allow) == 0 ) {
