@@ -128,7 +128,19 @@ switch($p){
 	case '10': 
 		include('modules/core_configuration.php');
 		$ft->parse('MAIN', array("main_loader", "index"));
-		break;	
+		break;
+		
+	// dodanie nowego linku	
+	case '11': 
+		include('modules/add_links.php');
+		$ft->parse('MAIN', array("main_loader", "index"));
+		break;
+		
+	// edycja|usuwanie istniej±cych linków	
+	case '12': 
+		include('modules/edit_links.php');
+		$ft->parse('MAIN', array("main_loader", "index"));
+		break;
 	
 	// domy¶lnie	
 	default:
