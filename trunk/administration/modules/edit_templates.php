@@ -13,11 +13,20 @@ switch($action) {
 		$template   = $_POST['template_name'];
 		$text		= $_POST['text'];
 		
-		$fp		= @fopen('../templates/main/tpl/' . $template . '.tpl', 'w');
-		$result = @fputs($fp, $text, strlen($text));
-		@fclose($fp);
-	
-		$ft->assign('CONFIRM', "Szablon zosta³ Zapisany.");
+		$tpl = 	'../templates/main/tpl/' . $template . '.tpl';
+		
+		if(is_writeable($tpl)) {
+			
+			$fp	= fopen($tpl, 'w+');
+			fwrite($fp, stripslashes($text));
+			fclose($fp);
+		
+			$ft->assign('CONFIRM', "Szablon zosta³ Zapisany.");
+		} else {
+			
+			$ft->assign('CONFIRM', "Nie uda³o siê edytowaæ szablonu.");
+		}
+		
 		$ft->parse('ROWS',	".result_note");
 		break;
 		
