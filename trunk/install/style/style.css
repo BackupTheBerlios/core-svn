@@ -10,6 +10,10 @@ html, body {
 	width: 365px;
 	margin: auto;
 }
+
+#content {
+	height: 320px;
+}
 		
 #header {
 	padding: 5px;
