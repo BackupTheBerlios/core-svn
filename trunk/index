@@ -1,98 +1,103 @@
 <?php
 
-define("PATH_TO_CLASSES",	"administration/classes");
+define('PATH_TO_CLASSES',    get_root() . 'administration/classes');
 
-require_once(PATH_TO_CLASSES. "/cls_db_mysql.inc"); // dodawanie pliku konfigurujacego bibliotekê baz danych
-require_once(PATH_TO_CLASSES. "/cls_phpmailer.php"); // dodawanie pliku konfigurujacego bibliotekê wysy³ania mail'i
-require_once(PATH_TO_CLASSES. "/cls_fast_template.php");
+require_once(PATH_TO_CLASSES. '/cls_db_mysql.inc'); // dodawanie pliku konfigurujacego bibliotekê baz danych
+require_once(PATH_TO_CLASSES. '/cls_phpmailer.php'); // dodawanie pliku konfigurujacego bibliotekê wysy³ania mail'i
+require_once(PATH_TO_CLASSES. '/cls_fast_template.php');
 
 if(is_file('administration/inc/config.php')) {
-	require_once("administration/inc/config.php");
+    require_once('administration/inc/config.php');
 }
 
-if(!defined("CORE_INSTALLED")) {
-	header("Location: install/install");
-	exit;
+if(!defined('CORE_INSTALLED')) {
+    header('Location: install/install');
+    exit;
 }
 
 // egzemplarz klasy obs³uguj±cej bazê danych Core
 $db = new MySQL_DB;
 
-require_once("inc/main_functions.php");
-require_once("counter/addhit.php");
-	
+require_once('inc/main_functions.php');
+require_once('counter/addhit.php');
+    
 // warto¶æ pocz¹tkowa zmiennej $start -> potrzebna przy stronnicowaniu
 $start = ( isset($_GET['start']) ) ? intval($_GET['start']) : 0;
 
-include("inc/main_pagination.php");
+include('inc/main_pagination.php');
 
 $val = empty($val) ? '' : $val;
 
 
 if(isset($_COOKIE['devlog_design']) && is_dir('./templates/' . $_COOKIE['devlog_design'] . '/tpl/')){
-			
-	$theme = $_COOKIE['devlog_design'];
+            
+    $theme = $_COOKIE['devlog_design'];
 } elseif (is_dir('./templates/main/tpl')) {
 
-	$theme = 'main';
+    $theme = 'main';
 } else {
-	
-	echo '<div style="font-family: Arial, sans-serif; font-size: 16px; background-color: #ccc; border: 1px solid red; padding: 15px; text-align: center;">Brak wybranego skina do systemu <strong>CORE</strong></div>';
-	exit;
+    
+  /*
+   *do wywalenia do zewnetrznego szablonu
+   *html musi byc tylko w .tpl
+   *
+   */
+    echo '<div style="font-family: Arial, sans-serif; font-size: 16px; background-color: #ccc; border: 1px solid red; padding: 15px; text-align: center;">Brak wybranego skina do systemu <strong>CORE</strong></div>';
+    exit;
 }
 
 @setcookie('devlog_design', $theme, time() + 3600 * 24 * 365);
 
 
 // inicjowanie klasy, wkazanie katalogu przechowuj±cego szablony
-$ft = new FastTemplate("./templates/" . $theme . "/tpl/");
+$ft = new FastTemplate('./templates/' . $theme . '/tpl/');
 
-$ft->define(array(	
-		'main' 					=>"main.tpl",
-		'note_main'				=>"note_main.tpl",
-		'rss_view'				=>"rss_view.tpl",
-		'main_denied'			=>"main_denied.tpl",
-		'comments_main'			=>"comments_main.tpl",
-		'comments_alter'		=>"comments_alter.tpl",
-		'rows'					=>"rows.tpl",
-		'single_rows'			=>"single_rows.tpl",
-		'comments_form'			=>"comments_form.tpl",
-		'comments_rows'			=>"comments_rows.tpl",
-		'comments_submit'		=>"comments_submit.tpl",
-		'category_list'			=>"category_list.tpl",
-		'newsletter'			=>"newsletter.tpl",
-		'query_failed'			=>"query_failed.tpl"
+$ft->define(array(    
+    'main'              =>'main.tpl',
+    'note_main'         =>'note_main.tpl',
+    'rss_view'          =>'rss_view.tpl',
+    'main_denied'       =>'main_denied.tpl',
+    'comments_main'     =>'comments_main.tpl',
+    'comments_alter'    =>'comments_alter.tpl',
+    'rows'              =>'rows.tpl',
+    'single_rows'       =>'single_rows.tpl',
+    'comments_form'     =>'comments_form.tpl',
+    'comments_rows'     =>'comments_rows.tpl',
+    'comments_submit'   =>'comments_submit.tpl',
+    'category_list'     =>'category_list.tpl',
+    'newsletter'        =>'newsletter.tpl',
+    'query_failed'      =>'query_failed.tpl'
 ));
 
-					
+                    
 // ustawiamy {TITLE}
 $query = sprintf("
-            SELECT 
-                config_value 
-            FROM 
-                %1\$s 
-            WHERE 
-                config_name = '%2\$s'", 
-            
-            $mysql_data['db_table_config'], 
-            "title_page"
+    SELECT 
+        config_value 
+    FROM 
+        %s 
+    WHERE 
+        config_name = '%s'",
+    
+    $mysql_data['db_table_config'], 
+    'title_page'
 );
-	
+    
 $db->query($query);
 $db->next_record();
 
-$title_page = $db->f("config_value");				
-		
+$title_page = $db->f('config_value');                
+        
 $ft->assign(array(
     'TITLE'             =>$title_page,
-    'STATISTICS'        =>"Wizyty: " . $hitnumber,
+    'STATISTICS'        =>'Wizyty: ' . $hitnumber,
     'ENGINE_VERSION'    =>"<a href=\"javascript:mail('lark', 'no1-else.com', 'core_engine');\">core engine</a>: 1.0RC1a"
 ));
 
 $inc_modules = array(
-    "category_list",
-    "pages_list",
-    "links_list"
+    'category_list',
+    'pages_list',
+    'links_list'
 );
 
 foreach($inc_modules as $module) {
@@ -100,71 +105,71 @@ foreach($inc_modules as $module) {
     // ³adowanie dodatkowych modu³ów
     include('modules/' . $module . '.php');
 }
-					
+                    
 // G³ówna prze³¹cznica includowanej treœci
 $p = empty($_GET['p']) ? '' : $_GET['p'];
 switch($p){
-			
-	case '1': 
-		include('modules/alter_view.php');
-		$ft->parse('MAIN', array("note_main", "main"));
-		break;
-		
-	case '2': 
-		include('modules/comments_view.php');
-		if(is_numeric($_GET['id'])) {
-			if($db->num_rows() !== 0) {
-			
-				$ft->parse('MAIN', array("comments_main", "main"));
-			} else {
-			
-				$ft->parse('MAIN', array("note_main", "main"));
-			}
-		} else {
-			
-			$ft->parse('MAIN', array("note_main", "main"));
-		}
-		break;
-		
-	case '3':
-		include('modules/comments_add.php');
-		if(empty($_GET['action'])) {
-				
-			$ft->parse('MAIN', array("comments_alter", "main"));
-		} else {
-				
-			$ft->parse('MAIN', array("comments_submit", "main"));
-		}
-		break;
-		
-	case '4':
-		include('modules/category_view.php');
-		$ft->parse('MAIN', array("note_main", "main"));
-		break;
-		
-	case '5':
-		include('modules/pages_view.php');
-		$ft->parse('MAIN', array("note_main", "main"));
-		break;
-		
-	case '6':
-		include('modules/articles_view.php');
-		$ft->parse('MAIN', array("note_main", "main"));
-		break;		
-		
-	case 'newsletter':
-		include('modules/newsletter.php');
-		$ft->parse('MAIN', array("newsletter", "main"));
-		break;
-		
-	case 'search':
-		include('modules/search.php');
-		$ft->parse('MAIN', array("note_main", "main"));
-		break;
-		
-	default:
-		include("modules/main_view.php");
-		$ft->parse('MAIN', array("note_main", "main"));
+            
+    case '1': 
+        include('modules/alter_view.php');
+        $ft->parse('MAIN', array('note_main', 'main'));
+        break;
+        
+    case '2': 
+        include('modules/comments_view.php');
+        if(is_numeric($_GET['id'])) {
+            if($db->num_rows() > ) {
+            
+                $ft->parse('MAIN', array('comments_main', 'main'));
+            } else {
+            
+                $ft->parse('MAIN', array('note_main', 'main'));
+            }
+        } else {
+            
+            $ft->parse('MAIN', array('note_main', 'main'));
+        }
+        break;
+        
+    case '3':
+        include('modules/comments_add.php');
+        if(empty($_GET['action'])) {
+                
+            $ft->parse('MAIN', array('comments_alter', 'main'));
+        } else {
+                
+            $ft->parse('MAIN', array('comments_submit', 'main'));
+        }
+        break;
+        
+    case '4':
+        include('modules/category_view.php');
+        $ft->parse('MAIN', array('note_main', 'main'));
+        break;
+        
+    case '5':
+        include('modules/pages_view.php');
+        $ft->parse('MAIN', array('note_main', 'main'));
+        break;
+        
+    case '6':
+        include('modules/articles_view.php');
+        $ft->parse('MAIN', array('note_main', 'main'));
+        break;        
+        
+    case 'newsletter':
+        include('modules/newsletter.php');
+        $ft->parse('MAIN', array('newsletter', 'main'));
+        break;
+        
+    case 'search':
+        include('modules/search.php');
+        $ft->parse('MAIN', array('note_main', 'main'));
+        break;
+        
+    default:
+        include('modules/main_view.php');
+        $ft->parse('MAIN', array('note_main', 'main'));
 }
 
 $ft->FastPrint();
