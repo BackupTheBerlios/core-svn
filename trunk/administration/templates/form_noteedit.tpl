@@ -44,6 +44,10 @@
 		</td>
 	</tr>
 	<tr>
+		<td class="form" width="80" align="right">Komentarze:&nbsp;</td>
+		<td class="form" width="224" align="left">{COMMENTS_YES}- zezwalaj&nbsp;{COMMENTS_NO}- nie zewalaj</td>
+	</tr>
+	<tr>
 		<td class="form" width="80" align="right">Publikowana:&nbsp;</td>
 		<td class="form" width="224" align="left">{CHECKBOX_YES}- tak&nbsp;{CHECKBOX_NO}- nie</td>
 	</tr>
