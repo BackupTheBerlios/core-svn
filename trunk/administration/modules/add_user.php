@@ -29,7 +29,7 @@ switch ($action)
 			$date		= date("Y-m-d H:i:s");
 			
 			$login		= $_POST['login_name'];
-			$password	= $_POST['password'];
+			$password	= md5($_POST['password']);
 			$email		= $_POST['email'];
 			
 			// egzemplarz klasy ³aduj±cej komentarz do bazy danych
