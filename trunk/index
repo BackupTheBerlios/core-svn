@@ -5,12 +5,16 @@ define("PATH_TO_CLASSES",	"administration/classes");
 require_once(PATH_TO_CLASSES. "/cls_db_mysql.inc"); // dodawanie pliku konfigurujacego bibliotekê baz danych
 require_once(PATH_TO_CLASSES. "/cls_phpmailer.php"); // dodawanie pliku konfigurujacego bibliotekê wysy³ania mail'i
 require_once(PATH_TO_CLASSES. "/cls_fast_template.php");
-require_once(PATH_TO_CLASSES. "/cls_rss_parser.php");
 
 require_once("administration/inc/config.php");
-require_once("counter/addhit.php");
+
+if(!defined("CORE_INSTALLED") ) {
+	header("Location: install/install");
+	exit;
+}
 
 require_once("inc/main_functions.php");
+require_once("counter/addhit.php");
 	
 // warto¶æ pocz¹tkowa zmiennej $start -> potrzebna przy stronnicowaniu
 $start = ( isset($_GET['start']) ) ? intval($_GET['start']) : 0;
@@ -162,7 +166,6 @@ switch($p){
 		include("modules/main_view.php");
 		$ft->parse('MAIN', array("note_main", "main"));
 }
-
 
 $ft->FastPrint();
 exit;
