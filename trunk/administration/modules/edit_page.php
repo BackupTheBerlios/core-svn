@@ -72,11 +72,7 @@ if (empty($action)) {
 		$ft->assign('CONFIRM', "W bazie danych nie ma ¿adnych wpisów");
 		$ft->parse('ROWS',	".result_note");
 	}
-}
-
-
-// wy¶wietlanie wpisu pobranego do modyfikacji
-if ($action == "show") {
+} elseif ($action == "show") {// wy¶wietlanie wpisu pobranego do modyfikacji
 	
 	$query = "	SELECT * 
 				FROM 
@@ -110,10 +106,7 @@ if ($action == "show") {
 
 	$ft->parse('ROWS',	".form_pageedit");
 	
-}
-
-// edycja wybranego wpisu
-if ($action == "edit") {
+} elseif ($action == "edit") {// edycja wybranego wpisu
 	
 	$text		= nl2br($_POST['text']);
 	$title		= $_POST['title'];
@@ -134,10 +127,7 @@ if ($action == "edit") {
 	$ft->assign('CONFIRM', "Strona zosta³a zmodyfikowana.");
 	$ft->parse('ROWS',	".result_note");
 	
-}
-
-// usuwanie wybranego wpisu
-if ($action == "delete") {
+} elseif ($action == "delete") {// usuwanie wybranego wpisu
 	
 	$query = "	DELETE FROM 
 					$mysql_data[db_table_pages] 
