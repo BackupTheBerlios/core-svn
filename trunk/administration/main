@@ -33,8 +33,8 @@ $ft->define(array(	// g³ówne szablony parsowane w celu wy¶wietlenia strony
 					// szablon obs³uguj±cy error handlera, jak i dodatkowe komunikaty
 					'result_note'				=>"result_note.tpl"));
 		
-$ft->assign(array(	'TITLE'				=>"CORE - panel administracyjny",
-					'LOGGED_IN'			=>$_SESSION['login']));
+$ft->assign(array(	'PAGE_TITLE'	=>"CORE - panel administracyjny",
+					'LOGGED_IN'		=>$_SESSION['login']));
 
 
 $inc_modules = array(
