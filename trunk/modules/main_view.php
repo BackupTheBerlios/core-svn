@@ -3,7 +3,6 @@
 // inicjowanie funkcji stronnicuj±cej wpisy
 $pagination = main_pagination('index.', '', 'mainposts_per_page', 'AND published = \'Y\'', 'db_table');
 
-$db = new MySQL_DB;
 $query = "
 	SELECT 
 		a.*,
