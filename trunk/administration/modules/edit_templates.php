@@ -43,7 +43,7 @@ switch($action) {
 		
 		// Zabronimy FT ukrywanie nie przydzielonych zmiennych
 		// dziêki temu widaæ je przy edycji danego szablonu
-		$ft->no_strict();
+		$ft->strict();
 		
 		$ft->assign(array(	'FILE_CONTENT'	=>$file_content,
 							'TEMPLATE'		=>"/ " . $tpl . ".tpl",
