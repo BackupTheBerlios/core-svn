@@ -66,24 +66,6 @@
 			{LINKS_LIST}
 		<!-- end links list -->
 		</ul>
-		<br />
-		
-		<span class="title">czasami czytane</span>
-		<br />
-		<ul>
-		<!-- links list/links list template parsed -->
-			<li><a href="http://czasopismo.pl" target="_blank">czasopismo.pl</a></li>
-			<li><a href="http://opi.pegasos.pl" target="_blank">opi.pegasos.pl</a></li>
-			<li><a href="http://diary.e-gandalf.net" target="_blank">diary.e-gandalf.net</a></li>
-			<li><a href="http://diary.urzenia.net" target="_blank">diary.urzenia.net</a></li>
-			<li><a href="http://marcoos.jogger.pl" target="_blank">marcoos.jogger.pl</a></li>
-			<li><a href="http://usagi.pl/secret/diary/" target="_blank">usagi.pl/secret/diary</a></li>
-			<li><a href="http://joanne.no1-else.com/diary/" target="_blank">joanne.no1-else.com/diary</a></li>
-			<li><a href="http://slasher.tq.pl" target="_blank">slasher.tq.pl</a></li>
-			<li><a href="http://lovebeer.blog.pl" target="_blank">lovebeer.blog.pl</a></li>
-			<li><a href="http://bocznica.blox.pl/" target="_blank">bocznica.blox.pl</a></li>
-		<!-- end links list -->	
-		</ul>
 		
 		<br />
 		
