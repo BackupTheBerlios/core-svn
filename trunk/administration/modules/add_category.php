@@ -20,7 +20,7 @@ switch ($action)
 
 	default:
 		// przydzielenie zmiennych::array
-		$ft->assign(array(	'SUBMIT_URL'		=>"note.addcategory",
+		$ft->assign(array(	'SUBMIT_URL'		=>"add,8,action.html",
 							'CATNAME_VALUE'		=>"",
 							'CATNAME_DESC'		=>"",
 							'SUBMIT_HREF_DESC'	=>"dodaj now± kategoriê",
