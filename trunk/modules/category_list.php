@@ -14,7 +14,7 @@ $db->query($query);
 while($db->next_record()) {
 
     $ft->assign(array(
-        'CAT_NAME' => str_replace('&', '&amp;', $sql->f('category_name')),
+        'CAT_NAME' => str_replace('&', '&amp;', $db->f('category_name')),
         'NEWS_CAT' => $db->f('category_id')
     ));
 
