@@ -1,7 +1,9 @@
 <?php
 
 $db = new MySQL_DB;
-$query = "	SELECT 
+
+$query = sprintf("	
+			SELECT 
 				a.*, b.*, c.comments_id, count(c.id) 
 			AS 
 				comments 
@@ -12,7 +14,7 @@ $query = "	SELECT
 			ON 
 				a.id = c.comments_id
 			WHERE 
-				a.id = '$_GET[id]' 
+				a.id = '%1\$d' 
 			AND 
 				b.category_id = a.c_id 
 			AND 
@@ -21,7 +23,7 @@ $query = "	SELECT
 				a.date 
 			DESC 
 			LIMIT 
-				1";
+				1", $_GET['id']);
 
 $db->query($query);
 
