@@ -1,1 +1,0 @@
-<li><a href="{LINK_URL}" target="_blank">{LINK_NAME}</a></li>
