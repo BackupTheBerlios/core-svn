@@ -25,7 +25,7 @@ $query = "	SELECT
 
 $db->query($query);
 
-if($db->num_rows() !== 0) {
+if($db->num_rows() > 0) {
 
 	$db->next_record();
 
