@@ -205,11 +205,11 @@ function get_editpage_cat($page_id, $level) {
 		// naprzemienne kolorowanie wierszy tabeli
 		if (($idx1%2)==1) {
 				
-			$ft->assign('ID_CLASS', "id=\"mainList\"");
+			$ft->assign('ID_CLASS', "class=\"mainList\"");
 			$ft->parse('NOTE_ROWS',	".table_pagelist");
 		} else {
 				
-			$ft->assign('ID_CLASS', "id=\"mainListAlter\"");
+			$ft->assign('ID_CLASS', "class=\"mainListAlter\"");
 			$ft->parse('NOTE_ROWS',	".table_pagelist");
 		}
 		
