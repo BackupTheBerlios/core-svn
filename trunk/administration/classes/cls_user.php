@@ -84,7 +84,7 @@ class user {
 		}
 	
 		// sprawdzanie dozwolonych nazw
-		$unav_logins = array('root', 'bin', 'daemon', 'adm', 'lp', 'sync', 'shutdown', 'halt',
+		$unav_logins = array('admin', 'root', 'bin', 'daemon', 'adm', 'lp', 'sync', 'shutdown', 'halt',
 			'mail', 'news', 'uucp', 'operator', 'games', 'mysql', 'httpd', 'nobody', 'dummy',
 			'www', 'cvs', 'shell', 'ftp', 'irc', 'debian', 'ns', 'download');
 		if(in_array($name, $unav_logins)) {
