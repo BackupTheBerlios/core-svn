@@ -6,12 +6,12 @@ $comment_author = empty($_COOKIE['devlog_comment_user']) ? '' : $_COOKIE['devlog
 
 if (!isset($_GET['action'])){
 	
+	// Tworzymy egzemplarz nowej klasy
+	$data_base = new MySQL_DB;
+
 	// Je¶li wpis jest cytowany::request
 	if(isset($_GET['c'])) {
 		
-		// Tworzymy egzemplarz nowej klasy
-		$data_base = new MySQL_DB;
-
 		// Pobieramy tekst cytowanego wpisu::db
 		$data_base->query("	SELECT text 
 							FROM $mysql_data[db_table_comments] 
@@ -52,8 +52,6 @@ if (!isset($_GET['action'])){
 							'STRING'		=>$page_string));
 	} else {
 		
-		// Tworzymy egzemplarz nowej klasy
-		$data_base = new MySQL_DB;
 		$data_base->query("	SELECT id, title 
 							FROM $mysql_data[db_table] 
 							WHERE id = '$_GET[id]' 
@@ -116,22 +114,19 @@ if (@$_GET['action']=="add") {
 		$text = strip_tags($text, '<br>');
 		
 		// [b] i [/b] dla tekstu pogrubionego.
-		$text = preg_replace('/\[b\]([^\"]+)\[\/(b)\]/','<b>\\1</\\2>', $text);
+		$text = preg_replace('/\[b\]([^\"]+)\[\/b\]/','<b>\\1</b>', $text);
 		
 		// [i] i [/i] dla tekstu pochylonego.
-		$text = preg_replace('/\[i\]([^\"]+)\[\/(i)\]/','<i>\\1</\\2>', $text);
+		$text = preg_replace('/\[i\]([^\"]+)\[\/i\]/','<i>\\1</i>', $text);
 		
 		// [u] i [/u] dla tekstu podkre¶lonego.
-		$text = preg_replace('/\[u\]([^\"]+)\[\/(u)\]/','<u>\\1</\\2>', $text);
-		
-		// [quote] i [/quote] dla tekstu cytowanego.
-		$text = preg_replace('/\[quote\]([^\"]+)\[\/(quote)\]/','<div class="quote">\\1</div>', $text);
+		$text = preg_replace('/\[u\]([^\"]+)\[\/u\]/','<u>\\1</u>', $text);
 		
 		// [abbr] i [/abbr] dla akronimów.
-		$text = preg_replace('/\[abbr=([^\"]+)\]([^\"]+)\[\/(abbr)\]/','<abbr title="\\1">\\2</\\3>', $text);
+		$text = preg_replace('/\[abbr=([^\"]+)\]([^\"]+)\[\/abbr\]/','<abbr title="\\1">\\2</abbr>', $text);
 		
 		// [link] i [/link] dla odsy³aczy.
-		$text = preg_replace('/\[link=([^\"]+)\]([^\"]+)\[\/(link)\]/','<a href="\\1" target="_blank">\\2</a>', $text);
+		$text = preg_replace('/\[link=([^\"]+)\]([^\"]+)\[\/link\]/','<a href="\\1" target="_blank">\\2</a>', $text);
 		
 		$match_count = preg_match_all("#\[quote\](.*?)\[/quote\]#si", $text, $matches);
 		
@@ -153,10 +148,7 @@ if (@$_GET['action']=="add") {
 		$cn 	= "devlog_comment_user";
 		$value 	= $author;
 		
-		if(!isset($_COOKIE['devlog_comment_user'])){
-			
-			setcookie($cn, $value, $cl);
-		}
+		setcookie($cn, $value, $cl);
 		
 		// egzemplarz klasy ³aduj¹cej komentarz do bazy danych
 		$d_base = new MySQL_DB;
