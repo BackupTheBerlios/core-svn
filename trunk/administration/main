@@ -30,42 +30,23 @@ $ft->define(array(	// g³ówne szablony parsowane w celu wy¶wietlenia strony
 					'main_loader'				=>"main_loader.tpl",
 					'main_site'					=>"main_site.tpl",
 					
-					// forms for display/editing data::user
-					'form_category'				=>"form_category.tpl",
-					'form_categoryoption'		=>"form_categoryoption.tpl",
-					'form_commentsedit'			=>"form_commentsedit.tpl",
-					'form_configuration'		=>"form_configuration.tpl",
-					'form_login'				=>"form_login.tpl",
-					'form_noteadd'				=>"form_noteadd.tpl",
-					'form_noteedit'				=>"form_noteedit.tpl",
-					'form_pageadd'				=>"form_pageadd.tpl",
-					'form_pageedit'				=>"form_pageedit.tpl",
-					'form_useradd'				=>"form_useradd.tpl",
-					
-					// table headers for list data::db
-					'header_commentslist'		=>"header_commentslist.tpl",
-					'header_categorylist'		=>"header_categorylist.tpl",
-					'header_notelist'			=>"header_notelist.tpl",
-					'header_pagelist'			=>"header_pagelist.tpl",
-					'header_mostcommentslist'	=>"header_mostcommentslist.tpl",
-					
-					// table bodys for list data::db
-					'table_categorylist'		=>"table_categorylist.tpl",
-					'table_commentslist'		=>"table_commentslist.tpl",
-					'table_mostcommentslist'	=>"table_mostcommentslist.tpl",
-					'table_notelist'			=>"table_notelist.tpl",
-					'table_pagelist'			=>"table_pagelist.tpl",
-					
 					// szablon obs³uguj±cy error handlera, jak i dodatkowe komunikaty
 					'result_note'				=>"result_note.tpl"));
 		
-$ft->assign(array(	'DOCTYPE'			=>"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"en\" xml:lang=\"en\">",
-					'TITLE'				=>"./DEV-LOG - panel administracyjny",
-					'CSS_HREF'			=>"style/style.css",
-					'ENCODING'			=>"text/html; charset=iso-8859-2",
-					'ERROR_MSG'			=>"Przekierowanie zadzia³a³o",
+$ft->assign(array(	'TITLE'				=>"CORE - panel administracyjny",
 					'LOGGED_IN'			=>$_SESSION['login']));
-					
+
+
+$inc_modules = array(
+		"header_menu",
+		"subcat_menu");
+
+foreach($inc_modules as $module) {
+	
+	// ³adowanie dodatkowych modu³ów
+	include('modules/' . $module . '.php');
+}
+
 // prze³±cznica ³adowanej tre¶ci					
 $p = empty($_GET['p']) ? '' : $_GET['p'];
 switch($p){

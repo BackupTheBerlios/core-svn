@@ -24,11 +24,8 @@ $ft->define(array(  'main' 		        =>"main.tpl",
 		    		'rows'				=>"rows.tpl",
 		    		'form_login'		=>"form_login.tpl"));
 		
-$ft->assign(array(  'DOCTYPE'			=>"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">",
-		    		'TITLE'		        =>"./DEV-LOG",
-		    		'CSS_HREF'			=>"style/style.css",
-		    		'ENCODING'			=>"text/html; charset=iso-8859-2",
-		    		'ERROR_MSG'			=>""));
+$ft->assign(array(  'TITLE'				=>"CORE - panel administracyjny",
+					'ERROR_MSG'			=>""));
 
 // deklaracja zmiennej $p
 $p = empty($_GET['p']) ? '' : $_GET['p'];
