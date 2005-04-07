@@ -104,7 +104,7 @@ if($db->num_rows() > 0) {
                 'HEIGHT'    =>$height
             ));
 
-            if($width > 440) {
+            if($width > $max_photo_width) {
 
                 // template prepare
                 $ft->define('image_alter', 'image_alter.tpl');

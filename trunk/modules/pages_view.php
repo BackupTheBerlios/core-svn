@@ -1,43 +1,51 @@
 <?php
 
 $query = sprintf("
-			SELECT * FROM 
-				$mysql_data[db_table_pages] 
-			WHERE 
-				id = '%1\$d' 
-			AND 
-				published = 'Y' 
-			LIMIT 1", $_GET['id']);
+    SELECT * FROM 
+        %1\$s 
+    WHERE 
+        id = '%2\$d' 
+    AND 
+        published = 'Y' 
+    LIMIT 1", 
+
+    $mysql_data['db_table_pages'], 
+    $_GET['id']
+);
 
 $db->query($query);
 
 if($db->num_rows() !== 0) {
-
-	$db->next_record();
-
-	$title 	= $db->f("title");
-	$text 	= $db->f("text");
-	$id 	= $db->f("id");
-	$image	= $db->f("image");
-	
-	$ft->assign(array(	'PAGE_TITLE'	=>ucfirst(strtolower($title)),
-						'PAGE_TEXT'		=>$text,
-						'PAGE_ID'		=>$id));
-	
-	if(empty($image)) {
+    
+    $db->next_record();
+    
+    $title  = $db->f("title");
+    $text   = $db->f("text");
+    $id     = $db->f("id");
+    $image  = $db->f("image");
+    
+    $ft->assign(array(
+        'PAGE_TITLE'    =>ucfirst(strtolower($title)),
+        'PAGE_TEXT'     =>$text,
+        'PAGE_ID'       =>$id
+    ));
+    
+    if(empty($image)) {
 
 		$ft->assign(array('IMAGE' =>""));
 	} else {
+	    
+	    $img_path = get_root() . '/photos/' . $image;
 		
-		if(is_file('photos/' . $image)) {
+		if(is_file($img_path)) {
 			
-			list($width, $height) = getimagesize('photos/' . $image);
+			list($width, $height) = getimagesize($img_path);
 		
 			// wysoko¶æ, szeroko¶æ obrazka
 			$ft->assign(array(	'WIDTH'		=>$width,
 								'HEIGHT'	=>$height));
 		
-			if($width > 440) {
+			if($width > $max_photo_width) {
 			
 				// template prepare
 				$ft->define('image_alter', "image_alter.tpl");

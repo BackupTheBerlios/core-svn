@@ -159,28 +159,35 @@ if(!empty($search_word)) {
 
 				$ft->assign(array('IMAGE' =>""));
 			} else {
+			    
+			    $img_path = get_root() . '/photos/' . $image;
+			    
+			    if(is_file($img_path)) {
 		
-				list($width, $height) = getimagesize("photos/" . $image);
+				    list($width, $height) = getimagesize($img_path);
 				
-				// wysokoæ, szeroko¶æ obrazka
-				$ft->assign(array(	'WIDTH'		=>$width,
-									'HEIGHT'	=>$height));
-		
-				if($width > 440) {
-			
-					// template prepare
-					$ft->define('image_alter', "image_alter.tpl");
-					$ft->assign('UID', $id);
-				
-					$ft->parse('IMAGE', "image_alter");
-				} else {
-			
-					// template prepare
-					$ft->define('image_main', "image_main.tpl");
-					$ft->assign('IMAGE_NAME', $image);
-
-					$ft->parse('IMAGE', "image_main");
-				}
+				    // wysokoæ, szeroko¶æ obrazka
+				    $ft->assign(array(
+				        'WIDTH'     =>$width,
+				        'HEIGHT'    =>$height
+				    ));
+				    
+				    if($width > $max_photo_width) {
+				        
+				        // template prepare
+				        $ft->define('image_alter', "image_alter.tpl");
+				        $ft->assign('UID', $id);
+				        
+				        $ft->parse('IMAGE', "image_alter");
+				    } else {
+				        
+				        // template prepare
+				        $ft->define('image_main', "image_main.tpl");
+				        $ft->assign('IMAGE_NAME', $image);
+				        
+				        $ft->parse('IMAGE', "image_main");
+				    }
+			    }
 			}						
 				
 			$ft->parse('ROWS',".rows");

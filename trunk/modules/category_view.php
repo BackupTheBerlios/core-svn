@@ -108,6 +108,7 @@ if(is_numeric($_GET['id'])) {
             } else {
                 
                 $img_path = get_root() . 'photos/' . $image;
+                
                 if(is_file($img_path)) {
                     list($width, $height) = getimagesize($img_path);
                 
@@ -117,7 +118,7 @@ if(is_numeric($_GET['id'])) {
                         'HEIGHT'    =>$height
                     ));
         
-                    if($width > 440) {
+                    if($width > $max_photo_width) {
             
                         // template prepare
                         $ft->define('image_alter', 'image_alter.tpl');
