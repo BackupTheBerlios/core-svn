@@ -174,7 +174,16 @@ switch ($action) {
 			$query = "	INSERT INTO 
 							$t4 
 						VALUES
-							('title_page', './DEV-LOG')";
+							('title_page', './Core {lektura wcale nie obowi±zkowa}')";
+			
+			$db->query($query);
+			
+			// Ustawiamy maksymaln± szerko¶æ zdjêcia, jakie
+			// jest wyswietlane przy wpisie
+			$query = "	INSERT INTO 
+							$t4 
+						VALUES
+							('max_photo_width', '440')";
 			
 			$db->query($query);
 			
