@@ -136,7 +136,11 @@ input {
 
 input.short {
 	width: 30px;
-}	
+}
+
+input.long {
+	width: 220px;
+}
 			
 textarea {
 	font-family: tahoma; 
