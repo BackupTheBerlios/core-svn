@@ -172,12 +172,16 @@ switch ($action) {
 				$title 		= $db->f("title");
 				$date 		= $db->f("date");
 				$published	= $db->f("published");
+				$author     = $db->f("author");
 			
 				$date = explode(' ', $date);
 			
-				$ft->assign(array(	'ID'		=>$id,
-									'TITLE'		=>$title,
-									'DATE'		=>$date[0]));
+                $ft->assign(array(
+                    'ID'        =>$id,
+                    'TITLE'     =>$title,
+                    'DATE'      =>$date[0],
+                    'AUTHOR'    =>$author
+                ));
 								
 				if($published == 'Y') {
 
@@ -205,13 +209,29 @@ switch ($action) {
 				
 					$ft->assign('ID_CLASS', "class=\"mainList\"");
 					// parsowanie szablonów
-					$ft->define('table_notelist', "table_notelist.tpl");
-					$ft->parse('NOTE_ROWS',	".table_notelist");
+					
+					if($_SESSION['login'] == $author) {
+					    
+					    $ft->define('table_notelist', "table_notelist.tpl");
+					    $ft->parse('NOTE_ROWS',	".table_notelist");
+					} else {
+					    
+					    $ft->define('table_notelist_noprivileges', "table_notelist_noprivileges.tpl");
+					    $ft->parse('NOTE_ROWS',	".table_notelist_noprivileges");
+					}
 				} else {
 				
 					$ft->assign('ID_CLASS', "class=\"mainListAlter\"");
-					$ft->define('table_notelist', "table_notelist.tpl");
-					$ft->parse('NOTE_ROWS',	".table_notelist");
+					
+					if($_SESSION['login'] == $author) {
+					    
+					    $ft->define('table_notelist', "table_notelist.tpl");
+					    $ft->parse('NOTE_ROWS',	".table_notelist");
+					} else {
+					    
+					    $ft->define('table_notelist_noprivileges', "table_notelist_noprivileges.tpl");
+					    $ft->parse('NOTE_ROWS',	".table_notelist_noprivileges");
+					}
 				}
 			}
 		

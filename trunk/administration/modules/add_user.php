@@ -35,7 +35,16 @@ switch ($action)
 			// egzemplarz klasy ³aduj±cej komentarz do bazy danych
 			$db = new MySQL_DB;
 			
-			$db->query("INSERT INTO $mysql_data[db_table_users] VALUES ('', '$login', '$password', '$email', 'N')");
+			$query = sprintf("
+                INSERT INTO 
+                    %1\$s 
+                VALUES 
+                    ('', '$login', '$password', '$email', '', 'N')",
+			
+                $mysql_data['db_table_users']
+            );
+            
+            $db->query($query);
 			
 			$ft->assign('CONFIRM', "U¿ytkownik zosta³ dodany do bazy danych");
 			$ft->parse('ROWS', ".result_note");
