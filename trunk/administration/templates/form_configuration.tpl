@@ -7,11 +7,15 @@
 	</tr>
 	<tr>
 		<td width="200" align="right">Tytu³ strony:&nbsp;</td>
-		<td width="164" align="left" valign="top"><input type="text" name="title_page" value="{TITLE_PAGE}" /></td>
+		<td width="164" align="left" valign="top"><input class="long" type="text" name="title_page" value="{TITLE_PAGE}" /></td>
 	</tr>
 	<tr>
 		<td width="200" align="right">Liczba postów na stronê(administracja):&nbsp;</td>
 		<td width="164" align="left" valign="top"><input class="short" type="text" name="editposts_per_page" value="{EDITPOSTS_PER_PAGE}" /></td>
+	</tr>
+	<tr>
+		<td width="200" align="right">Maksymalna szerko¶æ zdjêcia na stronie g³ownej (px):&nbsp;</td>
+		<td width="164" align="left" valign="top"><input class="short" type="text" name="max_photo_width" value="{MAX_PHOTO_WIDTH}" /></td>
 	</tr>
 	<tr>
 		<td width="364" align="left" valign="top" colspan="2"><br /><a href="javascript:document.forms[0].submit()">zapisz ustawienia</a></td>
