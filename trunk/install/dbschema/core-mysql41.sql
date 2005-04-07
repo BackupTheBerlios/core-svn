@@ -71,7 +71,7 @@ CREATE TABLE core_users (
   login varchar(15) default '0',
   `password` varchar(32) default '0',
   email varchar(30) NOT NULL default '',
-  `privileges` char(2) NOT NULL default '',
+  permission_level char(2) NOT NULL default '',
   active enum('Y','N') NOT NULL default 'N',
   PRIMARY KEY  (id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
