@@ -26,20 +26,20 @@ switch ($action) {
 		$dbuser = $_POST['dbuser'];
 		$dbpass = $_POST['dbpass'];
 		
-		$dbprefix	= $_POST['dbprefix'];
+		$dbprefix     = $_POST['dbprefix'];
 		
-		$coreuser	= $_POST['coreuser'];
-		$coremail	= $_POST['coremail'];
+		$coreuser     = $_POST['coreuser'];
+		$coremail     = $_POST['coremail'];
 		
-		$corepass_1	= $_POST['corepass_1'];
-		$corepass_2	= $_POST['corepass_2'];
+		$corepass_1   = $_POST['corepass_1'];
+		$corepass_2   = $_POST['corepass_2'];
 		
 		if(strlen($coreuser) < 4) {
 			
 			$err .= $monit['strlenuser'] . "<br />";
 		}
 		
-		if(!eregi("^([[:alnum:]]|_|\.|-)+@(([[:alnum:]]|\.|-)+(\.)([a-z]{2,4})|localhost)$", $coremail)){
+		if(!eregi("^[^@\s]+@([-a-z0-9]+\.)+([a-z]{2,})$", $coremail)){
 			
 			$err .= $monit['validemail'] . "<br />";
 		}
@@ -65,13 +65,32 @@ switch ($action) {
 			case 'mysql41':
 				$db_schema = SQL_SCHEMA . '/core-mysql41.sql';
 				break;
-		}	
+		}
 					
 		if(empty($err)) {
+		    
+		    $db = new DB_Sql;
+		
+		    /**
+		    * nie dzia³a, do poprawy
+		    
+            if(isset($dbcreate)) {
+                
+		        $query = sprintf("
+                    CREATE DATABASE 
+                        %1\$s",
+		        
+                    $dbname
+                );
+                
+                $query .= ";";
+                
+                $db->query($query);
+                
+            }
+            */
 			
-			$db = new DB_Sql;
 			$db->connect($dbname, $dbhost, $dbuser, $dbpass);
-				
 			
 			$sql_query = @fread(@fopen($db_schema, 'r'), @filesize($db_schema));
 			$sql_query = str_replace('/core_/', $dbprefix, $sql_query);
@@ -122,68 +141,127 @@ switch ($action) {
 			$t3		= $dbprefix . 'counter';
 			$t4		= $dbprefix . 'config';
 			
+			$perms = new permissions();
+			// Nadajemu stosowne uprawnienia u¿ytkownikowi
+			$perms->permissions["read"]                  = TRUE;
+			$perms->permissions["write"]                 = TRUE;
+			$perms->permissions["delete"]                = TRUE;
+			$perms->permissions["change_permissions"]    = TRUE;
+			$perms->permissions["admin"]                 = TRUE;
+			
+			$bitmask = $perms->toBitmask();
+			
 			// wstawiamy pocz±tkowego u¿ytkownika
-			$query = "	INSERT INTO 
-							$t1 
-						VALUES
-							('', '$coreuser', '$pass', '$coremail', 'Y')";
+			$query = sprintf("
+                INSERT INTO 
+                    %1\$s 
+                VALUES 
+                    ('', '%2\$s', '%3\$s', '%4\$s', '%5\$d', 'Y')",
+			
+                $t1, 
+                $coreuser,
+                $pass, 
+                $coremail,
+                $bitmask
+            );
 			
 			$db->query($query);
 			
 			// wstawiamy domy¶lnie kategoriê ogóln±
-			$query = "	INSERT INTO 
-							$t2 
-						VALUES
-							('', 'ogólna', '')";
+            $query = sprintf("
+                INSERT INTO 
+                    %1\$s 
+                VALUES 
+                    ('', '%2\$s', '')", 
+            
+                $t2, 
+                'ogólna'
+            );
 			
 			$db->query($query);
 			
 			// ustawiamy warto¶æ licznika na 0
-			$query = "	INSERT INTO 
-							$t3 
-						VALUES
-							('', 'hit', '0')";
+			$query = sprintf("
+                INSERT INTO 
+                    %1\$s 
+                VALUES 
+                    ('', '%2\$s', '%3\$d')", 
+            
+                $t3, 
+                'hit', 
+                0
+            );
 			
 			$db->query($query);
 			
 			// Ustawiamy ilo¶æ postów na stronie w administracji
-			$query = "	INSERT INTO 
-							$t4 
-						VALUES
-							('editposts_per_page', '15')";
+			$query = sprintf("
+                INSERT INTO 
+                    %1\$s 
+                VALUES 
+                    ('%2\$s', '%3\$d')", 
+            
+                $t4, 
+                'editposts_per_page', 
+                15
+            );
 			
 			$db->query($query);
 			
 			// Ustawiamy ilo¶æ postów na stronie g³ównej
-			$query = "	INSERT INTO 
-							$t4 
-						VALUES
-							('mainposts_per_page', '4')";
+			$query = sprintf("
+                INSERT INTO 
+                    %1\$s 
+                VALUES 
+                    ('%2\$s', '%3\$d')", 
+            
+                $t4, 
+                'mainposts_per_page', 
+                4
+            );
 			
 			$db->query($query);
 			
 			// Ustawiamy ilo¶æ postów najczê¶ciej komentowanych wpisów
-			$query = "	INSERT INTO 
-							$t4 
-						VALUES
-							('mostcomments_on_page', '20')";
+			$query = sprintf("
+                INSERT INTO 
+                    %1\$s 
+                VALUES 
+                    ('%2\$s', '%3\$d')", 
+            
+                $t4, 
+                'mostcomments_on_page', 
+                20
+            );
 			
 			$db->query($query);
 			
 			// Ustawiamy tytu³ strony
-			$query = "	INSERT INTO 
-							$t4 
-						VALUES
-							('title_page', './Core {lektura wcale nie obowi±zkowa}')";
+			$query = sprintf("
+                INSERT INTO 
+                    %1\$s 
+                VALUES 
+                    ('%2\$s', '%3\$s')", 
+            
+                $t4, 
+                'title_page', 
+                './Core {lektura wcale nie obowi±zkowa}'
+            );
 			
 			$db->query($query);
 			
 			// Ustawiamy maksymaln± szerko¶æ zdjêcia, jakie
 			// jest wyswietlane przy wpisie
-			$query = "	INSERT INTO 
-							$t4 
-						VALUES
-							('max_photo_width', '440')";
+			$query = sprintf("
+                INSERT INTO 
+                    %1\$s 
+                VALUES 
+                    ('%2\$s', '%3\$d')", 
+            
+                $t4, 
+                'max_photo_width', 
+                440
+            );
 			
 			$db->query($query);
 			
