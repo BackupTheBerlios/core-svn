@@ -92,7 +92,7 @@ if(!class_exists('permissions')) {
 }
 
 // Przyk³ad zastosowania klasy
-
+/*
 $perms = new permissions();
 
 // Nadajemu stosowne uprawnienia u¿ytkownikowi
@@ -102,12 +102,11 @@ $perms->permissions["write"]    = TRUE;
 // Tworzymy warto¶æ integer odpowiadaj±c± poziomowi uprawnieñ
 $bitmask = $perms->toBitmask();
 
-/**
+
 * Warto¶æ tê umiejscawiamy w bazie danych, tworz±c nowego u¿ytkownika.
 * Przy logowaniu pobieramy i wk³adamy w jak±¶ zmienn±, niech bêdzie to $bitmask
 * Uprawnienia sprawdzamy w nastêpuj±cy sposób, zak³adaj±c w tym miejscu, ¿e warto¶æ
 * $bitmask wynosi np. 3
-*/
 
 $bitmask    = 3;
 $permarr    = $perms->getPermissions($bitmask);
@@ -118,5 +117,5 @@ if($permarr["read"]){
 
 // A poni¿ej tablica uprawnieñ i odpowiadaj±cych im warto¶ci
 print_r($permarr);
-
+*/
 ?>
