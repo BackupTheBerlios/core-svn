@@ -75,9 +75,9 @@ $query = sprintf("
     SELECT 
         config_value 
     FROM 
-        %s 
+        %1\$s 
     WHERE 
-        config_name = '%s'",
+        config_name = '%2\$s'",
     
     $mysql_data['db_table_config'], 
     'title_page'
@@ -93,6 +93,24 @@ $ft->assign(array(
     'STATISTICS'        =>'Wizyty: ' . $hitnumber,
     'ENGINE_VERSION'    =>"<a href=\"javascript:mail('lark', 'no1-else.com', 'core_engine');\">core engine</a>: 1.0RC1a"
 ));
+
+// Ustawiamy zmienn± $max_photo_width
+$query = sprintf("
+    SELECT 
+        config_value 
+    FROM 
+        %1\$s 
+    WHERE 
+        config_name = '%2\$s'",
+
+    $mysql_data['db_table_config'], 
+    'max_photo_width'
+);
+
+$db->query($query);
+$db->next_record();
+
+$max_photo_width = $db->f('config_value');
 
 $inc_modules = array(
     'category_list',
