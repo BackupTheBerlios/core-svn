@@ -1,19 +1,5 @@
 <?php
 
-$query = sprintf("
-    SELECT
-        *
-    FROM
-        %1\$s",
-      
-    $mysql_data['db_table_counter']
-);
-$db->query($query);
-$db->next_record();
-
-$hitnumber = $db->f("hitnumber");
-
-
 if(!isset($_COOKIE['devlog_counter'])){
 	
 	@setcookie('devlog_counter', 'hit', time()+10800);
@@ -22,11 +8,12 @@ if(!isset($_COOKIE['devlog_counter'])){
         UPDATE
             %1\$s
 		SET
-            hit = '%2\$s',
-            hitnumber = hitnumber+1",
+            config_value = '%2\$s'
+        WHERE
+            config_name = 'counter'",
             
-        $mysql_data['db_table_counter'],
-        $value
+        $mysql_data['db_table_config'],
+        get_config('counter') + 1
     );
 	$db->query($query);
 }

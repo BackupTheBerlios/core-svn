@@ -128,8 +128,7 @@ switch ($action) {
 			$pass	= md5($corepass_1);
 			$t1		= $dbprefix . 'users';
 			$t2		= $dbprefix . 'category';
-			$t3		= $dbprefix . 'counter';
-			$t4		= $dbprefix . 'config';
+			$t3		= $dbprefix . 'config';
 
 			$perms = new permissions();
 			// Nadajemu stosowne uprawnienia u¿ytkownikowi
@@ -191,7 +190,7 @@ switch ($action) {
                 VALUES 
                     ('%2\$s', '%3\$d')", 
 
-                $t4, 
+                $t3, 
                 'editposts_per_page', 
                 15
             );
@@ -205,7 +204,7 @@ switch ($action) {
                 VALUES 
                     ('%2\$s', '%3\$d')", 
 
-                $t4, 
+                $t3, 
                 'mainposts_per_page', 
                 4
             );
@@ -219,7 +218,7 @@ switch ($action) {
                 VALUES 
                     ('%2\$s', '%3\$d')", 
 
-                $t4, 
+                $t3, 
                 'mostcomments_on_page', 
                 20
             );
@@ -233,7 +232,7 @@ switch ($action) {
                 VALUES 
                     ('%2\$s', '%3\$s')", 
 
-                $t4, 
+                $t3, 
                 'title_page', 
                 './Core {lektura wcale nie obowi±zkowa}'
             );
@@ -248,7 +247,7 @@ switch ($action) {
                 VALUES 
                     ('%2\$s', '%3\$d')", 
 
-                $t4, 
+                $t3, 
                 'max_photo_width', 
                 440
             );

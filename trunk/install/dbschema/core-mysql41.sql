@@ -37,13 +37,6 @@ CREATE TABLE core_config (
   PRIMARY KEY  (config_name)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE core_counter (
-  id int(10) unsigned NOT NULL auto_increment,
-  hit text,
-  hitnumber int(11) default NULL,
-  PRIMARY KEY  (id)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
 CREATE TABLE core_newsletter (
   email varchar(40) NOT NULL default ''
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
