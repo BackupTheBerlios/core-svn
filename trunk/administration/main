@@ -1,7 +1,6 @@
 <?php
 
 session_register("login");
-session_register("password");
 session_register("loggedIn");
 
 if(!isset($_SESSION["loggedIn"])){
@@ -11,40 +10,72 @@ if(!isset($_SESSION["loggedIn"])){
 }
 
 // warto¶æ pocz±tkowa zmiennej $start -> potrzebna przy stronnicowaniu
-$start = ( isset($_GET['start']) ) ? intval($_GET['start']) : 0;
+$start = isset($_GET['start']) ? intval($_GET['start']) : 0;
 
-require("classes/cls_db_mysql.inc"); // dodawanie pliku konfigurujacego bibliotekê baz danych
-require("classes/cls_upload.php"); // dodawanie pliku konfigurujacego bibliotekê uploadu plików
-require("classes/cls_phpmailer.php"); // dodawanie pliku konfigurujacego bibliotekê wysy³ania mail'i
+define('PATH_TO_CLASSES', 'classes');
+
+require(PATH_TO_CLASSES. '/cls_db_mysql.inc');
+require(PATH_TO_CLASSES. '/cls_upload.php');
+
 require("inc/config.php");
 include("../inc/main_pagination.php");
 include("../inc/main_functions.php");
-require("classes/cls_fast_template.php");
+
+require(PATH_TO_CLASSES. '/cls_fast_template.php');
+require(PATH_TO_CLASSES. '/cls_permissions.php');
+
+// egzemplarz klasy obs³uguj±cej bazê danych Core
+$db = new MySQL_DB;
+
+// pobieramy poziom uprawnieñ
+$query = sprintf("
+    SELECT 
+        permission_level 
+    FROM 
+        %1\$s 
+    WHERE 
+        login = '%2\$s'",
+    
+    $mysql_data['db_table_users'], 
+    $_SESSION['login']
+);
+    
+$db->query($query);
+$db->next_record();
+
+$privileges = $db->f('permission_level');
+
+// egzemplarz klasy do obs³ugi uprawnieñ
+$perms      = new permissions();
+$permarr    = $perms->getPermissions($privileges);
 
 // inicjowanie klasy, wkazanie katalogu przechowuj±cego szablony
 $ft = new FastTemplate("./templates");
 
 // tablica definicji u¿ytych plików *.tpl
-$ft->define(array(	// g³ówne szablony parsowane w celu wy¶wietlenia strony
-					'index' 					=>"index.tpl",
-					'main_loader'				=>"main_loader.tpl",
-					'main_site'					=>"main_site.tpl",
-					
-					// szablon obs³uguj±cy error handlera, jak i dodatkowe komunikaty
-					'result_note'				=>"result_note.tpl"));
+$ft->define(array(
+    'index'         =>"index.tpl",
+    'main_loader'   =>"main_loader.tpl",
+    'main_site'     =>"main_site.tpl",
+    
+    // szablon obs³uguj±cy error handlera, jak i dodatkowe komunikaty
+    'result_note'   =>"result_note.tpl"
+));
 		
-$ft->assign(array(	'PAGE_TITLE'	=>"CORE - panel administracyjny",
-					'LOGGED_IN'		=>$_SESSION['login']));
-
+$ft->assign(array(
+    'PAGE_TITLE'    =>"CORE - panel administracyjny",
+    'LOGGED_IN'     =>$_SESSION['login']
+));
 
 $inc_modules = array(
-		"header_menu",
-		"subcat_menu");
+    "header_menu",
+    "subcat_menu"
+);
 
 foreach($inc_modules as $module) {
-	
-	// ³adowanie dodatkowych modu³ów
-	include('modules/' . $module . '.php');
+    
+    // ³adowanie dodatkowych modu³ów
+    include('modules/' . $module . '.php');
 }
 
 // prze³±cznica ³adowanej tre¶ci					
@@ -125,8 +156,10 @@ switch($p){
 	default:
 		include('modules/main.php');
 		break;
-}	
+}
+
 $ft->parse('MAIN_CONTENT', array("main_loader", "index"));
+
 $ft->FastPrint();
 exit;
 ?>
