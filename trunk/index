@@ -16,14 +16,10 @@ require_once(PATH_TO_CLASSES. '/cls_phpmailer.php'); // dodawanie pliku konfigur
 require_once(PATH_TO_CLASSES. '/cls_fast_template.php');
 
 
-
 //inicjacja polaczenie z MySQL
 $db = new DB_Sql;
 
 require_once('counter/addhit.php');
-
-
-
 
 //konfiguracja szablonow i design switchera
 if(isset($_COOKIE['devlog_design']) && is_dir('./templates/' . $_COOKIE['devlog_design'] . '/tpl/')){
@@ -59,15 +55,11 @@ $ft->define(array(
     'query_failed'      =>'query_failed.tpl'
 ));
 
-
-
     
 // warto¶æ pocz¹tkowa zmiennej $start -> potrzebna przy stronnicowaniu
 $start = ( isset($_GET['start']) ) ? intval($_GET['start']) : 0;
 include('inc/main_pagination.php');
 $val = empty($val) ? '' : $val;
-
-
 
                     
 $ft->assign(array(
@@ -77,8 +69,6 @@ $ft->assign(array(
 ));
 
 $max_photo_width = get_config('max_photo_width');
-
-
 
 $inc_modules = array(
     'category_list',
@@ -92,8 +82,7 @@ foreach($inc_modules as $module) {
 }
 
 
-
-// G³ówna prze³¹cznica includowanej treœci
+// G³ówna prze³±cznica includowanej tre¶ci
 $p = empty($_GET['p']) ? '' : $_GET['p'];
 switch($p){
             
@@ -109,13 +98,7 @@ switch($p){
         
     case '3':
         include('modules/comments_add.php');
-        if(empty($_GET['action'])) {
-                
-            $ft->parse('MAIN', array('comments_alter', 'main'));
-        } else {
-                
-            $ft->parse('MAIN', array('comments_submit', 'main'));
-        }
+        $ft->parse('MAIN', array('note_main', 'main'));
         break;
         
     case '4':
