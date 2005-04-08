@@ -88,49 +88,43 @@ switch($p){
             
     case '1': 
         include('modules/alter_view.php');
-        $ft->parse('MAIN', array('note_main', 'main'));
         break;
         
     case '2': 
         include('modules/comments_view.php');
-        $ft->parse('MAIN', array('note_main', 'main'));
         break;
         
     case '3':
         include('modules/comments_add.php');
-        $ft->parse('MAIN', array('note_main', 'main'));
         break;
         
     case '4':
         include('modules/category_view.php');
-        $ft->parse('MAIN', array('note_main', 'main'));
         break;
         
     case '5':
         include('modules/pages_view.php');
-        $ft->parse('MAIN', array('note_main', 'main'));
         break;
         
     case '6':
         include('modules/articles_view.php');
-        $ft->parse('MAIN', array('note_main', 'main'));
         break;        
         
     case 'newsletter':
         include('modules/newsletter.php');
-        $ft->parse('MAIN', array('newsletter', 'main'));
         break;
         
     case 'search':
         include('modules/search.php');
-        $ft->parse('MAIN', array('note_main', 'main'));
         break;
         
     default:
         include('modules/main_view.php');
-        $ft->parse('MAIN', array('note_main', 'main'));
+        break;
 }
 
+$ft->parse('MAIN', array('note_main', 'main'));
 $ft->FastPrint();
 exit;
+
 ?>
