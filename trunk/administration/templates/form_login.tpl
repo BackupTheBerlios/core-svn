@@ -1,4 +1,4 @@
-<form action="index.login" method="post">
+<form action="index.login" method="post" id="formLogin">
 <table align="center">
 	<tr>
 		<td align="right"><div style="margin: 2px;">Twój login:</div></td>
@@ -10,7 +10,7 @@
 	</tr>
 	<tr>
 		<td>&nbsp;</td>
-		<td><div style="margin: 2px;"><a href="javascript:document.forms[0].submit()">Zaloguj siê</a></div></td>
+        <td><div style="margin: 2px;"><a href="#" onclick="document.getElementById('formLogin').submit()">Zaloguj siê</a></div></td>
 	</tr>
 </table>
 </form>

@@ -1,6 +1,6 @@
 <script type="text/javascript" src="./templates/js/textarea.js"></script>
 
-<form enctype="multipart/form-data" method="post" name="post" action="edit,{ID},2,edit.html">
+<form enctype="multipart/form-data" method="post" name="post" action="edit,{ID},2,edit.html" id="formNote">
 <table width="100%" align="left">
 	<tr>
 		<td class="form" width="80" align="right">Tytu³ wpisu:&nbsp;</td>
@@ -52,7 +52,7 @@
 		<td class="form" width="224" align="left">{CHECKBOX_YES}- tak&nbsp;{CHECKBOX_NO}- nie</td>
 	</tr>
 	<tr>
-		<td colspan="2" class="align_right"><img src="layout/arrow_blue.gif" alt="Core | CMS" align="middle" height="5" hspace="5" vspace="2" width="5" /><a href="javascript:document.forms[0].submit()">zmodyfikuj wpis</a></td>
+      <td colspan="2" class="align_right"><img src="layout/arrow_blue.gif" alt="Core | CMS" align="middle" height="5" hspace="5" vspace="2" width="5" /><a href="#" onclick="document.getElementById('formNote').submit()">zmodyfikuj wpis</a></td>
 	</tr>
 </table>
 </form>

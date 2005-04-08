@@ -43,10 +43,10 @@
 		<span class="title">wyszukaj</span>
 		<br /><br />
 		Interesuj±c± Ciê frazê wpisz w pole formularza.<br />
-		<form style="margin-top:5px;" method="post" action="index.search">
+		<form style="margin-top:5px;" method="post" action="index.search" id="formSearch">
 			<input class="left" type="text" name="search_word" size="25" maxlength="255" /><br />
 			<div class="right">
-				<a href="javascript:document.forms[1].submit()">wyszukaj</a>
+              <a href="#" onclick="document.getElementById('formSearch').submit()">wyszukaj</a>
 			</div>
 		</form>
 		<br />
