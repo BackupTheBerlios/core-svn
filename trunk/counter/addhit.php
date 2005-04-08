@@ -1,27 +1,34 @@
 <?php
 
-$expires = time()+10800;
+$query = sprintf("
+    SELECT
+        *
+    FROM
+        %1\$s",
+      
+    $mysql_data['db_table_counter']
+);
+$db->query($query);
+$db->next_record();
 
-$data_base = new MySQL_DB;
-
-$data_base->query("	SELECT * 
-					FROM $mysql_data[db_table_counter]");
-$data_base->next_record();
-
-$hitnumber = $data_base->f("hitnumber");
+$hitnumber = $db->f("hitnumber");
 
 
 if(!isset($_COOKIE['devlog_counter'])){
 	
-	$name 	= "devlog_counter";
-	$value 	= "hit";
+	@setcookie('devlog_counter', 'hit', time()+10800);
 	
-	setcookie($name, $value, $expires);
-	
-	$data_base->query("	UPDATE $mysql_data[db_table_counter] 
-						SET hit = '$value', hitnumber = hitnumber+1");
-	$data_base->next_record();
-	
+    $query = sprintf("
+        UPDATE
+            %1\$s
+		SET
+            hit = '%2\$s',
+            hitnumber = hitnumber+1",
+            
+        $mysql_data['db_table_counter'],
+        $value
+    );
+	$db->query($query);
 }
 
 ?>
