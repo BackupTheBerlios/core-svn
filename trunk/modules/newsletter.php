@@ -44,7 +44,8 @@ switch($m){
             }
         }
         
-    break;
+        $ft->parse('ROWS', ".newsletter");
+        break;
     
     case 'sign_out':
     
@@ -86,7 +87,7 @@ switch($m){
                 ));
             }
         }
-        
-    break;	
+        $ft->parse('ROWS', ".newsletter");
+        break;
 }
 ?>
