@@ -1,8 +1,8 @@
 <?php
 
 // dekalracja zmiennej $page_string
-$page_string    = empty($page_string) ? '' : $page_string;
-$comment_author    = empty($_COOKIE['devlog_comment_user']) ? '' : $_COOKIE['devlog_comment_user'];
+$page_string        = empty($page_string) ? '' : $page_string;
+$comment_author     = empty($_COOKIE['devlog_comment_user']) ? '' : $_COOKIE['devlog_comment_user'];
 
 // deklaracja zmiennej $action::form
 $action = empty($_GET['action']) ? '' : $_GET['action'];
@@ -73,7 +73,7 @@ switch ($action) {
 
             @setcookie('devlog_comment_user', $author, time()+3600*8760);
 
-            // egzemplarz klasy ³aduj¹cej komentarz do bazy danych
+            // egzemplarz klasy ³aduj±cej komentarz do bazy danych
             $query = sprintf("
                 INSERT INTO
                     %s
