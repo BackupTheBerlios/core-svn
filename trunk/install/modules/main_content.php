@@ -69,26 +69,15 @@ switch ($action) {
 					
 		if(empty($err)) {
 		    
-		    $db = new DB_Sql;
-		
-		    /**
-		    * nie dzia³a, do poprawy
-		    
-            if(isset($dbcreate)) {
+            if(isset($_POST['dbcreate'])) {
                 
-		        $query = sprintf("
-                    CREATE DATABASE 
-                        %1\$s",
-		        
-                    $dbname
-                );
-                
-                $query .= ";";
-                
-                $db->query($query);
+                $link   = mysql_pconnect($dbhost, $dbuser, $dbpass) or die('Nie mo¿na siê po³±czyæ: ' . mysql_error());
+                $result = mysql_query("CREATE DATABASE $dbname") or die("Nie mo¿na utworzyæ bazy danych!");
+                $link   = mysql_close($link);
                 
             }
-            */
+            
+            $db = new DB_Sql;
 			
 			$db->connect($dbname, $dbhost, $dbuser, $dbpass);
 			
