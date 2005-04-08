@@ -245,7 +245,7 @@ function v_array($array, $exit = 0) {
 
 function get_config($name) {
 
-    $db = new DB;
+    $db = new DB_SQL;
 
     $query = sprintf("
         SELECT
