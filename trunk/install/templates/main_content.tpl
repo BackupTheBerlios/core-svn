@@ -100,7 +100,7 @@
 		</tr>
 		<tr>
 			<td width="100%" colspan="2">
-			<div class="right"><a href="javascript:document.forms[0].submit()">Instaluj Core</a></div>
+			<div class="right"><a onClick="javascript:document.forms[0].submit()" href="#">Instaluj Core</a></div>
 			</td>
 		</tr>
 	</table>	
