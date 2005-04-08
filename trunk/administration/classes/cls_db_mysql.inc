@@ -3,10 +3,10 @@
 class DB_Sql {
 	
 	// connection parameters
-	var $Host		= "";
-	var $Database	= "";
-	var $User		= "";
-	var $Password	= "";
+	var $Host		= DB_HOST;
+	var $Database	= DB_NAME;
+	var $User		= DB_USER;
+	var $Password	= DB_PASS;
 	
 	// configuration parameters
 	var $Auto_Free     = 0;     ## Set to 1 for automatic mysql_free_result()
