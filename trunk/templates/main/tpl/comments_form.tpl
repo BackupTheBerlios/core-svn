@@ -1,3 +1,9 @@
+<div>
+Przy wype³nianiu formularza pole e-mail jest ca³kowicie opcjonalne, co znaczy ¿e nie wymagam podania adresu poczty mailowej.
+Je¶li jednak ju¿ zdecydujesz siê to zrobiæ, to muszê zaznaczyæ, ¿e Twój adres nie bêdzie widoczny bezpo¶rednio przy komentarzu, a
+przechowywany wy³±cznie w bazie danych w celach czysto informacyjnych.<br /><br />
+<b><a class="date" href="1,{NEWS_ID},1,item.html">{NEWS_TITLE}</a></b> - link bezpo¶redni<br /><br />
+
 <script type="text/javascript" src="templates/main/js/comments.js"></script>
 <form method="post" action="1,3,item.html" name="post">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -48,3 +54,4 @@
 	</tr>
 </table>
 </form>
+</div>
