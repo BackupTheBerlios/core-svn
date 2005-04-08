@@ -130,21 +130,23 @@ switch ($action) {
 			
 			$idx1++;
 			
-			$ft->define('table_linkslist', "table_linkslist.tpl");
-			// naprzemienne kolorowanie wierszy tabeli
+			$ft->define("editlist_links", "editlist_links.tpl");
+			$ft->define_dynamic("row", "editlist_links");
+			
+			// naprzemienne kolorowanie wierszy
 			if (($idx1%2)==1) {
-				
-				$ft->assign('ID_CLASS', "class=\"mainList\"");
-				// parsowanie szablonów
-				$ft->parse('NOTE_ROWS',	".table_linkslist");
+			    
+			    $ft->assign('ID_CLASS', "class=\"mainList\"");
+			    
+			    $ft->parse('ROWS',	".row");
 			} else {
-				
-				$ft->assign('ID_CLASS', "class=\"mainListAlter\"");
-				$ft->parse('NOTE_ROWS',	".table_linkslist");
+			    
+			    $ft->assign('ID_CLASS', "class=\"mainListAlter\"");
+			    
+			    $ft->parse('ROWS', ".row");
 			}
 		}
-		$ft->define('header_linkslist', "header_linkslist.tpl");
-		$ft->parse('ROWS',	".header_linkslist");
+		$ft->parse('ROWS', "editlist_links");
 }
 
 ?>
