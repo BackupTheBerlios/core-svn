@@ -40,12 +40,3 @@ to wygl±daæ, w ka¿dym razie przyda³oby siê.
 
 - mozliwosc dodania do bazy konkretnych katalogow, i oznaczenia ich jako 'listuj zawartosc'. po takim oznaczeniu user ma mozliwosc dodania tresci do dwoch pol w adminie, tresc jednego z nich pojawi sie powyzej listingu tresci oznaczonego katalogu, a druga - ponizej listingu
 
-Poprawi³em ten jeden wpis w szablonie instalatora, ale widzê, ¿e jest tego wiêcej
-
-emil@fretka:~/core/trunk$ grep -r $WHA . | wc -l
-48
-
-Chcesz, ¿ebym zostawi³ w spokoju te href="javascript:foo(bar);" 
-czy te¿ dodajemy OnClick? Sam ju¿ nie jestem pewien, jaka metoda 
-wywo³ywania skryptów jest w³a¶ciwa. :-D Zawsze robi³em to przez 
-akcje On(Load|Click|MouseOver). opi
