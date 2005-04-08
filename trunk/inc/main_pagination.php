@@ -7,7 +7,7 @@ function main_pagination($url, $q, $p, $published, $table) {
 	$ret = array();
 	
 	// Egzemplarz klasy obs³uguj±cej konfiguracjê wy¶wietlanych wpisów
-	$db = new MySQL_DB;
+	$db = new DB_SQL;
 	$query = "
 		SELECT
 			*
