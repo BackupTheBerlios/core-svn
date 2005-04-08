@@ -125,23 +125,24 @@ switch ($action) {
 			
 			$idx1++;
 			
-			// naprzemienne kolorowanie wierszy tabeli
-			$ft->define('table_categorylist', "table_categorylist.tpl");
+			$ft->define("editlist_category", "editlist_category.tpl");
+			$ft->define_dynamic("row", "editlist_category");
 			
+			// naprzemienne kolorowanie wierszy
 			if (($idx1%2)==1) {
-				
-				$ft->assign('ID_CLASS', "class=\"mainList\"");
-				// parsowanie szablonów
-				$ft->parse('NOTE_ROWS',	".table_categorylist");
+			    
+			    $ft->assign('ID_CLASS', "class=\"mainList\"");
+			    
+			    $ft->parse('ROWS',	".row");
 			} else {
-				
-				$ft->assign('ID_CLASS', "class=\"mainListAlter\"");
-				$ft->parse('NOTE_ROWS',	".table_categorylist");
+			    
+			    $ft->assign('ID_CLASS', "class=\"mainListAlter\"");
+			    
+			    $ft->parse('ROWS', ".row");
 			}
 		}
 		
-		$ft->define('header_categorylist', "header_categorylist.tpl");
-		$ft->parse('ROWS',	".header_categorylist");
+		$ft->parse('ROWS', "editlist_category");
 }
 
 ?>
