@@ -203,40 +203,26 @@ switch ($action) {
 				$idx1 = empty($idx1) ? '' : $idx1;
 				
 				$idx1++;
-			
-				// naprzemienne kolorowanie wierszy tabeli
+				
+				$ft->define("editlist_notes", "editlist_notes.tpl");
+				$ft->define_dynamic("row", "editlist_notes");
+				
+				// naprzemienne kolorowanie wierszy
 				if (($idx1%2)==1) {
 				
 					$ft->assign('ID_CLASS', "class=\"mainList\"");
-					// parsowanie szablonów
 					
-					if($_SESSION['login'] == $author) {
-					    
-					    $ft->define('table_notelist', "table_notelist.tpl");
-					    $ft->parse('NOTE_ROWS',	".table_notelist");
-					} else {
-					    
-					    $ft->define('table_notelist_noprivileges', "table_notelist_noprivileges.tpl");
-					    $ft->parse('NOTE_ROWS',	".table_notelist_noprivileges");
-					}
+					$ft->parse('ROWS',	".row");
+
 				} else {
 				
 					$ft->assign('ID_CLASS', "class=\"mainListAlter\"");
-					
-					if($_SESSION['login'] == $author) {
-					    
-					    $ft->define('table_notelist', "table_notelist.tpl");
-					    $ft->parse('NOTE_ROWS',	".table_notelist");
-					} else {
-					    
-					    $ft->define('table_notelist_noprivileges', "table_notelist_noprivileges.tpl");
-					    $ft->parse('NOTE_ROWS',	".table_notelist_noprivileges");
-					}
+				    
+				    $ft->parse('ROWS',	".row");
 				}
 			}
 		
-			$ft->define('header_notelist', "header_notelist.tpl");
-			$ft->parse('ROWS',	".header_notelist");
+			$ft->parse('ROWS', "editlist_notes");
 		} else {
 		
 			$ft->assign('CONFIRM', "W bazie danych nie ma ¿adnych wpisów");
