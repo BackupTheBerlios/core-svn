@@ -39,10 +39,10 @@ switch ($action) {
 			$err .= $monit['strlenuser'] . "<br />";
 		}
 		
-		if(!eregi("^[^@\s]+@([-a-z0-9]+\.)+([a-z]{2,})$", $coremail)){
+		#if(!eregi('^[^@\s]+@([-a-z0-9]+\.)+([a-z]{2,})$', $coremail)){
 			
-			$err .= $monit['validemail'] . "<br />";
-		}
+		#	$err .= $monit['validemail'] . "<br />";
+		#}
 		
 		if(strlen($corepass_1) < 6) {
 				
@@ -77,9 +77,12 @@ switch ($action) {
                 
             }
             
+            define('DB_HOST', $dbhost);
+            define('DB_USER', $dbuser);
+            define('DB_PASS', $dbpass);
+            define('DB_NAME', $dbname);
+            
             $db = new DB_Sql;
-			
-			$db->connect($dbname, $dbhost, $dbuser, $dbpass);
 			
 			$sql_query = @fread(@fopen($db_schema, 'r'), @filesize($db_schema));
 			$sql_query = str_replace('/core_/', $dbprefix, $sql_query);
@@ -95,12 +98,10 @@ switch ($action) {
 				
 			$file = '<?php'."\n";
 			$file .= "\n// Core - plik konfiguracyjny wygenerowany automatycznie\n\n";
-			$file .= "class MySQL_DB extends DB_Sql {\n\n";
-			$file .= "\t" . 'var $Host = \'' . $dbhost . '\';' . "\n";
-			$file .= "\t" . 'var $Database = \'' . $dbname . '\';' . "\n";
-			$file .= "\t" . 'var $User = \'' . $dbuser . '\';' . "\n";
-			$file .= "\t" . 'var $Password = \'' . $dbpass . '\';' . "\n";
-			$file .= "}\n\n";
+            $file .= 'define(\'DB_HOST\', \'' . $dbhost . '\');' . "\n";
+            $file .= 'define(\'DB_USER\', \'' . $dbuser . '\');' . "\n";
+            $file .= 'define(\'DB_PASS\', \'' . $dbpass . '\');' . "\n";
+            $file .= 'define(\'DB_NAME\', \'' . $dbname . '\');' . "\n";
 			$file .= 'define(\'PREFIX\', \'' . $dbprefix . '\');'."\n\n";
 			
 			$file .= '$mysql_data = array(' . "\n";
