@@ -1,6 +1,6 @@
 	<span>Uwaga:</span> Wszystkie pola musz± zostaæ wype³nione
 	<br /><br />
-	<form name="" action="doinstall" method="post">
+	<form id="installform" action="doinstall" method="post">
 	<table cellspacing="0" cellpadding="0">
 		<tr>
 			<td width="50%">
@@ -100,7 +100,7 @@
 		</tr>
 		<tr>
 			<td width="100%" colspan="2">
-			<div class="right"><a onClick="javascript:document.forms[0].submit()" href="#">Instaluj Core</a></div>
+              <div class="right"><a onclick="document.getElementById('installform').submit()" href="#">Instaluj Core</a></div>
 			</td>
 		</tr>
 	</table>	
