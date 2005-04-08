@@ -266,4 +266,8 @@ function get_config($name) {
     return $db -> f('config_value');
 }
 
+function check_mail($email) {
+    return eregi("^([a-z0-9_]|\\-|\\.)+@(((([a-z0-9_]|\\-)+\\.)+[a-z]{2,4})|localhost)$", $email);
+}
+
 ?>
