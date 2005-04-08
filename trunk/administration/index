@@ -12,12 +12,12 @@ if(isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === TRUE){
 
 define('PATH_TO_CLASSES', 'classes');
 
-require(PATH_TO_CLASSES. 'cls_db_mysql.inc');
-require(PATH_TO_CLASSES. 'cls_phpmailer.php');
+require(PATH_TO_CLASSES. '/cls_db_mysql.inc');
+require(PATH_TO_CLASSES. '/cls_phpmailer.php');
 
 require("inc/config.php");
 
-require(PATH_TO_CLASSES. 'cls_fast_template.php');
+require(PATH_TO_CLASSES. '/cls_fast_template.php');
 
 // warto¶æ pocz±tkowa zmiennej $start -> potrzebna przy stronnicowaniu
 $start = isset($_GET['start']) ? intval($_GET['start']) : 0;
