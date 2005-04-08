@@ -16,7 +16,7 @@ if(!defined('CORE_INSTALLED')) {
 }
 
 // egzemplarz klasy obs³uguj±cej bazê danych Core
-$db = new MySQL_DB;
+$db = new DB_SQL;
 
 require_once('inc/main_functions.php');
 require_once('counter/addhit.php');
