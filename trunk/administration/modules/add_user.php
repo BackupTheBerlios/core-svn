@@ -22,7 +22,7 @@ switch ($action) {
 			$err .= $monit['strlenuser'] . "<br />";
 		}
 		
-		if(!eregi("^[^@\s]+@([-a-z0-9]+\.)+([a-z]{2,})$", $_POST['email'])){
+		if(!check_mail($_POST['email'])){
 			
 			$err .= $monit['validemail'] . "<br />";
 		}

@@ -22,7 +22,7 @@ switch ($action) {
         if($_POST['email'] != '') {
 
             // Sprawdzenie poprawnosci adresu e-mail
-            if(!eregi('^[^@\s]+@([-a-z0-9]+\.)+([a-z]{2,})$', $_POST['email'])) {
+            if(!check_mail($_POST['email'])) {
                 
                 $monit .= 'Proszê podaæ poprawny adres e-mail.<br />';
             }
