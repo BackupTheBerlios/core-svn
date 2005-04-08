@@ -263,4 +263,6 @@ function get_config($name) {
     $db -> next_record();
 
     return $db -> f('config_value');
+}
+
 ?>
