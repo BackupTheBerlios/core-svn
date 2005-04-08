@@ -143,23 +143,25 @@ switch ($action) {
 				
 				$idx1++;
 			
-				// naprzemienne kolorowanie wierszy tabeli
+				$ft->define("editlist_comments", "editlist_comments.tpl");
+				$ft->define_dynamic("row", "editlist_comments");
+				
+				// naprzemienne kolorowanie wierszy
 				if (($idx1%2)==1) {
 				
 					$ft->assign('ID_CLASS', "class=\"mainList\"");
-					// parsowanie szablonów
-					$ft->define('table_commentslist', "table_commentslist.tpl");
-					$ft->parse('NOTE_ROWS',	".table_commentslist");
+					
+					$ft->parse('ROWS',	".row");
+
 				} else {
 				
 					$ft->assign('ID_CLASS', "class=\"mainListAlter\"");
-					$ft->define('table_commentslist', "table_commentslist.tpl");
-					$ft->parse('NOTE_ROWS',	".table_commentslist");
+				    
+				    $ft->parse('ROWS',	".row");
 				}
 			}
 		
-			$ft->define('header_commentslist', "header_commentslist.tpl");
-			$ft->parse('ROWS',	".header_commentslist");
+			$ft->parse('ROWS', "editlist_comments");;
 		} else {
 		
 			$ft->assign(array(	'CONFIRM'	=>"W bazie danych nie ma ¿adnych komentarzy."));
