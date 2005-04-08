@@ -30,8 +30,7 @@ if(is_numeric($_GET['id'])) {
                 'NEWS_TITLE'    =>$title,
                 'NEWS_ID'       =>$id,
                 'COMMENTS_ID'   =>$id,
-                'STRING'        =>$page_string,
-                'COMMENTS_ADD'  =>'<a class="comments" href="1,' . $id . ',3,item.html">Dodaj komentarz</a>'
+                'STRING'        =>$page_string
             ));
 
             $query = sprintf("
@@ -81,14 +80,20 @@ if(is_numeric($_GET['id'])) {
                     'COMMENTS_ID'       =>$comments_id,
                     'AUTHOR_EMAIL'      =>$email,
                     'STRING'            =>$page_string,
-                    'ID'                =>$id,
+                    'ID'                =>$id
 
-                    'COMMENTS_QUOTE'    =>'<a class="comments" href="1,' . $comments_id . ',3,' . $id . ',1,quote.html">odpowiedz cytuj±c</a>'
                 ));
+                
+                $ft->define("comments_view", "comments_view.tpl");
+                $ft->define_dynamic("comments_row", "comments_view");
 
-                $ft->parse('ROWS', '.comments_rows');
+                $ft->parse('ROWS',	".comments_row");
             }
         }
+        
+        // Parsowanie szablonu comments_view.tpl
+        $ft->parse('ROWS', "comments_view");
+        
     } else {
 
         // Obs³uga b³êdu, kiedy u¿ytkownik próbuje kombinowaæ ze zmiennymi przechwytywanymi przez $_GET
