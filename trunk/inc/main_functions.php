@@ -242,4 +242,25 @@ function v_array($array, $exit = 0) {
 		exit;
 	}
 }
+
+function get_config($name) {
+
+    $db = new DB;
+
+    $query = sprintf("
+        SELECT
+            config_value
+        FROM
+            %1\$s
+        WHERE
+            config_name = '%2\$s'",
+          
+        $mysql_data['db_table_config'],
+        $name
+    );
+
+    $db -> query($query);
+    $db -> next_record();
+
+    return $db -> f('config_value');
 ?>
