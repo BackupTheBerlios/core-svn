@@ -122,22 +122,25 @@ switch ($action)
 				
 				$idx1++;
 			
-				// naprzemienne kolorowanie wierszy tabeli
+				$ft->define("editlist_mostcomments", "editlist_mostcomments.tpl");
+				$ft->define_dynamic("row", "editlist_mostcomments");
+				
+				// naprzemienne kolorowanie wierszy
 				if (($idx1%2)==1) {
 				
 					$ft->assign('ID_CLASS', "class=\"mainList\"");
+					
+					$ft->parse('ROWS',	".row");
+
 				} else {
 				
 					$ft->assign('ID_CLASS', "class=\"mainListAlter\"");
+				    
+				    $ft->parse('ROWS',	".row");
 				}
-
-				// parsowanie szablonów
-				$ft->define('table_mostcommentslist', "table_mostcommentslist.tpl");
-				$ft->parse('NOTE_ROWS',	".table_mostcommentslist");
 			}
 		
-			$ft->define('header_mostcommentslist', "header_mostcommentslist.tpl");
-			$ft->parse('ROWS',	".header_mostcommentslist");
+			$ft->parse('ROWS', "editlist_mostcomments");
 		} else {
 		
 			$ft->assign('CONFIRM', "W bazie danych nie ma ¿adnych wpisów");
