@@ -6,7 +6,7 @@ $pagination = main_pagination('start,2,', '', 'editposts_per_page', '', 'db_tabl
 // deklaracja zmiennej $action::form
 $action = empty($_GET['action']) ? '' : $_GET['action'];
 
-$db = new MySQL_DB;
+$db = new DB_SQL;
 
 switch ($action) {
 	

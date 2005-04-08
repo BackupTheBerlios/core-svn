@@ -6,8 +6,8 @@ main_pagination('start,5,', '', 'editposts_per_page', '', 'db_table_comments');
 // deklaracja zmiennej $action::form
 $action = empty($_GET['action']) ? '' : $_GET['action'];
 
-// inicjalizacja instancji klasy MySQL_DB
-$db = new MySQL_DB;
+// inicjalizacja instancji klasy DB_SQL
+$db = new DB_SQL;
 
 switch ($action) {
 	

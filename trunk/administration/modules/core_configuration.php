@@ -3,8 +3,8 @@
 // deklaracja zmiennej $action::form
 $action = empty($_GET['action']) ? '' : $_GET['action'];
 
-// inicjalizacja instancji klasy MySQL_DB
-$db = new MySQL_DB;
+// inicjalizacja instancji klasy DB_SQL
+$db = new DB_SQL;
 
 switch ($action) {
 	case "add":

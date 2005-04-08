@@ -15,7 +15,7 @@ require("inc/main_functions.php");
 // warto¶æ pocz±tkowa zmiennej $start -> potrzebna przy stronnicowaniu
 $start = ( isset($_GET['start']) ) ? intval($_GET['start']) : 0;
 
-$db		= new MySQL_DB;
+$db		= new DB_SQL;
 $query	= "	SELECT 
 				a.*, b.*, c.comments_id, count(DISTINCT c.id) 
 			AS 

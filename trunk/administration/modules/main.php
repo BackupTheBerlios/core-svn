@@ -1,7 +1,7 @@
 <?php
 
 // Inicjowanie egzemplarza klasy do obs³ugi Bazy Danych
-$db = new MySQL_DB;
+$db = new DB_SQL;
 
 // Zliczenie wszystkich publikowanych wpisów
 $query = "	SELECT 

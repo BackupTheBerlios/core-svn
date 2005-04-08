@@ -105,7 +105,7 @@ function get_cat($page_id, $level) {
 					id 
 				ASC";
 
-	$db = new MySQL_DB;
+	$db = new DB_SQL;
 	$db->query($query);
 		
 	while($db->next_record()) {
@@ -141,7 +141,7 @@ function get_addpage_cat($page_id, $level) {
 					id 
 				ASC";
 
-	$db = new MySQL_DB;
+	$db = new DB_SQL;
 	$db->query($query);
 	
 	$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
@@ -177,7 +177,7 @@ function get_editpage_cat($page_id, $level) {
 					id 
 				ASC";
 
-	$db = new MySQL_DB;
+	$db = new DB_SQL;
 	$db->query($query);
 		
 	while($db->next_record()) {

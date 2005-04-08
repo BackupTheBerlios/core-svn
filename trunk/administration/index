@@ -52,7 +52,7 @@ if ($p == "log") {
 		$ft->parse('ROWS', ".form_login");
 	} else {
 		
-		$db = new MySQL_DB;
+		$db = new DB_SQL;
 		$query = "	SELECT 
 						login, password, active 
 					FROM 

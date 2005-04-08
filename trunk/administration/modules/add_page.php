@@ -3,7 +3,7 @@
 // deklaracja zmiennej $action::form
 $action = empty($_GET['action']) ? '' : $_GET['action'];
 
-$db = new MySQL_DB;
+$db = new DB_SQL;
 
 switch($action) {
 	

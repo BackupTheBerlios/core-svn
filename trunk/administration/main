@@ -25,7 +25,7 @@ require(PATH_TO_CLASSES. '/cls_fast_template.php');
 require(PATH_TO_CLASSES. '/cls_permissions.php');
 
 // egzemplarz klasy obs³uguj±cej bazê danych Core
-$db = new MySQL_DB;
+$db = new DB_SQL;
 
 // pobieramy poziom uprawnieñ
 $query = sprintf("

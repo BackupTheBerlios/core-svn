@@ -21,7 +21,7 @@ switch ($action) {
 		if(empty($monit)) {
 			
 			// egzemplarz klasy ³aduj±cej komentarz do bazy danych
-			$db = new MySQL_DB;
+			$db = new DB_SQL;
 			
 			$query = "	INSERT INTO 
 							$mysql_data[db_table_category] 
