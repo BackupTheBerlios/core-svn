@@ -39,10 +39,10 @@ switch ($action) {
             $err .= $monit['strlenuser'] . "<br />";
         }
 
-        #if(!eregi('^[^@\s]+@([-a-z0-9]+\.)+([a-z]{2,})$', $coremail)){
+        if(!check_mail($coremail)){
 
-        #    $err .= $monit['validemail'] . "<br />";
-        #}
+            $err .= $monit['validemail'] . "<br />";
+        }
 
         if(strlen($corepass_1) < 6) {
 
