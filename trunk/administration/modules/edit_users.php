@@ -98,21 +98,23 @@ switch ($action) {
 			
 			$idx1++;
 			
-			$ft->define('table_userslist', "table_userslist.tpl");
-			// naprzemienne kolorowanie wierszy tabeli
+			$ft->define("editlist_users", "editlist_users.tpl");
+			$ft->define_dynamic("row", "editlist_users");
+			
+			// naprzemienne kolorowanie wierszy
 			if (($idx1%2)==1) {
-				
-				$ft->assign('ID_CLASS', "class=\"mainList\"");
-				// parsowanie szablonów
-				$ft->parse('NOTE_ROWS',	".table_userslist");
+			    
+			    $ft->assign('ID_CLASS', "class=\"mainList\"");
+			    
+			    $ft->parse('ROWS',	".row");
 			} else {
-				
-				$ft->assign('ID_CLASS', "class=\"mainListAlter\"");
-				$ft->parse('NOTE_ROWS',	".table_userslist");
+			    
+			    $ft->assign('ID_CLASS', "class=\"mainListAlter\"");
+			    
+			    $ft->parse('ROWS', ".row");
 			}
 		}
-		$ft->define('header_userslist', "header_userslist.tpl");
-		$ft->parse('ROWS',	".header_userslist");
+		$ft->parse('ROWS', "editlist_users");
 }
 
 ?>
