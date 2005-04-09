@@ -18,7 +18,12 @@ while($db->next_record()) {
         'NEWS_CAT'  => $db->f('category_id')
     ));
     
-    $ft->parse('CATEGORY_LIST', '.category_list');
+    $ft->define("category_list", "category_list.tpl");
+    $ft->define_dynamic("category_row", "category_list");
+    
+    $ft->parse('CATEGORY_LIST', ".category_row");
+    
 }
 
+ $ft->parse('CATEGORY_LIST', 'category_list');
 ?>
