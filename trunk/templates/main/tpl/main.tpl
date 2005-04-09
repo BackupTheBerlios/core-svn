@@ -30,15 +30,12 @@
 			{PAGES_HEADER}
 		<!-- end page list -->
 		
-		<span class="title">kategorie</span>
-		<br />
-		<ul>
+
 		<!-- category list/category list template parsed -->
 			{CATEGORY_LIST}
 		<!-- end category list -->
-		</ul>
+		
 		<br />
-		{* To jest komentarz *}
 		
 		<span class="title">wyszukaj</span>
 		<br /><br />
