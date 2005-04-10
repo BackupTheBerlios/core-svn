@@ -3,12 +3,10 @@
 // deklaracja zmiennej $action::form
 $action = empty($_GET['action']) ? '' : $_GET['action'];
 
-// inicjalizacja instancji klasy DB_SQL
-$db = new DB_SQL;
-
-switch ($action)
-{
+switch ($action) {
+    
 	case "add":
+	
 		//sprawdzania daty
 		if($_POST['date'] == 1) {
 			
@@ -26,9 +24,32 @@ switch ($action)
 		$comments_allow = $_POST['comments_allow'];
 		$published 		= $_POST['published'];
 		
-		$db->query("INSERT INTO $mysql_data[db_table] VALUES ('','$category_id', '$date','$title','$author','$text', '', '$comments_allow', '$published')");
+		$query = sprintf("
+            INSERT INTO 
+                %1\$s 
+            VALUES 
+                ('','%2\$d', '%3\$s','%4\$s','%5\$s','%6\$s', '', '%7\$d', '%8\$s')",
 		
- 		$db->query("SELECT max(id) as maxid FROM $mysql_data[db_table]");
+            $mysql_data['db_table'],
+            $category_id,
+            $date,
+            $title,
+            $author,
+            $text,
+            $comments_allow,
+            $published);
+            
+        $db->query($query);
+        
+        $query = sprintf("
+            SELECT 
+                max(id) as maxid 
+            FROM 
+                %1\$s",
+        
+            $mysql_data['db_table']);
+            
+        $db->query($query);
  		$db->next_record();
 			
 		// Przypisanie zmiennej $id
@@ -45,11 +66,21 @@ switch ($action)
 				
 				echo $up->error;
 			} else {
-			
- 				$db->query("UPDATE $mysql_data[db_table] 
- 								SET image='$file' 
- 								WHERE (id='$id')");
-				$db->next_record();
+			    
+			    $query = sprintf("
+                    UPDATE 
+                        %1\$s 
+                    SET 
+                        image = '%2\$s' 
+                    WHERE 
+                        id = '%3\$d'", 
+			    
+                    $mysql_data['db_table'],
+                    $file,
+                    $id
+                );
+                
+				$db->query($query);
 				
 				$ft->assign('CONFIRM', "Zdjêcie zosta³o dodane.<br />");
 				$ft->parse('ROWS',	".result_note");
@@ -58,31 +89,43 @@ switch ($action)
 		
 		$ft->assign('CONFIRM', "Wpis zosta³ dodany");
 		$ft->parse('ROWS',	".result_note");
-		
-		//print "<p align=\"center\"><a href=\"index2.php?p=mail\">Wyœlij potwierdzenie</a>";
 		break;
 
 	default:
-		$db->query("SELECT category_id, category_name FROM $mysql_data[db_table_category]");
+	
+		$query = sprintf("
+            SELECT 
+                category_id, category_name 
+            FROM 
+                %1\$s",
+		
+            $mysql_data['db_table_category']);
+            
+        $db->query($query);
+        
 		while($db->next_record()) {
 			
 			$c_id 	= $db->f("category_id");
 			$c_name = $db->f("category_name");
 		
-			$ft->assign(array(	'C_ID'		=>$c_id,
-								'C_NAME'	=>$c_name));
-							
-			$ft->define('form_categoryoption', "form_categoryoption.tpl");
-			$ft->parse('CATEGORY_ROWS', ".form_categoryoption");					
+			$ft->assign(array(
+                'C_ID'		=>$c_id,
+                'C_NAME'	=>$c_name
+            ));
+								
+			$ft->define("form_noteadd", "form_noteadd.tpl");
+			$ft->define_dynamic("category_row", "form_noteadd");
+
+			$ft->parse('ROWS',	".category_row");		
 		
 		}
 
-		$ft->assign(array(	'SESSION_LOGIN' =>$_SESSION['login'],
-							'DATE'			=>date('Y-m-d H:i:s')));
+		$ft->assign(array(
+            'SESSION_LOGIN' =>$_SESSION['login'],
+            'DATE'			=>date('Y-m-d H:i:s')
+        ));
 
-		$ft->define('form_noteadd', "form_noteadd.tpl");
-		$ft->parse('ROWS',	".form_noteadd");
-
+		$ft->parse('ROWS', "form_noteadd");
 }
 
 ?>
