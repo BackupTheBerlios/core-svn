@@ -17,7 +17,7 @@ span.black {
 }	
 
 #top {
-	background: url(./../layout/core.gif) no-repeat;
+	background: url(./../images/core.gif) no-repeat;
 	background-color: #F8F8F8;
 	height: 64px;
 	margin-bottom: 10px;
@@ -86,7 +86,7 @@ span.black {
 
 #header li {
 	float: left;
-	background: url('./../layout/left.gif') no-repeat left top;
+	background: url('./../images/left.gif') no-repeat left top;
 	margin: 0;
 	padding: 0 0 0 12px;
 }
@@ -94,7 +94,7 @@ span.black {
 #header a {
 	float: left;
 	display: block;
-	background: url('./../layout/right.gif') no-repeat right top;
+	background: url('./../images/right.gif') no-repeat right top;
 	padding: 6px 15px 4px 6px;
 	text-decoration: none;
 	color: #3C69A7;
@@ -111,12 +111,12 @@ span.black {
 }
 
 #header #current {
-	background-image: url('./../layout/left_on.gif');
+	background-image: url('./../images/left_on.gif');
 	border-width: 0;
 }
 
 #header #current a {
-	background-image: url('./../layout/right_on.gif');
+	background-image: url('./../images/right_on.gif');
 	color: #5D5D5D;
 	padding-bottom: 5px;
 }
@@ -160,7 +160,7 @@ ul#submenu {
 	display: inline;
 	padding-right: 10px;
 	padding-left: 12px;
-	background: url('./../layout/bullet_out.gif') no-repeat 0 4px;
+	background: url('./../images/bullet_out.gif') no-repeat 0 4px;
 }
 
 a {
