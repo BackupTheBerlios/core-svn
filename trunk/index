@@ -86,7 +86,7 @@ $val = empty($val) ? '' : $val;
 $ft->assign(array(
     'TITLE'             =>get_config('title_page'),
     'STATISTICS'        =>'Wizyty: ' . get_config('counter'),
-    'ENGINE_VERSION'    =>"<a href=\"javascript:mail('lark', 'no1-else.com', 'core_engine');\">core engine</a>: 1.0RC1a"
+    'ENGINE_VERSION'    =>'Based on <a href="http://core.no1-else.com/" target="_blank">Core</a>'
 ));
 
 $max_photo_width = get_config('max_photo_width');
