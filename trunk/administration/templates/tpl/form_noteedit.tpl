@@ -39,7 +39,11 @@
 		<td class="form" width="80" align="right" valign="top">Kategoria :&nbsp;</td>
 		<td class="form" width="364" align="left" valign="top" colspan="2">
 		<select name="category_id" style="BACKGROUND-COLOR: #FFF; FONT-FAMILY: tahoma, verdana, arial; FONT-SIZE: 11px; color: #505050">
-		{CATEGORY_ROWS}
+		
+            <!-- BEGIN DYNAMIC BLOCK: category_row -->
+            <option value="{C_ID}" {CURRENT_CAT}>{C_NAME}</option>
+            <!-- END DYNAMIC BLOCK: category_row -->
+            
 		</select>
 		</td>
 	</tr>
