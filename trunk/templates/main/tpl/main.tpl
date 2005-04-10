@@ -6,6 +6,7 @@
 
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2" />
 		<meta http-equiv="Content-language" content="pl" />
+		<meta name="generator" content="Core" /> <!-- zostaw dla statystyk -->
 	
 		<script type="text/javascript" src="templates/main/js/functions.js"></script>
 
