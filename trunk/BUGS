@@ -1,4 +1,4 @@
 - przy dodawaniu strony nie sprawdza czy jest podany tytul strony
 - dodawanie userow - nie sprawdza czy user z takim loginem juz istnieje... tak powinno byc ?
 - przy edycji danych usera nie sprawdza poprawnosci maila. przy dodawaniu nowego usera sprawdza. albo usunac przy dodawaniu, albo dodac przy edycji
-
+- skoro jest szumny doctype xhtml1.0 transitional, to moze trzymajmy sie tego pod wzgledem semantycznym, i wywalmy zbedne atrybuty (width, height i inne) z tpli i uzywajmy css ?
