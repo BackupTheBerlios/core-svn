@@ -11,10 +11,10 @@
 	</tr>
 	<tr>
 		<td class="form" width="80" align="right" valign="top">Tre¶æ wpisu:&nbsp;</td>
-		<td class="form" width="364" align="left" valign="top" colspan="2"><textarea name="text" cols="60" rows="12" style="background: url(./layout/bg3.jpg); BACKGROUND-REPEAT: repeat-x;">{TEXT}</textarea></td>
+		<td class="form" width="364" align="left" valign="top" colspan="2"><textarea name="text" cols="60" rows="12" style="background: url(./templates/images/bg3.jpg); BACKGROUND-REPEAT: repeat-x;">{TEXT}</textarea></td>
 	</tr>
 	<tr>
-      <td colspan="2" class="align_right"><img src="layout/arrow_blue.gif" alt="Core | CMS" align="middle" height="5" hspace="5" vspace="2" width="5" /><a href="#" onclick="document.getElementById('formComm').submit()">zmodyfikuj wpis</a></td>
+      <td colspan="2" class="align_right"><img src="templates/images/arrow_blue.gif" alt="Core | CMS" align="middle" height="5" hspace="5" vspace="2" width="5" /><a href="#" onclick="document.getElementById('formComm').submit()">zmodyfikuj wpis</a></td>
 	</tr>
 </table>
 </form>

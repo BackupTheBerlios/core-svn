@@ -1,4 +1,4 @@
-<img src="layout/main.gif" width="14" height="14" align="middle" hspace="2"><b>Aktualno¶ci - dodaj kolejny wpis</b><br /><br />
+<img src="templates/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>Aktualno¶ci - dodaj kolejny wpis</b><br /><br />
 
 <script type="text/javascript" src="./templates/js/textarea.js"></script>
 <form action="add,3,action.html" enctype="multipart/form-data" name="post" method="post" id="formPage">
@@ -44,12 +44,12 @@
 	</tr>
 	<tr>
 		<td class="form" width="324" align="right" colspan="2"></td>
-		<td class="form" width="110" align="left"><img src="layout/arrow_blue.gif" alt="Core | CMS" align="middle" height="5" hspace="5" vspace="2" width="5" /><a href="#" onclick="checkForm()">dodaj stronê</a></td>
+		<td class="form" width="110" align="left"><img src="templates/images/arrow_blue.gif" alt="Core | CMS" align="middle" height="5" hspace="5" vspace="2" width="5" /><a href="#" onclick="checkForm()">dodaj stronê</a></td>
 	</tr>
 	<tr>
 		<td class="form" width="80" align="right">Publikowana:&nbsp;</td>
 		<td class="form" width="224" align="left"><input style="border: 0px;" type="radio" name="published" value="Y" align="top" checked="checked" />- tak&nbsp;<input style="border: 0px;" type="radio" name="published" value="N" align="top" />- nie</td>
-        <td class="form" width="110" align="left"><img src="layout/arrow_blue.gif" alt="Core | CMS" align="middle" height="5" hspace="5" vspace="2" width="5" /><a href="#" onclick="document.getElementById('formPage').reset()">wyczy¶æ formularz</a></td>
+        <td class="form" width="110" align="left"><img src="templates/images/arrow_blue.gif" alt="Core | CMS" align="middle" height="5" hspace="5" vspace="2" width="5" /><a href="#" onclick="document.getElementById('formPage').reset()">wyczy¶æ formularz</a></td>
 	</tr>
 </table>
 </form>
