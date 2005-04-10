@@ -11,7 +11,7 @@ class DB_Sql {
 	// configuration parameters
 	var $Auto_Free     = 0;     ## Set to 1 for automatic mysql_free_result()
 	var $Debug         = 0;     ## Set to 1 for debugging messages.
-	var $Halt_On_Error = "yes"; ## "yes" (halt with message), "no" (ignore errors quietly), "report" (ignore errror, but spit a warning)
+	var $Halt_On_Error = "report"; ## "yes" (halt with message), "no" (ignore errors quietly), "report" (ignore errror, but spit a warning)
 	var $PConnect      = 0;     ## Set to 1 to use persistent database connections
 	var $Seq_Table     = "db_sequence";
 	
@@ -92,6 +92,8 @@ class DB_Sql {
 	// public: perform a query
 	function query($Query_String) {
 		
+        $this -> Query = $Query_String;
+
 		// No empty queries, please, since PHP4 chokes on them. */
 		if ($Query_String == "")
       		/* The empty query string is passed on from the constructor,
@@ -416,10 +418,18 @@ class DB_Sql {
 	}
 
 	function haltmsg($msg) {
-		printf("</td></tr></table><b>Database error:</b> %s<br />\n", $msg);
-		printf("<b>MySQL Error</b>: %s (%s)<br>\n",
-		$this->Errno,
-		$this->Error);
+        echo '<div style="font-size: 12px; color: #000; background-color: #fff;">Some error occured.</div>';
+        $error_msg = sprintf('
+LINK: http://%s
+ERROR NUMBER: %s
+ERROR MESSAGE: %s
+MSG: %s',
+            $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'],
+            $this -> Errno,
+            $this -> Error,
+            $msg
+        );
+        @mail(ADMIN_MAIL, 'Some error in Your CORE based website', $error_msg);
 	}
 
 }
