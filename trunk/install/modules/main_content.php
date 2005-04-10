@@ -115,6 +115,9 @@ switch ($action) {
 
             $file .= 'define(\'CORE_INSTALLED\', true);'."\n\n";
 
+            $file .= '//mail address to person who can repair if something in Your code is broken' . "\n";
+            $file .= 'define(\'ADMIN_MAIL\', \'core@example.com\');'."\n\n";
+
             $file .= '$days_to = 360;' . "\n\n";
             $file .= '?' . '>';
 
