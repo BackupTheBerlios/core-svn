@@ -128,25 +128,27 @@ switch ($action) {
 				$idx1 = empty($idx1) ? '' : $idx1;
 				
 				$idx1++;
+				
+				$ft->define("editlist_pages", "editlist_pages.tpl");
+				$ft->define_dynamic("row", "editlist_pages");
 			
 				// naprzemienne kolorowanie wierszy tabeli
 				if (($idx1%2)==1) {
 				
 					$ft->assign('ID_CLASS', "class=\"mainList\"");
-					$ft->define('table_pagelist', "table_pagelist.tpl");
-					$ft->parse('NOTE_ROWS',	".table_pagelist");
+					
+					$ft->parse('ROWS', ".row");
 				} else {
 				
 					$ft->assign('ID_CLASS', "class=\"mainListAlter\"");
-					$ft->define('table_pagelist', "table_pagelist.tpl");
-					$ft->parse('NOTE_ROWS',	".table_pagelist");
+					
+					$ft->parse('ROWS', ".row");
 				}
 				
 				get_editpage_cat($page_id, 2);
 			}
 		
-			$ft->define('header_pagelist', "header_pagelist.tpl");
-			$ft->parse('ROWS',	".header_pagelist");
+			$ft->parse('ROWS',	"editlist_pages");
 		} else {
 		
 			$ft->assign('CONFIRM', "W bazie danych nie ma ¿adnych wpisów");
