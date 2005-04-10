@@ -274,3 +274,11 @@ dd {
 .counter {
 	color: #F8F8F8;
 }
+
+li.parent {
+    font-weight: bold;
+}
+
+li.child {
+    font-weight: normal;
+}
