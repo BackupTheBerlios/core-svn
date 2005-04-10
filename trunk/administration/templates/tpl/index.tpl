@@ -7,7 +7,7 @@
 </head>
 
 <body>
-<div id="top"></div>
+  <div id="top"><a href="/"></a></div>
 
 <div id="logged">
 	<b>Zalogowany:</b> {LOGGED_IN} | <a href="logout">wyloguj</a>

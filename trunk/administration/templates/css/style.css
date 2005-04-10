@@ -17,10 +17,17 @@ span.black {
 }	
 
 #top {
-	background: url(./../images/core.gif) no-repeat;
 	background-color: #F8F8F8;
 	height: 64px;
 	margin-bottom: 10px;
+}
+#top a {
+  display: block;
+  width: 131px;
+  height: 56px;
+  margin-left: 22px;
+  background: url('./../images/core_logo.png') center no-repeat;
+  float: left;
 }
 
 #logged {
