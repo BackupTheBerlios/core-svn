@@ -56,15 +56,9 @@
 		</ul>
 		<br />
 		
-		<span class="title">czasami czytane</span>
-		<br />
-		<ul>
-		<!-- links list/links list template parsed -->
-			{LINKS_LIST}
-		<!-- end links list -->
-		</ul>
-		
-		<br />
+		<!-- NAME: links_list.tpl -->
+            {LINKS_LIST}
+        <!-- END: links_list.tpl -->
 		
 		<span class="title">alternatywnie</span>
 		<br />
