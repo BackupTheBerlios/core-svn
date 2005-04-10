@@ -82,17 +82,19 @@ switch ($action) {
 				$ft->assign('CURRENT_CAT', '');
 			}
 		
-			$ft->assign(array(	'C_ID'		=>$c_id,
-								'C_NAME'	=>$c_name));
-								
-							
-			$ft->define('form_categoryoption', "form_categoryoption.tpl");
-			$ft->parse('CATEGORY_ROWS', ".form_categoryoption");					
+			$ft->assign(array(
+                'C_ID'		=>$c_id,
+                'C_NAME'	=>$c_name
+            ));
+            
+            $ft->define("form_noteedit", "form_noteedit.tpl");
+			$ft->define_dynamic("category_row", "form_noteedit");
+
+			$ft->parse('ROWS',	".category_row");					
 		
 		}
-
-		$ft->define('form_noteedit', "form_noteedit.tpl");
-		$ft->parse('ROWS',	".form_noteedit");
+		
+		$ft->parse('ROWS',	"form_noteedit");
 		break;
 		
 	case "edit": // edycja wybranego wpisu
