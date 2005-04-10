@@ -19,7 +19,28 @@ require_once(PATH_TO_CLASSES. '/cls_fast_template.php');
 //inicjacja polaczenie z MySQL
 $db = new DB_Sql;
 
-require_once('counter/addhit.php');
+
+
+//licznik
+if(!isset($_COOKIE['devlog_counter'])){
+	
+	@setcookie('devlog_counter', 'hit', time()+10800);
+	
+    $query = sprintf("
+        UPDATE
+            %1\$s
+		SET
+            config_value = '%2\$s'
+        WHERE
+            config_name = 'counter'",
+            
+        $mysql_data['db_table_config'],
+        get_config('counter') + 1
+    );
+	$db->query($query);
+}
+
+
 
 //konfiguracja szablonow i design switchera
 if(isset($_COOKIE['devlog_design']) && is_dir('./templates/' . $_COOKIE['devlog_design'] . '/tpl/')){
