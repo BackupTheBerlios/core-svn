@@ -17,13 +17,7 @@ $query = sprintf("
     0
 );
 
-$db->query($query);
-
-$ft->define(array(
-    'pages_header'  =>"pages_header.tpl",
-    'pages_parent'  =>"pages_parent.tpl",
-    'pages_list'    =>"pages_list.tpl"
-));					
+$db->query($query);				
 					
 if($db->num_rows() > 0) {
     
@@ -35,17 +29,22 @@ if($db->num_rows() > 0) {
         
         $ft->assign(array(
             'PAGE_NAME' =>$page_name,
-            'PAGE_ID'   =>$page_id
+            'PAGE_ID'   =>$page_id,
+            'CLASS'     =>"parent",
+            'PARENT'    =>''
         ));
         
         // Parsowanie nazw stron rodzicielskich::parent	
-        $ft->parse('PAGES_LIST', ".pages_parent");
+        $ft->define("pages_list", "pages_list.tpl");
+        $ft->define_dynamic("pages_row", "pages_list");
+    
+        $ft->parse('PAGES_LIST', ".pages_row");
         
         // funkcja pobieraj±ca rekurencyjnie strony dziedzicz±ce::child
         get_cat($page_id, 2);
     }
     
-    $ft->parse('PAGES_HEADER', ".pages_header");
+    $ft->parse('PAGES_LIST', "pages_list");
 }
 
 ?>
