@@ -50,7 +50,7 @@ $perms      = new permissions();
 $permarr    = $perms->getPermissions($privileges);
 
 // inicjowanie klasy, wkazanie katalogu przechowuj±cego szablony
-$ft = new FastTemplate("./templates");
+$ft = new FastTemplate("./templates/tpl");
 
 // tablica definicji u¿ytych plików *.tpl
 $ft->define(array(
