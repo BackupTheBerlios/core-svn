@@ -191,7 +191,7 @@ function get_editpage_cat($page_id, $level) {
 		$published	= $db->f("published");
 	
 		$ft->assign(array(	'ID'		=>$page_id,
-							'TITLE'		=>str_repeat('&nbsp; ', $level) . "<img src=\"layout/ar.gif\" />&nbsp;" . $title));
+							'TITLE'		=>str_repeat('&nbsp; ', $level) . "<img src=\"templates/images/ar.gif\" />&nbsp;" . $title));
 							
 		if($published == 'Y') {
 
@@ -205,16 +205,21 @@ function get_editpage_cat($page_id, $level) {
 		$idx1 = empty($idx1) ? '' : $idx1;
 				
 		$idx1++;
+		
+        $ft->define("editlist_pages", "editlist_pages.tpl");
+        $ft->define_dynamic("row", "editlist_pages");
 			
 		// naprzemienne kolorowanie wierszy tabeli
 		if (($idx1%2)==1) {
 				
 			$ft->assign('ID_CLASS', "class=\"mainList\"");
-			$ft->parse('NOTE_ROWS',	".table_pagelist");
+			
+			$ft->parse('ROWS',	".row");
 		} else {
 				
 			$ft->assign('ID_CLASS', "class=\"mainListAlter\"");
-			$ft->parse('NOTE_ROWS',	".table_pagelist");
+			
+			$ft->parse('ROWS',	".row");
 		}
 		
 		get_editpage_cat($page_id, $level+2);
