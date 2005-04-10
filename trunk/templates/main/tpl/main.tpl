@@ -26,15 +26,14 @@
 		</form>
 		<br />
 		
-		<!-- page list/page list template parsed -->
-		<!-- if nothing printed -> nothing parsed -->
-			{PAGES_HEADER}
-		<!-- end page list -->
+		<!-- NAME: pages_list.tpl -->
+			{PAGES_LIST}
+		<!-- END: pages_list.tpl -->
 		
 
-		<!-- category list/category list template parsed -->
+		<!-- NAME: category_list.tpl -->
 			{CATEGORY_LIST}
-		<!-- end category list -->
+		<!-- END: category_list.tpl -->
 		
 		<br />
 		

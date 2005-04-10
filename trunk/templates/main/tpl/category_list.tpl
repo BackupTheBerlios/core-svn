@@ -1,4 +1,3 @@
-<!-- NAME: category_list.tpl -->
 <span class="title">kategorie</span><br />
 <ul>
     <!-- BEGIN DYNAMIC BLOCK: category_row -->
@@ -6,5 +5,4 @@
     <!-- END DYNAMIC BLOCK: category_row -->
     
     <li><br /><a href="./">wszystkie</a></li>
-</ul>
-<!-- END: category_list.tpl -->    
+</ul>   
