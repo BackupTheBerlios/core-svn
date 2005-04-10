@@ -107,7 +107,7 @@ if(is_numeric($_GET['id'])) {
                 $ft->assign(array('IMAGE' =>''));
             } else {
                 
-                $img_path = get_root() . 'photos/' . $image;
+                $img_path = get_root() . '/photos/' . $image;
                 
                 if(is_file($img_path)) {
                     list($width, $height) = getimagesize($img_path);
