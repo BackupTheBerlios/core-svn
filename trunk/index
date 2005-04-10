@@ -11,7 +11,7 @@ if(!defined('CORE_INSTALLED')) {
 
 require_once('inc/main_functions.php');
 define('PATH_TO_CLASSES', get_root() . '/administration/classes');
-require_once(PATH_TO_CLASSES. '/cls_db_mysql.inc'); // dodawanie pliku konfigurujacego bibliotekê baz danych
+require_once(PATH_TO_CLASSES. '/cls_db_mysql.php'); // dodawanie pliku konfigurujacego bibliotekê baz danych
 require_once(PATH_TO_CLASSES. '/cls_phpmailer.php'); // dodawanie pliku konfigurujacego bibliotekê wysy³ania mail'i
 require_once(PATH_TO_CLASSES. '/cls_fast_template.php');
 

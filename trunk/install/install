@@ -2,7 +2,7 @@
 
 define("PATH_TO_CLASSES",	"../administration/classes");
 
-require_once(PATH_TO_CLASSES. "/cls_db_mysql.inc"); // dodawanie pliku konfigurujacego bibliotekê baz danych
+require_once(PATH_TO_CLASSES. "/cls_db_mysql.php"); // dodawanie pliku konfigurujacego bibliotekê baz danych
 require_once(PATH_TO_CLASSES. "/cls_fast_template.php");
 require_once(PATH_TO_CLASSES. "/cls_permissions.php");
 

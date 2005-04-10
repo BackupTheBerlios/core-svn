@@ -12,7 +12,7 @@ if(isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === TRUE){
 
 define('PATH_TO_CLASSES', 'classes');
 
-require(PATH_TO_CLASSES. '/cls_db_mysql.inc');
+require(PATH_TO_CLASSES. '/cls_db_mysql.php');
 require(PATH_TO_CLASSES. '/cls_phpmailer.php');
 
 require("inc/config.php");

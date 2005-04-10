@@ -3,7 +3,7 @@
 define('PATH_TO_CLASSES', get_root() . '/administration/classes');
 
 
-require(PATH_TO_CLASSES . '/cls_db_mysql.inc'); // dodawanie pliku konfigurujacego bibliotekê baz danych
+require(PATH_TO_CLASSES . '/cls_db_mysql.php'); // dodawanie pliku konfigurujacego bibliotekê baz danych
 require(PATH_TO_CLASSES . '/cls_fast_template.php');
 require('administration/inc/config.php');
 
