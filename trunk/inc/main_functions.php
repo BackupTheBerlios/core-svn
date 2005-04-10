@@ -114,12 +114,14 @@ function get_cat($page_id, $level) {
 		$parent_id 	= $db->f("parent_id");
 		$page_name 	= $db->f("title");
 	
-		$ft->assign(array(	'PAGE_NAME'	=>$page_name,
-							'PAGE_ID'	=>$page_id,
-							'PARENT'	=>str_repeat('&nbsp; ', $level)));
+		$ft->assign(array(
+            'PAGE_NAME' =>$page_name,
+            'PAGE_ID'   =>$page_id,
+            'CLASS'     =>"child",
+            'PARENT'    =>str_repeat('&nbsp; ', $level)
+        ));
 
-				
-		$ft->parse('PAGES_LIST', ".pages_list");
+		$ft->parse('PAGES_LIST', ".pages_row");
 		get_cat($page_id, $level+2);
 	}
 }
