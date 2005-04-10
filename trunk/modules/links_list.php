@@ -14,8 +14,6 @@ $query = sprintf("
 
 $db->query($query);
 
-$ft->define('links_list', "links_list.tpl");
-
 while($db->next_record()) {
     
     $link_name  = $db->f("title");
@@ -26,6 +24,11 @@ while($db->next_record()) {
         'LINK_URL'  =>$link_url
     ));
     
-    $ft->parse('LINKS_LIST', ".links_list");
+    $ft->define("links_list", "links_list.tpl");
+    $ft->define_dynamic("links_row", "links_list");
+    
+    $ft->parse('LINKS_LIST', ".links_row");
 }
+
+$ft->parse('LINKS_LIST', 'links_list');
 ?>
