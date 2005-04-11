@@ -59,17 +59,10 @@
 		<!-- NAME: links_list.tpl -->
             {LINKS_LIST}
         <!-- END: links_list.tpl -->
-		
-		<span class="title">alternatywnie</span>
-		<br />
-		<ul>
-		<!-- alternate design list/alternate design list template parsed -->
-			<li><a href="2,main,item.html">1</a></li>
-			<!-- <li><a href="2,2,item.html">2</a></li> -->
-		<!-- end alternate design list -->	
-		</ul>
-		
-		<br />
+        
+        <!-- NAME: design_switcher.tpl -->
+            {DESIGN_SWITCHER}
+        <!-- END: design_switcher.tpl -->
 		
 		<span class="title">dla paranoików</span>
 		<br />
