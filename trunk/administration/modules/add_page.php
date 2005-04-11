@@ -97,6 +97,10 @@ switch($action) {
 	   0);
 	
 	$db->query($query);
+	
+	$ft->define("form_pageadd", "form_pageadd.tpl");
+    $ft->define_dynamic("page_row", "form_pageadd");
+	
 	while($db->next_record()) {
 		
 		$page_id      = $db->f("id");
@@ -107,17 +111,14 @@ switch($action) {
             'C_ID'		=>$page_id,
             'C_NAME'	=>$title
         ));
-							
-		$ft->define("form_pageadd", "form_pageadd.tpl");
-        $ft->define_dynamic("page_row", "form_pageadd");
         
-        $ft->parse('ROWS',	".page_row");
+        $ft->parse('ROWS', ".page_row");
         
-		get_addpage_cat($page_id, 2);				
-	
+        get_addpage_cat($page_id, 2);
 	}
-
-	$ft->parse('ROWS',	"form_pageadd");
+	
+    $ft->parse('ROWS', "form_pageadd");
+	break;
 }
 
 ?>
