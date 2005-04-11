@@ -59,6 +59,23 @@ if(isset($_COOKIE['devlog_design']) && is_dir('./templates/' . $_COOKIE['devlog_
 // inicjowanie klasy, wkazanie katalogu przechowuj±cego szablony
 $ft = new FastTemplate('./templates/' . $theme . '/tpl/');
 
+$templates_dir = 'templates/';
+$read_dir = @dir($templates_dir);
+
+$ft->define("design_switcher", "design_switcher.tpl");
+$ft->define_dynamic("alternate_design_row", "design_switcher");
+
+while($d = $read_dir->read()) {
+    
+    if($d != '.' && $d != '..') {
+        
+        $ft->assign('TEMPLATE_NAME', $d);
+        
+        $ft->parse('DESIGN_SWITCHER', ".alternate_design_row");
+    }
+}
+$ft->parse('DESIGN_SWITCHER', 'design_switcher');
+
 $ft->define(array(
     'main'              =>'main.tpl',
     'note_main'         =>'note_main.tpl',
