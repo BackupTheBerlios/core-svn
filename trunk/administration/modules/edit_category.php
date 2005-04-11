@@ -28,7 +28,7 @@ switch ($action) {
 		$ft->assign(array(	'CATEGORY_ID'		=>$category_id,
 							'CATEGORY_NAME'		=>$category_name,
 							'CATEGORY_DESC'		=>$category_description,
-							'SUBMIT_URL'		=>"edit," . $category_id . ",9,edit.html",
+							'SUBMIT_URL'		=>"main.php?p=9&amp;action=edit&amp;id=" . $category_id,
 							'CATNAME_VALUE'		=>"value=\"" . $category_name . "\"",
 							'CATNAME_DESC'		=>$category_description,
 							'SUBMIT_HREF_DESC'	=>"zmodyfikuj kategoriê",

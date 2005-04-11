@@ -26,7 +26,7 @@ switch ($action) {
 		$ft->assign(array(	'USER_ID'			=>$user_id,
 							'USER_NAME'			=>$user_name,
 							'LINK_EMAIL'		=>$user_email,
-							'SUBMIT_URL'		=>"edit," . $user_id . ",13,edit.html",
+							'SUBMIT_URL'		=>"main.php?p=13&amp;action=edit&amp;id=" . $user_id,
 							'LINK_VALUE'		=>"value=\"" . $user_name . "\"",
 							'LINKEMAIL_VALUE'	=>"value=\"" . $user_email . "\"",
 							'SUBMIT_HREF_DESC'	=>"zmodyfikuj dane u¿ytkownika",

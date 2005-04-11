@@ -43,7 +43,7 @@ switch ($action) {
 	
 		// przydzielenie zmiennych::array
 		$ft->assign(array(
-						'SUBMIT_URL'		=>"add,8,action.html",
+						'SUBMIT_URL'		=>"main.php?p=$8&amp;action=add",
 						'CATNAME_VALUE'		=>"",
 						'CATNAME_DESC'		=>"",
 						'SUBMIT_HREF_DESC'	=>"dodaj now± kategoriê",

@@ -71,7 +71,7 @@ switch ($action) {
 		// w przypadku braku akcji wy¶wietlanie formularza
 		$ft->assign(array(
 			'SUBMIT_HREF_DESC'	=>"Dodaj u¿ytkownika",
-			'SUBMIT_URL'		=>"add,7,action.html"));
+			'SUBMIT_URL'		=>"main.php?p=$7&amp;action=add"));
 			
 		$ft->define('form_useradd', "form_useradd.tpl");
 		$ft->parse('ROWS', ".form_useradd");

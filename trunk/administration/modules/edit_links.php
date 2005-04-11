@@ -26,7 +26,7 @@ switch ($action) {
 						'LINK_ID'			=>$link_id,
 						'LINK_NAME'			=>$link_name,
 						'LINK_URL'			=>$link_url,
-						'SUBMIT_URL'		=>"edit," . $link_id . ",12,edit.html",
+						'SUBMIT_URL'		=>"main.php?p=12&amp;action=edit&amp;id=" . $link_id,
 						'LINK_VALUE'		=>"value=\"" . $link_name . "\"",
 						'LINKURL_VALUE'		=>"value=\"" . $link_url . "\"",
 						'SUBMIT_HREF_DESC'	=>"zmodyfikuj link",
