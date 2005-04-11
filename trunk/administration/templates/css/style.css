@@ -246,8 +246,8 @@ a.file:hover {
 	text-decoration: none;
 }
 a.file span {
-  color: red;
-  font-weight: bold;
+    color: red;
+    font-weight: bold;
 }
 
 textarea#file {
@@ -263,4 +263,13 @@ textarea#file {
 .warning {
   color: red;
   font-weight: bold;
+}
+
+.tpl_selector {
+    background-color: #FFF;
+    font-family: tahoma, verdana, arial; 
+    font-size: 11px; 
+    color: #505050; 
+    margin-top: 3px; 
+    width: 163px;
 }
