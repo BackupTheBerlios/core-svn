@@ -10,7 +10,7 @@
   <div id="top"><a href="/"></a></div>
 
 <div id="logged">
-	<b>Zalogowany:</b> {LOGGED_IN} | <a href="logout">wyloguj</a>
+	<b>Zalogowany:</b> {LOGGED_IN} | <a href="logout.php">wyloguj</a>
 </div>
 
 <div id="header">

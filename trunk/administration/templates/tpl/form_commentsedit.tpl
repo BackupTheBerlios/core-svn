@@ -1,5 +1,5 @@
 <div id="left">
-<form enctype="multipart/form-data" method="post" action="edit,{ID},5,edit.html" id="formComm">
+<form enctype="multipart/form-data" method="post" action="main.php?p=5&amp;action=edit&amp;id={ID}" id="formComm">
 <table width="100%" align="left">
 	<tr>
 		<td class="form" width="80" align="right">Data:&nbsp;</td>

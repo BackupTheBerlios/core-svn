@@ -1,7 +1,7 @@
 <div id="left">
 <script type="text/javascript" src="./templates/js/textarea.js"></script>
 
-<form enctype="multipart/form-data" method="post" name="post" action="edit,{ID},2,edit.html" id="formNote">
+<form enctype="multipart/form-data" method="post" name="post" action="main.php?p=2&amp;action=edit&amp;id={ID}" id="formNote">
 <table width="100%" align="left">
 	<tr>
 		<td class="form" width="80" align="right">Tytu³ wpisu:&nbsp;</td>

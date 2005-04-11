@@ -16,8 +16,8 @@
 		<td {ID_CLASS}>{TITLE}</td>
 		<td {ID_CLASS} align="center">{AUTHOR}</td>
 		<td {ID_CLASS} align="center">{PUBLISHED}</td>
-		<td {ID_CLASS} align="center"><a href="show,{ID},2,edit.html">Edycja</a></td>
-		<td {ID_CLASS} align="center"><a href="delete,{ID},2,edit.html">Usuñ</a></td>
+		<td {ID_CLASS} align="center"><a href="main.php?p=2&amp;action=show&amp;id={ID}">Edycja</a></td>
+		<td {ID_CLASS} align="center"><a href="main.php?p=2&amp;action=delete&amp;id={ID}">Usuñ</a></td>
 	</tr>
 	<!-- END DYNAMIC BLOCK: row -->
 	<tr>

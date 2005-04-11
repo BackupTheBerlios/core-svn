@@ -1,4 +1,4 @@
-<form action="index.login" method="post" id="formLogin">
+<form action="index.php?p=log" method="post" id="formLogin">
 <table align="center">
 	<tr>
 		<td align="right"><div style="margin: 2px;">Twój login:</div></td>

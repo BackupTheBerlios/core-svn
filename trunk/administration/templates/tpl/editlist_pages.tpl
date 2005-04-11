@@ -13,8 +13,8 @@
 		<td {ID_CLASS} align="center">{ID}</td>
 		<td {ID_CLASS}>{TITLE}</td>
 		<td {ID_CLASS} align="center">{PUBLISHED}</td>
-		<td {ID_CLASS} align="center"><a href="show,{ID},4,edit.html">Edycja</a></td>
-		<td {ID_CLASS} align="center"><a href="delete,{ID},4,edit.html">Usuñ</a></td>
+		<td {ID_CLASS} align="center"><a href="main.php?p=4&amp;action=show&amp;id={ID}">Edycja</a></td>
+		<td {ID_CLASS} align="center"><a href="main.php?p=4&amp;action=delete&amp;id={ID}">Usuñ</a></td>
 	</tr>
 	<!-- END DYNAMIC BLOCK: row -->
 </table>
