@@ -21,13 +21,11 @@ switch($action) {
             fwrite($fp, stripslashes($text));
             fclose($fp);
             
-            $ft->assign('CONFIRM', "Szablon zosta³ Zapisany.");
+            $ft->assign('WRITE_ERROR', "Szablon zosta³ Zapisany.");
         } else {
             
-            $ft->assign('CONFIRM', "Nie uda³o siê edytowaæ szablonu.");
+            $ft->assign('WRITE_ERROR', "Nie uda³o siê edytowaæ szablonu.");
         }
-        
-        $ft->parse('ROWS',	".result_note");
         break;
 		
 	case "show":
