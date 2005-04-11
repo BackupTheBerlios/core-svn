@@ -6,17 +6,19 @@ $pagination = main_pagination('start,2,', '', 'editposts_per_page', '', 'db_tabl
 // deklaracja zmiennej $action::form
 $action = empty($_GET['action']) ? '' : $_GET['action'];
 
-$db = new DB_SQL;
-
 switch ($action) {
 	
 	case "show":// wy¶wietlanie wpisu pobranego do modyfikacji
 	
 		$query = sprintf("
-					SELECT * FROM 
-						$mysql_data[db_table] 
-					WHERE 
-						id = '%1\$d'", $_GET['id']);
+            SELECT * FROM 
+                %1\$s 
+            WHERE 
+                id = '%2\$d'", 
+		
+            $mysql_data['db_table'],
+            $_GET['id']
+        );
 		
 		$db->query($query);
 		$db->next_record();
@@ -46,28 +48,28 @@ switch ($action) {
 
 		if($comments_allow == 1) {
 
-			$ft->assign(array(	'COMMENTS_YES'	=>'<input style="border: 0px;" type="radio" name="comments_allow" value="1" align="top" checked="checked" />',
-								'COMMENTS_NO'	=>'<input style="border: 0px;" type="radio" name="comments_allow" value="0" align="top" />'));
+			$ft->assign('COMMENTS_YES', 'checked="checked"');
 		} else {
 			
-			$ft->assign(array(	'COMMENTS_YES'	=>'<input style="border: 0px;" type="radio" name="comments_allow" value="1" align="top" />',
-								'COMMENTS_NO'	=>'<input style="border: 0px;" type="radio" name="comments_allow" value="0" align="top" checked="checked" />'));
+			$ft->assign('COMMENTS_NO', 'checked="checked"');
 		}					
 								
 		if($published == "Y") {
 
-			$ft->assign(array(	'CHECKBOX_YES'	=>'<input style="border: 0px;" type="radio" name="published" value="Y" align="top" checked="checked" />',
-								'CHECKBOX_NO'	=>'<input style="border: 0px;" type="radio" name="published" value="N" align="top" />'));
+			$ft->assign('CHECKBOX_YES', 'checked="checked"');
 		} else {
 			
-			$ft->assign(array(	'CHECKBOX_YES'	=>'<input style="border: 0px;" type="radio" name="published" value="Y" align="top" />',
-								'CHECKBOX_NO'	=>'<input style="border: 0px;" type="radio" name="published" value="N" align="top" checked="checked" />'));
+			$ft->assign('CHECKBOX_NO', 'checked="checked"');
 		}
 		
-		$query = "	SELECT 
-						category_id, category_name 
-					FROM 
-						$mysql_data[db_table_category]";
+		$query = sprintf("
+            SELECT 
+                category_id, category_name 
+            FROM 
+                %1\$s", 
+		
+            $mysql_data['db_table_category']
+        );
 		
 		$db->query($query);
 		while($db->next_record()) {

@@ -31,12 +31,10 @@ switch ($action) {
 							
 		if($published == "Y") {
 
-			$ft->assign(array(	'CHECKBOX_YES'	=>'<input style="border: 0px;" type="radio" name="published" value="Y" align="top" checked="checked" />',
-								'CHECKBOX_NO'	=>'<input style="border: 0px;" type="radio" name="published" value="N" align="top" />'));
+			$ft->assign('CHECKBOX_YES', 'checked="checked"');
 		} else {
 			
-			$ft->assign(array(	'CHECKBOX_YES'	=>'<input style="border: 0px;" type="radio" name="published" value="Y" align="top" />',
-								'CHECKBOX_NO'	=>'<input style="border: 0px;" type="radio" name="published" value="N" align="top" checked="checked" />'));
+			$ft->assign('CHECKBOX_NO', 'checked="checked"');
 		}			
 
 		$ft->define('form_pageedit', "form_pageedit.tpl");
