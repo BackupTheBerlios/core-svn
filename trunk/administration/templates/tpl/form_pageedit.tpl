@@ -29,7 +29,10 @@
 	</tr>
 	<tr>
 		<td class="form" width="80" align="right">Publikowana:&nbsp;</td>
-		<td class="form" width="224" align="left">{CHECKBOX_YES}- tak&nbsp;{CHECKBOX_NO}- nie</td>
+		<td class="form" width="224" align="left">
+            <input style="border: 0px;" type="radio" name="published" value="Y" align="top" {CHECKBOX_YES} />- tak&nbsp;
+            <input style="border: 0px;" type="radio" name="published" value="N" align="top" {CHECKBOX_NO} />- nie
+        </td>
 	</tr>
 	<tr>
       <td colspan="2" class="align_right"><img src="templates/images/arrow_blue.gif" alt="Core | CMS" align="middle" height="5" hspace="5" vspace="2" width="5" /><a href="#" onclick="document.getElementById('formPage').submit()">zmodyfikuj wpis</a></td>
