@@ -3,7 +3,7 @@
 <span class="warning">{WRITE_ERROR}</span><br />
 
 <script type="text/javascript" src="./templates/js/textarea.js"></script>
-<form action="main.php?p=$14&amp;action=add" enctype="multipart/form-data" name="post" method="post">
+<form action="main.php?p=14&amp;action=add&amp;tpl_dir={TPL_DIR}" enctype="multipart/form-data" name="post" method="post">
 <table width="100%" align="left">
 	<tr>
 		<td class="form" width="100%" align="left" valign="top" colspan="3">
@@ -24,11 +24,19 @@
 </div>
 
 <div id="right">
-<b>Edytuj szablon</b><br /><br /><br />
+<b>Edytuj szablon</b><br />
+<form action="main.php?p=14" method="post">
+<select class="tpl_selector" name="template_dir" onchange="document.forms[1].submit()">
+
+{TEMPLATE_SELECTED}
+
+</select>
+</form>
+
 <div id="box">
 
     <!-- BEGIN DYNAMIC BLOCK: template_row -->
-    <a class="file" href="main.php?p=14&amp;action=show&amp;id={FILE_PATH}"><span>{STAR}</span>{FILE}</a>
+    <a class="file" href="main.php?p=14&amp;action=show&amp;tpl={FILE_PATH}&amp;tpl_dir={TPL_DIR}"><span>{STAR}</span>{FILE}</a>
     <!-- END DYNAMIC BLOCK: template_row -->
     
 </div>
