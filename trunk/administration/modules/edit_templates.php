@@ -15,6 +15,8 @@ switch($action) {
         
         $tpl = 	'../templates/main/tpl/' . $template . '.tpl';
         
+        $text = str_replace('{NOTE_ROWS}', '{ROWS}', $text);
+        
         if(is_writeable($tpl)) {
             
             $fp	= fopen($tpl, 'w+');
@@ -51,6 +53,8 @@ switch($action) {
             // Sztywna obs³uga </textarea> w szablonie, aby by³
             // on wy¶wietlany poprawnie w polu formularza
             $file_content = str_replace('</textarea>', '&lt;/textarea>', $file_content);
+            
+            $file_content = str_replace('{ROWS}', '{NOTE_ROWS}', $file_content);
             
             // Zabronimy FT ukrywanie nie przydzielonych zmiennych
             // dziêki temu widaæ je przy edycji danego szablonu
