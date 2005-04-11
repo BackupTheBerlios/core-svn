@@ -1,5 +1,5 @@
 <ul>
-	<li {MAIN_CURRENT}><a href="main">Strona G³ówna</a></li>
+	<li {MAIN_CURRENT}><a href="main.php">Strona G³ówna</a></li>
 	<li {NEWS_CURRENT}><a href="main.php?p=1">Aktualno¶ci</a></li>
 	<li {PAGES_CURRENT}><a href="main.php?p=3">Strony Serwisu</a></li>
 	<li {LINKS_CURRENT}><a href="main.php?p=11">Linki</a></li>
