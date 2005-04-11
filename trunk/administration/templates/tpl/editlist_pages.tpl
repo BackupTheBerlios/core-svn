@@ -1,4 +1,5 @@
-<div align="left"><img src="templates/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>Zarz±dzanie stronami - edycja</b><br /><br /></div>
+<div id="left">
+<img src="templates/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>Zarz±dzanie stronami - edycja</b><br /><br />
 <table align="left" cellspacing="0" cellpadding="0" border="0" width="100%">
 	<tr>
 		<td id="mainListHeader" width="7%">Id</td>
@@ -17,3 +18,4 @@
 	</tr>
 	<!-- END DYNAMIC BLOCK: row -->
 </table>
+</div>

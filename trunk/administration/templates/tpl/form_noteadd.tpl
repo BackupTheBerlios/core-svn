@@ -1,3 +1,4 @@
+<div id="left">
 <img src="templates/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>Aktualno¶ci - dodaj kolejny wpis</b><br /><br />
 
 <script type="text/javascript" src="./templates/js/textarea.js"></script>
@@ -66,3 +67,4 @@
 	</tr>
 </table>
 </form>
+</div>

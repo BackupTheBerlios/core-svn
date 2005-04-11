@@ -1,4 +1,5 @@
-<div align="left"><img src="templates/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>Komentarze - najczê¶ciej komentowane wpisy</b><br /><br /></div>
+<div id="left">
+<img src="templates/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>Komentarze - najczê¶ciej komentowane wpisy</b><br /><br />
 <!-- NAME: editlist_mostcomments.tpl -->
 <table align="left" cellspacing="0" cellpadding="0" border="0" width="100%">
 	<tr>
@@ -22,3 +23,4 @@
 	</tr>
 </table>
 <!-- END: editlist_mostcomments.tpl -->
+</div>

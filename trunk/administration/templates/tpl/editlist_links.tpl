@@ -1,4 +1,5 @@
-<div align="left"><img src="templates/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>Kategorie - edycja/usuwanie</b><br /><br /></div>
+<div id="left">
+<img src="templates/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>Kategorie - edycja/usuwanie</b><br /><br />
 <!-- NAME: editlist_links.tpl -->
 <table align="left" cellspacing="0" cellpadding="0" border="0" width="100%">
 	<tr>
@@ -19,3 +20,4 @@
 	<!-- END DYNAMIC BLOCK: row -->
 </table>
 <!-- END: editlist_links.tpl -->
+</div>

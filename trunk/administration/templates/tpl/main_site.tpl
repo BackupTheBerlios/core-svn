@@ -1,3 +1,4 @@
+<div id="left">
 Witamy na stronie administracji serwisem.<br /><br />
 <table width="200" align="left" style="border: 1px solid #D4D4D4; padding: 0px 3px 2px;">
 	<tr>
@@ -16,4 +17,5 @@ Witamy na stronie administracji serwisem.<br /><br />
 		{NONPUBLISHED_NOTES}
 		</td>
 	</tr>
-</table>		
+</table>
+</div>

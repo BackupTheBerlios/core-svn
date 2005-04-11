@@ -1,3 +1,4 @@
+<div id="left">
 <form enctype="multipart/form-data" method="post" action="edit,{ID},5,edit.html" id="formComm">
 <table width="100%" align="left">
 	<tr>
@@ -18,3 +19,4 @@
 	</tr>
 </table>
 </form>
+</div>

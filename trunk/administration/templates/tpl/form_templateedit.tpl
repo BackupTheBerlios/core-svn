@@ -1,3 +1,4 @@
+<div id="left">
 <img src="templates/images/main.gif" width="14" height="14" align="top" hspace="2"><b>Szablony - edycja szablonu</b> {TEMPLATE}<br /><br />
 <span class="warning">{WRITE_ERROR}</span><br />
 
@@ -20,3 +21,4 @@
 	</tr>
 </table>
 </form>
+</div>

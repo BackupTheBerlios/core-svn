@@ -1,3 +1,4 @@
+<div id="left">
 <script type="text/javascript" src="./templates/js/textarea.js"></script>
 
 <form enctype="multipart/form-data" method="post" name="post" action="edit,{ID},2,edit.html" id="formNote">
@@ -60,3 +61,4 @@
 	</tr>
 </table>
 </form>
+</div>

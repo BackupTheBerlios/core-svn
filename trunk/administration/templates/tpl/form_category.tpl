@@ -1,3 +1,4 @@
+<div id="left">
 <img src="templates/images/main.gif" width="14" height="14" align="middle" hspace="2">{HEADER_DESC}<br /><br />
 <form enctype="multipart/form-data" method="post" action="{SUBMIT_URL}" id="formCat">
 <table width="100%" align="left">
@@ -14,3 +15,4 @@
 	</tr>
 </table>
 </form>
+</div>

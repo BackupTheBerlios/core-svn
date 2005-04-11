@@ -1,3 +1,4 @@
+<div id="left">
 <img src="templates/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>Aktualno¶ci - dodaj kolejny wpis</b><br /><br />
 
 <script type="text/javascript" src="./templates/js/textarea.js"></script>
@@ -40,8 +41,8 @@
 			<option> -- wybierz kategoriê -- </option>
 			
 			<!-- BEGIN DYNAMIC BLOCK: page_row -->
-            <option value="{C_ID}">{C_NAME}</option>
-            <!-- END DYNAMIC BLOCK: page_row -->
+			<option value="{C_ID}">{C_NAME}</option>
+			<!-- END DYNAMIC BLOCK: page_row -->
 
 		</select>
 		</td>
@@ -57,3 +58,4 @@
 	</tr>
 </table>
 </form>
+</div>
