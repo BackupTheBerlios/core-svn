@@ -53,7 +53,7 @@ switch ($action) {
 	default:
 		// przydzielenie zmiennych::array
 		$ft->assign(array(
-						'SUBMIT_URL'		=>"main.php?p=$11&amp;action=add",
+						'SUBMIT_URL'		=>"main.php?p=11&amp;action=add",
 						'LINK_VALUE'		=>"",
 						'LINKURL_VALUE'		=>"value=\"http://\"",
 						'SUBMIT_HREF_DESC'	=>"dodaj nowy link",
