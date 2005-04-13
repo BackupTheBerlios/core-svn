@@ -6,10 +6,9 @@ echo('<?xml version="1.0" encoding="iso-8859-2"?>');
 echo "\n<rss version=\"2.0\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\">\n\n";
 
 define("PATH_TO_CLASSES", "administration/classes");
-define("PATH_TO_CONFIG", "administration/inc");
 
 require(PATH_TO_CLASSES. "/cls_db_mysql.php"); // dodawanie pliku konfigurujacego bibliotekę baz danych
-require(PATH_TO_CONFIG. "/config.php");
+require("administration/inc/config.php");
 require("inc/main_functions.php");
 	
 // wartość początkowa zmiennej $start -> potrzebna przy stronnicowaniu
