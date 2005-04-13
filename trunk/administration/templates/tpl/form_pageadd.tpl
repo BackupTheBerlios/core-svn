@@ -2,7 +2,7 @@
 <img src="templates/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>Aktualno¶ci - dodaj kolejny wpis</b><br /><br />
 
 <script type="text/javascript" src="./templates/js/textarea.js"></script>
-<form action="main.php?p=$3&amp;action=add" enctype="multipart/form-data" name="post" method="post" id="formPage">
+<form action="main.php?p=3&amp;action=add" enctype="multipart/form-data" name="post" method="post" id="formPage">
 <table width="100%" align="left">
 	<tr>
 		<td class="form" width="80" align="right">Tytu³ strony:&nbsp;</td>
