@@ -8,73 +8,85 @@ switch($action) {
 	case "add":
 		$text = nl2br($_POST['text']);
 		
-		$title 		= $_POST['title'];
+		$title 		= trim($_POST['title']);
 		$published 	= $_POST['published'];
 		$page_id	= $_POST['category_id'];
 		
-		$query = sprintf("
-            INSERT INTO 
-                %1\$s 
-            VALUES 
-                ('', '%2\$d', '%3\$s', '%4\$s', '', '%5\$s')", 
+		// Sprawdzanie czy tytul strony jest wype³niony
+		if(!empty($title)) {
+		    
+		    $query = sprintf("
+                INSERT INTO 
+                    %1\$s 
+                VALUES 
+                    ('', '%2\$d', '%3\$s', '%4\$s', '', '%5\$s')", 
 		
-            $mysql_data['db_table_pages'], 
-            $page_id, 
-            $title, 
-            $text, 
-            $published
-        );
+                $mysql_data['db_table_pages'], 
+                $page_id, 
+                $title, 
+                $text, 
+                $published
+            );
+            
+            $db->query($query);
 		
-		$db->query($query);
-		
-		$query = sprintf("
-            SELECT MAX(id) 
-                as maxid 
-            FROM 
-                %1\$s", 
+            $query = sprintf("
+                SELECT MAX(id) 
+                    as maxid 
+                FROM 
+                    %1\$s", 
 
-            $mysql_data['db_table_pages']
-        );
-		
- 		$db->query($query);
- 		$db->next_record();
-			
-		// Przypisanie zmiennej $id
-		$id = $db->f("0");
-		
-		if(!empty($_FILES['file']['name'])) {
-			
-			$up = new upload;
-			$upload_dir = "../photos";
-			
-			// upload file.
-			$file = $up->upload_file($upload_dir, 'file', true, true, 0, "jpg|jpeg|gif");
-			if($file == false) {
-				
-				echo $up->error;
-			} else {
-			
-				$query = sprintf("
-                    UPDATE 
-                        %1\$s 
-                    SET 
-                        image = '%2\$s' 
-                    WHERE 
-                        id = '%3\$d'", 
+                $mysql_data['db_table_pages']
+            );
+            
+            $db->query($query);
+            $db->next_record();
+            
+            // Przypisanie zmiennej $id
+            $id = $db->f("0");
+            
+            if(!empty($_FILES['file']['name'])) {
+                
+                $up = new upload;
+                $upload_dir = "../photos";
+                
+                // upload file.
+                $file = $up->upload_file($upload_dir, 'file', true, true, 0, "jpg|jpeg|gif");
+                if($file == false) {
+                    
+                    echo $up->error;
+                } else {
+                    
+                    $query = sprintf("
+                        UPDATE 
+                            %1\$s 
+                        SET 
+                            image = '%2\$s' 
+                        WHERE 
+                            id = '%3\$d'", 
 			    
-                    $mysql_data['db_table_pages'],
-                    $file,
-                    $id
-                );
+                        $mysql_data['db_table_pages'],
+                        $file,
+                        $id
+                    );
 				
-				$db->query($query);
+				    $db->query($query);
 				
-				$ft->assign('CONFIRM', "Zdjêcie zosta³o dodane.<br />");
-				$ft->parse('ROWS',	".result_note");
-			}
+				    $ft->assign('CONFIRM', "Zdjêcie zosta³o dodane.<br />");
+				    $ft->parse('ROWS',	".result_note");
+                }
+            }
+            
+            $ft->assign('CONFIRM', "Strona zosta³a dodana");
+            
+		} else {
+		    
+		    $err =    "Nazwa strony nie mo¿e byæ pusta.<br />";
+		    $err .=   "<a href=\"javascript:history.back(-1);\">powrót</a>";
+		    
+		    $ft->assign('CONFIRM', $err);
 		}
 		
-		$ft->assign('CONFIRM', "Strona zosta³a dodana");
 		$ft->parse('ROWS',	".result_note");
 		break;
 
