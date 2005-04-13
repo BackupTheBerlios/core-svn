@@ -11,22 +11,27 @@ require_once('inc/i18n.php');
 require(PATH_TO_CLASSES. "/cls_db_mysql.php"); // dodawanie pliku konfigurujacego bibliotekê baz danych
 require("administration/inc/config.php");
 require("inc/main_functions.php");
-	
-// warto¶æ pocz±tkowa zmiennej $start -> potrzebna przy stronnicowaniu
-$start = ( isset($_GET['start']) ) ? intval($_GET['start']) : 0;
 
-$db = new DB_SQL;
-$query = "	SELECT 
-				b.*, a.id, a.title 
-			FROM 
-				$mysql_data[db_table_comments] b 
-			LEFT JOIN 
-				$mysql_data[db_table] a 
-			ON 
-				b.comments_id = a.id 
-			GROUP BY 
-				date 
-			DESC LIMIT 10";
+$db     = new DB_SQL;
+$query  = sprintf("
+    SELECT 
+        b.*, a.id, a.title 
+    FROM 
+        %1\$s b 
+    LEFT JOIN 
+        %2\$s a 
+    ON 
+        b.comments_id = a.id 
+    GROUP BY 
+        date 
+    DESC 
+    LIMIT 
+        %3\$d", 
+
+    $mysql_data['db_table_comments'],
+    $mysql_data['db_table'],
+    10
+);
 
 $db->query($query);
 
@@ -67,17 +72,22 @@ while($db->next_record()) {
 	
 	$text = strip_tags($text, '<br><a>');
 	
-    /*
-     * wywalic ereg_*! wsadzic pattern i replacement w tablice i zalatwic wszystko jednym str_replace()
-     *
-     */
-	$text	= ereg_replace("&", " &amp; ", $text);
-	$text	= ereg_replace("<br />", "&lt;br /&gt;", $text);
-	
-	$text	= ereg_replace("<", "&lt;", $text);
-	$text	= ereg_replace(">", "&gt;", $text);
-	
-	$c_name	= ereg_replace("&", " and ", $c_name);
+    $pattern = array(
+        "&",
+        "<br />", 
+        "<",
+        ">"
+    );
+    
+    $replacement = array(
+        " &amp; ",
+        "&lt;br /&gt;",
+        "&lt;",
+        "&gt;"
+    );
+    
+    $text   = str_replace($pattern, $replacement, $text);
+    $c_name = str_replace("&", " and ", $c_name);
 
 	
 	echo "<item>\n";
@@ -91,4 +101,5 @@ while($db->next_record()) {
 
 echo "</channel>\n\n";
 echo "</rss>"
+
 ?>

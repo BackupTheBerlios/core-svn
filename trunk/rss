@@ -7,43 +7,50 @@ echo "\n<rss version=\"2.0\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\">\n\n"
 
 define("PATH_TO_CLASSES", "administration/classes");
 
-require_once('inc/i18n.php');
 require(PATH_TO_CLASSES. "/cls_db_mysql.php"); // dodawanie pliku konfigurujacego bibliotekê baz danych
 require("administration/inc/config.php");
-require("inc/main_functions.php");
-	
-// warto¶æ pocz±tkowa zmiennej $start -> potrzebna przy stronnicowaniu
-$start = ( isset($_GET['start']) ) ? intval($_GET['start']) : 0;
 
-$db		= new DB_SQL;
-$query	= "	SELECT 
-				a.*, b.*, c.comments_id, count(DISTINCT c.id) 
-			AS 
-				comments 
-			FROM 
-				$mysql_data[db_table] a, 
-				$mysql_data[db_table_category] b 
-			LEFT JOIN 
-				$mysql_data[db_table_comments] c 
-			ON 
-				a.id = c.comments_id
-			WHERE 
-				b.category_id = a.c_id 
-			AND 
-				published = 'Y' 
-			GROUP BY 
-				a.date 
-			DESC LIMIT 10";
+require("inc/main_functions.php");
+require("inc/i18n.php");
+
+$db     = new DB_SQL;
+$query  = sprintf("
+    SELECT 
+        a.*, b.*, c.comments_id, count(DISTINCT c.id) 
+    AS 
+        comments 
+    FROM 
+        %1\$s a, 
+        %2\$s b 
+    LEFT JOIN 
+        %3\$s c 
+    ON 
+        a.id = c.comments_id
+    WHERE 
+        b.category_id = a.c_id 
+    AND 
+        published = 'Y' 
+    GROUP BY 
+        a.date 
+    DESC 
+    LIMIT 
+        %4\$d", 
+
+    $mysql_data['db_table'], 
+    $mysql_data['db_table_category'], 
+    $mysql_data['db_table_comments'], 
+    10
+);
 
 $db->query($query);
 
-printf("
+printf("	
 <channel>
-	<title>%1\$s</title>
-	<link>http://" . $_SERVER['HTTP_HOST'] . "</link>
-	<description>%2\$s</description>
-	<language>%3\$s</language> 
-	<copyright>%4\$s</copyright>
+    <title>%1\$s</title>
+    <link>http://" . $_SERVER['HTTP_HOST'] . "</link>
+    <description>%2\$s</description>
+    <language>%3\$s</language>
+    <copyright>%4\$s</copyright>
 ",
   
     $i18n['rss'][0],
@@ -74,18 +81,22 @@ while($db->next_record()) {
 	
 	$text = strip_tags($text, '<br><a><div>');
 	
-    /*
-     * wywalic ereg_*! wsadzic pattern i replacement w tablice i zalatwic wszystko jednym str_replace()
-     *
-     */
-	$text	= ereg_replace("&", " &amp; ", $text);
-	$text	= ereg_replace("<br />", "&lt;br /&gt;", $text);
-	
-	$text	= ereg_replace("<", "&lt;", $text);
-	$text	= ereg_replace(">", "&gt;", $text);
-	
-	$c_name	= ereg_replace("&", " and ", $c_name);
-
+    $pattern = array(
+        "&",
+        "<br />", 
+        "<",
+        ">"
+    );
+    
+    $replacement = array(
+        " &amp; ",
+        "&lt;br /&gt;",
+        "&lt;",
+        "&gt;"
+    );
+    
+    $text   = str_replace($pattern, $replacement, $text);
+    $c_name = str_replace("&", " and ", $c_name);
 	
 	echo "<item>\n";
 	echo "	<pubDate>" . $date . " GMT</pubDate>\n";
@@ -100,4 +111,5 @@ while($db->next_record()) {
 
 echo "</channel>\n\n";
 echo "</rss>"
+
 ?>
