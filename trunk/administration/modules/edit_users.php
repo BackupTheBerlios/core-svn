@@ -10,10 +10,14 @@ switch ($action) {
 	case "show": // wy¶wietlanie wpisu pobranego do modyfikacji
 	
 		$query = sprintf("
-					SELECT * FROM 
-						$mysql_data[db_table_users] 
-					WHERE 
-						id = '%1\$d'", $_GET['id']);
+            SELECT * FROM 
+                %1\$s 
+            WHERE 
+                id = '%2\$d'", 
+		
+            $mysql_data['db_table_users'], 
+            $_GET['id']
+        );
 		
 		$db->query($query);
 		$db->next_record();
@@ -23,45 +27,73 @@ switch ($action) {
 		$user_email		= $db->f("email");
 		$user_status	= $db->f("active");
 		
-		$ft->assign(array(	'USER_ID'			=>$user_id,
-							'USER_NAME'			=>$user_name,
-							'LINK_EMAIL'		=>$user_email,
-							'SUBMIT_URL'		=>"main.php?p=13&amp;action=edit&amp;id=" . $user_id,
-							'LINK_VALUE'		=>"value=\"" . $user_name . "\"",
-							'LINKEMAIL_VALUE'	=>"value=\"" . $user_email . "\"",
-							'SUBMIT_HREF_DESC'	=>"zmodyfikuj dane u¿ytkownika",
-							'HEADER_DESC'		=>"<b>U¿ytkownicy - modyfikacja u¿ytkownika</b>"));
+		$ft->assign(array(
+            'USER_ID'			=>$user_id,
+            'USER_NAME'			=>$user_name,
+            'LINK_EMAIL'		=>$user_email,
+            'SUBMIT_URL'		=>"main.php?p=13&amp;action=edit&amp;id=" . $user_id,
+            'LINK_VALUE'		=>"value=\"" . $user_name . "\"",
+            'LINKEMAIL_VALUE'	=>"value=\"" . $user_email . "\"",
+            'SUBMIT_HREF_DESC'	=>"zmodyfikuj dane u¿ytkownika",
+            'HEADER_DESC'		=>"<b>U¿ytkownicy - modyfikacja u¿ytkownika</b>"
+        ));
 
 		$ft->define('form_useradd', "form_useradd.tpl");
 		$ft->parse('ROWS',	".form_useradd");
 		break;
 
-	case "edit":// edycja wybranego wpisu
-		$user_name	= $_POST['login_name'];
-		$user_email	= $_POST['email'];
+	case "edit":
+
+        // edycja wybranego wpisu
+        $user_name	= $_POST['login_name'];
+        $user_email	= $_POST['email'];
+        
+        if(!check_mail($user_email)){
+			
+			$err = "Podaj poprawny adres e-mail.<br />";
+		}
 		
-		$query = sprintf("
-					UPDATE 
-						$mysql_data[db_table_users] 
-					SET 
-						login	= '$user_name', 
-						email	= '$user_email' 
-					WHERE 
-						id = '%1\$d'", $_GET['id']);
+		if(!empty($err)) {
+			
+			$err .= "<br /><a href=\"javascript:history.back();\">powrót</a>";
+
+			$ft->assign('CONFIRM', $err);
+			$ft->parse('ROWS', ".result_note");
+			
+		} else {
 		
-		$db->query($query);
+            $query = sprintf("
+                UPDATE 
+                    %1\$s 
+                SET 
+                    login	= '%2\$s', 
+                    email	= '%3\$s' 
+                WHERE 
+                    id = '%4\$d'", 
 		
-		$ft->assign('CONFIRM', "U¿ytkownik zosta³ zmodyfikowany.");
-		$ft->parse('ROWS',	".result_note");
+                $mysql_data['db_table_users'], 
+                $user_name, 
+                $user_email, 
+                $_GET['id']
+            );
+            
+            $db->query($query);
+            $ft->assign('CONFIRM', "U¿ytkownik zosta³ zmodyfikowany.");
+            $ft->parse('ROWS',	".result_note");
+		}
 		break;
 
 	case "delete":// usuwanie wybranego wpisu
 	
 		$query = sprintf("
-					DELETE FROM 
-						$mysql_data[db_table_users] 
-					WHERE 
-						id = '%1\$d'", $_GET['id']);
+            DELETE FROM 
+                %1\$s 
+            WHERE 
+                id = '%2\$d'", 
+		
+            $mysql_data['db_table_users'], 
+            $_GET['id']
+        );
 		
 		$db->query($query);
 		
@@ -71,11 +103,16 @@ switch ($action) {
 
 	default:
 	
-		$query = "	SELECT * FROM 
-						$mysql_data[db_table_users] 
-					ORDER BY 
-						id 
-					ASC";
+		$query = sprintf("
+            SELECT * FROM 
+                %1\$s 
+            ORDER BY 
+                id 
+            ASC", 
+		
+            $mysql_data['db_table_users']
+        );
+        
 		$db->query($query);
 	
 		// Pêtla wyswietlaj¹ca wszystkie wpisy + stronnicowanie ich
@@ -87,10 +124,10 @@ switch ($action) {
 			$user_status	= $db->f("active");
 			
 			$ft->assign(array(
-						'USER_ID'		=>$user_id,
-						'USER_NAME'		=>$user_name,
-						'USER_EMAIL'	=>$user_email,
-						'USER_STATUS'	=>$user_status
+                'USER_ID'		=>$user_id,
+                'USER_NAME'		=>$user_name,
+                'USER_EMAIL'	=>$user_email,
+                'USER_STATUS'	=>$user_status
 			));			
 			
 			// deklaracja zmiennej $idx1::color switcher
