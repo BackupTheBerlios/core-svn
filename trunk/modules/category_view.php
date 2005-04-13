@@ -70,11 +70,7 @@ if(is_numeric($_GET['id'])) {
                         
             if($page_string) {
         
-                /*
-                 *html tylko w .tpl
-                 *
-                 */
-                $ft->assign('STRING', '<b>Id¼ do strony:</b> ' . $page_string);
+                $ft->assign('STRING', $i18n['category_view'][0] . $page_string);
             } else {
         
                 $ft->assign('STRING', $page_string);
@@ -83,7 +79,7 @@ if(is_numeric($_GET['id'])) {
 
             if(!$comments_allow) {
             
-                $ft->assign('COMMENTS_ALLOW', '<br />');
+                $ft->assign('COMMENTS_ALLOW', $i18n['category_view'][1]);
             } else {
         
                 if($comments == 0) {
@@ -142,7 +138,7 @@ if(is_numeric($_GET['id'])) {
         
         // Obs³uga b³êdu, kiedy ¿adana jest kategoria, jakiej nie ma w bazie danych
         $ft->assign(array(
-            'QUERY_FAILED'  =>'W bazie danych nie ma wpisów z kategorii o ¿adanym id',
+            'QUERY_FAILED'  =>$i18n['category_view'][2],
             'STRING'        =>''
         ));
                             
@@ -152,7 +148,7 @@ if(is_numeric($_GET['id'])) {
     
     // Obs³uga b³êdu, kiedy u¿ytkownik próbuje kombinowaæ ze zmiennymi przechwytywanymi przez $_GET
     $ft->assign(array(
-        'QUERY_FAILED'  =>'Szukasz czego¶',
+        'QUERY_FAILED'  =>$i18n['category_view'][3],
         'STRING'        =>''
     ));
                         

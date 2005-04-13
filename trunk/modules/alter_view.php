@@ -126,7 +126,7 @@ if($db->num_rows() > 0) {
 } else {
 
     $ft->assign(array(
-        'QUERY_FAILED'  =>'W bazie danych nie ma wpisu o ¿±danym id',
+        'QUERY_FAILED'  =>$i18n['alter_view'][0],
         'STRING'        =>''
     ));
 

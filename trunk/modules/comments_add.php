@@ -16,7 +16,7 @@ switch ($action) {
         // Obs³uga formularza, jesli go zatwierdzono
         if(!eregi('^([^0-9]+){2,}$', $_POST['author'])) {
             
-            $monit = 'Proszê podaæ swoje imiê, ewentualnie nick.<br />';
+            $monit = $i18n['comments_add'][0];
         }
 
         if($_POST['email'] != '') {
@@ -24,7 +24,7 @@ switch ($action) {
             // Sprawdzenie poprawnosci adresu e-mail
             if(!check_mail($_POST['email'])) {
                 
-                $monit .= 'Proszê podaæ poprawny adres e-mail.<br />';
+                $monit .= $i18n['comments_add'][1];
             }
         }
 
@@ -95,17 +95,13 @@ switch ($action) {
             $ft->assign(array(
                 'NEWS_ID'       =>$_POST['id'],
                 'STRING'        =>$page_string,
-                /*
-                 *komunikat do zewn.pliku/bazy/konfiga/gettext
-                 *
-                 */
-                'CONFIRMATION'  =>'Komentarz zosta³ dodany.'
+                'CONFIRMATION'  =>$i18n['comments_add'][2]
             ));
 
             $ft->parse('ROWS','.comments_submit');
         } else {
             
-            $monit .= '<br /><a href="javascript:history.back(-1);">powrót</a>';
+            $monit .= $i18n['comments_add'][3];
 
             // przydzielanie zmiennych i parsowanie szablonu, je¶li próba dodania komentarza siê nie powiedzie
             $ft->assign(array(

@@ -28,4 +28,23 @@ $i18n['rsscomments'][1] = './dev-log | about work';
 $i18n['rsscomments'][2] = 'pl';
 $i18n['rsscomments'][3] = 'Copyright (c) 2004 core | £ukasz Skowroñ';
 
+$i18n['alter_view'] = array();
+$i18n['alter_view'][0] = 'W bazie danych nie ma wpisu o ¿±danym id';
+
+$i18n['category_view'] = array();
+$i18n['category_view'][0] = '<b>Id¼ do strony:</b> ';
+$i18n['category_view'][1] = '<br />';
+$i18n['category_view'][2] = 'W bazie danych nie ma wpisów z kategorii o ¿adanym id';
+$i18n['category_view'][4] = 'Szukasz czego¶';
+
+$i18n['comments_add'] = array();
+$i18n['comments_add'][0] = 'Proszê podaæ swoje imiê, ewentualnie nick.<br />';
+$i18n['comments_add'][1] = 'Proszê podaæ poprawny adres e-mail.<br />';
+$i18n['comments_add'][2] = 'Komentarz zosta³ dodany.';
+$i18n['comments_add'][3] = '<br /><a href="javascript:history.back(-1);">powrót</a>';
+
+/*
+$i18n[''] = array();
+$i18n[''][] = '';
+*/
 ?>
