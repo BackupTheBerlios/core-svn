@@ -9,32 +9,26 @@ switch ($action) {
     
 	case "add":
 
-		$err      = ""; // zmienna przechowuj±ca b³edy
 		$monit    = array();
-		
-		$monit['strlenuser']	= "Nazwa u¿ytkownika musi mieæ conajmniej 4 znaki.";
-		$monit['strlenpass']	= "Has³o nowego u¿ytkownika musi mieæ conajmniej 6 znaków.";
-		$monit['validemail']	= "Podaj poprawny adres e-mail.";
-		$monit['diffpass']		= "Podane has³a nowego u¿ytkownika nie zgadzaj± siê ze sob±.";
 		
 		if(strlen($_POST['login_name']) < 4) {
 			
-			$err .= $monit['strlenuser'] . "<br />";
+			$monit[] = "Nazwa u¿ytkownika musi mieæ conajmniej 4 znaki.";
 		}
 		
 		if(!check_mail($_POST['email'])){
 			
-			$err .= $monit['validemail'] . "<br />";
+			$monit[] = "Podaj poprawny adres e-mail.";
 		}
 		
 		if(strlen($_POST['password']) < 6) {
 				
-			$err .= $monit['strlenpass'] . "<br />";
+			$monit[] = "Has³o nowego u¿ytkownika musi mieæ conajmniej 6 znaków.";
 		}
 		
 		if($_POST['password'] != $_POST['password_repeat']) {
 				
-			$err .= $monit['diffpass'] . "<br />";
+			$monit[] = "Podane has³a nowego u¿ytkownika nie zgadzaj± siê ze sob±.";
 		}
 		
         $query	= sprintf("
@@ -51,15 +45,22 @@ switch ($action) {
         
         if($db->next_record() > 0) {
             
-            $err .= "U¿ytkownik o loginie <b>" . $_POST['login_name'] . "</b> znajduje siê ju¿ w bazie danych.<br />";
+            $monit[] = "U¿ytkownik o loginie <b>" . $_POST['login_name'] . "</b> znajduje siê ju¿ w bazie danych.<br />";
         }
 		
-		if(!empty($err)) {
+		if(!empty($monit)) {
 			
-			$err .= "<br /><a href=\"javascript:history.back();\">powrót</a>";
+			$ft->define("error_reporting", "error_reporting.tpl");
+            $ft->define_dynamic("error_row", "error_reporting");
 
-			$ft->assign('CONFIRM', $err);
-			$ft->parse('ROWS', ".result_note");
+            foreach ($monit as $error) {
+    
+                $ft->assign('ERROR_MONIT', $error);
+                    
+                $ft->parse('ROWS',	".error_row");
+            }
+                        
+            $ft->parse('ROWS', "error_reporting");
 			
 		} else {
 			
@@ -94,4 +95,5 @@ switch ($action) {
 		$ft->parse('ROWS', ".form_useradd");
 		break;
 }
+
 ?>
