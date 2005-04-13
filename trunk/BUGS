@@ -1,5 +1,6 @@
-- przy dodawaniu strony nie sprawdza czy jest podany tytul strony
-- dodawanie userow - nie sprawdza czy user z takim loginem juz istnieje... tak powinno byc ?
-- przy edycji danych usera nie sprawdza poprawnosci maila. przy dodawaniu nowego usera sprawdza. albo usunac przy dodawaniu, albo dodac przy edycji
-- skoro jest szumny doctype xhtml1.0 transitional, to moze trzymajmy sie tego pod wzgledem semantycznym, i wywalmy zbedne atrybuty (width, height i inne) z tpli i uzywajmy css ?
-- przy dodawaniu strony sprawdza czy jest jakas tresc wpisana i wywala mesga. przy edycji juz nie. imo albo jedno albo drugie - ja bym nie sprawdzal, wazny jest tylko tytul (tak jak teraz na glownej core - pusta strona informujaca usera ze cos sie tam pojawi)
+1. skoro jest szumny doctype xhtml1.0 transitional, to moze trzymajmy sie tego pod wzgledem 
+semantycznym, i wywalmy zbedne atrybuty (width, height i inne) z tpli i uzywajmy css ?
+
+2. Obsluga bledow lezy i kwiczy wolajac o pomste do nieba ;-) Trza to jakos zunifikowac i najlepiej
+naskrobiac do tego jakas klase, bo teraz czesto zdarza sie tak, ze errory w kilku modulach obslugiwane
+sa na rozne sposoby.
