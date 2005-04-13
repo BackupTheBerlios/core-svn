@@ -49,7 +49,7 @@
 	</tr>
 	<tr>
 		<td class="form" width="324" align="right" colspan="2"></td>
-		<td class="form" width="110" align="left"><img src="templates/images/arrow_blue.gif" alt="Core | CMS" align="middle" height="5" hspace="5" vspace="2" width="5" /><a href="#" onclick="checkForm()">dodaj stronê</a></td>
+		<td class="form" width="110" align="left"><img src="templates/images/arrow_blue.gif" alt="Core | CMS" align="middle" height="5" hspace="5" vspace="2" width="5" /><a href="#" onclick="document.getElementById('formPage').submit()">dodaj stronê</a></td>
 	</tr>
 	<tr>
 		<td class="form" width="80" align="right">Publikowana:&nbsp;</td>
