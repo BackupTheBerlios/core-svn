@@ -1,5 +1,6 @@
 <?php
 
+require_once('inc/i18n.php');
 require_once('inc/main_functions.php');
 
 define('PATH_TO_CLASSES', get_root() . '/administration/classes');
@@ -16,7 +17,7 @@ if(isset($_COOKIE['devlog_design']) && is_dir('./templates/' . $_COOKIE['devlog_
     $theme = 'main';
 } else {
 
-    echo '<div style="font-family: Arial, sans-serif; font-size: 16px; background-color: #ccc; border: 1px solid red; padding: 15px; text-align: center;">Brak wybranego skina do systemu <strong>CORE</strong></div>';
+    printf('<div style="font-family: Arial, sans-serif; font-size: 16px; background-color: #ccc; border: 1px solid red; padding: 15px; text-align: center;">%s</div>', $i18n['design'][0]);
     exit;
 }
 

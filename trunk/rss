@@ -7,6 +7,7 @@ echo "\n<rss version=\"2.0\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\">\n\n"
 
 define("PATH_TO_CLASSES", "administration/classes");
 
+require_once('inc/i18n.php');
 require(PATH_TO_CLASSES. "/cls_db_mysql.php"); // dodawanie pliku konfigurujacego bibliotekê baz danych
 require("administration/inc/config.php");
 require("inc/main_functions.php");
@@ -36,14 +37,20 @@ $query	= "	SELECT
 
 $db->query($query);
 
-echo "	
+printf("
 <channel>
-	<title>./dev-log - RSS feed</title>
+	<title>%1\$s</title>
 	<link>http://" . $_SERVER['HTTP_HOST'] . "</link>
-	<description>./dev-log | about work</description>
-	<language>pl</language> 
-	<copyright>Copyright (c) 2004 core | £ukasz Skowroñ</copyright>
-";
+	<description>%2\$s</description>
+	<language>%3\$s</language> 
+	<copyright>%4\$s</copyright>
+",
+  
+    $i18n['rss'][0],
+    $i18n['rss'][1],
+    $i18n['rss'][2],
+    $i18n['rss'][3]
+);
 
 while($db->next_record()) {
 	
@@ -67,6 +74,10 @@ while($db->next_record()) {
 	
 	$text = strip_tags($text, '<br><a><div>');
 	
+    /*
+     * wywalic ereg_*! wsadzic pattern i replacement w tablice i zalatwic wszystko jednym str_replace()
+     *
+     */
 	$text	= ereg_replace("&", " &amp; ", $text);
 	$text	= ereg_replace("<br />", "&lt;br /&gt;", $text);
 	
