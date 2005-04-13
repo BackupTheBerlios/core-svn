@@ -37,9 +37,26 @@ switch ($action) {
 			$err .= $monit['diffpass'] . "<br />";
 		}
 		
+        $query	= sprintf("
+            SELECT * FROM 
+                %1\$s 
+            WHERE 
+                login = '%2\$s'", 
+        
+            $mysql_data['db_table_users'], 
+            $_POST['login_name']
+        );
+        
+        $db->query($query);
+        
+        if($db->next_record() > 0) {
+            
+            $err .= "U¿ytkownik o loginie <b>" . $_POST['login_name'] . "</b> znajduje siê ju¿ w bazie danych.<br />";
+        }
+		
 		if(!empty($err)) {
 			
-			$err .= "<br /><a href=\"javascript:history.back(-1);\">powrót</a>";
+			$err .= "<br /><a href=\"javascript:history.back();\">powrót</a>";
 
 			$ft->assign('CONFIRM', $err);
 			$ft->parse('ROWS', ".result_note");
@@ -71,7 +88,7 @@ switch ($action) {
 		// w przypadku braku akcji wy¶wietlanie formularza
 		$ft->assign(array(
 			'SUBMIT_HREF_DESC'	=>"Dodaj u¿ytkownika",
-			'SUBMIT_URL'		=>"main.php?p=$7&amp;action=add"));
+			'SUBMIT_URL'		=>"main.php?p=7&amp;action=add"));
 			
 		$ft->define('form_useradd', "form_useradd.tpl");
 		$ft->parse('ROWS', ".form_useradd");
