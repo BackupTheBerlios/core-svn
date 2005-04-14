@@ -62,7 +62,7 @@ $i18n['pages_view'] = array();
 $i18n['pages_view'][0] = 'W bazie danych nie ma wpisu o ¿±danym id';
 
 $i18n['search'] = array();
-$i18n['search'][0] = 'Niestety nie znaleziono ¿adnego rekordu pasuj±cego do <span class="search">' . $_POST['search_word'] . '</span>.';
+$i18n['search'][0] = 'Niestety nie znaleziono ¿adnego rekordu pasuj±cego do ';
 $i18n['search'][1] = 'Nie podano frazy do wyszukania.';
 
 /*
