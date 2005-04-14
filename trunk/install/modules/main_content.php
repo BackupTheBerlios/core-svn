@@ -10,16 +10,8 @@ switch ($action) {
         include("../inc/main_functions.php");
         define('SQL_SCHEMA', 'dbschema');
 
-        $err    = ""; // zmienna przechowuj±ca b³edy
-        $monit    = array(); // tablica przechowuj±ca b³êdy
-
-        $monit['strlenuser']    = "Nazwa u¿ytkownika musi mieæ conajmniej 4 znaki.";
-        $monit['strlenpass']    = "Has³o nowego u¿ytkownika musi mieæ conajmniej 6 znaków.";
-        $monit['validemail']    = "Podaj poprawny adres e-mail.";
-        $monit['diffpass']        = "Podane has³a nowego u¿ytkownika nie zgadzaj± siê ze sob±.";
-
-
-        $warn    = "<span>Uwaga:</span><br />";
+        $err    = '';
+        $monit  = array(); // tablica przechowuj±ca b³êdy
 
         $dbname = $_POST['dbname'];
         $dbhost = $_POST['dbhost'];
@@ -36,22 +28,22 @@ switch ($action) {
 
         if(strlen($coreuser) < 4) {
 
-            $err .= $monit['strlenuser'] . "<br />";
+            $monit[] = $i18n['main_content'][0];
         }
 
         if(!check_mail($coremail)){
 
-            $err .= $monit['validemail'] . "<br />";
+            $monit[] = $i18n['main_content'][1];
         }
 
         if(strlen($corepass_1) < 6) {
 
-            $err .= $monit['strlenpass'] . "<br />";
+            $monit[] = $i18n['main_content'][2];
         }
 
         if($corepass_1 != $corepass_2) {
 
-            $err .= $monit['diffpass'] . "<br />";
+            $monit[] = $i18n['main_content'][3];
         }
 
         $rdbms = empty($_POST['rdbms']) ? '' : $_POST['rdbms'];
@@ -67,7 +59,7 @@ switch ($action) {
                 break;
         }
 
-        if(empty($err)) {
+        if(empty($monit)) {
 
             if(isset($_POST['dbcreate'])) {
 
@@ -271,16 +263,17 @@ switch ($action) {
             $ft->parse('ROWS', ".monit_content");
         } else {
 
-            $ft->assign(array( 
-                'MONIT'    =>$err,
-                'WARN'     =>$warn
-            ));
+            $ft->define("error_reporting", "error_reporting.tpl");
+            $ft->define_dynamic("error_row", "error_reporting");
 
-            $ft->define('monit_content', "monit_content.tpl");
-            $ft->define('back_content', "back_content.tpl");
-
-            $ft->parse('ROWS', ".monit_content");
-            $ft->parse('ROWS', ".back_content");
+            foreach ($monit as $error) {
+    
+                $ft->assign('ERROR_MONIT', $error);
+                    
+                $ft->parse('ROWS',	".error_row");
+            }
+                        
+            $ft->parse('ROWS', "error_reporting");
         }
         break;
 
