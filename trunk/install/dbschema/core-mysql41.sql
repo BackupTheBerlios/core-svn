@@ -51,14 +51,6 @@ CREATE TABLE core_pages (
   PRIMARY KEY  (id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE core_session (
-  session_id varchar(32) NOT NULL default '',
-  session_ip_address varchar(32) NOT NULL default '',
-  session_log_in_time int(10) unsigned NOT NULL default '0',
-  session_running_time int(10) unsigned NOT NULL default '0',
-  PRIMARY KEY  (session_id)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
 CREATE TABLE core_users (
   id int(5) NOT NULL auto_increment,
   login varchar(15) default '0',
