@@ -177,7 +177,7 @@ switch ($action) {
                 INSERT INTO 
                     %1\$s 
                 VALUES 
-                    ('editposts_per_page', '5')", 
+                    ('editposts_per_page', '15')", 
 
                 $t3
             );
