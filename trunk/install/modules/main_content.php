@@ -51,11 +51,11 @@ switch ($action) {
         switch ($rdbms) {
 
             case 'mysql4':
-                $db_schema = SQL_SCHEMA . '/core-mysql40.sql';
+                $db_schema = SQL_SCHEMA . '/core-mysql40_install.sql';
                 break;
 
             case 'mysql41':
-                $db_schema = SQL_SCHEMA . '/core-mysql41.sql';
+                $db_schema = SQL_SCHEMA . '/core-mysql41_install.sql';
                 break;
         }
 
