@@ -64,17 +64,44 @@ switch ($action) {
 			
 		} else {
 			
-			$login		= $_POST['login_name'];
-			$password	= md5($_POST['password']);
-			$email		= $_POST['email'];
+			$login           = $_POST['login_name'];
+			$password        = md5($_POST['password']);
+			$email           = $_POST['email'];
+			
+			$name            = $_POST['name'];
+			$surname         = $_POST['surname'];
+			$city            = $_POST['city'];
+			$country         = $_POST['country'];
+			
+			$www             = $_POST['www'];
+			$gg              = $_POST['gg'];
+			$tlen            = $_POST['tlen'];
+			$jid             = $_POST['jid'];
+			
+			$hobby           = $_POST['hobby'];
+			$additional_info = $_POST['additional_info'];
 			
 			$query = sprintf("
                 INSERT INTO 
                     %1\$s 
                 VALUES 
-                    ('', '$login', '$password', '$email', '1', 'Y')",
+                    ('', '%2\$s', '%3\$s', '%4\$s', '%5\$d', 'Y', '%6\$s', '%7\$s', '%8\$s', '%9\$s', '%10\$s', '%11\$d', '%12\$s', '%13\$s', '%14\$s', '%15\$s')",
 			
-                $mysql_data['db_table_users']
+                $mysql_data['db_table_users'],
+                $login,
+                $password,
+                $email,
+                1,
+                $name,
+                $surname,
+                $city,
+                $country,
+                $www,
+                $gg,
+                $tlen,
+                $jid,
+                $hobby,
+                $additional_info
             );
             
             $db->query($query);
