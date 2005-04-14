@@ -6,6 +6,8 @@ require_once(PATH_TO_CLASSES. "/cls_db_mysql.php"); // dodawanie pliku konfiguru
 require_once(PATH_TO_CLASSES. "/cls_fast_template.php");
 require_once(PATH_TO_CLASSES. "/cls_permissions.php");
 
+require_once('../inc/i18n_install.php');
+
 // inicjowanie klasy, wkazanie katalogu przechowuj±cego szablony
 $ft = new FastTemplate("./templates");
 
