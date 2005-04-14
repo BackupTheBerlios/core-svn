@@ -13,22 +13,22 @@ switch ($action) {
 		
 		if(strlen($_POST['login_name']) < 4) {
 			
-			$monit[] = "Nazwa u¿ytkownika musi mieæ conajmniej 4 znaki.";
+			$monit[] = $i18n['add_user'][0];
 		}
 		
 		if(!check_mail($_POST['email'])){
 			
-			$monit[] = "Podaj poprawny adres e-mail.";
+			$monit[] = $i18n['add_user'][1];
 		}
 		
 		if(strlen($_POST['password']) < 6) {
 				
-			$monit[] = "Has³o nowego u¿ytkownika musi mieæ conajmniej 6 znaków.";
+			$monit[] = $i18n['add_user'][2];
 		}
 		
 		if($_POST['password'] != $_POST['password_repeat']) {
 				
-			$monit[] = "Podane has³a nowego u¿ytkownika nie zgadzaj± siê ze sob±.";
+			$monit[] = $i18n['add_user'][3];
 		}
 		
         $query	= sprintf("
@@ -79,7 +79,7 @@ switch ($action) {
             
             $db->query($query);
 			
-			$ft->assign('CONFIRM', "U¿ytkownik zosta³ dodany do bazy danych");
+			$ft->assign('CONFIRM', $i18n['add_user'][4]);
 			$ft->parse('ROWS', ".result_note");
 			
 		}
@@ -88,8 +88,9 @@ switch ($action) {
 	default:
 		// w przypadku braku akcji wy¶wietlanie formularza
 		$ft->assign(array(
-			'SUBMIT_HREF_DESC'	=>"Dodaj u¿ytkownika",
-			'SUBMIT_URL'		=>"main.php?p=7&amp;action=add"));
+			'SUBMIT_HREF_DESC'	=>$i18n['add_user'][5],
+			'SUBMIT_URL'		=>"main.php?p=7&amp;action=add"
+        ));
 			
 		$ft->define('form_useradd', "form_useradd.tpl");
 		$ft->parse('ROWS', ".form_useradd");

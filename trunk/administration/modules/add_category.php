@@ -10,33 +10,47 @@ switch ($action) {
 		$category_name			= $_POST['category_name'];
 		$category_description	= $_POST['category_description'];
 		
-		$monit = empty($monit) ? '' : $monit;
+		$monit = array();
 	
 		// Obs³uga formularza, jesli go zatwierdzono
 		if(!eregi("^([^0-9]+){2,}$", $category_name)) {
 			
-			$monit .= "Musisz podaæ nazwê kategorii.<br />";
+			$monit[] = $i18n['add_category'][0];
 		}
 		
 		if(empty($monit)) {
 			
-			// egzemplarz klasy ³aduj±cej komentarz do bazy danych
-			$db = new DB_SQL;
+			$query = sprintf("
+                INSERT INTO 
+                    %1\$s 
+                VALUES 
+                    ('', '%2\$s', '%3\$s')",
 			
-			$query = "	INSERT INTO 
-							$mysql_data[db_table_category] 
-						VALUES 
-							('', '$category_name', '$category_description')";
+                $mysql_data['db_table_category'],
+                $category_name,
+                $category_description
+            );
 		
 			$db->query($query);
 			
-			$ft->assign('CONFIRM', "Kategoria zosta³a dodana do bazy danych");
-		} else {
+			$ft->assign('CONFIRM', $i18n['add_category'][1]);
 			
-			$monit .= "<br /><a href=\"javascript:history.back(-1);\">powrót</a>";
-			$ft->assign('CONFIRM', $monit);
+			$ft->parse('ROWS', ".result_note");
+		} else {
+		    
+		    $ft->define("error_reporting", "error_reporting.tpl");
+            $ft->define_dynamic("error_row", "error_reporting");
+
+            foreach ($monit as $error) {
+    
+                $ft->assign('ERROR_MONIT', $error);
+                    
+                $ft->parse('ROWS',	".error_row");
+            }
+                        
+            $ft->parse('ROWS', "error_reporting");
 		}
-		$ft->parse('ROWS', ".result_note");
+
 		break;
 
 	default:
@@ -46,8 +60,8 @@ switch ($action) {
 						'SUBMIT_URL'		=>"main.php?p=8&amp;action=add",
 						'CATNAME_VALUE'		=>"",
 						'CATNAME_DESC'		=>"",
-						'SUBMIT_HREF_DESC'	=>"dodaj now± kategoriê",
-						'HEADER_DESC'		=>"<b>Kategorie - dodaj now± kategoriê</b>"
+						'SUBMIT_HREF_DESC'	=>$i18n['add_category'][2],
+						'HEADER_DESC'		=>$i18n['add_category'][3]
 		));
 		
 		// w przypadku braku akcji wy¶wietlanie formularza

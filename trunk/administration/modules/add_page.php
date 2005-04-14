@@ -72,22 +72,32 @@ switch($action) {
 				
 				    $db->query($query);
 				
-				    $ft->assign('CONFIRM', "Zdjêcie zosta³o dodane.<br />");
+				    $ft->assign('CONFIRM', $i18n['add_page'][0]);
 				    $ft->parse('ROWS',	".result_note");
                 }
             }
             
-            $ft->assign('CONFIRM', "Strona zosta³a dodana");
+            $ft->assign('CONFIRM', $i18n['add_page'][1]);
+            $ft->parse('ROWS',	".result_note");
             
 		} else {
 		    
-		    $err =    "Nazwa strony nie mo¿e byæ pusta.<br />";
-		    $err .=   "<a href=\"javascript:history.back(-1);\">powrót</a>";
+		    $monit    = array();
+		    $monit[]  = $i18n['add_page'][2];
 		    
-		    $ft->assign('CONFIRM', $err);
+		    $ft->define("error_reporting", "error_reporting.tpl");
+            $ft->define_dynamic("error_row", "error_reporting");
+
+            foreach ($monit as $error) {
+    
+                $ft->assign('ERROR_MONIT', $error);
+                    
+                $ft->parse('ROWS',	".error_row");
+            }
+                        
+            $ft->parse('ROWS', "error_reporting");
 		}
 		
-		$ft->parse('ROWS',	".result_note");
 		break;
 
 	default:
@@ -105,8 +115,9 @@ switch($action) {
             id 
         ASC", 
 	
-	   $mysql_data['db_table_pages'],
-	   0);
+        $mysql_data['db_table_pages'],
+        0
+	);
 	
 	$db->query($query);
 	

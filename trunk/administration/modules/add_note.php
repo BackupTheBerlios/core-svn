@@ -37,7 +37,8 @@ switch ($action) {
             $author,
             $text,
             $comments_allow,
-            $published);
+            $published
+        );
             
         $db->query($query);
         
@@ -47,7 +48,8 @@ switch ($action) {
             FROM 
                 %1\$s",
         
-            $mysql_data['db_table']);
+            $mysql_data['db_table']
+        );
             
         $db->query($query);
  		$db->next_record();
@@ -82,12 +84,12 @@ switch ($action) {
                 
 				$db->query($query);
 				
-				$ft->assign('CONFIRM', "Zdjêcie zosta³o dodane.<br />");
+				$ft->assign('CONFIRM', $i18n['add_note'][0]);
 				$ft->parse('ROWS',	".result_note");
 			}
 		}
 		
-		$ft->assign('CONFIRM', "Wpis zosta³ dodany");
+		$ft->assign('CONFIRM', $i18n['add_note'][1]);
 		$ft->parse('ROWS',	".result_note");
 		break;
 
@@ -99,7 +101,8 @@ switch ($action) {
             FROM 
                 %1\$s",
 		
-            $mysql_data['db_table_category']);
+            $mysql_data['db_table_category']
+        );
             
         $db->query($query);
         
