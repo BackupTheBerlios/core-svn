@@ -198,7 +198,7 @@ if(!empty($search_word)) {
 	} else {
 	
 		$ft->assign(array(
-            'QUERY_FAILED'  =>$i18n['search'][0],
+            'QUERY_FAILED'  =>$i18n['search'][0] . '<span class="search">' . $_POST['search_word'] . '</span>.',
             'STRING'        =>$page_string
         ));
 						
