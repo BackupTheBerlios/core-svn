@@ -18,6 +18,34 @@ $i18n['index'][3] = 'B³êdna nazwa u¿ytkownika, lub b³êdne has³o.';
 $i18n['main'] = array();
 $i18n['main'][0] = 'CORE - panel administracyjny';
 
+$i18n['add_category'] = array();
+$i18n['add_category'][0] = 'Musisz podaæ nazwê kategorii.';
+$i18n['add_category'][1] = 'Kategoria zosta³a dodana do bazy danych.';
+$i18n['add_category'][2] = 'dodaj now± kategoriê';
+$i18n['add_category'][3] = '<b>Kategorie - dodaj now± kategoriê</b>';
 
+$i18n['add_links'] = array();
+$i18n['add_links'][0] = 'Musisz podaæ nazwê linku.';
+$i18n['add_links'][1] = 'Link musi byæ w poprawnym formacie (www|ftp|http)://example.com';
+$i18n['add_links'][2] = 'Link zosta³ dodany do bazy danych.';
+$i18n['add_links'][3] = 'dodaj nowy link';
+$i18n['add_links'][4] = '<b>Linki - dodaj nowy link</b>';
+
+$i18n['add_note'] = array();
+$i18n['add_note'][0] = 'Zdjêcie zosta³o dodane.<br />';
+$i18n['add_note'][1] = 'Wpis zosta³ dodany.';
+
+$i18n['add_page'] = array();
+$i18n['add_page'][0] = 'Zdjêcie zosta³o dodane.<br />';
+$i18n['add_page'][1] = 'Strona zosta³a dodana.';
+$i18n['add_page'][2] = 'Nazwa strony nie mo¿e byæ pusta.';
+
+$i18n['add_user'] = array();
+$i18n['add_user'][0] = 'Nazwa u¿ytkownika musi mieæ conajmniej 4 znaki.';
+$i18n['add_user'][1] = 'Podaj poprawny adres e-mail.';
+$i18n['add_user'][2] = 'Has³o nowego u¿ytkownika musi mieæ conajmniej 6 znaków.';
+$i18n['add_user'][3] = 'Podane has³a nowego u¿ytkownika nie zgadzaj± siê ze sob±.';
+$i18n['add_user'][4] = 'U¿ytkownik zosta³ dodany do bazy danych.';
+$i18n['add_user'][5] = 'Dodaj u¿ytkownika';
 
 ?>
