@@ -156,6 +156,10 @@ input.short {
 	width: 30px;
 }
 
+input.medium {
+    width: 130px;
+}    
+
 input.long {
 	width: 220px;
 }
