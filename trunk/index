@@ -103,11 +103,7 @@ $val = empty($val) ? '' : $val;
                     
 $ft->assign(array(
     'TITLE'             =>get_config('title_page'),
-    /*
-     * do przerzucenia do tpl!
-     *
-     */
-    'STATISTICS'        =>'Wizyty: ' . get_config('counter'),
+    'STATISTICS'        =>get_config('counter'),
     'ENGINE_VERSION'    =>$i18n['index'][1]
 ));
 

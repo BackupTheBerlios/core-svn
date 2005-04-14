@@ -72,7 +72,7 @@
 			<li class="v"><a href="http://feedvalidator.org/check.cgi?url=http://dev.no1-else.com/rss" target="_blank">rss</a></li>
 		</ul>
 		
-		<br /><span class="counter">{STATISTICS}</span><br />
+		<br /><span class="counter">Wizyty: {STATISTICS}</span><br />
 	</div>
 	<div id="right">
 		<span class="title">./dev-log</span>&nbsp;<a href="./"><strong>index</strong></a><br />
