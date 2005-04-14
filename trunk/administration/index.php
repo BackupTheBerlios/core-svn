@@ -15,7 +15,8 @@ define('PATH_TO_CLASSES', 'classes');
 require(PATH_TO_CLASSES. '/cls_db_mysql.php');
 require(PATH_TO_CLASSES. '/cls_phpmailer.php');
 
-require("inc/config.php");
+require_once("inc/config.php");
+require_once('../inc/i18n.php');
 
 require(PATH_TO_CLASSES. '/cls_fast_template.php');
 
@@ -33,7 +34,7 @@ $ft->define(array(
 ));
 		
 $ft->assign(array(
-    'TITLE'         =>"CORE - panel administracyjny",
+    'TITLE'         =>$i18n['index'][0],
     'ERROR_MSG'     =>""
 ));
 
@@ -48,7 +49,7 @@ if ($p == "log") {
 	if(empty($login) OR empty($password)) {
 		
 		// U¿ytkownik nie uzupe³ni³ wszystkich pól::form
-		$ft->assign('ERROR_MSG', "Nie uzupe³niono wszystkich pól");
+		$ft->assign('ERROR_MSG', $i18n['index'][1]);
 		$ft->parse('ROWS', ".form_login");
 	} else {
 		
@@ -82,12 +83,12 @@ if ($p == "log") {
 			} else {
 				
 				// U¿ytkownik nie zaaktywowa³ konta::db
-				$ft->assign('ERROR_MSG', "Konto nie zosta³o jeszcze aktywowane");
+				$ft->assign('ERROR_MSG', $i18n['index'][2]);
 				$ft->parse('ROWS', ".form_login");
 			}
 		} else {
 			// Niepoprawne dane wej¶cia<->wyj¶cia::form, db
-			$ft->assign('ERROR_MSG', "B³êdna nazwa u¿ytkownika, lub b³êdne has³o");
+			$ft->assign('ERROR_MSG', $i18n['index'][3]);
 			$ft->parse('ROWS', ".form_login");
 		}
 	}

@@ -17,9 +17,10 @@ define('PATH_TO_CLASSES', 'classes');
 require(PATH_TO_CLASSES. '/cls_db_mysql.php');
 require(PATH_TO_CLASSES. '/cls_upload.php');
 
-require("inc/config.php");
-include("../inc/main_pagination.php");
-include("../inc/main_functions.php");
+require_once("inc/config.php");
+include_once("../inc/main_pagination.php");
+include_once("../inc/main_functions.php");
+require_once('../inc/i18n.php');
 
 require(PATH_TO_CLASSES. '/cls_fast_template.php');
 require(PATH_TO_CLASSES. '/cls_permissions.php');
@@ -63,7 +64,7 @@ $ft->define(array(
 ));
 		
 $ft->assign(array(
-    'PAGE_TITLE'    =>"CORE - panel administracyjny",
+    'PAGE_TITLE'    =>$i18n['main'][0],
     'LOGGED_IN'     =>$_SESSION['login']
 ));
 
