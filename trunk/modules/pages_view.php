@@ -42,8 +42,10 @@ if($db->num_rows() !== 0) {
 			list($width, $height) = getimagesize($img_path);
 		
 			// wysoko¶æ, szeroko¶æ obrazka
-			$ft->assign(array(	'WIDTH'		=>$width,
-								'HEIGHT'	=>$height));
+			$ft->assign(array(
+                'WIDTH'		=>$width,
+                'HEIGHT'	=>$height
+            ));
 		
 			if($width > $max_photo_width) {
 			
@@ -69,10 +71,12 @@ if($db->num_rows() !== 0) {
 	$ft->parse('ROWS',".pages_view");
 } else {
 	
-	$ft->assign(array(	'QUERY_FAILED'	=>"W bazie danych nie ma wpisu o ¿±danym id",
-						'STRING'			=>""));
+	$ft->assign(array(
+        'QUERY_FAILED'  =>$i18n['pages_view'][0],
+        'STRING'        =>""
+    ));
 	
-	$ft->parse('ROWS',".query_failed");
+	$ft->parse('ROWS', ".query_failed");
 }
 
 ?>

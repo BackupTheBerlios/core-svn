@@ -8,37 +8,46 @@ switch($m){
     case 'sign_in':
     
         $query	= sprintf("
-                    SELECT * FROM 
-                        $mysql_data[db_table_newsletter] 
-                    WHERE 
-                        email = '%1\$s'", $email);
+            SELECT * FROM 
+                %1\$s 
+            WHERE 
+                email = '%2\$s'", 
+        
+            $mysql_data['db_table_newsletter'],
+            $email
+        );
         
         $db->query($query);
         
         if($db->next_record() > 0) {
             
             $ft->assign(array(
-                'CONFIRM'	=>"Twój email znajduje siê ju¿ w bazie danych.",
+                'CONFIRM'	=>$i18n['newsletter'][0],
                 'STRING'	=>""
             ));
         } else {
             
-            $query	= "	INSERT INTO 
-                            $mysql_data[db_table_newsletter] 
-                        VALUES('$email')";
+            $query = sprintf("
+                INSERT INTO 
+                    %1\$s 
+                VALUES('%2\$s')", 
+            
+                $mysql_data['db_table_newsletter'],
+                $email
+            );
             
             $db->query($query);
             
             if($db->next_record() == 0) {
                 
                 $ft->assign(array(
-                    'CONFIRM'	=>"Twój adres zosta³ dodany do bazy danych.",
+                    'CONFIRM'	=>$i18n['newsletter'][1],
 					'STRING'	=>""
                 ));
             } else {
                 
                 $ft->assign(array(
-                    'CONFIRM'	=>"Twój adres nie zosta³ dodany do bazy danych.",
+                    'CONFIRM'	=>$i18n['newsletter'][2],
                     'STRING'	=>""
                 ));
             }
@@ -50,39 +59,47 @@ switch($m){
     case 'sign_out':
     
         $query	= sprintf("
-                    SELECT * FROM 
-                        $mysql_data[db_table_newsletter] 
-                    WHERE 
-                        email = '%1\$s'", $email);
+            SELECT * FROM 
+                %1\$s 
+            WHERE 
+                email = '%2\$s'", 
+        
+            $mysql_data['db_table_newsletter'], 
+            $email
+        );
         
         $db->query($query);
         
         if($db->next_record() == 0) {
             
             $ft->assign(array(
-                'CONFIRM'   =>"W bazie danych nie ma podanego przez Ciebie adresu e-mail.",
+                'CONFIRM'   =>$i18n['newsletter'][3],
 				'STRING'    =>""
             ));
         } else {
             
             $query	= sprintf("
-                        DELETE FROM 
-                            $mysql_data[db_table_newsletter] 
-                        WHERE 
-                            email = '%1\$s'", $email);
+                DELETE FROM 
+                    %1\$s 
+                WHERE 
+                    email = '%2\$s'", 
+            
+                $mysql_data['db_table_newsletter'], 
+                $email
+            );
             
             $db->query($query);
             
             if($db->next_record() == 0) {
                 
                 $ft->assign(array(
-                    'CONFIRM'   =>"Twój adres zosta³ skasowany z bazy danych.",
+                    'CONFIRM'   =>$i18n['newsletter'][4],
 					'STRING'   =>""
 				));
             } else {
                 
                 $ft->assign(array(
-                    'CONFIRM'   =>"Twój adres nie zosta³ skasowany z bazy danych.",
+                    'CONFIRM'   =>$i18n['newsletter'][5],
                     'STRING'    =>""
                 ));
             }
@@ -90,4 +107,5 @@ switch($m){
         $ft->parse('ROWS', ".newsletter");
         break;
 }
+
 ?>

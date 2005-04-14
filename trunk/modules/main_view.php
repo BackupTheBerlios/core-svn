@@ -133,7 +133,7 @@ if($db->num_rows() !== 0) {
     
     // Obs³uga b³êdu, kiedy w bazie danych nie ma jeszcze ¿adnego wpisu
     $ft->assign(array(
-        'QUERY_FAILED'  =>"W bazie danych nie ma ¿adnego wpisu. Mo¿esz siê <a href=\"administration\">zalogowaæ</a>.",
+        'QUERY_FAILED'  =>$i18n['main_view'][0],
         'STRING'        =>""
     ));
     

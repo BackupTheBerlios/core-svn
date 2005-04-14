@@ -125,14 +125,16 @@ if(!empty($search_word)) {
 			
 			$text			= strip_tags($text, '<br>');
 			
-			$ft->assign(array(	'DATE'				=>$date,
-								'NEWS_TITLE'		=>$search->highlight($search_word, $title),
-								'NEWS_TEXT'			=>$search->highlight($search_word, $text),
-								'NEWS_AUTHOR'		=>$author,
-								'NEWS_ID'			=>$id,
-								'CATEGORY_NAME'		=>$c_name,
-								'NEWS_CATEGORY'		=>$c_id,
-								'STRING'			=>$page_string));
+			$ft->assign(array(
+                'DATE'				=>$date,
+                'NEWS_TITLE'		=>$search->highlight($search_word, $title),
+                'NEWS_TEXT'			=>$search->highlight($search_word, $text),
+                'NEWS_AUTHOR'		=>$author,
+                'NEWS_ID'			=>$id,
+                'CATEGORY_NAME'		=>$c_name,
+                'NEWS_CATEGORY'		=>$c_id,
+                'STRING'			=>$page_string
+            ));
 								
 			if(($comments_allow) == 0 ) {
 			
@@ -195,16 +197,21 @@ if(!empty($search_word)) {
 		} 
 	} else {
 	
-		$ft->assign(array(	'QUERY_FAILED'		=>"Niestety nie znaleziono ¿adnego rekordu pasuj±cego do <span class=\"search\">" . $_POST['search_word'] . "</span>.",
-							'STRING'			=>$page_string));
+		$ft->assign(array(
+            'QUERY_FAILED'  =>$i18n['search'][0],
+            'STRING'        =>$page_string
+        ));
 						
 		$ft->parse('ROWS',".query_failed");
 	}
 } else {
 	
-	$ft->assign(array(	'QUERY_FAILED'		=>"Nie podano frazy do wyszukania.",
-						'STRING'			=>''));
+	$ft->assign(array(
+        'QUERY_FAILED'  =>$i18n['search'][1],
+        'STRING'        =>''
+    ));
 						
 	$ft->parse('ROWS',".query_failed");	
 }
+
 ?>

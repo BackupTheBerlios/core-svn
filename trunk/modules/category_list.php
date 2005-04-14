@@ -25,5 +25,5 @@ while($db->next_record()) {
     
 }
 
- $ft->parse('CATEGORY_LIST', 'category_list');
+$ft->parse('CATEGORY_LIST', 'category_list');
 ?>

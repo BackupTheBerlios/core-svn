@@ -11,12 +11,12 @@ switch ($action) {
 
     case 'add':
 
-        $monit = empty($monit) ? '' : $monit;
+        $monit = array();
 
         // Obs³uga formularza, jesli go zatwierdzono
         if(!eregi('^([^0-9]+){2,}$', $_POST['author'])) {
             
-            $monit = $i18n['comments_add'][0];
+            $monit[] = $i18n['comments_add'][0];
         }
 
         if($_POST['email'] != '') {
@@ -24,7 +24,7 @@ switch ($action) {
             // Sprawdzenie poprawnosci adresu e-mail
             if(!check_mail($_POST['email'])) {
                 
-                $monit .= $i18n['comments_add'][1];
+                $monit[] = $i18n['comments_add'][1];
             }
         }
 
@@ -101,16 +101,17 @@ switch ($action) {
             $ft->parse('ROWS','.comments_submit');
         } else {
             
-            $monit .= $i18n['comments_add'][3];
+            $ft->define("error_reporting", "error_reporting.tpl");
+            $ft->define_dynamic("error_row", "error_reporting");
 
-            // przydzielanie zmiennych i parsowanie szablonu, je¶li próba dodania komentarza siê nie powiedzie
-            $ft->assign(array(
-                'NEWS_ID'       =>$_POST['id'],
-                'STRING'        =>$page_string,
-                'CONFIRMATION'  =>'<span>' . $monit . '</span>'
-            ));
-
-            $ft->parse('ROWS','.comments_submit');
+            foreach ($monit as $error) {
+    
+                $ft->assign('ERROR_MONIT', $error);
+                    
+                $ft->parse('ROWS',	".error_row");
+            }
+                        
+            $ft->parse('ROWS', "error_reporting");
         }
         break;
 

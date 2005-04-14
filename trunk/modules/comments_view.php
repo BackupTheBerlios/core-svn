@@ -98,7 +98,7 @@ if(is_numeric($_GET['id'])) {
 
         // Obs³uga b³êdu, kiedy u¿ytkownik próbuje kombinowaæ ze zmiennymi przechwytywanymi przez $_GET
         $ft->assign(array(
-            'QUERY_FAILED'  =>'W bazie danych nie ma wpisu o ¿±danym id',
+            'QUERY_FAILED'  =>$i18n['comments_view'][0],
             'STRING'        =>''
         ));
 
@@ -108,7 +108,7 @@ if(is_numeric($_GET['id'])) {
 
     // Obs³uga b³êdu, kiedy u¿ytkownik próbuje kombinowaæ ze zmiennymi przechwytywanymi przez $_GET
     $ft->assign(array(
-        'QUERY_FAILED'  =>'Szukasz czego¶?',
+        'QUERY_FAILED'  =>$i18n['comments_view'][1],
         'STRING'        =>''
     ));
 
