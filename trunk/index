@@ -68,7 +68,7 @@ $ft->define_dynamic("alternate_design_row", "design_switcher");
 
 while($d = $read_dir->read()) {
     
-    if($d != '.' && $d != '..' && $d != '.svn') {
+    if($d[0] != '.') {
         
         $ft->assign('ALTERNATE_TEMPLATE', $d);
         
