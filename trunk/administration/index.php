@@ -16,7 +16,7 @@ require(PATH_TO_CLASSES. '/cls_db_mysql.php');
 require(PATH_TO_CLASSES. '/cls_phpmailer.php');
 
 require_once("inc/config.php");
-require_once('../inc/i18n.php');
+require_once('../inc/i18n_administration.php');
 
 require(PATH_TO_CLASSES. '/cls_fast_template.php');
 

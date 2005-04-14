@@ -20,7 +20,7 @@ require(PATH_TO_CLASSES. '/cls_upload.php');
 require_once("inc/config.php");
 include_once("../inc/main_pagination.php");
 include_once("../inc/main_functions.php");
-require_once('../inc/i18n.php');
+require_once('../inc/i18n_administration.php');
 
 require(PATH_TO_CLASSES. '/cls_fast_template.php');
 require(PATH_TO_CLASSES. '/cls_permissions.php');
