@@ -3,47 +3,30 @@
 // deklaracja zmiennej $action::form
 $action = empty($_GET['action']) ? '' : $_GET['action'];
 
-// inicjalizacja instancji klasy DB_SQL
-$db = new DB_SQL;
-
 switch ($action) {
+    
 	case "add":
-		class configValidate {
-			
-			var $monit = ""; // zmienna przechowuj±ca komunikaty b³êdów
-			
-			// metoda sprawdzaj±ca czy podana warto¶æ jest liczb± ca³kowit±
-			function checkNumeric($v) {
-				
-				if(!is_numeric($v)) {
-					
-					$this->monit .= "Warto¶æ okre¶laj±ca liczbê postów musi byæ liczb± ca³kowit±.<br />";
-					return FALSE;
-				}
-			}
-			
-			// metoda sprawdzaj±ca warto¶æ zmiennej pod wzglêdem
-			// warto¶ci minimalnej i maksymalnej
-			function checkValue($v, $min, $max, $desc) {
-			
-				if(($v < $min) || ($v > $max)) {
-					
-					$this->monit .= "Warto¶æ okre¶laj±ca liczbê postów " . $desc . " w musi byæ miêdzy " . $min . ", a " . $max . ".<br />";
-					return FALSE;
-				}
-			}
-		}
+
+        $mainposts_per_page = $_POST['mainposts_per_page'];
+        $editposts_per_page = $_POST['editposts_per_page'];
+        $max_photo_width    = $_POST['max_photo_width'];
+        
+        $monit = array();
+        
+        //$monit[] = !is_numeric($mainposts_per_page) ? $i18n['core_configuration'][0] : '';
+        //$monit[] = !is_numeric($editposts_per_page) ? $i18n['core_configuration'][2] : '';
+        
+        //$monit[] = !is_numeric($max_photo_width) ? $i18n['core_configuration'][4] : '';
+        
+		if(!is_numeric($mainposts_per_page)) $monit[] = $i18n['core_configuration'][0];
+		if(!is_numeric($editposts_per_page)) $monit[] = $i18n['core_configuration'][2];
 		
-		// egzemplarz klasy validuj±cej ustawienia core
-		/*
-		$conf = new configValidate();
+		if(!is_numeric($max_photo_width)) $monit[] = $i18n['core_configuration'][4];
 		
-		$conf->checkNumeric($_POST['mainposts_per_page']);
-		$conf->checkValue($_POST['mainposts_per_page'], 3, 10, "na stronie g³ównej");
-		$conf->checkValue($_POST['editposts_per_page'], 15, 25, "w czê¶ci administracyjnej");
-		*/
+		if(($mainposts_per_page < 3) || ($mainposts_per_page > 10)) $monit[] = $i18n['core_configuration'][1];
+        if(($editposts_per_page < 10) || ($editposts_per_page > 20)) $monit[] = $i18n['core_configuration'][3];
 		
-		if(empty($conf->monit)) {
+		if(empty($monit)) {
 		    
             // set {MAINPOSTS_PER_PAGE} variable
             // liczba listowanych wpisów w na stronie g³ównej::db
@@ -114,15 +97,22 @@ switch ($action) {
             
             $db->query($query);
 			
-			$ft->assign('CONFIRM', "Dane zosta³y zmodyfikowane.");
+			$ft->assign('CONFIRM', $i18n['core_configuration'][5]);
 			$ft->parse('ROWS', ".result_note");
 		
 		} else {
 			
-			$conf->monit .= "<br /><a href=\"javascript:history.back(-1);\">powrót</a>";
-			
-			$ft->assign('CONFIRM', $conf->monit);
-			$ft->parse('ROWS', ".result_note");
+			$ft->define("error_reporting", "error_reporting.tpl");
+            $ft->define_dynamic("error_row", "error_reporting");
+
+            foreach ($monit as $error) {
+    
+                $ft->assign('ERROR_MONIT', $error);
+                    
+                $ft->parse('ROWS',	".error_row");
+            }
+                        
+            $ft->parse('ROWS', "error_reporting");
 
 		}
 		break;
