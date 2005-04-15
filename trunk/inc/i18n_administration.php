@@ -48,4 +48,12 @@ $i18n['add_user'][3] = 'Podane has³a nowego u¿ytkownika nie zgadzaj± siê ze sob±
 $i18n['add_user'][4] = 'U¿ytkownik zosta³ dodany do bazy danych.';
 $i18n['add_user'][5] = 'Dodaj u¿ytkownika';
 
+$i18n['core_configuration'] = array();
+$i18n['core_configuration'][0] = 'Warto¶æ okre¶laj±ca liczbê postów musi byæ liczb± ca³kowit±.';
+$i18n['core_configuration'][1] = 'Warto¶æ okre¶laj±ca liczbê postów na stronie g³ównej w musi byæ miêdzy 3, a 10.';
+$i18n['core_configuration'][2] = 'Warto¶æ okre¶laj±ca liczbê postów w administracji musi byæ liczb± ca³kowit±.';
+$i18n['core_configuration'][3] = 'Warto¶æ okre¶laj±ca liczbê postów w administracji g³ównej w musi byæ miêdzy 10, a 20.';
+$i18n['core_configuration'][4] = 'Warto¶æ okre¶laj±ca szeroko¶æ zdjêcia musi byæ liczb± ca³kowit±.';
+$i18n['core_configuration'][5] = 'Dane zosta³y zmodyfikowane.';
+
 ?>
