@@ -152,6 +152,11 @@ switch($p){
 	case '14': 
 		include('modules/edit_templates.php');
 		break;
+		
+	// transfer wpisów miêdzy kategoriami	
+	case '15': 
+		include('modules/transfer_note.php');
+		break;
 	
 	// domy¶lnie	
 	default:
