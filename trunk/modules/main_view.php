@@ -53,8 +53,8 @@ if($db->num_rows() !== 0) {
 	    
 	    $ft->assign(array(
 	       'DATE'          =>$date,
-	       'NEWS_TITLE'    =>$title,
-	       'NEWS_TEXT'     =>$text,
+	       'NEWS_TITLE'    =>stripslashes($title),
+	       'NEWS_TEXT'     =>stripslashes($text),
 	       'NEWS_AUTHOR'   =>$author,
 	       'NEWS_ID'       =>$id,
 	       'CATEGORY_NAME' =>$c_name,
