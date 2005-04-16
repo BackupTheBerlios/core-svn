@@ -22,6 +22,7 @@ switch($p){
 		
 	case '8':
 	case '9':
+	case '15':
 		$ft->assign('CAT_CURRENT', 'id="current"');
 		break;
 		

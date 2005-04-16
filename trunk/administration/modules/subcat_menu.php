@@ -25,6 +25,7 @@ switch($p){
 		
 	case '8':
 	case '9':
+	case '15':
 		$ft->define('menu_category', "menu_category.tpl");
 		$ft->parse('SUBCAT_MENU', ".menu_category");
 		break;
