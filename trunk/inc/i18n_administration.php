@@ -56,4 +56,9 @@ $i18n['core_configuration'][3] = 'Warto¶æ okre¶laj±ca liczbê postów w administra
 $i18n['core_configuration'][4] = 'Warto¶æ okre¶laj±ca szeroko¶æ zdjêcia musi byæ liczb± ca³kowit±.';
 $i18n['core_configuration'][5] = 'Dane zosta³y zmodyfikowane.';
 
+$i18n['transfer_note'] = array();
+$i18n['transfer_note'][0] = 'Nie wybra³e¶ kategorii bie¿±cej.';
+$i18n['transfer_note'][1] = 'Nie wybra³e¶ kategorii docelowej.';
+$i18n['transfer_note'][2] = 'Transfer wpisów miêdzy kategoriami wykonano pomy¶lnie.';
+
 ?>
