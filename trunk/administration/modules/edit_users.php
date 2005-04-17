@@ -248,18 +248,18 @@ switch ($action) {
                     switch ($p_level) {
                             
                         case '3':
-                            $new_permissions->permissions["read"]                  = TRUE;
-                            $new_permissions->permissions["write"]                 = TRUE;
-                            $new_permissions->permissions["delete"]                = TRUE;
+                            $new_permissions->permissions["user"]                  = TRUE;
+                            $new_permissions->permissions["writer"]                = TRUE;
+                            $new_permissions->permissions["moderator"]             = TRUE;
                             break;
                                 
                         case '2':
-                            $new_permissions->permissions["read"]                  = TRUE;
-                            $new_permissions->permissions["write"]                 = TRUE;
+                            $new_permissions->permissions["user"]                  = TRUE;
+                            $new_permissions->permissions["writer"]                = TRUE;
                             break;
                                 
                         case '1':
-                            $new_permissions->permissions["read"]                  = TRUE;
+                            $new_permissions->permissions["user"]                  = TRUE;
                             break;
                     }
                         
@@ -298,21 +298,21 @@ switch ($action) {
                     switch ($p_level) {
                             
                         case '4':
-                            $new_permissions->permissions["read"]                  = TRUE;
-                            $new_permissions->permissions["write"]                 = TRUE;
-                            $new_permissions->permissions["delete"]                = TRUE;
-                            $new_permissions->permissions["edit_templates"]        = TRUE;
+                            $new_permissions->permissions["user"]                  = TRUE;
+                            $new_permissions->permissions["writer"]                = TRUE;
+                            $new_permissions->permissions["moderator"]             = TRUE;
+                            $new_permissions->permissions["tpl_editor"]            = TRUE;
                             break;
                                 
                         case '3':
-                            $new_permissions->permissions["read"]                  = TRUE;
-                            $new_permissions->permissions["write"]                 = TRUE;
-                            $new_permissions->permissions["delete"]                = TRUE;
+                            $new_permissions->permissions["user"]                  = TRUE;
+                            $new_permissions->permissions["writer"]                = TRUE;
+                            $new_permissions->permissions["moderator"]             = TRUE;
                             break;
                                 
                         case '2':
-                            $new_permissions->permissions["read"]                  = TRUE;
-                            $new_permissions->permissions["write"]                 = TRUE;
+                            $new_permissions->permissions["user"]                  = TRUE;
+                            $new_permissions->permissions["writer"]                = TRUE;
                             break;
                     }
                         
