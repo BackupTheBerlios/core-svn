@@ -23,6 +23,7 @@ $i18n['add_category'][0] = 'Musisz podaæ nazwê kategorii.';
 $i18n['add_category'][1] = 'Kategoria zosta³a dodana do bazy danych.';
 $i18n['add_category'][2] = 'dodaj now± kategoriê';
 $i18n['add_category'][3] = '<b>Kategorie - dodaj now± kategoriê</b>';
+$i18n['add_category'][4] = '<b>Nie masz uprawnieñ</b> pozwalaj±cych na dodanie nowej kategorii.';
 
 $i18n['add_links'] = array();
 $i18n['add_links'][0] = 'Musisz podaæ nazwê linku.';
@@ -61,11 +62,21 @@ $i18n['transfer_note'] = array();
 $i18n['transfer_note'][0] = 'Nie wybra³e¶ kategorii bie¿±cej.';
 $i18n['transfer_note'][1] = 'Nie wybra³e¶ kategorii docelowej.';
 $i18n['transfer_note'][2] = 'Transfer wpisów miêdzy kategoriami wykonano pomy¶lnie.';
+$i18n['transfer_note'][3] = '<b>Nie masz uprawnieñ</b> do transferu wpisów.';
 
 $i18n['edit_templates'] = array();
 $i18n['edit_templates'][0] = 'Szablon zosta³ Zapisany.';
 $i18n['edit_templates'][1] = 'Nie uda³o siê edytowaæ szablonu.';
 $i18n['edit_templates'][2] = '<b>Nie masz uprawnieñ</b> do edycji szablonów Core.';
 $i18n['edit_templates'][3] = 'Brak mo¿liwo¶ci zapisu zmian w tym szablonie!';
+
+$i18n['edit_category'] = array();
+$i18n['edit_category'][0] = 'Zmodyfikuj kategoriê';
+$i18n['edit_category'][1] = '<b>Kategorie - modyfikacja istniej±cej kategorii</b>';
+$i18n['edit_category'][2] = 'Kategoria zosta³a zmodyfikowana.';
+$i18n['edit_category'][3] = 'Kategoria zosta³a usuniêta.';
+$i18n['edit_category'][4] = 'Brak opisu';
+$i18n['edit_category'][5] = '<b>Nie masz uprawnieñ</b> do usuniecia kategorii.';
+$i18n['edit_category'][6] = '<b>Nie masz uprawnieñ</b> do edycji kategorii.';
 
 ?>
