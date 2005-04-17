@@ -3,17 +3,23 @@
 // deklaracja zmiennej $action::form
 $action = empty($_GET['action']) ? '' : $_GET['action'];
 
-$db = new DB_SQL;
+// definicja szablonow parsujacych wyniki bledow.
+$ft->define("error_reporting", "error_reporting.tpl");
+$ft->define_dynamic("error_row", "error_reporting");
 
 switch ($action) {
 	
 	case "show": // wy¶wietlanie wpisu pobranego do modyfikacji
 	
 		$query = sprintf("
-					SELECT * FROM 
-						$mysql_data[db_table_pages] 
-					WHERE 
-						id = '%1\$d'", $_GET['id']);
+            SELECT * FROM 
+                %1\$s 
+            WHERE 
+                id = '%2\$d'", 
+		
+            $mysql_data['db_table_pages'], 
+            $_GET['id']
+        );
 		
 		$db->query($query);
 		$db->next_record();
@@ -22,12 +28,11 @@ switch ($action) {
 		$text 		= $db->f("text");
 		$published	= $db->f("published");
 		
-		$text = str_replace("<br />", "\r\n", $text);
-		$text = preg_replace("/(\r\n)+/", "\\1\\1", $text);
-		
-		$ft->assign(array(	'ID'	=>$_GET['id'],
-							'TITLE'	=>$title,
-							'TEXT'	=>$text));
+		$ft->assign(array(
+            'ID'	=>$_GET['id'],
+            'TITLE'	=>stripslashes($title),
+            'TEXT'	=>br2nl(stripslashes($text))
+        ));
 							
 		if($published == "Y") {
 
@@ -43,38 +48,79 @@ switch ($action) {
 
 	case "edit": // edycja wybranego wpisu
 	
-		$text		= nl2br($_POST['text']);
-		$title		= $_POST['title'];
-		$published	= $_POST['published'];
+        if($permarr['writer']) {
+	
+            $text		= nl2br(addslashes($_POST['text']));
+            $title		= addslashes($_POST['title']);
+            $published	= $_POST['published'];
 		
-		$query = sprintf("
-					UPDATE 
-						$mysql_data[db_table_pages] 
-					SET 
-						title		= '$title', 
-						text		= '$text', 
-						published	= '$published' 
-					WHERE 
-						id = '%1\$d'", $_GET['id']);
+            $query = sprintf("
+                UPDATE 
+                    %1\$s 
+                SET 
+                    title		= '%2\$s', 
+                    text		= '%3\$s', 
+                    published	= '%4\$s' 
+                WHERE 
+                    id = '%5\$d'", 
 		
-		$db->query($query);
+                $mysql_data['db_table_pages'], 
+                $title, 
+                $text, 
+                $published, 
+                $_GET['id']
+            );
 		
-		$ft->assign('CONFIRM', "Strona zosta³a zmodyfikowana.");
-		$ft->parse('ROWS',	".result_note");
+            $db->query($query);
+		
+            $ft->assign('CONFIRM', $i18n['edit_page'][0]);
+            $ft->parse('ROWS',	".result_note");
+        } else {
+            
+            $monit[] = $i18n['edit_page'][3];
+            
+            foreach ($monit as $error) {
+			    
+			    $ft->assign('ERROR_MONIT', $error);
+			    
+			    $ft->parse('ROWS',	".error_row");
+			}
+			
+			$ft->parse('ROWS', "error_reporting");
+        }
 		break;
 
 	case "delete": // usuwanie wybranego wpisu
 	
-		$query = sprintf("
-					DELETE FROM 
-						$mysql_data[db_table_pages] 
-					WHERE 
-						id = '%1\$d'", $_GET['id']);
+        if($permarr['moderator']) {	
+
+            $query = sprintf("
+                DELETE FROM 
+                    %1\$s 
+                WHERE 
+                    id = '%2\$d'", 
 		
-		$db->query($query);
+                $mysql_data['db_table_pages'], 
+                $_GET['id']
+            );
 		
-		$ft->assign('CONFIRM', "Strona zosta³a usuniêta.");
-		$ft->parse('ROWS', ".result_note");
+            $db->query($query);
+		
+            $ft->assign('CONFIRM', $i18n['edit_page'][1]);
+            $ft->parse('ROWS', ".result_note");
+        } else {
+            
+            $monit[] = $i18n['edit_page'][2];
+            
+            foreach ($monit as $error) {
+			    
+			    $ft->assign('ERROR_MONIT', $error);
+			    
+			    $ft->parse('ROWS',	".error_row");
+			}
+			
+			$ft->parse('ROWS', "error_reporting");
+        }
 		break;
 
 	default:
@@ -133,12 +179,12 @@ switch ($action) {
 				// naprzemienne kolorowanie wierszy tabeli
 				if (($idx1%2)==1) {
 				
-					$ft->assign('ID_CLASS', "class=\"mainList\"");
+					$ft->assign('ID_CLASS', 'class="mainList"');
 					
 					$ft->parse('ROWS', ".row");
 				} else {
 				
-					$ft->assign('ID_CLASS', "class=\"mainListAlter\"");
+					$ft->assign('ID_CLASS', 'class="mainListAlter"');
 					
 					$ft->parse('ROWS', ".row");
 				}
