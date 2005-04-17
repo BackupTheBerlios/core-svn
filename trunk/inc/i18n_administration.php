@@ -36,6 +36,7 @@ $i18n['add_links'][5] = '<b>Nie masz uprawnieñ</b> pozwalaj±cych na dodanie nowe
 $i18n['add_note'] = array();
 $i18n['add_note'][0] = 'Zdjêcie zosta³o dodane.<br />';
 $i18n['add_note'][1] = 'Wpis zosta³ dodany.';
+$i18n['add_note'][2] = '<b>Nie masz uprawnieñ</b> pozwalaj±cych na dodanie nowego wpisu.';
 
 $i18n['add_page'] = array();
 $i18n['add_page'][0] = 'Zdjêcie zosta³o dodane.<br />';
@@ -96,5 +97,19 @@ $i18n['edit_page'][0] = 'Strona zosta³a zmodyfikowana.';
 $i18n['edit_page'][1] = 'Strona zosta³a usuniêta.';
 $i18n['edit_page'][2] = '<b>Nie masz uprawnieñ</b> do usuwania podstron serwisu.';
 $i18n['edit_page'][3] = '<b>Nie masz uprawnieñ</b> do edycji podstron serwisu.';
+
+$i18n['edit_note'] = array();
+$i18n['edit_note'][0] = 'Wpis zosta³ zmodyfikowany.';
+$i18n['edit_note'][1] = 'Wpis zosta³ usuniêty.';
+$i18n['edit_note'][2] = '<b>Nie masz uprawnieñ</b> do usuwania wpisów.';
+$i18n['edit_note'][3] = '<b>Nie masz uprawnieñ</b> do edycji wpisów, b±d¼ nie jeste¶ autorem tego wpisu.';
+$i18n['edit_note'][4] = 'W bazie danych nie ma ¿adnych wpisów';
+
+$i18n['edit_comments'] = array();
+$i18n['edit_comments'][0] = 'Komentarz zosta³ zmodyfikowany.';
+$i18n['edit_comments'][1] = 'Komentarz zosta³ usuniêty.';
+$i18n['edit_comments'][2] = 'W bazie danych nie ma ¿adnych komentarzy.';
+$i18n['edit_comments'][3] = '<b>Nie masz uprawnieñ</b> do edycji komentarzy.';
+$i18n['edit_comments'][4] = '<b>Nie masz uprawnieñ</b> do usuwania komentarzy.';
 
 ?>
