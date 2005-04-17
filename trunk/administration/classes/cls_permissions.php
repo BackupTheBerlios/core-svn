@@ -11,10 +11,10 @@ if(!class_exists('permissions')) {
         */
         
         var $permissions = array(
-            "read"                  =>false,
-            "write"                 =>false,
-            "delete"                =>false,
-            "edit_templates"        =>false,
+            "user"                  =>false,
+            "writer"                =>false,
+            "moderator"             =>false,
+            "tpl_editor"            =>false,
             "admin"                 =>false
         );
         
