@@ -50,6 +50,34 @@ $privileges = $db->f('permission_level');
 $perms      = new permissions();
 $permarr    = $perms->getPermissions($privileges);
 
+switch ($privileges) {
+    
+    case '1':
+    
+        $privilege_level = 1;
+        break;
+        
+    case '3':
+    
+        $privilege_level = 2;
+        break;
+
+    case '7':
+    
+        $privilege_level = 3;
+        break;
+        
+    case '15':
+    
+        $privilege_level = 4;
+        break;
+        
+    case '31':
+    
+        $privilege_level = 5;
+        break;       
+}
+
 // inicjowanie klasy, wkazanie katalogu przechowuj±cego szablony
 $ft = new FastTemplate("./templates/tpl");
 
@@ -64,8 +92,9 @@ $ft->define(array(
 ));
 		
 $ft->assign(array(
-    'PAGE_TITLE'    =>$i18n['main'][0],
-    'LOGGED_IN'     =>$_SESSION['login']
+    'PRIVILEGE_LEVEL'   =>$privilege_level,
+    'PAGE_TITLE'        =>$i18n['main'][0],
+    'LOGGED_IN'         =>$_SESSION['login']
 ));
 
 $inc_modules = array(
@@ -168,4 +197,5 @@ $ft->parse('MAIN_CONTENT', array("main_loader", "index"));
 
 $ft->FastPrint();
 exit;
+
 ?>
