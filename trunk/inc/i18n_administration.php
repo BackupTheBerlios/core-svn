@@ -40,7 +40,8 @@ $i18n['add_note'][1] = 'Wpis zosta³ dodany.';
 $i18n['add_page'] = array();
 $i18n['add_page'][0] = 'Zdjêcie zosta³o dodane.<br />';
 $i18n['add_page'][1] = 'Strona zosta³a dodana.';
-$i18n['add_page'][2] = 'Nazwa strony nie mo¿e byæ pusta.';
+$i18n['add_page'][2] = 'Tytu³ strony nie mo¿e byæ pusty.';
+$i18n['add_page'][3] = '<b>Nie masz uprawnieñ</b> pozwalaj±cych na dodanie nowej podstrony.';
 
 $i18n['add_user'] = array();
 $i18n['add_user'][0] = 'Nazwa u¿ytkownika musi mieæ conajmniej 4 znaki.';
@@ -89,5 +90,11 @@ $i18n['edit_links'][4] = 'Link zosta³ zmodyfikowany.';
 $i18n['edit_links'][5] = 'Link zosta³ usuniêty.';
 $i18n['edit_links'][6] = '<b>Nie masz uprawnieñ</b> do usuwania linków.';
 $i18n['edit_links'][7] = '<b>Nie masz uprawnieñ</b> do edycji linków.';
+
+$i18n['edit_page'] = array();
+$i18n['edit_page'][0] = 'Strona zosta³a zmodyfikowana.';
+$i18n['edit_page'][1] = 'Strona zosta³a usuniêta.';
+$i18n['edit_page'][2] = '<b>Nie masz uprawnieñ</b> do usuwania podstron serwisu.';
+$i18n['edit_page'][3] = '<b>Nie masz uprawnieñ</b> do edycji podstron serwisu.';
 
 ?>
