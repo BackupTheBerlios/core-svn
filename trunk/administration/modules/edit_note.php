@@ -47,8 +47,8 @@ switch ($action) {
             'AUTHOR'		=>$author,
             'DATE' 			=>$date,
             'ID'			=>$_GET['id'],
-            'TITLE'			=>$title,
-            'TEXT'			=>br2nl($text)
+            'TITLE'			=>stripslashes($title),
+            'TEXT'			=>br2nl(stripslashes($text))
         ));
 
 		if($comments_allow == 1) {
@@ -106,8 +106,8 @@ switch ($action) {
 		
 	case "edit": // edycja wybranego wpisu
 	
-		$text		= str_nl2br($_POST['text']);
-		$title		= $_POST['title'];
+		$text		= str_nl2br(addslashes($_POST['text']));
+		$title		= addslashes($_POST['title']);
 		$author		= $_POST['author'];
 		$published	= $_POST['published'];
 		$c_id		= $_POST['category_id'];
