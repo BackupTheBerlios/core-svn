@@ -14,7 +14,7 @@ switch($action) {
     
     case "add":
     
-        if($permarr['edit_templates']) {
+        if($permarr['tpl_editor']) {
     
             $template   = $_POST['template_name'];
             $text		= $_POST['text'];
