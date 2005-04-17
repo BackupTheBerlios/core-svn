@@ -31,6 +31,7 @@ $i18n['add_links'][1] = 'Link musi byæ w poprawnym formacie (www|ftp|http)://exa
 $i18n['add_links'][2] = 'Link zosta³ dodany do bazy danych.';
 $i18n['add_links'][3] = 'dodaj nowy link';
 $i18n['add_links'][4] = '<b>Linki - dodaj nowy link</b>';
+$i18n['add_links'][5] = '<b>Nie masz uprawnieñ</b> pozwalaj±cych na dodanie nowego linku.';
 
 $i18n['add_note'] = array();
 $i18n['add_note'][0] = 'Zdjêcie zosta³o dodane.<br />';
@@ -78,5 +79,15 @@ $i18n['edit_category'][3] = 'Kategoria zosta³a usuniêta.';
 $i18n['edit_category'][4] = 'Brak opisu';
 $i18n['edit_category'][5] = '<b>Nie masz uprawnieñ</b> do usuniecia kategorii.';
 $i18n['edit_category'][6] = '<b>Nie masz uprawnieñ</b> do edycji kategorii.';
+
+$i18n['edit_links'] = array();
+$i18n['edit_links'][0] = 'Zmodyfikuj link';
+$i18n['edit_links'][1] = '<b>Linki - modyfikacja linku</b>';
+$i18n['edit_links'][2] = 'Musisz podaæ nazwê linku';
+$i18n['edit_links'][3] = 'Link musi byæ w poprawnym formacie (www|ftp|http)://example.com';
+$i18n['edit_links'][4] = 'Link zosta³ zmodyfikowany.';
+$i18n['edit_links'][5] = 'Link zosta³ usuniêty.';
+$i18n['edit_links'][6] = '<b>Nie masz uprawnieñ</b> do usuwania linków.';
+$i18n['edit_links'][7] = '<b>Nie masz uprawnieñ</b> do edycji linków.';
 
 ?>
