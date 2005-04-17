@@ -83,6 +83,15 @@ function coreRssDateConvert($date) {
 }
 
 
+function br2nl($text) {
+    
+    $text = preg_replace( "#(?:\n|\r)?<br />(?:\n|\r)?#", "\r\n", $text);
+    $text = preg_replace( "#(?:\n|\r)?<br>(?:\n|\r)?#"  , "\r\n", $text);
+    
+    return $text;
+}
+
+
 function str_nl2br($s) {
 	
 	return str_replace(array("\r\n", "\r", "\n"), '<br />', $s);
