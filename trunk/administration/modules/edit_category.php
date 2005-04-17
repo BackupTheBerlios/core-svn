@@ -57,7 +57,7 @@ switch ($action) {
                     category_name = '%2\$s', 
                     category_description = '%3\$s' 
                 WHERE 
-                    category_id='%1\$d'", 
+                    category_id='%4\$d'", 
 		
                 $mysql_data['db_table_category'], 
                 $category_name, 
