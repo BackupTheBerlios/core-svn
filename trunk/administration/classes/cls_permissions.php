@@ -14,7 +14,7 @@ if(!class_exists('permissions')) {
             "read"                  =>false,
             "write"                 =>false,
             "delete"                =>false,
-            "change_permissions"    =>false,
+            "edit_templates"        =>false,
             "admin"                 =>false
         );
         
