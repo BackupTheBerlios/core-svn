@@ -174,7 +174,7 @@ switch ($action) {
                 'NEWS_TITLE'        =>$title,
                 'NEWS_ID'           =>$id,
                 'COMMENT_AUTHOR'    =>$comment_author,
-                'QUOTE'             =>'[quote]' . strip_tags($cite) . '[/quote]',
+                'QUOTE'             =>'[quote]' . strip_tags(stripslashes($cite)) . '[/quote]',
                 'STRING'            =>$page_string
             ));
         } else {
