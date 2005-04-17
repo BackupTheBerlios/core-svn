@@ -14,23 +14,29 @@ switch($action) {
     
     case "add":
     
-        $template   = $_POST['template_name'];
-        $text		= $_POST['text'];
+        if($permarr['edit_templates']) {
+    
+            $template   = $_POST['template_name'];
+            $text		= $_POST['text'];
         
-        $tpl = 	'../templates/main/tpl/' . $template . '.tpl';
+            $tpl = 	'../templates/main/tpl/' . $template . '.tpl';
         
-        $text = str_replace('{NOTE_ROWS}', '{ROWS}', $text);
+            $text = str_replace('{NOTE_ROWS}', '{ROWS}', $text);
         
-        if(is_writeable($tpl)) {
+            if(is_writeable($tpl)) {
             
-            $fp	= fopen($tpl, 'w+');
-            fwrite($fp, stripslashes($text));
-            fclose($fp);
+                $fp	= fopen($tpl, 'w+');
+                fwrite($fp, stripslashes($text));
+                fclose($fp);
             
-            $ft->assign('WRITE_ERROR', "Szablon zosta³ Zapisany.");
+                $ft->assign('WRITE_ERROR', $i18n['edit_templates'][0]);
+            } else {
+            
+                $ft->assign('WRITE_ERROR', $i18n['edit_templates'][1]);
+            }
         } else {
             
-            $ft->assign('WRITE_ERROR', "Nie uda³o siê edytowaæ szablonu.");
+            $ft->assign('WRITE_ERROR', $i18n['edit_templates'][2]);
         }
         break;
 		
@@ -43,7 +49,7 @@ switch($action) {
         
         if(!is_writeable($template)) {
             
-            $ft->assign('WRITE_ERROR', 'Brak mo¿liwo¶ci zapisu zmian w tym szablonie!');
+            $ft->assign('WRITE_ERROR', $i18n['edit_templates'][3]);
         
         } else {
             
@@ -88,7 +94,7 @@ $read_dir = @dir($templates_dir);
 
 while($d = $read_dir->read()) {
     
-    if($d != '.' && $d != '..') {
+    if($d[0] != '.') {
         
         $ft->assign('CURRENT_TEMPLATE', $d);
         if(isset($_GET['tpl_dir'])) {
