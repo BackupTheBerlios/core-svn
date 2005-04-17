@@ -124,11 +124,11 @@ switch ($action) {
 
             $perms = new permissions();
             // Nadajemu stosowne uprawnienia u¿ytkownikowi
-            $perms->permissions["read"]                  = TRUE;
-            $perms->permissions["write"]                 = TRUE;
-            $perms->permissions["delete"]                = TRUE;
-            $perms->permissions["change_permissions"]    = TRUE;
-            $perms->permissions["admin"]                 = TRUE;
+            $perms->permissions["user"]                     = TRUE;
+            $perms->permissions["writer"]                   = TRUE;
+            $perms->permissions["moderator"]                = TRUE;
+            $perms->permissions["tpl_editor"]               = TRUE;
+            $perms->permissions["admin"]                    = TRUE;
 
             $bitmask = $perms->toBitmask();
 
