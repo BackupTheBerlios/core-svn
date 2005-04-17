@@ -3,17 +3,23 @@
 // deklaracja zmiennej $action::form
 $action = empty($_GET['action']) ? '' : $_GET['action'];
 
-$db = new DB_SQL;
+// definicja szablonow parsujacych wyniki bledow.
+$ft->define("error_reporting", "error_reporting.tpl");
+$ft->define_dynamic("error_row", "error_reporting");
 
 switch ($action) {
 	
 	case "show": // wy¶wietlanie wpisu pobranego do modyfikacji
 	
 		$query = sprintf("
-					SELECT * FROM 
-						$mysql_data[db_table_category] 
-					WHERE 
-						category_id = '%1\$d'", $_GET['id']);
+            SELECT * FROM 
+                %1\$s 
+            WHERE 
+                category_id = '%2\$d'", 
+		
+            $mysql_data['db_table_category'],
+            $_GET['id']
+        );
 		
 		$db->query($query);
 		$db->next_record();
@@ -22,17 +28,16 @@ switch ($action) {
 		$category_name			= $db->f("category_name");
 		$category_description	= $db->f("category_description");
 		
-		$category_description	= str_replace("<br />", "\r\n", $category_description);
-		$category_description	= ereg_replace("(\r\n)+", "\r\n\r\n", $category_description);
-		
-		$ft->assign(array(	'CATEGORY_ID'		=>$category_id,
-							'CATEGORY_NAME'		=>$category_name,
-							'CATEGORY_DESC'		=>$category_description,
-							'SUBMIT_URL'		=>"main.php?p=9&amp;action=edit&amp;id=" . $category_id,
-							'CATNAME_VALUE'		=>"value=\"" . $category_name . "\"",
-							'CATNAME_DESC'		=>$category_description,
-							'SUBMIT_HREF_DESC'	=>"zmodyfikuj kategoriê",
-							'HEADER_DESC'		=>"<b>Kategorie - modyfikacja istniej±cej kategorii</b>"));
+		$ft->assign(array(
+            'CATEGORY_ID'		=>$category_id,
+            'CATEGORY_NAME'		=>$category_name,
+            'CATEGORY_DESC'		=>br2nl(stripslashes($category_description)),
+            'SUBMIT_URL'		=>"main.php?p=9&amp;action=edit&amp;id=" . $category_id,
+            'CATNAME_VALUE'		=>"value=\"" . $category_name . "\"",
+            'CATNAME_DESC'		=>$category_description,
+            'SUBMIT_HREF_DESC'	=>$i18n['edit_category'][0],
+            'HEADER_DESC'		=>$i18n['edit_category'][1]
+        ));
 
 		$ft->define('form_category', "form_category.tpl");
 		$ft->parse('ROWS',	".form_category");
@@ -40,53 +45,98 @@ switch ($action) {
 		
 	case "edit":// edycja wybranego wpisu
 	
-		$category_description	= nl2br($_POST['category_description']);
-		$category_name			= $_POST['category_name'];
+        if($permarr['moderator']) {
+	
+            $category_description	= nl2br($_POST['category_description']);
+            $category_name			= $_POST['category_name'];
 		
-		$query = sprintf("
-					UPDATE 
-						$mysql_data[db_table_category] 
-					SET 
-						category_name = '$category_name', 
-						category_description = '$category_description' 
-					WHERE 
-						category_id='%1\$d'", $_GET['id']);
+            $query = sprintf("
+                UPDATE 
+                    %1\$s 
+                SET 
+                    category_name = '%2\$s', 
+                    category_description = '%3\$s' 
+                WHERE 
+                    category_id='%1\$d'", 
 		
-		$db->query($query);
+                $mysql_data['db_table_category'], 
+                $category_name, 
+                $category_description, 
+                $_GET['id']
+            );
 		
-		$ft->assign('CONFIRM', "Kategoria zosta³a zmodyfikowana.");
-		$ft->parse('ROWS',	".result_note");
+            $db->query($query);
+		
+            $ft->assign('CONFIRM', $i18n['edit_category'][2]);
+            $ft->parse('ROWS',	".result_note");
+        } else {
+            
+            $monit[] = $i18n['edit_category'][6];
+            
+            foreach ($monit as $error) {
+                
+                $ft->assign('ERROR_MONIT', $error);
+                
+                $ft->parse('ROWS',	".error_row");
+            }
+                        
+            $ft->parse('ROWS', "error_reporting");
+        }
 		break;
 		
 	case "delete":// usuwanie wybranego wpisu
 	
-		$query = sprintf("
-					DELETE FROM 
-						$mysql_data[db_table_category] 
-					WHERE 
-						category_id = '%1\$d'", $_GET['id']);
+        if($permarr['moderator']) {
+	
+            $query = sprintf("
+                DELETE FROM 
+                    %1\$s 
+                WHERE 
+                    category_id = '%2\$d'", 
 		
-		$db->query($query);
+                $mysql_data['db_table_category'], 
+                $_GET['id']
+            );
 		
-		$ft->assign('CONFIRM', "Kategoria zosta³a usuniêta.");
-		$ft->parse('ROWS', ".result_note");
+            $db->query($query);
+		
+            $ft->assign('CONFIRM', $i18n['edit_category'][3]);
+            $ft->parse('ROWS', ".result_note");
+        } else {
+            
+            $monit[] = $i18n['edit_category'][5];
+
+            foreach ($monit as $error) {
+    
+                $ft->assign('ERROR_MONIT', $error);
+                    
+                $ft->parse('ROWS',	".error_row");
+            }
+                        
+            $ft->parse('ROWS', "error_reporting");
+        }
 		break;
 		
 	default:
 	
-		$query = "	SELECT 
-						a.*, count(b.id) AS count 
-					FROM 
-						$mysql_data[db_table_category] a 
-					LEFT JOIN 
-						$mysql_data[db_table] b 
-					ON 
-						a.category_id = b.c_id 
-					GROUP BY 
-						category_id
-					ORDER BY 
-						category_id 
-					ASC";
+		$query = sprintf("
+            SELECT 
+                a.*, count(b.id) AS count 
+            FROM 
+                %1\$s a 
+            LEFT JOIN 
+                %2\$s b 
+            ON 
+                a.category_id = b.c_id 
+            GROUP BY 
+                category_id 
+            ORDER BY 
+                category_id 
+            ASC", 
+		
+            $mysql_data['db_table_category'], 
+            $mysql_data['db_table']
+        );
 		
 		$db->query($query);
 	
@@ -98,18 +148,18 @@ switch ($action) {
 			$category_description	= $db->f("category_description");
 			$count					= $db->f("count");
 			
-			if (strlen($category_description) > 70 ) {
-				
-				$category_description = substr_replace($category_description, '...',70);
-			}
+			// obcinamy opis kategorii, jesli dluzszy niz 70 znakow
+			$category_description = strlen($category_description) > 70 ? substr_replace($category_description, '...',70) : $category_description;
 			
-			$ft->assign(array(	'CATEGORY_ID'		=>$category_id,
-								'CATEGORY_NAME'		=>$category_name,
-								'COUNT'				=>$count));
+			$ft->assign(array(
+                'CATEGORY_ID'		=>$category_id,
+                'CATEGORY_NAME'		=>$category_name,
+                'COUNT'				=>$count
+            ));
 								
 			if(empty($category_description)) {
 
-				$ft->assign('CATEGORY_DESC', "brak opisu");
+				$ft->assign('CATEGORY_DESC', $i18n['edit_category'][4]);
 			} else {
 				
 				$ft->assign('CATEGORY_DESC', $category_description);
@@ -131,12 +181,12 @@ switch ($action) {
 			// naprzemienne kolorowanie wierszy
 			if (($idx1%2)==1) {
 			    
-			    $ft->assign('ID_CLASS', "class=\"mainList\"");
+			    $ft->assign('ID_CLASS', 'class="mainList"');
 			    
 			    $ft->parse('ROWS',	".row");
 			} else {
 			    
-			    $ft->assign('ID_CLASS', "class=\"mainListAlter\"");
+			    $ft->assign('ID_CLASS', 'class="mainListAlter"');
 			    
 			    $ft->parse('ROWS', ".row");
 			}

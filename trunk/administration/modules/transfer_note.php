@@ -12,44 +12,60 @@ switch ($action) {
         
         $monit      = array();
         
-        if(!is_numeric($current)) {
-            
-            $monit[] = $i18n['transfer_note'][0];
-        }
+        // definicja szablonow parsujacych wyniki bledow.
+        $ft->define("error_reporting", "error_reporting.tpl");
+        $ft->define_dynamic("error_row", "error_reporting");
         
-        if(!is_numeric($target)) {
-            
-            $monit[] = $i18n['transfer_note'][1];
-        }
+        if($permarr['moderator']) {
         
-        if(empty($monit)) {
+            if(!is_numeric($current)) {
             
-            $query = sprintf("
-                UPDATE 
-                    %1\$s
-                SET 
-                    c_id = '%2\$d' 
-                WHERE
-                    c_id = '%3\$d'",
+                $monit[] = $i18n['transfer_note'][0];
+            }
+        
+            if(!is_numeric($target)) {
+            
+                $monit[] = $i18n['transfer_note'][1];
+            }
+        
+            if(empty($monit)) {
+            
+                $query = sprintf("
+                    UPDATE 
+                        %1\$s
+                    SET 
+                        c_id = '%2\$d' 
+                    WHERE
+                        c_id = '%3\$d'",
                 
-                $mysql_data['db_table'],
-                $target, 
-                $current
-            );
+                    $mysql_data['db_table'],
+                    $target, 
+                    $current
+                );
             
-            $db->query($query);
+                $db->query($query);
             
-            $ft->assign('CONFIRM', $i18n['transfer_note'][2]);
-            $ft->parse('ROWS',	".result_note");
+                $ft->assign('CONFIRM', $i18n['transfer_note'][2]);
+                $ft->parse('ROWS',	".result_note");
+            } else {
+
+                foreach ($monit as $error) {
+    
+                    $ft->assign('ERROR_MONIT', $error);
+                    
+                    $ft->parse('ROWS',	".error_row");
+                }
+                        
+                $ft->parse('ROWS', "error_reporting");
+            }
         } else {
             
-            $ft->define("error_reporting", "error_reporting.tpl");
-            $ft->define_dynamic("error_row", "error_reporting");
-
+            $monit[] = $i18n['transfer_note'][3];
+            
             foreach ($monit as $error) {
-    
+                
                 $ft->assign('ERROR_MONIT', $error);
-                    
+                
                 $ft->parse('ROWS',	".error_row");
             }
                         
