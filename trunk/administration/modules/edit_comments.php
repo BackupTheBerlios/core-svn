@@ -6,18 +6,23 @@ main_pagination('main.php?p=5&amp;start=', '', 'editposts_per_page', '', 'db_tab
 // deklaracja zmiennej $action::form
 $action = empty($_GET['action']) ? '' : $_GET['action'];
 
-// inicjalizacja instancji klasy DB_SQL
-$db = new DB_SQL;
+// definicja szablonow parsujacych wyniki bledow.
+$ft->define("error_reporting", "error_reporting.tpl");
+$ft->define_dynamic("error_row", "error_reporting");
 
 switch ($action) {
 	
 	case "show": // wy¶wietlanie wpisu pobranego do modyfikacji
 	
 		$query = sprintf("
-					SELECT * FROM 
-						$mysql_data[db_table_comments] 
-					WHERE 
-						id = '%1\$d'", $_GET['id']);
+            SELECT * FROM 
+                %1\$s 
+            WHERE 
+                id = '%2\$d'", 
+		
+            $mysql_data['db_table_comments'], 
+            $_GET['id']
+        );
 		
 		$db->query($query);
 		$db->next_record();
@@ -27,20 +32,18 @@ switch ($action) {
 		$text 		= $db->f("text");
 		$author		= $db->f("author");
 		$published	= $db->f("published");
-
 		
 		$date	= substr($date, 0, 16);
 		$dat1	= explode(" ", $date);
 		$dat	= explode("-", $dat1[0]);
 		$date	= "$dat[2]-$dat[1]-$dat[0] $dat1[1]";
 		
-		$text = str_replace("<br />", "\r\n", $text);
-		$text = preg_replace("/(\r\n)+/", "\\1\\1", $text);
-		
-		$ft->assign(array(	'AUTHOR'		=>$author,
-							'DATE' 			=>$date,
-							'ID'			=>$_GET['id'],
-							'TEXT'			=>$text));
+		$ft->assign(array(
+            'AUTHOR'    =>$author,
+            'DATE'      =>$date,
+            'ID'        =>$_GET['id'],
+            'TEXT'      =>br2nl(stripslashes($text))
+        ));
 
 		$ft->define('form_commentsedit', "form_commentsedit.tpl");
 		$ft->parse('ROWS',	".form_commentsedit");
@@ -48,36 +51,76 @@ switch ($action) {
 	
 	case "edit": // edycja wybranego wpisu
 	
-		$text		= nl2br($_POST['text']);
-		$author		= $_POST['author'];
+        if($permarr['moderator']) {
+	
+            $text     = nl2br(addslashes($_POST['text']));
+            $author   = $_POST['author'];
 		
-		$query = sprintf("
-					UPDATE 
-						$mysql_data[db_table_comments] 
-					SET 
-						author	= '$author', 
-						text	= '$text' 
-					WHERE 
-						id = '%1\$d'", $_GET['id']);
+            $query = sprintf("
+                UPDATE 
+                    %1\$s 
+                SET 
+                    author	= '%2\$s', 
+                    text	= '%3\$s' 
+                WHERE 
+                    id = '%4\$d'", 
 		
-		$db->query($query);
+                $mysql_data['db_table_comments'], 
+                $author, 
+                $text, 
+                $_GET['id']
+            );
 		
-		$ft->assign('CONFIRM', "Komentarz zosta³ zmodyfikowany.");
-		$ft->parse('ROWS',	".result_note");
+            $db->query($query);
+		
+            $ft->assign('CONFIRM', $i18n['edit_comments'][0]);
+            $ft->parse('ROWS',	".result_note");
+        } else {
+            
+            $monit[] = $i18n['edit_comments'][3];
+
+            foreach ($monit as $error) {
+    
+                $ft->assign('ERROR_MONIT', $error);
+                    
+                $ft->parse('ROWS',	".error_row");
+            }
+                        
+            $ft->parse('ROWS', "error_reporting");
+        }
 		break;
 	
 	case "delete": // usuwanie wybranego wpisu
 	
-		$query = sprintf("
-					DELETE FROM 
-						$mysql_data[db_table_comments] 
-					WHERE 
-						id = '%1\$d'", $_GET['id']);
+        if($permarr['moderator']) {
+	
+            $query = sprintf("
+                DELETE FROM 
+                    %1\$s 
+                WHERE 
+                    id = '%2\$d'", 
+            
+                $mysql_data['db_table_comments'], 
+                $_GET['id']
+            );
 		
-		$db->query($query);
-		
-		$ft->assign('CONFIRM', "Komentarz zosta³ usuniêty.");
-		$ft->parse('ROWS', ".result_note");
+            $db->query($query);
+            
+            $ft->assign('CONFIRM', $i18n['edit_comments'][1]);
+            $ft->parse('ROWS', ".result_note");
+        } else {
+            
+            $monit[] = $i18n['edit_comments'][4];
+
+            foreach ($monit as $error) {
+    
+                $ft->assign('ERROR_MONIT', $error);
+                    
+                $ft->parse('ROWS',	".error_row");
+            }
+                        
+            $ft->parse('ROWS', "error_reporting");
+        }
 		break;
 
 	default:
@@ -149,13 +192,13 @@ switch ($action) {
 				// naprzemienne kolorowanie wierszy
 				if (($idx1%2)==1) {
 				
-					$ft->assign('ID_CLASS', "class=\"mainList\"");
+					$ft->assign('ID_CLASS', 'class="mainList"');
 					
 					$ft->parse('ROWS',	".row");
 
 				} else {
 				
-					$ft->assign('ID_CLASS', "class=\"mainListAlter\"");
+					$ft->assign('ID_CLASS', 'class="mainListAlter"');
 				    
 				    $ft->parse('ROWS',	".row");
 				}
@@ -164,7 +207,7 @@ switch ($action) {
 			$ft->parse('ROWS', "editlist_comments");;
 		} else {
 		
-			$ft->assign(array(	'CONFIRM'	=>"W bazie danych nie ma ¿adnych komentarzy."));
+			$ft->assign('CONFIRM', $i18n['edit_comments'][2]);
 
 			$ft->parse('ROWS',	".result_note");
 		}

@@ -6,6 +6,10 @@ $pagination = main_pagination('main.php?p=2&amp;start=', '', 'editposts_per_page
 // deklaracja zmiennej $action::form
 $action = empty($_GET['action']) ? '' : $_GET['action'];
 
+// definicja szablonow parsujacych wyniki bledow.
+$ft->define("error_reporting", "error_reporting.tpl");
+$ft->define_dynamic("error_row", "error_reporting");
+
 switch ($action) {
 	
 	case "show":// wy¶wietlanie wpisu pobranego do modyfikacji
@@ -106,53 +110,117 @@ switch ($action) {
 		
 	case "edit": // edycja wybranego wpisu
 	
-		$text		= str_nl2br(addslashes($_POST['text']));
-		$title		= addslashes($_POST['title']);
-		$author		= $_POST['author'];
-		$published	= $_POST['published'];
-		$c_id		= $_POST['category_id'];
+        $query = sprintf("
+            SELECT * FROM 
+                %1\$s 
+            WHERE 
+                id = '%2\$d'", 
 		
-		$comments_allow = $_POST['comments_allow'];
+            $mysql_data['db_table'],
+            $_GET['id']
+        );
 		
-		$query = sprintf("
-					UPDATE 
-						$mysql_data[db_table] 
-					SET 
-						title			= '$title', 
-						author			= '$author', 
-						text			= '$text', 
-						published		= '$published', 
-						c_id			= '$c_id', 
-						comments_allow	= '$comments_allow'  
-					WHERE 
-						id = '%1\$d'", $_GET['id']);
 		$db->query($query);
+		$db->next_record();
 		
-		$ft->assign('CONFIRM', "Wpis zosta³ zmodyfikowany.");
-		$ft->parse('ROWS',	".result_note");
+		$note_author = $db->f("author");
+		
+		if($permarr['writer'] && ($note_author == $_SESSION['login'])) {
+	
+            $text		= str_nl2br(addslashes($_POST['text']));
+            $title		= addslashes($_POST['title']);
+            $author		= $_POST['author'];
+            $published	= $_POST['published'];
+            $c_id		= $_POST['category_id'];
+            
+            $comments_allow = $_POST['comments_allow'];
+		
+            $query = sprintf("
+                UPDATE 
+                    %1\$s 
+                SET 
+                    title			= '%2\$s', 
+                    author			= '%3\$s', 
+                    text			= '%4\$s', 
+                    published		= '%5\$s', 
+                    c_id			= '%6\$d', 
+                    comments_allow	= '%7\$d'  
+                WHERE 
+                    id = '%8\$d'", 
+            
+                $mysql_data['db_table'], 
+                $title, 
+                $author, 
+                $text, 
+                $published, 
+                $c_id, 
+                $comments_allow, 
+                $_GET['id']
+            );
+            
+            $db->query($query);
+            
+            $ft->assign('CONFIRM', $i18n['edit_note'][0]);
+            $ft->parse('ROWS',	".result_note");
+		} else {
+		    
+		    $monit[] = $i18n['edit_note'][3];
+
+            foreach ($monit as $error) {
+    
+                $ft->assign('ERROR_MONIT', $error);
+                    
+                $ft->parse('ROWS',	".error_row");
+            }
+                        
+            $ft->parse('ROWS', "error_reporting");
+		}
 		break;
 		
 	case "delete": // usuwanie wybranego wpisu
 	
-		$query = sprintf("
-					DELETE FROM 
-						$mysql_data[db_table] 
-					WHERE 
-						id = '%1\$d'", $_GET['id']);
+        if($permarr['moderator']) {
+	
+            $query = sprintf("
+                DELETE FROM 
+                    %1\$s 
+                WHERE 
+                    id = '%2\$d'", 
 		
-		$db->query($query);
+                $mysql_data['db_table'], 
+                $_GET['id']
+            );
 		
-		$ft->assign('CONFIRM', "Wpis zosta³ usuniêty.");
-		$ft->parse('ROWS', ".result_note");
+            $db->query($query);
+		
+            $ft->assign('CONFIRM', $i18n['edit_note'][1]);
+            $ft->parse('ROWS', ".result_note");
+        } else {
+            
+            $monit[] = $i18n['edit_note'][2];
+
+            foreach ($monit as $error) {
+    
+                $ft->assign('ERROR_MONIT', $error);
+                    
+                $ft->parse('ROWS',	".error_row");
+            }
+                        
+            $ft->parse('ROWS', "error_reporting");
+        }
 		break;
 		
 	default:
 	
 		$query = sprintf("
-					SELECT * FROM 
-						$mysql_data[db_table_config] 
-					WHERE 
-						config_name = '%1\$s'", "editposts_per_page");
+            SELECT * FROM 
+                %1\$s 
+            WHERE 
+                config_name = '%2\$s'", 
+		
+            $mysql_data['db_table_config'], 
+            "editposts_per_page"
+        );
 		
 		$db->query($query);
 		$db->next_record();
@@ -161,13 +229,18 @@ switch ($action) {
 		$editposts_per_page = empty($editposts_per_page) ? 10 : $editposts_per_page;
 		
 		$query = sprintf("
-					SELECT * FROM 
-						$mysql_data[db_table] 
-					ORDER BY 
-						date 
-					DESC 
-					LIMIT 
-						%1\$d, %2\$d", $start, $editposts_per_page);
+            SELECT * FROM 
+                %1\$s 
+            ORDER BY 
+                date 
+            DESC 
+            LIMIT 
+                %2\$d, %3\$d", 
+		
+            $mysql_data['db_table'], 
+            $start, 
+            $editposts_per_page
+        );
 		
 		$db->query($query);
 		
@@ -219,13 +292,13 @@ switch ($action) {
 				// naprzemienne kolorowanie wierszy
 				if (($idx1%2)==1) {
 				
-					$ft->assign('ID_CLASS', "class=\"mainList\"");
+					$ft->assign('ID_CLASS', 'class="mainList"');
 					
 					$ft->parse('ROWS',	".row");
 
 				} else {
 				
-					$ft->assign('ID_CLASS', "class=\"mainListAlter\"");
+					$ft->assign('ID_CLASS', 'class="mainListAlter"');
 				    
 				    $ft->parse('ROWS',	".row");
 				}
@@ -234,8 +307,9 @@ switch ($action) {
 			$ft->parse('ROWS', "editlist_notes");
 		} else {
 		
-			$ft->assign('CONFIRM', "W bazie danych nie ma ¿adnych wpisów");
+			$ft->assign('CONFIRM', $i18n['edit_note'][4]);
 			$ft->parse('ROWS',	".result_note");
 		}
 }
+
 ?>

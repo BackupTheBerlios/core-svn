@@ -3,94 +3,107 @@
 // deklaracja zmiennej $action::form
 $action = empty($_GET['action']) ? '' : $_GET['action'];
 
+// definicja szablonow parsujacych wyniki bledow.
+$ft->define("error_reporting", "error_reporting.tpl");
+$ft->define_dynamic("error_row", "error_reporting");
+
 switch ($action) {
     
 	case "add":
 	
-		//sprawdzania daty
-		if($_POST['date'] == 1) {
-			
-			$date = date("Y-m-d H:i:s");
-		} else {
-			
-			$date = $_POST['date'];
-		}	
-		
-		$text = nl2br($_POST['text']);
-		
-		$title 			= $_POST['title'];
-		$author 		= $_POST['author'];
-		$category_id 	= $_POST['category_id'];
-		$comments_allow = $_POST['comments_allow'];
-		$published 		= $_POST['published'];
-		
-		$query = sprintf("
-            INSERT INTO 
-                %1\$s 
-            VALUES 
-                ('','%2\$d', '%3\$s','%4\$s','%5\$s','%6\$s', '', '%7\$d', '%8\$s')",
-		
-            $mysql_data['db_table'],
-            $category_id,
-            $date,
-            addslashes($title),
-            $author,
-            addslashes($text),
-            $comments_allow,
-            $published
-        );
+        if($permarr['writer']) {
+	
+            //sprawdzania daty
+            $date = $_POST['date'] == 1 ? date("Y-m-d H:i:s") : $_POST['date'];
             
-        $db->query($query);
-        
-        $query = sprintf("
-            SELECT 
-                max(id) as maxid 
-            FROM 
-                %1\$s",
-        
-            $mysql_data['db_table']
-        );
-            
-        $db->query($query);
- 		$db->next_record();
-			
-		// Przypisanie zmiennej $id
-		$id = $db->f("0");
+            $text = nl2br($_POST['text']);
 		
-		if(!empty($_FILES['file']['name'])) {
+            $title 			= $_POST['title'];
+            $author 		= $_POST['author'];
+            $category_id 	= $_POST['category_id'];
+            $comments_allow = $_POST['comments_allow'];
+            $published 		= $_POST['published'];
+		
+            $query = sprintf("
+                INSERT INTO 
+                    %1\$s 
+                VALUES 
+                    ('','%2\$d', '%3\$s','%4\$s','%5\$s','%6\$s', '', '%7\$d', '%8\$s')",
+		
+                $mysql_data['db_table'],
+                $category_id,
+                $date,
+                addslashes($title),
+                $author,
+                addslashes($text),
+                $comments_allow,
+                $published
+            );
+            
+            $db->query($query);
+        
+            $query = sprintf("
+                SELECT 
+                    max(id) as maxid 
+                FROM 
+                    %1\$s",
+        
+                $mysql_data['db_table']
+            );
+            
+            $db->query($query);
+            $db->next_record();
 			
-			$up = new upload;
-			$upload_dir = "../photos";
+            // Przypisanie zmiennej $id
+            $id = $db->f("0");
+		
+            if(!empty($_FILES['file']['name'])) {
 			
-			// use function to upload file.
-			$file = $up->upload_file($upload_dir, 'file', true, true, 0, "jpg|jpeg|gif");
-			if($file == false) {
+                $up = new upload;
+                $upload_dir = "../photos";
+			
+                // use function to upload file.
+                $file = $up->upload_file($upload_dir, 'file', true, true, 0, "jpg|jpeg|gif");
+                if($file == false) {
 				
-				echo $up->error;
-			} else {
+				    echo $up->error;
+                } else {
 			    
-			    $query = sprintf("
-                    UPDATE 
-                        %1\$s 
-                    SET 
-                        image = '%2\$s' 
-                    WHERE 
-                        id = '%3\$d'", 
+                    $query = sprintf("
+                        UPDATE 
+                            %1\$s 
+                        SET 
+                            image = '%2\$s' 
+                        WHERE 
+                            id = '%3\$d'", 
 			    
-                    $mysql_data['db_table'],
-                    $file,
-                    $id
-                );
+                        $mysql_data['db_table'],
+                        $file,
+                        $id
+                    );
                 
-				$db->query($query);
+				    $db->query($query);
 				
-				$ft->assign('CONFIRM', $i18n['add_note'][0]);
-				$ft->parse('ROWS',	".result_note");
-			}
-		}
+				    $ft->assign('CONFIRM', $i18n['add_note'][0]);
+				    $ft->parse('ROWS',	".result_note");
+                }
+            }
 		
-		$ft->assign('CONFIRM', $i18n['add_note'][1]);
-		$ft->parse('ROWS',	".result_note");
+            $ft->assign('CONFIRM', $i18n['add_note'][1]);
+            $ft->parse('ROWS',	".result_note");
+        } else {
+            
+            $monit[] = $i18n['add_note'][2];
+
+            foreach ($monit as $error) {
+    
+                $ft->assign('ERROR_MONIT', $error);
+                    
+                $ft->parse('ROWS',	".error_row");
+            }
+                        
+            $ft->parse('ROWS', "error_reporting");
+        }
 		break;
 
 	default:
