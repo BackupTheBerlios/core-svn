@@ -17,48 +17,63 @@ switch ($action) {
 		}
 		
 		$monit = array();
+		
+		$ft->define("error_reporting", "error_reporting.tpl");
+		$ft->define_dynamic("error_row", "error_reporting");
+		
+		if($permarr['moderator']) {
 	
-		// Obs³uga formularza, jesli go zatwierdzono
-		if(!eregi("^([^0-9]+){2,}$", $link_name)) {
-			
-			$monit[] = $i18n['add_links'][0];
-		}
-		
-		if(!eregi("^(www|ftp|http)://([-a-z0-9]+\.)+([a-z]{2,})$", $link_url)) {
-			
-			$monit[] = $i18n['add_links'][1];
-		}
-		
-		if(empty($monit)) {
-			
-			$query = sprintf("
-                INSERT INTO 
-                    %1\$s 
-                VALUES 
-                    ('', '%2\$s', '%3\$s')",
-			
-                $mysql_data['db_table_links'],
-                $link_name,
-                $link_url
-            );
-		
-			$db->query($query);
-			
-			$ft->assign('CONFIRM', $i18n['add_links'][2]);
-			$ft->parse('ROWS', ".result_note");
-		} else {
-			
-			$ft->define("error_reporting", "error_reporting.tpl");
-            $ft->define_dynamic("error_row", "error_reporting");
-
-            foreach ($monit as $error) {
-    
-                $ft->assign('ERROR_MONIT', $error);
-                    
-                $ft->parse('ROWS',	".error_row");
+            // Obs³uga formularza, jesli go zatwierdzono
+            if(!eregi("^([^0-9]+){2,}$", $link_name)) {
+                
+                $monit[] = $i18n['add_links'][0];
             }
+            
+            if(!eregi("^(www|ftp|http)://([-a-z0-9]+\.)+([a-z]{2,})$", $link_url)) {
+                
+                $monit[] = $i18n['add_links'][1];
+            }
+            
+            if(empty($monit)) {
+                
+                $query = sprintf("
+                    INSERT INTO 
+                        %1\$s 
+                    VALUES 
+                        ('', '%2\$s', '%3\$s')",
+			
+                    $mysql_data['db_table_links'],
+                    $link_name,
+                    $link_url
+                );
+		
+                $db->query($query);
+			
+                $ft->assign('CONFIRM', $i18n['add_links'][2]);
+                $ft->parse('ROWS', ".result_note");
+            } else {
+                
+                foreach ($monit as $error) {
+    
+                    $ft->assign('ERROR_MONIT', $error);
+                    
+                    $ft->parse('ROWS',	".error_row");
+                }
                         
-            $ft->parse('ROWS', "error_reporting");
+                $ft->parse('ROWS', "error_reporting");
+		  }
+		} else {
+		    
+		    $monit[] = $i18n['add_links'][5];
+		    
+		    foreach ($monit as $error) {
+		        
+		        $ft->assign('ERROR_MONIT', $error);
+		        
+		        $ft->parse('ROWS',	".error_row");
+		    }
+		    
+		    $ft->parse('ROWS', "error_reporting");
 		}
 		
 		break;
