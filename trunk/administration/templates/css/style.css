@@ -12,6 +12,11 @@ td {
     vertical-align: top;
 }
 
+td.center {
+    text-align: center;
+    vertical-align: top;
+}
+
 center {
 	text-align: center;
 }
@@ -207,7 +212,7 @@ a:hover {
 	color: #6A6A6A;
 }
 
-#mainListHeader {
+.mainListHeader {
 	font-weight: bold;
 	background-color: #E6E6E6;
 	padding-top: 3px;
