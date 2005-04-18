@@ -19,8 +19,11 @@ var is_mac = (clientPC.indexOf("mac")!=-1);
 
 // Helpline messages
 b_help = "Tekst pogrubiony: <b>tekst</b>  (alt+b)";
+s_help = "Tekst wzmocniony: <strong>tekst</strong>  (alt+s)";
 i_help = "Tekst kursyw±: <i>tekst</i>  (alt+i)";
+e_help = "Tekst wyró¿niony: <em>tekst</em>  (alt+e)";
 u_help = "Tekst podkre¶lony: <u>tekst</u>  (alt+u)";
+h_help = "Odno¶nik: <a href=\"adresURI\">tekst</a>  (alt+h)";
 t_help = "Definicja skrótu: <abbr title=\"definicja\">skrót</abbr>  (alt+t)";
 q_help = "Cytat: [quote]tekst[/quote]  (alt+q)";
 c_help = "Poka¿ kod: [code]kod[/code]  (alt+c)";
@@ -29,12 +32,25 @@ o_help = "Lista uporz±dkowana: [list=]tekst[/list]  (alt+o)";
 p_help = "Wstaw obrazek: [img]http://adres_obrazka[/img]  (alt+p)";
 w_help = "Wstaw adres: [url]http://adres[/url] or [url=http://adres]Tekst adresu[/url]  (alt+w)";
 a_help = "Zamknij wszystkie otwarte tagi HTMLCode";
-s_help = "Kolor czcionki: [color=red]tekst[/color]  Rada: mo¿esz tak¿e podaæ color=#FF0000";
 f_help = "Rozmiar czcionki: [size=x-small]ma³y tekst[/size]";
 
 // Define the bbCode tags
 bbcode = new Array();
-bbtags = new Array('<b>', '</b>', '<i>', '</i>', '<u>', '</u>', '<abbr title="">', '</abbr>', '[quote]','[/quote]','[code]','[/code]','[list]','[/list]','[list=]','[/list]','[img]','[/img]','[url]','[/url]');
+bbtags = new Array(
+    '<b>', '</b>', 
+    '<strong>', '</strong>', 
+    '<i>', '</i>', 
+    '<em>', '</em>', 
+    '<u>', '</u>', 
+    '<a href="">', '</a>', 
+    '<abbr title="">', '</abbr>', 
+    '[quote]', '[/quote]', 
+    '[code]', '[/code]', 
+    '[list]', '[/list]', 
+    '[list=]', '[/list]', 
+    '[img]', '[/img]', 
+    '[url]', '[/url]'
+);
 imageTag = false;
 
 // Poka¿ wiadomo¶æ pomocnicz± w oknie helpline
