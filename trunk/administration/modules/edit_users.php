@@ -390,7 +390,7 @@ switch ($action) {
 		while($db->next_record()) {
 		
 			$user_id     = $db->f("id");
-			$login       = $db->f("login");
+			$u_login     = $db->f("login");
 			$email       = $db->f("email");
 			$perm_level  = $db->f("permission_level");
 			$status      = $db->f("active");
@@ -448,7 +448,7 @@ switch ($action) {
 			
 			$ft->assign(array(
                 'USER_ID'   =>$user_id,
-                'NAME'      =>$login,
+                'NAME'      =>$u_login,
                 'EMAIL'     =>$email,
                 'LEVEL'     =>$level,
 			));
