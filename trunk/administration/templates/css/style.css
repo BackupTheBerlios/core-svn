@@ -7,6 +7,11 @@ body {
 	font: 11px/1.3em Tahoma, Serif;
 }
 
+td {
+    text-align: left;
+    vertical-align: top;
+}
+
 center {
 	text-align: center;
 }
@@ -287,4 +292,63 @@ textarea#file {
     color: #505050; 
     margin-top: 3px; 
     width: 163px;
+}
+
+.button {
+    
+}
+
+.button.b {
+    font-weight: bold;
+    width: 30px;
+}
+
+.button.s {
+    font-weight: bold; 
+    width: 57px;
+}
+
+.button.i {
+    font-style: italic; 
+    width: 30px;
+}
+
+.button.e {
+    font-style: italic; 
+    width: 35px;
+}
+
+.button.u {
+    text-decoration: underline; 
+    width: 30px;
+}
+
+.button.h {
+    width: 27px;
+}
+
+.button.t {
+    width: 45px;
+}
+
+.category_form {
+    background-color: #FFF; 
+    font-family: tahoma, verdana, arial; 
+    font-size: 11px; 
+    color: #505050;
+}
+
+.note_textarea {
+    width: 450px; 
+    height: 200px;
+} 
+
+.helpline {
+    width:350px; 
+    border: 0px; 
+    padding: 0px;
+}
+
+.radio {
+    border: 0px;
 }
