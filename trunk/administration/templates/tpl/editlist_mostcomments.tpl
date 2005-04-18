@@ -3,19 +3,19 @@
 <!-- NAME: editlist_mostcomments.tpl -->
 <table align="left" cellspacing="0" cellpadding="0" border="0" width="100%">
 	<tr>
-		<td id="mainListHeader" width="13%">Data</td>
-		<td id="mainListHeader" width="55%">Tytu³ wpisu</td>
-		<td id="mainListHeader" width="12%">Liczba</td>
-		<td id="mainListHeader" width="10%">Edycja</td>
-		<td id="mainListHeader" width="10%">Usuñ</td>
+		<td class="mainListHeader" width="13%">Data</td>
+		<td class="mainListHeader" width="55%">Tytu³ wpisu</td>
+		<td class="mainListHeader" width="12%">Liczba</td>
+		<td class="mainListHeader" width="10%">Edycja</td>
+		<td class="mainListHeader" width="10%">Usuñ</td>
 	</tr>
 	<!-- BEGIN DYNAMIC BLOCK: row -->
     <tr>
-		<td {ID_CLASS} align="center">{DATE}</td>
-		<td {ID_CLASS}>{TITLE}</td>
-		<td {ID_CLASS} align="center">{COMMENTS}</td>
-		<td {ID_CLASS} align="center"><a href="main.php?p=2&amp;action=show&amp;id={ID}">Edycja</a></td>
-		<td {ID_CLASS} align="center"><a href="main.php?p=2&amp;action=delete&amp;id={ID}">Usuñ</a></td>
+		<td class="{ID_CLASS} center">{DATE}</td>
+		<td class="{ID_CLASS}">{TITLE}</td>
+		<td class="{ID_CLASS} center">{COMMENTS}</td>
+		<td class="{ID_CLASS} center"><a href="main.php?p=2&amp;action=show&amp;id={ID}">Edycja</a></td>
+		<td class="{ID_CLASS} center"><a href="main.php?p=2&amp;action=delete&amp;id={ID}">Usuñ</a></td>
 	</tr>
 	<!-- END DYNAMIC BLOCK: row -->
 	<tr>
