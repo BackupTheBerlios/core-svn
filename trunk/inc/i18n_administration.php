@@ -51,6 +51,7 @@ $i18n['add_user'][2] = 'Has³o nowego u¿ytkownika musi mieæ conajmniej 6 znaków.'
 $i18n['add_user'][3] = 'Podane has³a nowego u¿ytkownika nie zgadzaj± siê ze sob±.';
 $i18n['add_user'][4] = 'U¿ytkownik zosta³ dodany do bazy danych.';
 $i18n['add_user'][5] = 'Dodaj u¿ytkownika';
+$i18n['add_user'][6] = '<b>Nie masz uprawnieñ</b> pozwalaj±cych dodaæ nowego u¿ytkownika.';
 
 $i18n['core_configuration'] = array();
 $i18n['core_configuration'][0] = 'Warto¶æ okre¶laj±ca liczbê postów musi byæ liczb± ca³kowit±.';
@@ -111,5 +112,12 @@ $i18n['edit_comments'][1] = 'Komentarz zosta³ usuniêty.';
 $i18n['edit_comments'][2] = 'W bazie danych nie ma ¿adnych komentarzy.';
 $i18n['edit_comments'][3] = '<b>Nie masz uprawnieñ</b> do edycji komentarzy.';
 $i18n['edit_comments'][4] = '<b>Nie masz uprawnieñ</b> do usuwania komentarzy.';
+
+$i18n['edit_users'] = array();
+$i18n['edit_users'][0] = 'Jeste¶ zalogowany jako u¿ytkownik, którego chcesz usun±æ. Operacja niedozwolona.';
+$i18n['edit_users'][1] = 'U¿ytkownik zosta³ zmodyfikowany.';
+$i18n['edit_users'][2] = 'U¿ytkownik zosta³ usuniêty.';
+$i18n['edit_users'][3] = '<b>Nie masz uprawnieñ</b> do usuwania u¿ytkowników.';
+$i18n['edit_users'][4] = '<b>Nie masz uprawnieñ</b> do edycji u¿ytkowników.';
 
 ?>
