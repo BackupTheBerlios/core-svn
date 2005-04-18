@@ -223,12 +223,12 @@ function get_editpage_cat($page_id, $level) {
 		// naprzemienne kolorowanie wierszy tabeli
 		if (($idx1%2)==1) {
 				
-			$ft->assign('ID_CLASS', "class=\"mainList\"");
+			$ft->assign('ID_CLASS', 'mainList');
 			
 			$ft->parse('ROWS',	".row");
 		} else {
 				
-			$ft->assign('ID_CLASS', "class=\"mainListAlter\"");
+			$ft->assign('ID_CLASS', 'mainListAlter');
 			
 			$ft->parse('ROWS',	".row");
 		}
