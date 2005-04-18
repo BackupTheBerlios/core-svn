@@ -25,7 +25,7 @@ switch ($action) {
 		$db->next_record();
 		
 		$user_id     = $db->f("id");
-		$login       = $db->f("login");
+		$u_login     = $db->f("login");
 		$email       = $db->f("email");
 		$perms       = $db->f("permission_level");
 		$status      = $db->f("active");
@@ -46,7 +46,7 @@ switch ($action) {
 		$ft->assign(array(
             'USER_ID'           =>$user_id,
             
-            'LOGIN'             =>$login,
+            'LOGIN'             =>$u_login,
             'EMAIL'             =>$email,
             
             'NAME'              =>$name,
@@ -76,7 +76,7 @@ switch ($action) {
         if($permarr['admin']) {
 
             // edycja wybranego wpisu
-            $login      = $_POST['login_name'];
+            $u_login    = $_POST['login_name'];
             $email      = $_POST['email'];
         
             $name       = $_POST['name'];
@@ -131,7 +131,7 @@ switch ($action) {
 		
                     $mysql_data['db_table_users'], 
                 
-                    $login, 
+                    $u_login, 
                     $email, 
                 
                     $name,
@@ -188,9 +188,9 @@ switch ($action) {
             $db->query($query);
             $db->next_record();
             
-            $login = $db->f("login");
+            $u_login = $db->f("login");
             
-            if($login == $_SESSION['login']) {
+            if($u_login == $_SESSION['login']) {
 		    
                 $ft->assign('CONFIRM', $i18n['edit_users'][0]);
             } else {
