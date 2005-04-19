@@ -126,10 +126,13 @@ switch ($action) {
 	default:
 	
 		$query = sprintf("
-					SELECT * FROM 
-						$mysql_data[db_table_config] 
-					WHERE 
-						config_name = '%1\$s'", "editposts_per_page");
+            SELECT * FROM 
+                $mysql_data[db_table_config] 
+            WHERE 
+                config_name = '%1\$s'", 
+		
+            "editposts_per_page"
+        );
 		
 		$db->query($query);
 		$db->next_record();

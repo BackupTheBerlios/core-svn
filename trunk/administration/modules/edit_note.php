@@ -73,11 +73,16 @@ switch ($action) {
 		
 		$query = sprintf("
             SELECT 
-                category_id, category_name 
+                category_id, 
+                category_parent_id, 
+                category_name 
             FROM 
-                %1\$s", 
+                %1\$s 
+            WHERE 
+                category_parent_id = '%2\$d'", 
 		
-            $mysql_data['db_table_category']
+            $mysql_data['db_table_category'], 
+            0
         );
 		
 		$db->query($query);
@@ -101,7 +106,8 @@ switch ($action) {
             $ft->define("form_noteedit", "form_noteedit.tpl");
 			$ft->define_dynamic("category_row", "form_noteedit");
 
-			$ft->parse('ROWS',	".category_row");					
+			$ft->parse('ROWS',	".category_row");	
+			get_editnews_cat($c_id, 2);				
 		
 		}
 		

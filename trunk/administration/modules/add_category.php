@@ -7,8 +7,9 @@ switch ($action) {
 	
 	case "add":
 	
-		$category_name			= $_POST['category_name'];
-		$category_description	= $_POST['category_description'];
+		$category_name        = $_POST['category_name'];
+		$category_description = $_POST['category_description'];
+		$category_parent_id   = $_POST['category_id'];
 		
 		$monit = array();
 		
@@ -30,9 +31,10 @@ switch ($action) {
                     INSERT INTO 
                         %1\$s 
                     VALUES 
-                        ('', '%2\$s', '%3\$s')",
+                        ('', '%2\$d', '%3\$s', '%4\$s')",
 			
-                    $mysql_data['db_table_category'],
+                    $mysql_data['db_table_category'], 
+                    $category_parent_id, 
                     $category_name,
                     $category_description
                 );
@@ -71,18 +73,52 @@ switch ($action) {
 
 	default:
 	
+        $query = sprintf("
+            SELECT 
+                category_id, 
+                category_parent_id,
+                category_name 
+            FROM 
+                %1\$s 
+            WHERE 
+                category_parent_id = '%2\$d' 
+            ORDER BY 
+                category_id 
+            ASC", 
+	
+            $mysql_data['db_table_category'],
+            0
+        );
+	
+        $db->query($query);
+	
+        $ft->define("form_categoryadd", "form_categoryadd.tpl");
+        $ft->define_dynamic("category_row", "form_categoryadd");
+        
+        while($db->next_record()) {
+		
+            $category_id        = $db->f("category_id");
+            $category_parent_id = $db->f("category_parent_id");
+            $category_name      = $db->f("category_name");
+            
+            $ft->assign(array(
+                'C_ID'		=>$category_id,
+                'C_NAME'	=>$category_name
+            ));
+        
+            $ft->parse('ROWS', ".category_row");
+        
+            get_addcategory_cat($category_id, 2);
+        }
+	
 		// przydzielenie zmiennych::array
 		$ft->assign(array(
-            'SUBMIT_URL'		=>"main.php?p=8&amp;action=add",
-            'CATNAME_VALUE'		=>"",
-            'CATNAME_DESC'		=>"",
-            'SUBMIT_HREF_DESC'	=>$i18n['add_category'][2],
-            'HEADER_DESC'		=>$i18n['add_category'][3]
+            'SUBMIT_HREF_DESC'	=>$i18n['add_category'][2]
 		));
 		
 		// w przypadku braku akcji wy¶wietlanie formularza
-		$ft->define('form_category', "form_category.tpl");
-		$ft->parse('ROWS', ".form_category");
+		$ft->parse('ROWS', "form_categoryadd");
+		break;
 }
 
 ?>

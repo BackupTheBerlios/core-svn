@@ -12,35 +12,34 @@ switch ($action) {
 	case "show": // wy¶wietlanie wpisu pobranego do modyfikacji
 	
 		$query = sprintf("
-            SELECT * FROM 
+            SELECT 
+                * 
+            FROM 
                 %1\$s 
             WHERE 
                 category_id = '%2\$d'", 
-		
-            $mysql_data['db_table_category'],
+	
+            $mysql_data['db_table_category'], 
             $_GET['id']
         );
-		
-		$db->query($query);
-		$db->next_record();
-		
-		$category_id			= $db->f("category_id");
-		$category_name			= $db->f("category_name");
-		$category_description	= $db->f("category_description");
+	
+        $db->query($query);
+        $db->next_record();
+        
+        $cat_id            = $db->f("category_id");
+        $cat_name          = $db->f("category_name");
+        $cat_description   = $db->f("category_description");
 		
 		$ft->assign(array(
-            'CATEGORY_ID'		=>$category_id,
-            'CATEGORY_NAME'		=>$category_name,
-            'CATEGORY_DESC'		=>br2nl(stripslashes($category_description)),
-            'SUBMIT_URL'		=>"main.php?p=9&amp;action=edit&amp;id=" . $category_id,
-            'CATNAME_VALUE'		=>"value=\"" . $category_name . "\"",
-            'CATNAME_DESC'		=>$category_description,
-            'SUBMIT_HREF_DESC'	=>$i18n['edit_category'][0],
-            'HEADER_DESC'		=>$i18n['edit_category'][1]
+            'CATEGORY_ID'		=>$cat_id,
+            'CATEGORY_NAME'		=>$cat_name,
+            'CATEGORY_DESC'		=>br2nl(stripslashes($cat_description)),
+            'CATNAME_DESC'		=>$cat_description,
+            'SUBMIT_HREF_DESC'	=>$i18n['edit_category'][0]
         ));
 
-		$ft->define('form_category', "form_category.tpl");
-		$ft->parse('ROWS',	".form_category");
+		$ft->define("form_categoryedit", "form_categoryedit.tpl");
+		$ft->parse('ROWS',	".form_categoryedit");
 		break;
 		
 	case "edit":// edycja wybranego wpisu
@@ -128,6 +127,8 @@ switch ($action) {
                 %2\$s b 
             ON 
                 a.category_id = b.c_id 
+            WHERE 
+                category_parent_id = '%3\$d'
             GROUP BY 
                 category_id 
             ORDER BY 
@@ -135,7 +136,8 @@ switch ($action) {
             ASC", 
 		
             $mysql_data['db_table_category'], 
-            $mysql_data['db_table']
+            $mysql_data['db_table'],
+            0
         );
 		
 		$db->query($query);
@@ -190,6 +192,8 @@ switch ($action) {
 			    
 			    $ft->parse('ROWS', ".row");
 			}
+			
+			get_editcategory_cat($category_id, 2);
 		}
 		
 		$ft->parse('ROWS', "editlist_category");

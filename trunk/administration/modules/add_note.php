@@ -110,31 +110,41 @@ switch ($action) {
 	
 		$query = sprintf("
             SELECT 
-                category_id, category_name 
+                category_id, 
+                category_parent_id,
+                category_name 
             FROM 
-                %1\$s",
-		
-            $mysql_data['db_table_category']
+                %1\$s 
+            WHERE 
+                category_parent_id = '%2\$d' 
+            ORDER BY 
+                category_id 
+            ASC", 
+	
+            $mysql_data['db_table_category'],
+            0
         );
-            
+	
         $db->query($query);
+	
+        $ft->define("form_noteadd", "form_noteadd.tpl");
+        $ft->define_dynamic("category_row", "form_noteadd");
         
-		while($db->next_record()) {
-			
-			$c_id 	= $db->f("category_id");
-			$c_name = $db->f("category_name");
+        while($db->next_record()) {
 		
-			$ft->assign(array(
-                'C_ID'		=>$c_id,
-                'C_NAME'	=>$c_name
+            $page_id      = $db->f("category_id");
+            $parent_id    = $db->f("category_parent_id");
+            $title        = $db->f("category_name");
+            
+            $ft->assign(array(
+                'C_ID'		=>$page_id,
+                'C_NAME'	=>$title
             ));
-								
-			$ft->define("form_noteadd", "form_noteadd.tpl");
-			$ft->define_dynamic("category_row", "form_noteadd");
-
-			$ft->parse('ROWS',	".category_row");		
-		
-		}
+        
+            $ft->parse('ROWS', ".category_row");
+        
+            get_addcategory_cat($page_id, 2);
+        }
 
 		$ft->assign(array(
             'SESSION_LOGIN' =>$_SESSION['login'],
