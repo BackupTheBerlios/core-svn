@@ -86,21 +86,106 @@ switch ($action) {
 	case "delete":// usuwanie wybranego wpisu
 	
         if($permarr['moderator']) {
-	
+            
             $query = sprintf("
-                DELETE FROM 
-                    %1\$s 
+                SELECT 
+                    a.*, count(b.id) AS count 
+                FROM 
+                    %1\$s a 
+                LEFT JOIN 
+                    %2\$s b 
+                ON 
+                    a.category_id = b.c_id 
                 WHERE 
-                    category_id = '%2\$d'", 
+                    category_id = '%3\$d'
+                GROUP BY 
+                    category_id 
+                ORDER BY 
+                    category_id 
+                ASC", 
 		
                 $mysql_data['db_table_category'], 
+                $mysql_data['db_table'],
                 $_GET['id']
             );
-		
+	
             $db->query($query);
+            $db->next_record();
+            
+            $category_id    = $db->f("category_id");
+            $cat_parent_id  = $db->f("category_parent_id");
+            $count          = $db->f("count");
+            
+            if($cat_parent_id > 0) {
+                
+                // zmiana parent_id kategorii dziedziczacej na ta poziom wyzsza
+                // ------------------------------------------------------------
+            
+                $query = sprintf("
+                    UPDATE 
+                        %1\$s 
+                    SET 
+                        category_parent_id = '%2\$s' 
+                    WHERE 
+                        category_parent_id = '%3\$d'", 
 		
-            $ft->assign('CONFIRM', $i18n['edit_category'][3]);
-            $ft->parse('ROWS', ".result_note");
+                    $mysql_data['db_table_category'], 
+                    $cat_parent_id, 
+                    $category_id
+                );
+	
+                $db->query($query);
+                $db->next_record();
+            
+                // transfer wpisow z usuwanej kategorii do poziom wyzszej
+                // ------------------------------------------------------
+            
+                $query = sprintf("
+                    UPDATE 
+                        %1\$s 
+                    SET 
+                        c_id = '%2\$d' 
+                    WHERE 
+                        c_id = '%3\$d'", 
+		
+                    $mysql_data['db_table'], 
+                    $cat_parent_id,
+                    $_GET['id']
+                );
+	
+                $db->query($query);
+                $db->next_record();
+            
+                // usuwamy kategorie
+                // -----------------------------------------------------
+	
+                $query = sprintf("
+                    DELETE FROM 
+                        %1\$s 
+                    WHERE 
+                        category_id = '%2\$d'", 
+		
+                    $mysql_data['db_table_category'], 
+                    $_GET['id']
+                );
+		
+                $db->query($query);
+		
+                $ft->assign('CONFIRM', $i18n['edit_category'][3]);
+                $ft->parse('ROWS', ".result_note");
+            } else {
+                
+                $monit[] = $i18n['edit_category'][7];
+
+                foreach ($monit as $error) {
+    
+                    $ft->assign('ERROR_MONIT', $error);
+                    
+                    $ft->parse('ROWS',	".error_row");
+                }
+                        
+                $ft->parse('ROWS', "error_reporting");
+            }
         } else {
             
             $monit[] = $i18n['edit_category'][5];
