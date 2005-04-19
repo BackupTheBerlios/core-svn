@@ -131,7 +131,7 @@ switch ($action) {
 		
 		$note_author = $db->f("author");
 		
-		if($permarr['writer'] && ($note_author == $_SESSION['login'])) {
+		if($permarr['moderator'] || ($permarr['writer'] && ($note_author == $_SESSION['login']))) {
 	
             $text		= str_nl2br(addslashes($_POST['text']));
             $title		= addslashes($_POST['title']);
@@ -242,6 +242,7 @@ switch ($action) {
                 $ft->assign('CONFIRM', 'Nie zaznaczono ¿adnych wpisów.');
                 
             }
+            
             $ft->parse('ROWS', ".result_note");
         } else {
             
