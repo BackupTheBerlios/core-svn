@@ -82,6 +82,7 @@ $i18n['edit_category'][3] = 'Kategoria zosta³a usuniêta.';
 $i18n['edit_category'][4] = 'Brak opisu';
 $i18n['edit_category'][5] = '<b>Nie masz uprawnieñ</b> do usuniecia kategorii.';
 $i18n['edit_category'][6] = '<b>Nie masz uprawnieñ</b> do edycji kategorii.';
+$i18n['edit_category'][7] = 'Kategoria g³ówna zawiera przydzielone do niej wpisy. Zanim j± usuniesz przenie¶ je do innej kategorii.';
 
 $i18n['edit_links'] = array();
 $i18n['edit_links'][0] = 'Zmodyfikuj link';
