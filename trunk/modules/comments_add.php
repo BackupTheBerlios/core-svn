@@ -49,8 +49,11 @@ switch ($action) {
 
             // [abbr] i [/abbr] dla akronimów.
             $text = preg_replace('/\[abbr=([^\"]+)\]([^\"]+)\[\/abbr\]/','<abbr title="\\1">\\2</abbr>', $text);
-
+            
             // [link] i [/link] dla odsy³aczy.
+            $text = preg_replace('/\[link\]([^\"]+)\[\/link\]/','<a href="\\1" target="_blank">\\1</a>', $text);
+
+            // [link=] i [/link] dla odsy³aczy.
             $text = preg_replace('/\[link=([^\"]+)\]([^\"]+)\[\/link\]/','<a href="\\1" target="_blank">\\2</a>', $text);
 
             /*
