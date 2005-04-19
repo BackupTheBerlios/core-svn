@@ -17,6 +17,10 @@ td.center {
     vertical-align: top;
 }
 
+.right {
+    text-align: right;
+}
+
 .addinfo {
     padding-top: 5px;
     height: 30px;
