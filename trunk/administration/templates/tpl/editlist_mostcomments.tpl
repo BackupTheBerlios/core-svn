@@ -25,7 +25,7 @@
 		<td id="pagination" colspan="6">{STRING}</td>
 	</tr>
 	<tr>
-		<td class="addinfo" colspan="6"><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="doit()">Zaznacz wszystkie</a>&nbsp;<a href="#" onclick="document.getElementById('multipleSelected').submit()">Usuñ zaznaczone wpisy</a>
+		<td class="addinfo" colspan="6"><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="doit()">Zaznacz wszystkie</a>&nbsp;<img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('multipleSelected').submit()">Usuñ zaznaczone wpisy</a>
 	</tr>
 </table>
 <!-- END: editlist_mostcomments.tpl -->
