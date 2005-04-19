@@ -17,6 +17,11 @@ td.center {
     vertical-align: top;
 }
 
+.addinfo {
+    padding-top: 5px;
+    height: 30px;
+}
+
 center {
 	text-align: center;
 }
@@ -46,8 +51,10 @@ span.black {
 }
 
 #subcat_menu {
-	height: 35px;
-	padding-top: 30px;
+	height: 35px !important;
+	height: 5px;
+	padding-top: 30px !important;
+	padding-top: 10px;
 	border-bottom: 1px solid #F8F8F8;
 }
 
@@ -78,16 +85,19 @@ ul.error li {
 #right {
 	padding-left: 5px;
 	float: left;
-	width: 350px;
+	width: 350px !important;
+	width: 330px;
 }
 
 #box {
-	width: 150px;
+	width: 150px !important;
+	width: 160px;
 	background-color: #F8F8F8;
 	border: 1px solid #D1D1D1;
 	height: 300px;
 	overflow: auto;
-	margin-top: 5px;
+	margin-top: 5px !important;
+	margin-top: -5px;
 	padding: 5px;
 }
 
@@ -356,4 +366,17 @@ textarea#file {
 
 .radio {
     border: 0px;
+}
+
+input.selected_note {
+    margin: 2px;
+    margin-left: 0px;
+    padding: 0;
+    border: 0;
+}
+
+input.checkbox {
+    margin: 0px;
+    padding: 0;
+    border: 0;
 }
