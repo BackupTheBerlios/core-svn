@@ -4,6 +4,18 @@
 	<title>{PAGE_TITLE}</title>
     <link rel="stylesheet" type="text/css" href="templates/css/style.css" media="screen" />
  	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2">
+ 	<script>
+ 	
+ 	function doit() {
+ 	    
+ 	    a=document.getElementsByName('selected_note[]')
+ 	    for(i=0; i<a.length; i++) {
+ 	        
+ 	        if (a[i].checked) {a[i].checked = ''}
+ 	        else {a[i].checked = 'true' }
+ 	    }
+ 	}
+    </script>
 </head>
 
 <body>

@@ -11,7 +11,7 @@
 	<tr>
 		<td class="form" width="80">Data:&nbsp;</td>
 		<td class="form" width="234"><input type="text" name="date" size="30" maxlength="255" value="{DATE}" /></td>
-		<td class="form" width="130"><input type="checkbox" name="date" value="1" align="top" />&nbsp;- aktualna data</td>
+		<td class="form" width="130"><input class="checkbox" type="checkbox" name="date" value="1" align="top" />&nbsp;- aktualna data</td>
 	</tr>
 	<tr>
 		<td class="form" width="80">Autor wpisu:&nbsp;</td>
@@ -25,7 +25,7 @@
 	</tr>
 	<tr>
 		<td class="form" width="80">Znaki specjalne:&nbsp;</td>
-		<td class="form" width="364" colspan="2">
+		<td class="form" width="" colspan="2">
 		<input type="button" class="button b" accesskey="b" name="addbbcode0" value=" b " onClick="bbstyle(0)" onMouseOver="helpline('b')" />
 		<input type="button" class="button s" accesskey="s" name="addbbcode2" value=" strong " onClick="bbstyle(2)" onMouseOver="helpline('s')" />
 		<input type="button" class="button i" accesskey="i" name="addbbcode4" value=" i " onClick="bbstyle(4)" onMouseOver="helpline('i')" />

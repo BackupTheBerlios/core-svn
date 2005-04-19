@@ -25,7 +25,7 @@
 
 <div id="right">
 <b>Edytuj szablon</b><br />
-<form action="main.php?p=14" method="post">
+<form action="main.php?p=14" method="post" style="margin-top:0px;">
 <select class="tpl_selector" name="template_dir" onchange="document.forms[1].submit()">
 
 {TEMPLATE_SELECTED}
