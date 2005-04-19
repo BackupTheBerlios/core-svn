@@ -1,4 +1,4 @@
-<span class="title">kategorie</span><br />
+<span class="title">menu</span><br />
 <ul>
 
     <!-- BEGIN DYNAMIC BLOCK: pages_row -->
