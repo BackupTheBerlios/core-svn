@@ -14,7 +14,7 @@
 	<!-- BEGIN DYNAMIC BLOCK: row -->
     <tr>
 		<td class="{ID_CLASS} center">{DATE}</td>
-		<td class="{ID_CLASS} center"><input class="selected_note" type="checkbox" name="selected_note[]" value="{ID}" /></td>
+		<td class="{ID_CLASS} center"><input class="selected_note" type="checkbox" name="selected_note[]" value="1" /></td>
 		<td class="{ID_CLASS}">{TITLE}</td>
 		<td class="{ID_CLASS} center">{COMMENTS}</td>
 		<td class="{ID_CLASS} center"><a href="main.php?p=2&amp;action=show&amp;id={ID}">Edycja</a></td>
@@ -25,7 +25,7 @@
 		<td id="pagination" colspan="6">{STRING}</td>
 	</tr>
 	<tr>
-		<td class="addinfo" colspan="6"><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="doit()">Prze³±cz zaznaczenie</a>&nbsp;<img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('multipleSelected').submit()">Usuñ zaznaczone wpisy</a>
+		<td class="addinfo" colspan="6"><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="doit('selected_note[]')">Prze³±cz zaznaczenie</a>&nbsp;<img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('multipleSelected').submit()">Usuñ zaznaczone wpisy</a></td>
 	</tr>
 </table>
 <!-- END: editlist_mostcomments.tpl -->

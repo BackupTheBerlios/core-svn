@@ -6,9 +6,9 @@
 	<tr>
 		<td class="mainListHeader" width="13%">Data</td>
 		<td class="mainListHeader" width="5%"></td>
-		<td class="mainListHeader" width="38%">Temat Wpisu</td>
-		<td class="mainListHeader" width="12%">Autor</td>
-		<td class="mainListHeader" width="12%">Aktywna</td>
+		<td class="mainListHeader" width="40%">Temat Wpisu</td>
+		<td class="mainListHeader" width="11%">Autor</td>
+		<td class="mainListHeader" width="11%">Aktywna</td>
 		<td class="mainListHeader" width="10%">Edycja</td>
 		<td class="mainListHeader" width="10%">Usuñ</td>
 	</tr>
@@ -27,7 +27,7 @@
 		<td id="pagination" colspan="7">{STRING}</td>
 	</tr>
 	<tr>
-		<td class="addinfo" colspan="7"><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="doit()">Prze³±cz zaznaczenie</a>&nbsp;<img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('multipleSelected').submit()">Usuñ zaznaczone wpisy</a>
+		<td class="addinfo" colspan="7"><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="doit('selected_note[]')">Prze³±cz zaznaczenie</a>&nbsp;<img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('multipleSelected').submit()">Usuñ zaznaczone wpisy</a></td>
 	</tr>
 </table>
 </form>

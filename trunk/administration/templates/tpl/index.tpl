@@ -6,9 +6,9 @@
  	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2">
  	<script>
  	
- 	function doit() {
+ 	function doit(v) {
  	    
- 	    a=document.getElementsByName('selected_note[]')
+ 	    a=document.getElementsByName(v)
  	    for(i=0; i<a.length; i++) {
  	        
  	        if (a[i].checked) {a[i].checked = ''}
