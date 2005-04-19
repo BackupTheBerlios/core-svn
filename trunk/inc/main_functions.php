@@ -177,6 +177,255 @@ function get_addpage_cat($page_id, $level) {
 	}
 }
 
+// funkcja pobierajaca rekurencyjnie kategorie na stronie g³ównej
+function get_category_cat($cat_id, $level) {
+	
+	global $mysql_data, $ft;
+
+	$query = "	SELECT 
+					category_id, 
+					category_parent_id, 
+					category_name 
+				FROM 
+					$mysql_data[db_table_category] 
+				WHERE 
+					category_parent_id = '$cat_id' 
+				ORDER BY 
+					category_id 
+				ASC";
+
+	$db = new DB_SQL;
+	$db->query($query);
+		
+	while($db->next_record()) {
+	
+		$cat_id           = $db->f("category_id");
+		$cat_parent_id    = $db->f("category_parent_id");
+		$cat_name         = $db->f("category_name");
+	
+		$ft->assign(array(
+            'CAT_NAME'  =>$cat_name,
+            'NEWS_CAT'  =>$cat_id,
+            'CLASS'     =>"cat_child",
+            'PARENT'    =>str_repeat('&nbsp; ', $level)
+        ));
+
+		$ft->parse('CATEGORY_LIST', ".category_row");
+		get_category_cat($cat_id, $level+2);
+	}
+}
+
+
+// funkcja pobierajaca rekurencyjnie kategorie
+function get_addcategory_cat($page_id, $level) {
+	
+	global $mysql_data, $ft;
+
+	$query = "	SELECT 
+					category_id, 
+					category_parent_id, 
+					category_name 
+				FROM 
+					$mysql_data[db_table_category] 
+				WHERE 
+					category_parent_id = '$page_id' 
+				ORDER BY 
+					category_id 
+				ASC";
+
+	$db = new DB_SQL;
+	$db->query($query);
+	
+	$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+		
+	while($db->next_record()) {
+	
+		$cat_id           = $db->f("category_id");
+		$cat_parent_id    = $db->f("category_parent_id");
+		$cat_name         = $db->f("category_name");
+	
+		$ft->assign(array(
+            'C_ID'		=>$cat_id,
+            'C_NAME'	=>str_repeat('&nbsp; ', $level) . "- " .$cat_name
+        ));
+
+		$ft->define("form_category", "form_category.tpl");
+        $ft->define_dynamic("category_row", "form_category");
+        
+        $ft->parse('ROWS', ".category_row");
+		
+		get_addcategory_cat($cat_id, $level+2);
+	}
+}
+
+
+// funkcja pobierajaca rekurencyjnie kategorie::transfer wpisow
+function get_transfercategory_cat($page_id, $level) {
+	
+	global $mysql_data, $ft;
+
+	$query = "	SELECT 
+					category_id, 
+					category_parent_id, 
+					category_name 
+				FROM 
+					$mysql_data[db_table_category] 
+				WHERE 
+					category_parent_id = '$page_id' 
+				ORDER BY 
+					category_id 
+				ASC";
+
+	$db = new DB_SQL;
+	$db->query($query);
+		
+	while($db->next_record()) {
+	
+		$cat_id           = $db->f("category_id");
+		$cat_parent_id    = $db->f("category_parent_id");
+		$cat_name         = $db->f("category_name");
+
+        $ft->assign(array(
+            'CURRENT_CID'   =>$cat_id,
+            'TARGET_CID'    =>$cat_id,
+            'CURRENT_CNAME' =>str_repeat('&nbsp; ', $level) . "- " .$cat_name,
+            'TARGET_CNAME'  =>str_repeat('&nbsp; ', $level) . "- " .$cat_name
+        ));
+
+		$ft->parse('ROWS',              ".current_row");
+        $ft->parse('TARGET_CATEGORY',   ".form_targetcategory");
+		
+		get_transfercategory_cat($cat_id, $level+2);
+	}
+}
+
+
+// funkcja pobierajaca rekurencyjnie kategorie::edycja newsa
+function get_editnews_cat($c_id, $level) {
+	
+	global $mysql_data, $ft, $category;
+
+	$query = "	SELECT 
+					category_id, 
+					category_parent_id, 
+					category_name 
+				FROM 
+					$mysql_data[db_table_category] 
+				WHERE 
+					category_parent_id = '$c_id' 
+				ORDER BY 
+					category_id 
+				ASC";
+
+	$db = new DB_SQL;
+	$db->query($query);
+	
+	$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+		
+	while($db->next_record()) {
+	
+		$cat_id           = $db->f("category_id");
+		$cat_parent_id    = $db->f("category_parent_id");
+		$cat_name         = $db->f("category_name");
+		
+		if($cat_id == $category) {
+		    
+		    $ft->assign('CURRENT_CAT', 'selected="selected"');
+		} else {
+		    $ft->assign('CURRENT_CAT', '');
+		}
+	
+		$ft->assign(array(
+            'C_ID'		=>$cat_id,
+            'C_NAME'	=>str_repeat('&nbsp; ', $level) . "- " .$cat_name
+        ));
+
+		$ft->define("form_noteedit", "form_noteedit.tpl");
+        $ft->define_dynamic("category_row", "form_noteedit");
+        
+        $ft->parse('ROWS', ".category_row");
+		
+		get_editnews_cat($cat_id, $level+2);
+	}
+}
+
+// funkcja pobierajaca rekurencyjnie kategorie::lista kategorii
+function get_editcategory_cat($category_id, $level) {
+	
+	global $mysql_data, $ft, $idx1, $count, $i18n;
+
+	$query = sprintf("
+        SELECT 
+            a.*, count(b.id) AS count 
+        FROM 
+            %1\$s a 
+        LEFT JOIN 
+            %2\$s b 
+        ON 
+            a.category_id = b.c_id 
+        WHERE 
+            category_parent_id = '%3\$d'
+        GROUP BY 
+            category_id 
+        ORDER BY 
+            category_id 
+        ASC", 
+	
+        $mysql_data['db_table_category'], 
+        $mysql_data['db_table'],
+        $category_id
+        );
+
+	$db = new DB_SQL;
+	$db->query($query);
+		
+	while($db->next_record()) {
+	
+		$category_id          = $db->f("category_id");
+		$category_name        = $db->f("category_name");
+		$cat_parent_id        = $db->f("category_parent_id");
+		$category_descrition  = $db->f("category_description");
+		$count                = $db->f("count");
+	
+		$ft->assign(array(
+            'CATEGORY_ID'		=>$category_id,
+            'CATEGORY_NAME'		=>str_repeat('&nbsp; ', $level) . "<img src=\"templates/images/ar.gif\" />&nbsp;" . $category_name,
+            'COUNT'				=>$count,
+        ));
+        
+        if(empty($category_description)) {
+            
+            $ft->assign('CATEGORY_DESC', $i18n['edit_category'][4]);
+        } else {
+            
+            $ft->assign('CATEGORY_DESC', $category_description);
+        }
+		
+		// deklaracja zmiennej $idx1::color switcher
+		$idx1 = empty($idx1) ? '' : $idx1;
+				
+		$idx1++;
+		
+        $ft->define("editlist_links", "editlist_links.tpl");
+        $ft->define_dynamic("row", "editlist_links");
+			
+		// naprzemienne kolorowanie wierszy tabeli
+		if (($idx1%2)==1) {
+				
+			$ft->assign('ID_CLASS', 'mainList');
+			
+			$ft->parse('ROWS',	".row");
+		} else {
+				
+			$ft->assign('ID_CLASS', 'mainListAlter');
+			
+			$ft->parse('ROWS',	".row");
+		}
+		
+		get_editcategory_cat($category_id, $level+2);
+	}
+}
+
 
 function get_editpage_cat($page_id, $level) {
 	
