@@ -1,5 +1,6 @@
 CREATE TABLE core_category (
   category_id mediumint(7) NOT NULL auto_increment,
+  category_parent_id mediumint(7) NOT NULL default '0',
   category_name varchar(40) NOT NULL default '',
   category_description text NOT NULL,
   KEY id (category_id)
