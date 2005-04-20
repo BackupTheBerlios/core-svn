@@ -63,7 +63,7 @@ switch ($action) {
 			$ft->assign('COMMENTS_NO', 'checked="checked"');
 		}					
 								
-		if($published == "Y") {
+		if($published == "1") {
 
 			$ft->assign('CHECKBOX_YES', 'checked="checked"');
 		} else {
@@ -314,7 +314,7 @@ switch ($action) {
                     'AUTHOR'    =>$author
                 ));
 								
-				if($published == 'Y') {
+				if($published == '1') {
 
 					$ft->assign('PUBLISHED', "Tak");
 				} else {

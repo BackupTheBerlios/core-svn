@@ -9,7 +9,7 @@ $query = "	SELECT
 			FROM 
 				$mysql_data[db_table] 
 			WHERE 
-				published = 'Y' 
+				published = '1' 
 			ORDER BY 
 				date";
 
@@ -23,7 +23,7 @@ $query = "	SELECT
 			FROM 
 				$mysql_data[db_table] 
 			WHERE 
-				published = 'N' 
+				published = '-1' 
 			ORDER BY 
 				date";
 
