@@ -1,53 +1,100 @@
 <?php
 
 $p = empty($_GET['p']) ? '' : $_GET['p'];
+
+// definicja szablonow parsujacych wyniki bledow.
+$ft->define("menu", "menu.tpl");
+$ft->define_dynamic("menu_row", "menu");
+
 switch($p){
 	
 	case '1':
 	case '2':
 	case '5':
 	case '6':
-		$ft->define('menu_news', "menu_news.tpl");
-		$ft->parse('SUBCAT_MENU', ".menu_news");
+		
+		$menu_content = array(
+            "1"     =>"Dodaj kolejny wpis", 
+            "2"     =>"Edycja/Usuwanie wpisów", 
+            "5"     =>"Najczê¶ciej komentowane wpisy", 
+            "6"     =>"Edycja/Usuwanie komentarzy"
+        );
+		
 		break;
 		
 	case '3':
 	case '4':
-		$ft->define('menu_pages', "menu_pages.tpl");
-		$ft->parse('SUBCAT_MENU', ".menu_pages");
+		
+		$menu_content = array(
+            "3"     =>"Dodaj now± stronê", 
+            "4"     =>"Edycja/Usuwanie stron"
+        );
+        
 		break;
 		
 	case '7':
 	case '13':
-		$ft->define('menu_users', "menu_users.tpl");
-		$ft->parse('SUBCAT_MENU', ".menu_users");
+		
+		$menu_content = array(
+            "7"     =>"Dodaj nowego u¿ytkownika", 
+            "13"    =>"Edycja/Usuwanie u¿ytkowników"
+        );
+        
 		break;
 		
 	case '8':
 	case '9':
 	case '15':
-		$ft->define('menu_category', "menu_category.tpl");
-		$ft->parse('SUBCAT_MENU', ".menu_category");
+		
+		$menu_content = array(
+            "8"     =>"Dodaj now± kategoriê", 
+            "9"     =>"Edycja/Usuwanie kategorii", 
+            "15"    =>"Transfer wpisów"
+        );
+        
 		break;
 		
 	case '10':
-		$ft->define('menu_config', "menu_config.tpl");
-		$ft->parse('SUBCAT_MENU', ".menu_config");
+		
+		$menu_content = array(
+            "10"     =>"Konfiguracja wy¶wietlanych wpisów"
+        );
+        
 		break;
 		
 	case '11':
 	case '12':
-		$ft->define('menu_links', "menu_links.tpl");
-		$ft->parse('SUBCAT_MENU', ".menu_links");
+		
+		$menu_content = array(
+            "11"    =>"Dodaj nowy link", 
+            "12"    =>"Edycja/Usuwanie linków"
+        );
+        
 		break;
 		
 	case '14':
-		$ft->define('menu_templates', "menu_templates.tpl");
-		$ft->parse('SUBCAT_MENU', ".menu_templates");
+		
+		$menu_content = array(
+            "14"     =>"Edycja szablonów"
+        );
+        
 		break;
 	
 	default:
 		break;
 }
+
+// parsujemy menu na podstawie tablicy
+foreach ($menu_content as $menu_num => $menu_desc) {
+    
+    $ft->assign(array(
+        'MENU_NUMBER'   =>$menu_num, 
+        'MENU_DESC'     =>$menu_desc
+    ));
+    
+    $ft->parse('SUBCAT_MENU', ".menu_row");
+}
+
+$ft->parse('SUBCAT_MENU', "menu");
 
 ?>
