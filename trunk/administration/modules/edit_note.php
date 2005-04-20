@@ -220,27 +220,53 @@ switch ($action) {
 	
         if($permarr['moderator']) {
             
-            if(!empty($_POST['selected_note'])) {
+            if(isset($_POST['selected_note']) || isset($_POST['selected_status'])) {
             
-                foreach($_POST['selected_note'] as $note_id) {
+                if(!empty($_POST['selected_note'])) {
+            
+                    foreach($_POST['selected_note'] as $note_id) {
 	
-                    $query = sprintf("
-                        DELETE FROM 
-                            %1\$s 
-                        WHERE 
-                            id = '%2\$d'", 
+                        $query = sprintf("
+                            DELETE FROM 
+                                %1\$s 
+                            WHERE 
+                                id = '%2\$d'", 
 		
-                        $mysql_data['db_table'], 
-                        $note_id
-                    );
+                            $mysql_data['db_table'], 
+                            $note_id
+                        );
 		
-                    $db->query($query);
+                        $db->query($query);
+                    }
+		
+                    $ft->assign('CONFIRM', 'Wpisy zosta³y usuniête.');
                 }
+            
+                if(!empty($_POST['selected_status'])) {
+            
+                    foreach($_POST['selected_status'] as $note_id) {
+	
+                        $query = sprintf("
+                            UPDATE 
+                                %1\$s 
+                            SET 
+                                published = published * -1 
+                            WHERE 
+                                id = '%2\$d'", 
 		
-                $ft->assign('CONFIRM', 'Wpisy zosta³y usuniête.');
+                            $mysql_data['db_table'], 
+                            $note_id
+                        );
+		
+                        $db->query($query);
+                    }
+		
+                    $ft->assign('CONFIRM', 'Status wpisów zosta³ zmieniony.');
+                }
+            
             } else {
-                $ft->assign('CONFIRM', 'Nie zaznaczono ¿adnych wpisów.');
                 
+                $ft->assign('CONFIRM', 'Nie zaznaczono ¿adnych wpisów');
             }
             
             $ft->parse('ROWS', ".result_note");
