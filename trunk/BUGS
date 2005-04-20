@@ -4,3 +4,11 @@ semantycznym, i wywalmy zbedne atrybuty (width, height i inne) z tpli i uzywajmy
 2. Obsluga bledow lezy i kwiczy wolajac o pomste do nieba ;-) Trza to jakos zunifikowac i najlepiej
 naskrobiac do tego jakas klase, bo teraz czesto zdarza sie tak, ze errory w kilku modulach obslugiwane
 sa na rozne sposoby.
+
+3. zalogowalem sie jako user z uprawnieniami izszymi niz 5. konkretnie 2. dlaczego nie moge zmienic _swoich_ danych ?
+
+4. dlaczego po dodaniu usera, i przy niewpisanym numerku gg, pojawia sie w polu gg '0' ?
+
+5. limit znakow na login to imo 32. dlaczego nie ?
+
+6. limit znakow na haslo to imo nieporozumienie. po to jest haszowane md5 (m.in), zeby jego dlugosc byla stala w bazie (32 znaki).
