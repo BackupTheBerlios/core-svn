@@ -126,12 +126,12 @@ function main_pagination($url, $q, $p, $published, $table) {
 
 	if ( $on_page > 1 ) {
 			
-		$page_string = ' <a href="' . $url . ( ( $on_page - 2 ) * $mainposts_per_page ) . '">' . " <b>\$i--</b>" . '</a>&nbsp;&nbsp;' . $page_string;
+		$page_string = ' <a href="' . $url . ( ( $on_page - 2 ) * $mainposts_per_page ) . '">' . " <b>poprzednia</b>" . '</a>&nbsp;&nbsp;' . $page_string;
 	}
 
 	if ( $on_page < $total_pages ) {
 			
-		$page_string .= '&nbsp;&nbsp;<a href="' . $url . ( $on_page * $mainposts_per_page ) . '">' . "<b>\$i++</b> " . '</a>';
+		$page_string .= '&nbsp;&nbsp;<a href="' . $url . ( $on_page * $mainposts_per_page ) . '">' . "<b>nastêpna</b> " . '</a>';
 	}
 
 	$ret['days_to'] = $days_to;
