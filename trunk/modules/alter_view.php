@@ -20,7 +20,7 @@ $query = sprintf("
     AND
         b.category_id = a.c_id
     AND
-        published = 'Y'
+        published = '1'
     GROUP BY
         a.date
     DESC

@@ -23,7 +23,7 @@ if(is_numeric($_GET['id'])) {
         AND 
             b.category_id='%4\$d' 
         AND 
-            published = 'Y' 
+            published = '1' 
         GROUP BY 
             a.date 
         DESC

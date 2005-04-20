@@ -1,7 +1,7 @@
 <?php
 
 // inicjowanie funkcji stronnicuj±cej wpisy
-$pagination = main_pagination('index.', '', 'mainposts_per_page', 'AND published = \'Y\'', 'db_table');
+$pagination = main_pagination('index.', '', 'mainposts_per_page', 'AND published = \'1\'', 'db_table');
 
 $query = "
 	SELECT 
@@ -20,7 +20,7 @@ $query = "
 	ON 
 		a.id = c.comments_id
 	WHERE 
-		published = 'Y' 
+		published = '1' 
 	GROUP BY 
 		a.date 
 	DESC 

@@ -7,7 +7,7 @@ $search_word = (isset($_POST['search_word']) ) ? $_POST['search_word'] : $_GET['
 $search_word = trim($search_word);
 
 // inicjowanie funkcji stronnicuj±cej wpisy
-main_pagination('search.' . $search_word . '.', '', 'mainposts_per_page', 'AND published = \'Y\' AND text LIKE \'%' . $search_word . '%\' OR title LIKE \'%' . $search_word . '%\'', 'db_table');
+main_pagination('search.' . $search_word . '.', '', 'mainposts_per_page', 'AND published = \'1\' AND text LIKE \'%' . $search_word . '%\' OR title LIKE \'%' . $search_word . '%\'', 'db_table');
 
 if(!empty($search_word)) {
 	
@@ -24,7 +24,7 @@ if(!empty($search_word)) {
 				ON 
 					a.id = c.comments_id
 				WHERE 
-					published = 'Y' 
+					published = '1' 
 				AND 
 					a.text LIKE '%" . $search_word . "%' 
 				OR 
