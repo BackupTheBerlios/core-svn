@@ -4,7 +4,7 @@ ALTER TABLE `core_category`
     
 ALTER TABLE `core_devlog` 
     CHANGE `published` `published` 
-    ENUM( '1', '-1' ) DEFAULT '1' NOT NULL;
+    SMALLINT( 1 ) DEFAULT '1' NOT NULL;
     
 UPDATE `core_devlog` 
     SET published = '1';
