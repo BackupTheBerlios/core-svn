@@ -148,6 +148,49 @@ switch ($action) {
 			$ft->parse('ROWS', "error_reporting");
         }
 		break;
+		
+    case "multidelete": // usuwanie wybranego wpisu
+	
+        if($permarr['moderator']) {
+            
+            if(!empty($_POST['selected_links'])) {
+            
+                foreach($_POST['selected_links'] as $link_id) {
+	
+                    $query = sprintf("
+                        DELETE FROM 
+                            %1\$s 
+                        WHERE 
+                            id = '%2\$d'", 
+		
+                        $mysql_data['db_table_links'], 
+                        $link_id
+                    );
+		
+                    $db->query($query);
+                }
+		
+                $ft->assign('CONFIRM', 'Linki zosta³y usuniête.');
+            } else {
+                $ft->assign('CONFIRM', 'Nie zaznaczono ¿adnych linków.');
+                
+            }
+            
+            $ft->parse('ROWS', ".result_note");
+        } else {
+            
+            $monit[] = $i18n['edit_note'][2];
+
+            foreach ($monit as $error) {
+    
+                $ft->assign('ERROR_MONIT', $error);
+                    
+                $ft->parse('ROWS',	".error_row");
+            }
+                        
+            $ft->parse('ROWS', "error_reporting");
+        }
+		break;
 
 	default:
 	
