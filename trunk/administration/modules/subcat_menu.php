@@ -16,8 +16,8 @@ switch($p){
 		$menu_content = array(
             "1"     =>"Dodaj kolejny wpis", 
             "2"     =>"Edycja/Usuwanie wpisów", 
-            "5"     =>"Najczê¶ciej komentowane wpisy", 
-            "6"     =>"Edycja/Usuwanie komentarzy"
+            "5"     =>"Edycja/Usuwanie komentarzy", 
+            "6"     =>"Najczê¶ciej komentowane wpisy"
         );
 		
 		break;
