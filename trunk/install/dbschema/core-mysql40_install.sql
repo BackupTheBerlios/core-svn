@@ -35,7 +35,7 @@ CREATE TABLE core_devlog (
   `text` mediumtext NOT NULL,
   image varchar(255) NOT NULL default '',
   comments_allow char(1) NOT NULL default '1',
-  published enum('Y','N') NOT NULL default 'Y',
+  published enum('1','-1') NOT NULL default '1',
   KEY id (id)
 );
 
