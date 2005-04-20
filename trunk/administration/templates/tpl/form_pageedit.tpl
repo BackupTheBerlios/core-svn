@@ -39,7 +39,7 @@
         </td>
 	</tr>
 	<tr>
-      <td colspan="2" class="align_right"><img src="templates/images/arrow_blue.gif" alt="Core | CMS" align="middle" height="5" hspace="5" vspace="2" width="5" /><a href="#" onclick="document.getElementById('formPage').submit()">zmodyfikuj wpis</a></td>
+      <td colspan="2" class="align_right"><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('formPage').submit()">zmodyfikuj stronê</a></td>
 	</tr>
 </table>
 </form>

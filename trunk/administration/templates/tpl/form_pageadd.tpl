@@ -52,12 +52,12 @@
 	</tr>
 	<tr>
 		<td class="form" colspan="2"></td>
-		<td class="form"><img src="templates/images/arrow_blue.gif" alt="Core | CMS" align="middle" height="5" hspace="5" vspace="2" width="5" /><a href="#" onclick="document.getElementById('formPage').submit()">dodaj stronê</a></td>
+		<td class="form"><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('formPage').submit()">dodaj stronê</a></td>
 	</tr>
 	<tr>
 		<td class="form" width="80">Publikowana:&nbsp;</td>
 		<td class="form"><input class="radio" type="radio" name="published" value="Y" align="top" checked="checked" />- tak&nbsp;<input style="border: 0px;" type="radio" name="published" value="N" align="top" />- nie</td>
-        <td class="form" width="220"><img src="templates/images/arrow_blue.gif" alt="Core | CMS" align="middle" height="5" hspace="5" vspace="2" width="5" /><a href="#" onclick="document.getElementById('formPage').reset()">wyczy¶æ formularz</a></td>
+        <td class="form" width="220"><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('formPage').reset()">wyczy¶æ formularz</a></td>
 	</tr>
 </table>
 </form>

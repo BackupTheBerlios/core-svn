@@ -31,7 +31,7 @@
 		</td>
 	</tr>
 	<tr>
-        <td class="form" width="110" align="left" colspan="3"><img src="templates/images/arrow_blue.gif" alt="Core | CMS" align="middle" height="5" hspace="5" vspace="2" width="5" /><a href="#" onclick="document.getElementById('formTransfer').submit()">transferuj wpisy</a></td>
+        <td class="form" width="110" align="left" colspan="3"><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('formTransfer').submit()">transferuj wpisy</a></td>
 	</tr>
 </table>
 </form>
