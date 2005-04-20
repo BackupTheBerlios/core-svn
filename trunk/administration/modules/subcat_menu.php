@@ -84,17 +84,20 @@ switch($p){
 		break;
 }
 
-// parsujemy menu na podstawie tablicy
-foreach ($menu_content as $menu_num => $menu_desc) {
+if(!empty($p)) {
     
-    $ft->assign(array(
-        'MENU_NUMBER'   =>$menu_num, 
-        'MENU_DESC'     =>$menu_desc
-    ));
+    // parsujemy menu na podstawie tablicy
+    foreach ($menu_content as $menu_num => $menu_desc) {
     
-    $ft->parse('SUBCAT_MENU', ".menu_row");
-}
+        $ft->assign(array(
+            'MENU_NUMBER'   =>$menu_num, 
+            'MENU_DESC'     =>$menu_desc
+        ));
+    
+        $ft->parse('SUBCAT_MENU', ".menu_row");
+    }
 
-$ft->parse('SUBCAT_MENU', "menu");
+    $ft->parse('SUBCAT_MENU', "menu");
+}
 
 ?>
