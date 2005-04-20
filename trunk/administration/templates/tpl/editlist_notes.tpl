@@ -29,8 +29,11 @@
 		<td id="pagination" colspan="8">{STRING}</td>
 	</tr>
 	<tr>
-		<td class="addinfo" colspan="3"><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="doit('selected_note[]')">Prze³±cz zaznaczenie</a>&nbsp;<img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('multipleSelected').submit()">Usuñ zaznaczone wpisy</a></td>
-		<td class="addinfo right" colspan="5"><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="doit('selected_status[]')">Prze³±cz zaznaczenie</a>&nbsp;<img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('multipleSelected').submit()">Zmieñ status wpisów</a></td>
+		<td class="addinfo" colspan="4"><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="doit('selected_note[]')">Prze³±cz zaznaczenie</a></td>
+		<td class="addinfo" colspan="4"><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="doit('selected_status[]')">Prze³±cz zaznaczenie</a></td>
+	</tr>
+	<tr>
+		<td class="addinfo" colspan="8"><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('multipleSelected').submit()"><b>Zapisz zmiany</b></a> - dotycz± wpisów do usuniêcia i/lub zmiany statusu.</td>
 	</tr>
 </table>
 </form>
