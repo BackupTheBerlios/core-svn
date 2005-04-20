@@ -62,8 +62,8 @@
 	<tr>
 		<td class="form" width="80">Publikowana:&nbsp;</td>
 		<td class="form" width="224">
-            <input class="radio" type="radio" name="published" value="Y" align="top" {CHECKBOX_YES} />- tak&nbsp;
-            <input class="radio" type="radio" name="published" value="N" align="top" {CHECKBOX_NO} />- nie
+            <input class="radio" type="radio" name="published" value="1" align="top" {CHECKBOX_YES} />- tak&nbsp;
+            <input class="radio" type="radio" name="published" value="-1" align="top" {CHECKBOX_NO} />- nie
         </td>
 	</tr>
 	<tr>

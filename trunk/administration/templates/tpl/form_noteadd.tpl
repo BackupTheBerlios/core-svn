@@ -65,7 +65,7 @@
 	</tr>
 	<tr>
 		<td class="form" width="80">Publikowana:&nbsp;</td>
-		<td class="form" width="224"><input class="radio" type="radio" name="published" value="Y" align="top" checked="checked" />- tak&nbsp;<input style="border: 0px;" type="radio" name="published" value="N" align="top" />- nie</td>
+		<td class="form" width="224"><input class="radio" type="radio" name="published" value="1" align="top" checked="checked" />- tak&nbsp;<input style="border: 0px;" type="radio" name="published" value="-1" align="top" />- nie</td>
         <td class="form" width="110"><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('formNote').reset()">wyczy¶æ formularz</a></td>
 	</tr>
 </table>
