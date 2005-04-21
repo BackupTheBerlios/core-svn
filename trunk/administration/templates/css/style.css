@@ -350,6 +350,10 @@ textarea#file {
     width: 45px;
 }
 
+.button.confirm {
+    width: 45px;
+}
+
 .category_form {
     background-color: #FFF; 
     font-family: tahoma, verdana, arial; 
