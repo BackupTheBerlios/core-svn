@@ -85,121 +85,148 @@ switch ($action) {
 		
 	case "delete":// usuwanie wybranego wpisu
 	
-        if($permarr['moderator']) {
+        // potwierdzenie usuniecia kategorii
+        $confirm = empty($_POST['confirm']) ? '' : $_POST['confirm'];
+        switch ($confirm) {
             
-            $query = sprintf("
-                SELECT 
-                    a.*, count(b.id) AS count 
-                FROM 
-                    %1\$s a 
-                LEFT JOIN 
-                    %2\$s b 
-                ON 
-                    a.category_id = b.c_id 
-                WHERE 
-                    category_id = '%3\$d'
-                GROUP BY 
-                    category_id 
-                ORDER BY 
-                    category_id 
-                ASC", 
-		
-                $mysql_data['db_table_category'], 
-                $mysql_data['db_table'],
-                $_GET['id']
-            );
+            case "Tak":
+            
+                $post_id = empty($_POST['post_id']) ? '' : $_POST['post_id'];
 	
-            $db->query($query);
-            $db->next_record();
+                if($permarr['moderator']) {
             
-            $category_id    = $db->f("category_id");
-            $cat_parent_id  = $db->f("category_parent_id");
-            $count          = $db->f("count");
+                    $query = sprintf("
+                        SELECT 
+                            a.*, count(b.id) AS count 
+                        FROM 
+                            %1\$s a 
+                        LEFT JOIN 
+                            %2\$s b 
+                        ON 
+                            a.category_id = b.c_id 
+                        WHERE 
+                            category_id = '%3\$d'
+                        GROUP BY 
+                            category_id 
+                        ORDER BY 
+                            category_id 
+                        ASC", 
+		
+                        $mysql_data['db_table_category'], 
+                        $mysql_data['db_table'],
+                        $post_id
+                    );
+	
+                    $db->query($query);
+                    $db->next_record();
             
-            if($cat_parent_id > 0) {
+                    $category_id    = $db->f("category_id");
+                    $cat_parent_id  = $db->f("category_parent_id");
+                    $count          = $db->f("count");
+            
+                    if($cat_parent_id > 0) {
                 
-                // zmiana parent_id kategorii dziedziczacej na ta poziom wyzsza
-                // ------------------------------------------------------------
+                        // zmiana parent_id kategorii dziedziczacej na ta poziom wyzsza
+                        // ------------------------------------------------------------
             
-                $query = sprintf("
-                    UPDATE 
-                        %1\$s 
-                    SET 
-                        category_parent_id = '%2\$s' 
-                    WHERE 
-                        category_parent_id = '%3\$d'", 
+                        $query = sprintf("
+                            UPDATE 
+                                %1\$s 
+                            SET 
+                                category_parent_id = '%2\$s' 
+                            WHERE 
+                                category_parent_id = '%3\$d'", 
 		
-                    $mysql_data['db_table_category'], 
-                    $cat_parent_id, 
-                    $category_id
-                );
+                            $mysql_data['db_table_category'], 
+                            $cat_parent_id, 
+                            $category_id
+                        );
 	
-                $db->query($query);
-                $db->next_record();
+                        $db->query($query);
+                        $db->next_record();
             
-                // transfer wpisow z usuwanej kategorii do poziom wyzszej
-                // ------------------------------------------------------
+                        // transfer wpisow z usuwanej kategorii do poziom wyzszej
+                        // ------------------------------------------------------
             
-                $query = sprintf("
-                    UPDATE 
-                        %1\$s 
-                    SET 
-                        c_id = '%2\$d' 
-                    WHERE 
-                        c_id = '%3\$d'", 
+                        $query = sprintf("
+                            UPDATE 
+                                %1\$s 
+                            SET 
+                                c_id = '%2\$d' 
+                            WHERE 
+                                c_id = '%3\$d'", 
 		
-                    $mysql_data['db_table'], 
-                    $cat_parent_id,
-                    $_GET['id']
-                );
+                            $mysql_data['db_table'], 
+                            $cat_parent_id,
+                            $post_id
+                        );
 	
-                $db->query($query);
-                $db->next_record();
+                        $db->query($query);
+                        $db->next_record();
             
-                // usuwamy kategorie
-                // -----------------------------------------------------
+                        // usuwamy kategorie
+                        // -----------------------------------------------------
 	
-                $query = sprintf("
-                    DELETE FROM 
-                        %1\$s 
-                    WHERE 
-                        category_id = '%2\$d'", 
+                        $query = sprintf("
+                            DELETE FROM 
+                                %1\$s 
+                            WHERE 
+                                category_id = '%2\$d'", 
 		
-                    $mysql_data['db_table_category'], 
-                    $_GET['id']
-                );
+                            $mysql_data['db_table_category'], 
+                            $post_id
+                        );
 		
-                $db->query($query);
+                        $db->query($query);
 		
-                $ft->assign('CONFIRM', $i18n['edit_category'][3]);
-                $ft->parse('ROWS', ".result_note");
-            } else {
+                        $ft->assign('CONFIRM', $i18n['edit_category'][3]);
+                        $ft->parse('ROWS', ".result_note");
+                    } else {
                 
-                $monit[] = $i18n['edit_category'][7];
+                        $monit[] = $i18n['edit_category'][7];
 
-                foreach ($monit as $error) {
+                        foreach ($monit as $error) {
     
-                    $ft->assign('ERROR_MONIT', $error);
+                            $ft->assign('ERROR_MONIT', $error);
                     
-                    $ft->parse('ROWS',	".error_row");
+                            $ft->parse('ROWS',	".error_row");
+                        }
+                        
+                        $ft->parse('ROWS', "error_reporting");
+                    }
+                } else {
+            
+                    $monit[] = $i18n['edit_category'][5];
+
+                    foreach ($monit as $error) {
+    
+                        $ft->assign('ERROR_MONIT', $error);
+                    
+                        $ft->parse('ROWS',	".error_row");
+                    }
+                        
+                    $ft->parse('ROWS', "error_reporting");
                 }
-                        
-                $ft->parse('ROWS', "error_reporting");
-            }
-        } else {
+            break;
+                                    
+        case "Nie":
+        
+            header("Location: main.php?p=9");
+            exit;
+            break;
             
-            $monit[] = $i18n['edit_category'][5];
-
-            foreach ($monit as $error) {
-    
-                $ft->assign('ERROR_MONIT', $error);
-                    
-                $ft->parse('ROWS',	".error_row");
-            }
-                        
-            $ft->parse('ROWS', "error_reporting");
+        default:
+        
+            $ft->define('confirm_action', 'confirm_action.tpl');
+            $ft->assign(array(
+                'PAGE_NUMBER'   =>$p, 
+                'POST_ID'       =>$_GET['id']
+            ));
+            
+            $ft->parse('ROWS', ".confirm_action");
+            break;
         }
-		break;
+    break;
 		
 	default:
 	

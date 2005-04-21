@@ -118,36 +118,63 @@ switch ($action) {
 
 	case "delete":// usuwanie wybranego wpisu
 	
-        if($permarr['moderator']) {
+        // potwierdzenie usuniecia linku
+        $confirm = empty($_POST['confirm']) ? '' : $_POST['confirm'];
+        switch ($confirm) {
+            
+            case "Tak":
+            
+                $post_id = empty($_POST['post_id']) ? '' : $_POST['post_id'];
 	
-            $query = sprintf("
-                DELETE FROM 
-                    %1\$s 
-                WHERE 
-                    id = '%2\$d'", 
+                if($permarr['moderator']) {
+	
+                    $query = sprintf("
+                        DELETE FROM 
+                            %1\$s 
+                        WHERE 
+                            id = '%2\$d'", 
 		
-                $mysql_data['db_table_links'], 
-                $_GET['id']
-            );
+                        $mysql_data['db_table_links'], 
+                        $post_id
+                    );
 		
-            $db->query($query);
+                    $db->query($query);
 		
-            $ft->assign('CONFIRM', $i18n['edit_links'][5]);
-            $ft->parse('ROWS', ".result_note");
-        } else {
+                    $ft->assign('CONFIRM', $i18n['edit_links'][5]);
+                    $ft->parse('ROWS', ".result_note");
+                } else {
             
-            $monit[] = $i18n['edit_links'][6];
+                    $monit[] = $i18n['edit_links'][6];
             
-            foreach ($monit as $error) {
-			    
-			    $ft->assign('ERROR_MONIT', $error);
-			    
-			    $ft->parse('ROWS',	".error_row");
-			}
-			
-			$ft->parse('ROWS', "error_reporting");
+                    foreach ($monit as $error) {
+                        
+                        $ft->assign('ERROR_MONIT', $error);
+                        
+                        $ft->parse('ROWS',	".error_row");
+                    }
+                    
+                    $ft->parse('ROWS', "error_reporting");
+                }
+            break;
+                                    
+        case "Nie":
+        
+            header("Location: main.php?p=12");
+            exit;
+            break;
+            
+        default:
+        
+            $ft->define('confirm_action', 'confirm_action.tpl');
+            $ft->assign(array(
+                'PAGE_NUMBER'   =>$p, 
+                'POST_ID'       =>$_GET['id']
+            ));
+            
+            $ft->parse('ROWS', ".confirm_action");
+            break;
         }
-		break;
+    break;
 		
     case "multidelete": // usuwanie wybranego wpisu
 	

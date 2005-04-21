@@ -171,60 +171,87 @@ switch ($action) {
 
 	case "delete":// usuwanie wybranego wpisu
 	
-        if($permarr['admin']) {
+        // potwierdzenie usuniecia u¿ytkownika
+        $confirm = empty($_POST['confirm']) ? '' : $_POST['confirm'];
+        switch ($confirm) {
+            
+            case "Tak":
+            
+                $post_id = empty($_POST['post_id']) ? '' : $_POST['post_id'];
 	
-            $query = sprintf("
-                SELECT 
-                    login
-                FROM 
-                    %1\$s 
-                WHERE 
-                    id = '%2\$d'",
+                if($permarr['admin']) {
+	
+                    $query = sprintf("
+                        SELECT 
+                            login
+                        FROM 
+                            %1\$s 
+                        WHERE 
+                            id = '%2\$d'",
         
-                $mysql_data['db_table_users'], 
-                $_GET['id']
-            );
+                        $mysql_data['db_table_users'], 
+                        $post_id
+                    );
         
-            $db->query($query);
-            $db->next_record();
+                    $db->query($query);
+                    $db->next_record();
             
-            $u_login = $db->f("login");
+                    $u_login = $db->f("login");
             
-            if($u_login == $_SESSION['login']) {
+                    if($u_login == $_SESSION['login']) {
 		    
-                $ft->assign('CONFIRM', $i18n['edit_users'][0]);
-            } else {
+                        $ft->assign('CONFIRM', $i18n['edit_users'][0]);
+                    } else {
 	   
-                $query = sprintf("
-                    DELETE FROM 
-                        %1\$s 
-                    WHERE 
-                        id = '%2\$d'", 
+                        $query = sprintf("
+                            DELETE FROM 
+                                %1\$s 
+                            WHERE 
+                                id = '%2\$d'", 
 		
-                    $mysql_data['db_table_users'], 
-                    $_GET['id']
-                );
+                            $mysql_data['db_table_users'], 
+                            $post_id
+                        );
             
-                $db->query($query);
+                        $db->query($query);
             
-                $ft->assign('CONFIRM', $i18n['edit_users'][2]);
-            }
+                        $ft->assign('CONFIRM', $i18n['edit_users'][2]);
+                    }
             
-            $ft->parse('ROWS', ".result_note");
-        } else {
+                    $ft->parse('ROWS', ".result_note");
+                } else {
             
-            $monit[] = $i18n['edit_users'][3];
+                    $monit[] = $i18n['edit_users'][3];
 
-            foreach ($monit as $error) {
+                    foreach ($monit as $error) {
     
-                $ft->assign('ERROR_MONIT', $error);
+                        $ft->assign('ERROR_MONIT', $error);
                     
-                $ft->parse('ROWS',	".error_row");
-            }
+                        $ft->parse('ROWS',	".error_row");
+                    }
                         
-            $ft->parse('ROWS', "error_reporting");
+                    $ft->parse('ROWS', "error_reporting");
+                }
+            break;
+
+        case "Nie":
+        
+            header("Location: main.php?p=13");
+            exit;
+            break;
+            
+        default:
+        
+            $ft->define('confirm_action', 'confirm_action.tpl');
+            $ft->assign(array(
+                'PAGE_NUMBER'   =>$p, 
+                'POST_ID'       =>$_GET['id']
+            ));
+            
+            $ft->parse('ROWS', ".confirm_action");
+            break;
         }
-		break;
+    break;
 
 	default:
 	
