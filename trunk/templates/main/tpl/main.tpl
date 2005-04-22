@@ -99,9 +99,7 @@
 	<div class="clear"></div>
 	
 	<div class="engine">
-	<!-- engine version/engine template parsed -->
-		{ENGINE_VERSION}
-	<!-- end engine version -->
+        Based on <a href="http://core.no1-else.com/" target="_blank">Core</a>
 	</div>
 </div>
 </body>
