@@ -1,6 +1,7 @@
 CREATE TABLE core_category (
   category_id mediumint(7) NOT NULL auto_increment,
   category_parent_id mediumint(7) NOT NULL default '0',
+  category_order mediumint(7) NOT NULL default '1',
   category_name varchar(40) NOT NULL default '',
   category_description text NOT NULL,
   KEY id (category_id)
@@ -57,6 +58,7 @@ CREATE TABLE core_newsletter (
 CREATE TABLE core_pages (
   id mediumint(7) NOT NULL auto_increment,
   parent_id mediumint(7) NOT NULL default '0',
+  page_order mediumint(7) NOT NULL default '1', 
   title varchar(50) NOT NULL default '',
   `text` mediumtext NOT NULL,
   image varchar(255) NOT NULL default '',
