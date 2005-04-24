@@ -3,7 +3,7 @@
 if(is_numeric($_GET['id'])) {
     
     // inicjowanie funkcji stronnicujacej wpisy
-    main_pagination('category.' . $_GET['id'] . '.', 'c_id=' . $_GET['id'] . ' AND ', 'mainposts_per_page', 'AND published = \'Y\'', 'db_table');
+    main_pagination('category.' . $_GET['id'] . '.', 'c_id=' . $_GET['id'] . ' AND ', 'mainposts_per_page', 'AND published = \'1\'', 'db_table');
     
     $query = sprintf("
         SELECT 
@@ -60,8 +60,8 @@ if(is_numeric($_GET['id'])) {
             
             $ft->assign(array(
                 'DATE'          =>$date,
-                'NEWS_TITLE'    =>stripslashes($title),
-                'NEWS_TEXT'     =>stripslashes($text),
+                'NEWS_TITLE'    =>$title,
+                'NEWS_TEXT'     =>$text,
                 'NEWS_AUTHOR'   =>$author,
                 'NEWS_ID'       =>$id,
                 'CATEGORY_NAME' =>$c_name,

@@ -75,7 +75,7 @@ if(is_numeric($_GET['id'])) {
 
                 $ft->assign(array(
                     'DATE'              =>$date,
-                    'COMMENTS_TEXT'     =>stripslashes($text),
+                    'COMMENTS_TEXT'     =>$text,
                     'COMMENTS_AUTHOR'   =>$author,
                     'COMMENTS_ID'       =>$comments_id,
                     'AUTHOR_EMAIL'      =>$email,

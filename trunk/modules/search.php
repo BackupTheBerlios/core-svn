@@ -127,8 +127,8 @@ if(!empty($search_word)) {
 			
 			$ft->assign(array(
                 'DATE'				=>$date,
-                'NEWS_TITLE'		=>$search->highlight($search_word, stripslashes($title)),
-                'NEWS_TEXT'			=>$search->highlight($search_word, stripslashes($text)),
+                'NEWS_TITLE'		=>$search->highlight($search_word, $title),
+                'NEWS_TEXT'			=>$search->highlight($search_word, $text),
                 'NEWS_AUTHOR'		=>$author,
                 'NEWS_ID'			=>$id,
                 'CATEGORY_NAME'		=>$c_name,

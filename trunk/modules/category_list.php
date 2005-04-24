@@ -10,7 +10,8 @@ $query = sprintf("
     WHERE 
         category_parent_id = '%2\$d' 
     ORDER BY 
-        category_id",
+        category_order 
+    ASC",
 
     $mysql_data['db_table_category'],
     0

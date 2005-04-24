@@ -31,12 +31,10 @@ switch ($action) {
         // Je¿eli dane spe³niaja wszystkie kryteria dodanie nowego komentarza
         if(empty($monit)) {
 
-            $tmp=time();
-            $date = date('Y-m-d H:i:s',$tmp);
+            $tmp  = time();
+            $date = date('Y-m-d H:i:s', $tmp);
 
-            $text = str_nl2br(addslashes($_POST['text']));
-
-            $text = strip_tags($text, '<br>');
+            $text = str_nl2br($_POST['text']);
 
             // [b] i [/b] dla tekstu pogrubionego.
             $text = preg_replace('/\[b\]([^\"]+)\[\/b\]/','<b>\\1</b>', $text);
@@ -177,7 +175,7 @@ switch ($action) {
                 'NEWS_TITLE'        =>$title,
                 'NEWS_ID'           =>$id,
                 'COMMENT_AUTHOR'    =>$comment_author,
-                'QUOTE'             =>'[quote]' . strip_tags(stripslashes($cite)) . '[/quote]',
+                'QUOTE'             =>'[quote]' . strip_tags(br2nl($cite)) . '[/quote]',
                 'STRING'            =>$page_string
             ));
         } else {

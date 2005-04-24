@@ -1,16 +1,14 @@
 <?php
 
 $query = sprintf("
-    SELECT 
-        id, parent_id, title 
-    FROM 
+    SELECT * FROM 
         %1\$s 
     WHERE 
         parent_id = '%2\$d' 
     AND	
         published = 'Y' 
     ORDER BY 
-        id 
+        page_order 
     ASC", 
 
     $mysql_data['db_table_pages'],
