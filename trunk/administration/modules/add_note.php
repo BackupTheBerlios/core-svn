@@ -33,9 +33,9 @@ switch ($action) {
                 $mysql_data['db_table'],
                 $category_id,
                 $date,
-                addslashes($title),
+                $title,
                 $author,
-                addslashes($text),
+                $text,
                 $comments_allow,
                 $published
             );

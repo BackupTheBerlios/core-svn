@@ -233,43 +233,51 @@ switch ($action) {
 		
 		$db->query($query);
 	
-		// Pêtla wyswietlaj¹ca wszystkie wpisy + stronnicowanie ich
-		while($db->next_record()) {
+		// Sprawdzamy, czy w bazie danych s± ju¿ jakie¶ wpisy
+		if($db->num_rows() > 0) {
 		
-			$link_id	= $db->f("id");
-			$link_name	= $db->f("title");
-			$link_url	= $db->f("url");
+		    // Pêtla wyswietlaj¹ca wszystkie wpisy + stronnicowanie ich
+            while($db->next_record()) {
+		
+                $link_id	= $db->f("id");
+                $link_name	= $db->f("title");
+                $link_url	= $db->f("url");
+                
+                $link_url = strlen($link_url) > 30 ? substr_replace($link_url, '...', 30) : $link_url;
 			
-			$link_url = strlen($link_url) > 30 ? substr_replace($link_url, '...', 30) : $link_url;
+                $ft->assign(array(
+                    'LINK_ID'	=>$link_id,
+                    'LINK_NAME'	=>$link_name,
+                    'LINK_URL'	=>$link_url
+                ));			
 			
-			$ft->assign(array(
-                'LINK_ID'	=>$link_id,
-                'LINK_NAME'	=>$link_name,
-                'LINK_URL'	=>$link_url
-            ));			
+                // deklaracja zmiennej $idx1::color switcher
+                $idx1 = empty($idx1) ? '' : $idx1;
 			
-			// deklaracja zmiennej $idx1::color switcher
-			$idx1 = empty($idx1) ? '' : $idx1;
+                $idx1++;
 			
-			$idx1++;
+                $ft->define("editlist_links", "editlist_links.tpl");
+                $ft->define_dynamic("row", "editlist_links");
 			
-			$ft->define("editlist_links", "editlist_links.tpl");
-			$ft->define_dynamic("row", "editlist_links");
-			
-			// naprzemienne kolorowanie wierszy
-			if (($idx1%2)==1) {
+                // naprzemienne kolorowanie wierszy
+                if (($idx1%2)==1) {
 			    
-			    $ft->assign('ID_CLASS', 'mainList');
+                    $ft->assign('ID_CLASS', 'mainList');
 			    
-			    $ft->parse('ROWS',	".row");
-			} else {
+                    $ft->parse('ROWS', ".row");
+                } else {
 			    
-			    $ft->assign('ID_CLASS', 'mainListAlter');
+                    $ft->assign('ID_CLASS', 'mainListAlter');
 			    
-			    $ft->parse('ROWS', ".row");
-			}
+                    $ft->parse('ROWS', ".row");
+                }
+            }
+            $ft->parse('ROWS', "editlist_links");
+		} else {
+		    
+		    $ft->assign('CONFIRM', $i18n['edit_links'][8]);
+			$ft->parse('ROWS',	".result_note");
 		}
-		$ft->parse('ROWS', "editlist_links");
 }
 
 ?>

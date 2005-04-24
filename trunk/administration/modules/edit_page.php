@@ -30,8 +30,8 @@ switch ($action) {
 		
 		$ft->assign(array(
             'ID'	=>$_GET['id'],
-            'TITLE'	=>stripslashes($title),
-            'TEXT'	=>br2nl(stripslashes($text))
+            'TITLE'	=>$title,
+            'TEXT'	=>br2nl($text)
         ));
 							
 		if($published == "Y") {
@@ -50,8 +50,8 @@ switch ($action) {
 	
         if($permarr['writer']) {
 	
-            $text		= nl2br(addslashes($_POST['text']));
-            $title		= addslashes($_POST['title']);
+            $text		= nl2br($_POST['text']);
+            $title		= $_POST['title'];
             $published	= $_POST['published'];
 		
             $query = sprintf("
@@ -149,8 +149,105 @@ switch ($action) {
             break;
         }
     break;
+    
+	case "remark": // kolejnosc
+	
+        if($permarr['moderator']) {
+            
+            $move = intval($_GET['move']);
+	
+            $query = sprintf("
+                UPDATE 
+                    %1\$s 
+                SET 
+                    page_order = page_order + '%2\$d' 
+                WHERE 
+                    id='%3\$d'", 
+		
+                $mysql_data['db_table_pages'], 
+                $move, 
+                $_GET['id']
+            );
+		
+            $db->query($query);
+            
+            // instancja potrzebna
+            $sql = new DB_SQL;
+            
+            $query = sprintf("
+                SELECT * FROM 
+                    %1\$s 
+                WHERE 
+                    parent_id = '0' 
+                ORDER BY 
+                    page_order 
+                ASC", 
+    
+                $mysql_data['db_table_pages']
+            );
+    
+            $sql->query($query);
+    
+            $i = 10;
+    
+            while($sql->next_record()) {
+        
+                $pid = $sql->f("id");
+        
+                $query = sprintf("
+                    UPDATE 
+                        %1\$s 
+                    SET 
+                        page_order = '$i' 
+                    WHERE 
+                        id = '$pid'", 
+        
+                    $mysql_data['db_table_pages']
+                );
+                    
+                $db->query($query);
+                    
+                $i += 10;
+            }
+            
+            header("Location: main.php?p=4");
+            exit;
+		
+        } else {
+            
+            $monit[] = $i18n['edit_category'][6];
+            
+            foreach ($monit as $error) {
+                
+                $ft->assign('ERROR_MONIT', $error);
+                
+                $ft->parse('ROWS',	".error_row");
+            }
+                        
+            $ft->parse('ROWS', "error_reporting");
+        }
+		break;
 
 	default:
+	
+        $query = sprintf("
+            SELECT 
+                MIN(page_order) as min_order, 
+                MAX(page_order) as max_order 
+            FROM 
+                %1\$s 
+            WHERE 
+                parent_id = '0'",
+        
+            $mysql_data['db_table_pages']
+        );
+            
+        $db->query($query);
+        $db->next_record();
+			
+        // Przypisanie zmiennej $id
+        $max_order = $db->f("max_order");
+        $min_order = $db->f("min_order");
 	
 		$query = sprintf("
             SELECT * FROM 
@@ -167,13 +264,17 @@ switch ($action) {
 		$editposts_per_page = $db->f("config_value");
 		
 		$query = sprintf("
-					SELECT * FROM 
-						$mysql_data[db_table_pages] 
-					WHERE
-						parent_id = '%1\$d' 	
-					ORDER BY 
-						id 
-					ASC", 0);
+            SELECT * FROM 
+                %1\$s 
+            WHERE 
+                parent_id = '%2\$d' 
+            ORDER BY 
+                page_order 
+            ASC", 
+		
+            $mysql_data['db_table_pages'], 
+            0
+        );
 		
 		$db->query($query);
 		
@@ -185,10 +286,13 @@ switch ($action) {
 		
 				$page_id 		= $db->f("id");
 				$title 			= $db->f("title");
+				$page_order     = $db->f("page_order");
 				$published		= $db->f("published");
 			
-				$ft->assign(array(	'ID'	=>$page_id,
-									'TITLE'	=>$title));
+				$ft->assign(array(
+				    'ID'	=>$page_id,
+					'TITLE'	=>$title
+                ));
 								
 				if($published == 'Y') {
 
@@ -196,7 +300,28 @@ switch ($action) {
 				} else {
 				
 					$ft->assign('PUBLISHED', "Nie");
-				}						
+				}
+
+				if($page_order == $max_order) {
+                    // przydzielamy przycisk do podwy¿eszenia pozycji kategorii
+                    $ft->assign(array(
+                        'DOWN'  =>'',
+                        'UP'    =>'<a href="main.php?p=4&amp;action=remark&amp;move=-15&amp;id=' . $page_id . '"><img src="templates/images/up.gif" width="11" height="7" /></a>'
+                    ));
+                } elseif ($page_order == $min_order) {
+                    // przydzielamy przycisk do obnizenia pozycji kategorii
+                    $ft->assign(array(
+                        'DOWN'  =>'<a href="main.php?p=4&amp;action=remark&amp;move=15&amp;id=' . $page_id . '"><img src="templates/images/down.gif" width="11" height="7" /></a>', 
+                        'UP'    =>''
+                    
+                    ));
+                } else {
+                    // przydzielamy dwa przyciski do zmiany polozenia kategorii
+                    $ft->assign(array(
+                        'UP'    =>'<a href="main.php?p=4&amp;action=remark&amp;move=-15&amp;id=' . $page_id . '"><img src="templates/images/up.gif" width="11" height="7" /></a>', 
+                        'DOWN'  =>'<a href="main.php?p=4&amp;action=remark&amp;move=15&amp;id=' . $page_id . '"><img src="templates/images/down.gif" width="11" height="7" /></a>'
+                    ));
+                }			
 			
 				// deklaracja zmiennej $idx1::color switcher
 				$idx1 = empty($idx1) ? '' : $idx1;

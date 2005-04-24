@@ -28,13 +28,29 @@ switch ($action) {
 		    if(empty($monit)) {
 		        
 		        $query = sprintf("
+                    SELECT 
+                        max(category_order) as max_order 
+                    FROM 
+                        %1\$s",
+        
+                    $mysql_data['db_table_category']
+                );
+            
+                $db->query($query);
+                $db->next_record();
+			
+                // Przypisanie zmiennej $id
+                $max_order = $db->f("max_order");
+		        
+		        $query = sprintf("
                     INSERT INTO 
                         %1\$s 
                     VALUES 
-                        ('', '%2\$d', '%3\$s', '%4\$s')",
+                        ('', '%2\$d', '%3\$d', '%4\$s', '%5\$s')",
 			
                     $mysql_data['db_table_category'], 
                     $category_parent_id, 
+                    $max_order + 10, 
                     $category_name,
                     $category_description
                 );

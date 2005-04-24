@@ -42,7 +42,7 @@ switch ($action) {
             'AUTHOR'    =>$author,
             'DATE'      =>$date,
             'ID'        =>$_GET['id'],
-            'TEXT'      =>br2nl(stripslashes($text))
+            'TEXT'      =>br2nl($text)
         ));
 
 		$ft->define('form_commentsedit', "form_commentsedit.tpl");
@@ -53,7 +53,7 @@ switch ($action) {
 	
         if($permarr['moderator']) {
 	
-            $text     = nl2br(addslashes($_POST['text']));
+            $text     = nl2br($_POST['text']);
             $author   = $_POST['author'];
 		
             $query = sprintf("

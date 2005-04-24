@@ -51,8 +51,8 @@ switch ($action) {
             'AUTHOR'		=>$author,
             'DATE' 			=>$date,
             'ID'			=>$_GET['id'],
-            'TITLE'			=>stripslashes($title),
-            'TEXT'			=>br2nl(stripslashes($text))
+            'TITLE'			=>$title,
+            'TEXT'			=>br2nl($text)
         ));
 
 		if($comments_allow == 1) {
@@ -133,8 +133,8 @@ switch ($action) {
 		
 		if($permarr['moderator'] || ($permarr['writer'] && ($note_author == $_SESSION['login']))) {
 	
-            $text		= str_nl2br(addslashes($_POST['text']));
-            $title		= addslashes($_POST['title']);
+            $text		= str_nl2br($_POST['text']);
+            $title		= $_POST['title'];
             $author		= $_POST['author'];
             $published	= $_POST['published'];
             $c_id		= $_POST['category_id'];

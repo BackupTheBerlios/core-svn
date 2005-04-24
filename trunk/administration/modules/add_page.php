@@ -21,17 +21,33 @@ switch($action) {
             
             // Sprawdzanie czy tytul strony jest wype³niony
             if(!empty($title)) {
+                
+                $query = sprintf("
+                    SELECT 
+                        max(page_order) as max_order 
+                    FROM 
+                        %1\$s",
+        
+                    $mysql_data['db_table_pages']
+                );
+            
+                $db->query($query);
+                $db->next_record();
+			
+                // Przypisanie zmiennej $id
+                $max_order = $db->f("max_order");
 		      
                 $query = sprintf("
                     INSERT INTO 
                         %1\$s 
                     VALUES 
-                        ('', '%2\$d', '%3\$s', '%4\$s', '', '%5\$s')", 
+                        ('', '%2\$d', '%3\$d', '%4\$s', '%5\$s', '', '%6\$s')", 
 		
                     $mysql_data['db_table_pages'], 
                     $page_id, 
-                    addslashes($title), 
-                    addslashes($text), 
+                    $max_order + 10, 
+                    $title, 
+                    $text, 
                     $published
                 );
             

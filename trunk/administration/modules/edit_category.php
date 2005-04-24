@@ -33,7 +33,7 @@ switch ($action) {
 		$ft->assign(array(
             'CATEGORY_ID'		=>$cat_id,
             'CATEGORY_NAME'		=>$cat_name,
-            'CATEGORY_DESC'		=>br2nl(stripslashes($cat_description)),
+            'CATEGORY_DESC'		=>br2nl($cat_description),
             'CATNAME_DESC'		=>$cat_description,
             'SUBMIT_HREF_DESC'	=>$i18n['edit_category'][0]
         ));
@@ -68,6 +68,85 @@ switch ($action) {
 		
             $ft->assign('CONFIRM', $i18n['edit_category'][2]);
             $ft->parse('ROWS',	".result_note");
+        } else {
+            
+            $monit[] = $i18n['edit_category'][6];
+            
+            foreach ($monit as $error) {
+                
+                $ft->assign('ERROR_MONIT', $error);
+                
+                $ft->parse('ROWS',	".error_row");
+            }
+                        
+            $ft->parse('ROWS', "error_reporting");
+        }
+		break;
+		
+	case "remark":// edycja wybranego wpisu
+	
+        if($permarr['moderator']) {
+            
+            $move = intval($_GET['move']);
+	
+            $query = sprintf("
+                UPDATE 
+                    %1\$s 
+                SET 
+                    category_order = category_order + '%2\$d' 
+                WHERE 
+                    category_id='%3\$d'", 
+		
+                $mysql_data['db_table_category'], 
+                $move, 
+                $_GET['id']
+            );
+		
+            $db->query($query);
+            
+            // instancja potrzebna
+            $sql = new DB_SQL;
+            
+            $query = sprintf("
+                SELECT * FROM 
+                    %1\$s 
+                WHERE 
+                    category_parent_id = '0' 
+                ORDER BY 
+                    category_order 
+                ASC", 
+    
+                $mysql_data['db_table_category']
+            );
+    
+            $sql->query($query);
+    
+            $i = 10;
+            $inc = 10;
+    
+            while($sql->next_record()) {
+        
+                $cid = $sql->f("category_id");
+        
+                $query = sprintf("
+                    UPDATE 
+                        %1\$s 
+                    SET 
+                        category_order = '$i' 
+                    WHERE 
+                        category_id = '$cid'", 
+        
+                    $mysql_data['db_table_category']
+                );
+                    
+                $db->query($query);
+                    
+                $i += 10;
+            }
+            
+            header("Location: main.php?p=9");
+            exit;
+		
         } else {
             
             $monit[] = $i18n['edit_category'][6];
@@ -230,9 +309,28 @@ switch ($action) {
 		
 	default:
 	
+        $query = sprintf("
+            SELECT 
+                MIN(category_order) as min_order, 
+                MAX(category_order) as max_order 
+            FROM 
+                %1\$s 
+            WHERE 
+                category_parent_id = '0'",
+        
+            $mysql_data['db_table_category']
+        );
+            
+        $db->query($query);
+        $db->next_record();
+			
+        // Przypisanie zmiennej $id
+        $max_order = $db->f("max_order");
+        $min_order = $db->f("min_order");
+	
 		$query = sprintf("
             SELECT 
-                a.*, count(b.id) AS count 
+                a.*, COUNT(b.id) AS count 
             FROM 
                 %1\$s a 
             LEFT JOIN 
@@ -244,7 +342,7 @@ switch ($action) {
             GROUP BY 
                 category_id 
             ORDER BY 
-                category_id 
+                category_order 
             ASC", 
 		
             $mysql_data['db_table_category'], 
@@ -258,6 +356,7 @@ switch ($action) {
 		while($db->next_record()) {
 		
 			$category_id			= $db->f("category_id");
+			$category_order			= $db->f("category_order");
 			$category_name			= $db->f("category_name");
 			$category_description	= $db->f("category_description");
 			$count					= $db->f("count");
@@ -270,6 +369,27 @@ switch ($action) {
                 'CATEGORY_NAME'		=>$category_name,
                 'COUNT'				=>$count
             ));
+            
+            if($category_order == $max_order) {
+                // przydzielamy przycisk do podwy¿eszenia pozycji kategorii
+                $ft->assign(array(
+                    'DOWN'  =>'',
+                    'UP'    =>'<a href="main.php?p=9&amp;action=remark&amp;move=-15&amp;id=' . $category_id . '"><img src="templates/images/up.gif" width="11" height="7" /></a>'
+                ));
+            } elseif ($category_order == $min_order) {
+                // przydzielamy przycisk do obnizenia pozycji kategorii
+                $ft->assign(array(
+                    'DOWN'  =>'<a href="main.php?p=9&amp;action=remark&amp;move=15&amp;id=' . $category_id . '"><img src="templates/images/down.gif" width="11" height="7" /></a>', 
+                    'UP'    =>''
+                    
+                ));
+            } else {
+                // przydzielamy dwa przyciski do zmiany polozenia kategorii
+                $ft->assign(array(
+                    'UP'    =>'<a href="main.php?p=9&amp;action=remark&amp;move=-15&amp;id=' . $category_id . '"><img src="templates/images/up.gif" width="11" height="7" /></a>', 
+                    'DOWN'  =>'<a href="main.php?p=9&amp;action=remark&amp;move=15&amp;id=' . $category_id . '"><img src="templates/images/down.gif" width="11" height="7" /></a>'
+                ));
+            }
 								
 			if(empty($category_description)) {
 
