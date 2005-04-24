@@ -388,3 +388,10 @@ input.checkbox {
     padding: 0;
     border: 0;
 }
+
+.image_exist {
+    border-top: 2px solid #F8F8F8; 
+    border-bottom: 2px solid #F8F8F8;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}    
