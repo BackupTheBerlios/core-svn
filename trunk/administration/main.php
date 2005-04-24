@@ -18,12 +18,57 @@ require(PATH_TO_CLASSES. '/cls_db_mysql.php');
 require(PATH_TO_CLASSES. '/cls_upload.php');
 
 require_once("inc/config.php");
-include_once("../inc/main_pagination.php");
 include_once("../inc/main_functions.php");
 require_once('../inc/i18n_administration.php');
 
 require(PATH_TO_CLASSES. '/cls_fast_template.php');
 require(PATH_TO_CLASSES. '/cls_permissions.php');
+
+// automatyczne sprawdzanie stanu magic_quotes
+// i w zaleznosci od tego wstawianie addslashes, badz nie.
+if(!get_magic_quotes_gpc()) {
+    if(is_array($_GET)) {
+        while(list($k, $v) = each($_GET)) {
+            if(is_array($_GET[$k])) {
+                while(list($k2, $v2) = each($_GET[$k])) {
+                    $_GET[$k][$k2] = addslashes($v2);
+                }
+                @reset($_GET[$k]);
+            } else {
+                $_GET[$k] = addslashes($v);
+            }
+        }
+        @reset($_GET);
+    }
+    
+    if(is_array($_POST)) {
+        while(list($k, $v) = each($_POST)) {
+            if(is_array($_POST[$k])) {
+                while(list($k2, $v2) = each($_POST[$k])) {
+					$_POST[$k][$k2] = addslashes($v2);
+                }
+                @reset($_POST[$k]);
+            } else {
+                $_POST[$k] = addslashes($v);
+            }
+        }
+        @reset($_POST);
+    }
+    
+    if(is_array($_COOKIE)) {
+        while(list($k, $v) = each($_COOKIE)) {
+            if(is_array($_COOKIE[$k])) {
+                while(list($k2, $v2) = each($_COOKIE[$k])) {
+                    $_COOKIE[$k][$k2] = addslashes($v2);
+                }
+                @reset($_COOKIE[$k]);
+            } else {
+				$_COOKIE[$k] = addslashes($v);
+            }
+        }
+        @reset($_COOKIE);
+    }
+}
 
 // egzemplarz klasy obs³uguj±cej bazê danych Core
 $db = new DB_SQL;
