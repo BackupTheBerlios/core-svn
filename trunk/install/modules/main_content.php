@@ -153,7 +153,7 @@ switch ($action) {
                 INSERT INTO
                     %1\$s
                 VALUES
-                    ('', '', 'ogólna', '')",
+                    ('', '', '10', 'ogólna', '')",
 
                 $t2
             );
