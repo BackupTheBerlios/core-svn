@@ -93,6 +93,7 @@ $i18n['edit_links'][4] = 'Link zosta³ zmodyfikowany.';
 $i18n['edit_links'][5] = 'Link zosta³ usuniêty.';
 $i18n['edit_links'][6] = '<b>Nie masz uprawnieñ</b> do usuwania linków.';
 $i18n['edit_links'][7] = '<b>Nie masz uprawnieñ</b> do edycji linków.';
+$i18n['edit_links'][8] = 'W bazie danych nie ma ¿adnych linków';
 
 $i18n['edit_page'] = array();
 $i18n['edit_page'][0] = 'Strona zosta³a zmodyfikowana.';

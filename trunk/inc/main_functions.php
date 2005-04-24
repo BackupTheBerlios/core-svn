@@ -100,19 +100,28 @@ function str_nl2br($s) {
 
 function get_cat($page_id, $level) {
 	
-	global $mysql_data, $ft;
+	global 
+        $mysql_data, 
+        $ft;
 
-	$query = "	SELECT 
-					id, parent_id, title 
-				FROM 
-					$mysql_data[db_table_pages] 
-				WHERE 
-					parent_id = '$page_id' 
-				AND 
-					published = 'Y' 
-				ORDER BY 
-					id 
-				ASC";
+	$query = sprintf("
+        SELECT 
+            id, 
+            parent_id, 
+            title 
+        FROM 
+            %1\$s 
+        WHERE 
+            parent_id = '%2\$d' 
+        AND 
+            published = 'Y' 
+        ORDER BY 
+            id 
+        ASC", 
+	
+        $mysql_data['db_table_pages'], 
+        $page_id
+    );
 
 	$db = new DB_SQL;
 	$db->query($query);
@@ -138,19 +147,28 @@ function get_cat($page_id, $level) {
 
 function get_addpage_cat($page_id, $level) {
 	
-	global $mysql_data, $ft;
+	global 
+        $mysql_data, 
+        $ft;
 
-	$query = "	SELECT 
-					id, parent_id, title 
-				FROM 
-					$mysql_data[db_table_pages] 
-				WHERE 
-					parent_id = '$page_id' 
-				AND 
-					published = 'Y' 
-				ORDER BY 
-					id 
-				ASC";
+	$query = sprintf("
+        SELECT 
+            id, 
+            parent_id, 
+            title 
+        FROM 
+            %1\$s 
+        WHERE 
+            parent_id = '%2\$d' 
+        AND 
+            published = 'Y' 
+        ORDER BY 
+            id 
+        ASC", 
+	
+        $mysql_data['db_table_pages'], 
+        $page_id
+    );
 
 	$db = new DB_SQL;
 	$db->query($query);
@@ -180,19 +198,26 @@ function get_addpage_cat($page_id, $level) {
 // funkcja pobierajaca rekurencyjnie kategorie na stronie g³ównej
 function get_category_cat($cat_id, $level) {
 	
-	global $mysql_data, $ft;
+	global 
+        $mysql_data, 
+        $ft;
 
-	$query = "	SELECT 
-					category_id, 
-					category_parent_id, 
-					category_name 
-				FROM 
-					$mysql_data[db_table_category] 
-				WHERE 
-					category_parent_id = '$cat_id' 
-				ORDER BY 
-					category_id 
-				ASC";
+	$query = sprintf("
+        SELECT 
+            category_id, 
+            category_parent_id, 
+            category_name 
+        FROM 
+            %1\$s 
+        WHERE 
+            category_parent_id = '%2\$d' 
+        ORDER BY 
+            category_id 
+        ASC", 
+	
+        $mysql_data['db_table_category'], 
+        $cat_id
+    );
 
 	$db = new DB_SQL;
 	$db->query($query);
@@ -219,19 +244,26 @@ function get_category_cat($cat_id, $level) {
 // funkcja pobierajaca rekurencyjnie kategorie
 function get_addcategory_cat($page_id, $level) {
 	
-	global $mysql_data, $ft;
+	global 
+        $mysql_data, 
+        $ft;
 
-	$query = "	SELECT 
-					category_id, 
-					category_parent_id, 
-					category_name 
-				FROM 
-					$mysql_data[db_table_category] 
-				WHERE 
-					category_parent_id = '$page_id' 
-				ORDER BY 
-					category_id 
-				ASC";
+	$query = sprintf("
+        SELECT 
+            category_id, 
+            category_parent_id, 
+            category_name 
+        FROM 
+            %1\$s 
+        WHERE 
+            category_parent_id = '%2\$d' 
+        ORDER BY 
+            category_id 
+        ASC", 
+	
+        $mysql_data['db_table_category'], 
+        $page_id
+    );
 
 	$db = new DB_SQL;
 	$db->query($query);
@@ -264,17 +296,22 @@ function get_transfercategory_cat($page_id, $level) {
 	
 	global $mysql_data, $ft;
 
-	$query = "	SELECT 
-					category_id, 
-					category_parent_id, 
-					category_name 
-				FROM 
-					$mysql_data[db_table_category] 
-				WHERE 
-					category_parent_id = '$page_id' 
-				ORDER BY 
-					category_id 
-				ASC";
+	$query = sprintf("
+        SELECT 
+            category_id, 
+            category_parent_id, 
+            category_name 
+        FROM 
+            %1\$s 
+        WHERE 
+            category_parent_id = '%2\$d' 
+        ORDER BY 
+            category_id 
+        ASC", 
+	
+        $mysql_data['db_table_category'], 
+        $page_id
+    );
 
 	$db = new DB_SQL;
 	$db->query($query);
@@ -303,19 +340,27 @@ function get_transfercategory_cat($page_id, $level) {
 // funkcja pobierajaca rekurencyjnie kategorie::edycja newsa
 function get_editnews_cat($c_id, $level) {
 	
-	global $mysql_data, $ft, $category;
+	global 
+        $mysql_data, 
+        $ft, 
+        $category;
 
-	$query = "	SELECT 
-					category_id, 
-					category_parent_id, 
-					category_name 
-				FROM 
-					$mysql_data[db_table_category] 
-				WHERE 
-					category_parent_id = '$c_id' 
-				ORDER BY 
-					category_id 
-				ASC";
+	$query = sprintf("
+        SELECT 
+            category_id, 
+            category_parent_id, 
+            category_name 
+        FROM 
+            %1\$s 
+        WHERE 
+            category_parent_id = '%2\$s' 
+        ORDER BY 
+            category_id 
+        ASC", 
+	
+        $mysql_data['db_table_category'], 
+        $c_id
+    );
 
 	$db = new DB_SQL;
 	$db->query($query);
@@ -390,7 +435,9 @@ function get_editcategory_cat($category_id, $level) {
 		$ft->assign(array(
             'CATEGORY_ID'		=>$category_id,
             'CATEGORY_NAME'		=>str_repeat('&nbsp; ', $level) . "<img src=\"templates/images/ar.gif\" />&nbsp;" . $category_name,
-            'COUNT'				=>$count,
+            'COUNT'				=>$count, 
+            'UP'                =>'', 
+            'DOWN'              =>''
         ));
         
         if(empty($category_description)) {
@@ -429,17 +476,28 @@ function get_editcategory_cat($category_id, $level) {
 
 function get_editpage_cat($page_id, $level) {
 	
-	global $mysql_data, $ft, $idx1;
+	global 
+        $mysql_data, 
+        $ft, 
+        $idx1;
 
-	$query = "	SELECT 
-					id, parent_id, title, published 
-				FROM 
-					$mysql_data[db_table_pages] 
-				WHERE 
-					parent_id = '$page_id' 
-				ORDER BY 
-					id 
-				ASC";
+	$query = sprintf("
+        SELECT 
+            id, 
+            parent_id, 
+            title, 
+            published 
+        FROM 
+            %1\$s 
+        WHERE 
+            parent_id = '%2\$d' 
+        ORDER BY 
+            id 
+        ASC", 
+	
+        $mysql_data['db_table_pages'], 
+        $page_id
+    );
 
 	$db = new DB_SQL;
 	$db->query($query);
@@ -450,8 +508,12 @@ function get_editpage_cat($page_id, $level) {
 		$title 		= $db->f("title");
 		$published	= $db->f("published");
 	
-		$ft->assign(array(	'ID'		=>$page_id,
-							'TITLE'		=>str_repeat('&nbsp; ', $level) . "<img src=\"templates/images/ar.gif\" />&nbsp;" . $title));
+		$ft->assign(array(
+            'ID'    =>$page_id,
+            'TITLE' =>str_repeat('&nbsp; ', $level) . "<img src=\"templates/images/ar.gif\" />&nbsp;" . $title, 
+            'UP'    =>'', 
+            'DOWN'  =>''
+        ));
 							
 		if($published == 'Y') {
 
@@ -535,8 +597,132 @@ function get_config($name) {
     return $db -> f('config_value');
 }
 
+
 function check_mail($email) {
     return eregi("^([a-z0-9_]|\\-|\\.)+@(((([a-z0-9_]|\\-)+\\.)+[a-z]{2,4})|localhost)$", $email);
+}
+
+// stronnicowanie 
+function main_pagination($url, $q, $p, $published, $table) {
+    
+    global 
+        $db, 
+        $days_to, 
+        $mysql_data, 
+        $mainposts_per_page, 
+        $page_string;
+
+	$ret = array();
+	
+	$query = sprintf("
+        SELECT * FROM 
+            %1\$s 
+        WHERE 
+            config_name = '%2\$s'", 
+	
+        $mysql_data['db_table_config'], 
+        $p
+    );
+    
+	$db->query($query);
+	$db->next_record();
+		
+	$mainposts_per_page = $db->f("config_value");
+	$mainposts_per_page = empty($mainposts_per_page) ? 10 : $mainposts_per_page;
+	
+	$query = "
+        SELECT 
+            COUNT(*) AS id 
+        FROM 
+            $mysql_data[$table] 
+        WHERE $q 
+			TO_DAYS(NOW()) - TO_DAYS(date) <= $days_to $published 
+        ORDER BY date";
+    
+	$db->query($query);
+	$db->next_record();
+	
+	$num_items     = $db->f("0");
+	$total_pages   = empty($total_pages) ? '' : $total_pages;
+	
+	$start = isset($_GET['start']) ? intval($_GET['start']) : 0;
+	
+	// Obliczanie liczby stron
+	if($mainposts_per_page > 0) {
+	    
+	    if($num_items > $mainposts_per_page) {
+	        $total_pages = ceil($num_items/$mainposts_per_page);
+	    }
+	    // Obliczanie strony, na której obecnie jestesmy
+		$on_page = floor($start / $mainposts_per_page) + 1;
+	} else {
+		$total_pages = 0;
+		$on_page = 0;
+	}
+	
+	if($total_pages == 1) echo '';
+	
+	$page_string = '';
+	
+	if($total_pages > 6) {
+	    $init_page_max = ($total_pages > 3) ? 3 : $total_pages;
+	    for($i = 1; $i < $init_page_max + 1; $i++) {
+	        $page_string .= ($i == $on_page) ? '<b>' . $i . '</b>' : '<a href="' . $url . (($i - 1) * $mainposts_per_page) . '">' . $i . '</a>';
+	        if($i <  $init_page_max) {
+	            $page_string .= ", ";
+	        }
+	    }
+	    
+	    if($total_pages > 3) {
+	        if($on_page > 1  && $on_page < $total_pages) {
+	            $page_string .= ($on_page > 5) ? ' ... ' : ', ';
+	            
+	            $init_page_min = ($on_page > 4) ? $on_page : 5;
+	            $init_page_max = ($on_page < $total_pages - 4) ? $on_page : $total_pages - 4;
+	            
+	            for($i = $init_page_min - 1; $i < $init_page_max + 2; $i++) {
+	                $page_string .= ($i == $on_page) ? '<b>' . $i . '</b>' : '<a href="' . $url . (($i - 1) * $mainposts_per_page) . '">' . $i . '</a>';
+	                if($i < $init_page_max + 1) {
+	                    $page_string .= ', ';
+	                }
+	            }
+	            
+	            $page_string .= ($on_page < $total_pages - 4) ? ' ... ' : ', ';
+	        } else {
+	            $page_string .= ' ... ';
+	        }
+	        
+	        for($i = $total_pages - 2; $i < $total_pages + 1; $i++) {
+	            $page_string .= ($i == $on_page) ? '<b>' . $i . '</b>'  : '<a href="' . $url . (($i - 1) * $mainposts_per_page) . '">' . $i . '</a>';
+	            if($i < $total_pages) {
+	                $page_string .= ", ";
+	            }
+	        }
+	    }
+	} else {
+	    
+	    for($i = 1; $i < $total_pages + 1; $i++) {
+	        $page_string .= ($i == $on_page) ? '<b>' . $i . '</b>' : '<a href="' . $url . (($i - 1) * $mainposts_per_page) . '">' . $i . '</a>';
+	        if($i <  $total_pages) {
+	            $page_string .= ', ';
+	        }
+	    }
+	}
+	
+	if($on_page > 1) {
+	    $page_string = ' <a href="' . $url . (($on_page - 2) * $mainposts_per_page) . '">' . " <b>poprzednia</b>" . '</a>&nbsp;&nbsp;' . $page_string;
+	}
+	
+	if($on_page < $total_pages) {
+	    $page_string .= '&nbsp;&nbsp;<a href="' . $url . ($on_page * $mainposts_per_page) . '">' . "<b>nastêpna</b> " . '</a>';
+	}
+	
+	$ret['days_to']            = $days_to;
+	$ret['mysql_data']         = $mysql_data;
+	$ret['mainposts_per_page'] = $mainposts_per_page;
+	$ret['page_string']        = $page_string;
+	
+	return $ret;
 }
 
 ?>
