@@ -27,6 +27,7 @@ switch ($action) {
 		$title 		= $db->f("title");
 		$text 		= $db->f("text");
 		$published	= $db->f("published");
+        $image      = $db->f("image");
 		
 		$ft->assign(array(
             'ID'	=>$_GET['id'],
@@ -40,7 +41,18 @@ switch ($action) {
 		} else {
 			
 			$ft->assign('CHECKBOX_NO', 'checked="checked"');
-		}			
+		}
+		
+		if(!empty($image)) {
+		    
+		    $ft->define("form_imageedit", "form_imageedit.tpl");
+		    $ft->assign(array(
+                'IMAGE'             =>$image, 
+                'OVERWRITE_PHOTO'   =>'Poprzednie zostanie nadpisane'
+		    ));
+            // parsujemy szablon informujacy o do³±czonym do wpisu zdjêciu
+			$ft->parse('IF_IMAGE_EXIST', ".form_imageedit");
+		}	
 
 		$ft->define('form_pageedit', "form_pageedit.tpl");
 		$ft->parse('ROWS',	".form_pageedit");
@@ -72,6 +84,54 @@ switch ($action) {
             );
 		
             $db->query($query);
+            
+            // usuwamy istniej±ce zdjêcie
+            if(isset($_POST['delete_image']) && (($_POST['delete_image']) == 1)) {
+                
+                $query = sprintf("
+                    UPDATE 
+                        %1\$s 
+                    SET 
+                        image = '' 
+                    WHERE 
+                        id = '%2\$d'", 
+                
+                    $mysql_data['db_table_pages'], 
+                    $_GET['id']
+                );
+                
+                $db->query($query);
+            }
+            
+            // dodajemy zdjêcie do wpisu
+            if(!empty($_FILES['file']['name'])) {
+                
+                $up = new upload;
+                $upload_dir = "../photos";
+			
+                // upload pliku na serwer.
+                $file = $up->upload_file($upload_dir, 'file', true, true, 0, "jpg|jpeg|gif");
+                if($file == false) {
+				
+				    echo $up->error;
+                } else {
+			    
+                    $query = sprintf("
+                        UPDATE 
+                            %1\$s 
+                        SET 
+                            image = '%2\$s' 
+                        WHERE 
+                            id = '%3\$d'", 
+			    
+                        $mysql_data['db_table_pages'],
+                        $file,
+                        $_GET['id']
+                    );
+                
+				    $db->query($query);
+                }
+            }
 		
             $ft->assign('CONFIRM', $i18n['edit_page'][0]);
             $ft->parse('ROWS',	".result_note");
