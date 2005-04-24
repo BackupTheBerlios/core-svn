@@ -3,8 +3,9 @@
 <!-- NAME: editlist_category.tpl -->
 <table align="left" cellspacing="0" cellpadding="0" border="0" width="100%">
 	<tr>
-		<td class="mainListHeader" width="13%">Id</td>
+		<td class="mainListHeader" width="7%">Id</td>
 		<td class="mainListHeader" width="57%">Kategoria</td>
+		<td class="mainListHeader" width="6%"></td>
 		<td class="mainListHeader" width="10%">Liczba</td>
 		<td class="mainListHeader" width="10%">Edycja</td>
 		<td class="mainListHeader" width="10%">Usuñ</td>
@@ -13,6 +14,9 @@
     <tr>
 		<td class="{ID_CLASS} center">{CATEGORY_ID}</td>
 		<td class="{ID_CLASS}">{CATEGORY_NAME}</td>
+		<td class="{ID_CLASS} center">
+		{UP} {DOWN}
+		</td>
 		<td class="{ID_CLASS} center">{COUNT}</td>
 		<td class="{ID_CLASS} center"><a href="main.php?p=9&amp;action=show&amp;id={CATEGORY_ID}">Edycja</a></td>
 		<td class="{ID_CLASS} center"><a href="main.php?p=9&amp;action=delete&amp;id={CATEGORY_ID}">Usuñ</a></td>
