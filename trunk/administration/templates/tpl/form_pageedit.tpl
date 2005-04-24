@@ -31,6 +31,12 @@
 		<td class="form" width="80">Tre¶æ strony:&nbsp;</td>
 		<td class="form" width="364" colspan="2"><textarea class="note_textarea" name="text">{TEXT}</textarea></td>
 	</tr>
+	{IF_IMAGE_EXIST}
+	<tr>
+		<td class="form" width="80">Za³±cz zdjêcie:&nbsp;</td>
+		<td class="form" width="234"><input type="file" name="file" size="30" maxlength="255"></td>
+		<td class="form" width="130">{OVERWRITE_PHOTO}</td>
+	</tr>
 	<tr>
 		<td class="form" width="80">Publikowana:&nbsp;</td>
 		<td class="form" width="224">
