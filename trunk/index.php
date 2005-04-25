@@ -5,7 +5,7 @@ if(is_file('administration/inc/config.php')) {
 }
 
 if(!defined('CORE_INSTALLED')) {
-    header('Location: install/install');
+    header('Location: install/install.php');
     exit;
 }
 
