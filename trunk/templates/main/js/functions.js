@@ -98,13 +98,13 @@ function send_data(selection) {
 		// Jesli nacisniety jest przycisk 'zapisz'
 		if ( selection == "sign_in" ) {
 			// Przekierowanie do odpowiedniego url'a
-			document.newsletter_form.action = "index?p=newsletter&m=sign_in";
+			document.newsletter_form.action = "index.php?p=newsletter&m=sign_in";
 		}
 		
 		// Jesli nacisniety jest przycisk 'wypisz'
 		if ( selection == "sign_out" ) {
 			// Przekierowanie do odpowiedniego url'a
-			document.newsletter_form.action = "index?p=newsletter&m=sign_out";
+			document.newsletter_form.action = "index.php?p=newsletter&m=sign_out";
 		}
 		// Zatwierdzenie formularza
 		document.newsletter_form.submit();	
