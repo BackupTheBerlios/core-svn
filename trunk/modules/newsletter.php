@@ -1,7 +1,7 @@
 <?php
 
 $m      = empty($_GET['m']) ? '' : $_GET['m'];
-$email  = isset($_POST['email']) ? intval($_POST['email']) : '';
+$email  = isset($_POST['email']) ? $_POST['email'] : $_POST['email'];
 
 switch($m){
     
@@ -30,10 +30,9 @@ switch($m){
             $query = sprintf("
                 INSERT INTO 
                     %1\$s 
-                VALUES('%2\$s')", 
+                VALUES('$email')", 
             
-                $mysql_data['db_table_newsletter'],
-                $email
+                $mysql_data['db_table_newsletter']
             );
             
             $db->query($query);
@@ -82,10 +81,9 @@ switch($m){
                 DELETE FROM 
                     %1\$s 
                 WHERE 
-                    email = '%2\$s'", 
+                    email = '$email'", 
             
-                $mysql_data['db_table_newsletter'], 
-                $email
+                $mysql_data['db_table_newsletter']
             );
             
             $db->query($query);

@@ -2,8 +2,10 @@
 
 if(is_numeric($_GET['id'])) {
     
+    $cat_pagination_link = isset($rewrite) && $rewrite == 1 ? 'category.' . $_GET['id'] . '.' : 'index.php?p=4&id=' . $_GET['id'] . '&amp;start=';
+    
     // inicjowanie funkcji stronnicujacej wpisy
-    main_pagination('category.' . $_GET['id'] . '.', 'c_id=' . $_GET['id'] . ' AND ', 'mainposts_per_page', 'AND published = \'1\'', 'db_table');
+    main_pagination($cat_pagination_link, 'c_id=' . $_GET['id'] . ' AND ', 'mainposts_per_page', 'AND published = \'1\'', 'db_table');
     
     $query = sprintf("
         SELECT 
@@ -58,6 +60,9 @@ if(is_numeric($_GET['id'])) {
             // konwersja daty na bardziej ludzki format
             $date           = coreDateConvert($date);
             
+            $perma_link    = isset($rewrite) && $rewrite == 1 ? '1,' . $id . ',1,item.html' : 'index.php?p=1&amp;id=' . $id . '';
+            $category_link = isset($rewrite) && $rewrite == 1 ? '1,' . $c_id . ',4,item.html' : 'index.php?p=4&amp;id=' . $c_id . '';
+            
             $ft->assign(array(
                 'DATE'          =>$date,
                 'NEWS_TITLE'    =>$title,
@@ -65,7 +70,9 @@ if(is_numeric($_GET['id'])) {
                 'NEWS_AUTHOR'   =>$author,
                 'NEWS_ID'       =>$id,
                 'CATEGORY_NAME' =>$c_name,
-                'NEWS_CATEGORY' =>$c_id
+                'NEWS_CATEGORY' =>$c_id, 
+                'PERMA_LINK'    =>$perma_link,
+                'CATEGORY_LINK' =>$category_link
             ));
                         
             if($page_string) {
@@ -84,11 +91,17 @@ if(is_numeric($_GET['id'])) {
         
                 if($comments == 0) {
             
+                    $comments_link = isset($rewrite) && $rewrite == 1 ? '1,' . $id . ',3,item.html' : 'index.php?p=3&amp;id=' . $id . '';
+                    $ft->assign('COMMENTS_LINK', $comments_link);
+                    
                     // template prepare
                     $ft->define('comments_link_empty', 'comments_link_empty.tpl');
                 
                     $ft->parse('COMMENTS_ALLOW', 'comments_link_empty');
                 } else {
+                    
+                    $comments_link = isset($rewrite) && $rewrite == 1 ? '1,' . $id . ',2,item.html' : 'index.php?p=2&amp;id=' . $id . '';
+                    $ft->assign('COMMENTS_LINK', $comments_link);
             
                     // template prepare
                     $ft->define('comments_link_alter', 'comments_link_alter.tpl');
@@ -107,11 +120,14 @@ if(is_numeric($_GET['id'])) {
                 
                 if(is_file($img_path)) {
                     list($width, $height) = getimagesize($img_path);
+                    
+                    $photo_link = isset($rewrite) && $rewrite == 1 ? 'photo?id=' . $id . '' : 'photo.php?id=' . $id . '';
                 
                     // wysoko¶æ, szeroko¶æ obrazka
                     $ft->assign(array(
                         'WIDTH'     =>$width,
-                        'HEIGHT'    =>$height
+                        'HEIGHT'    =>$height, 
+                        'PHOTO_LINK'=>$photo_link
                     ));
         
                     if($width > $max_photo_width) {

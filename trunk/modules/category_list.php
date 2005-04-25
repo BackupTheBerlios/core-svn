@@ -25,9 +25,11 @@ while($db->next_record()) {
     $cat_parent_id  = $db->f("category_parent_id");
     $cat_name       = $db->f("category_name");
     
+    $cat_link       = isset($rewrite) && $rewrite == 1 ? '1,' . $cat_id . ',4,item.html' : 'index.php?p=4&amp;id=' . $cat_id . '';
+    
     $ft->assign(array(
         'CAT_NAME'  =>str_replace('&', '&amp;', $cat_name),
-        'NEWS_CAT'  =>$cat_id, 
+        'CAT_LINK'  =>$cat_link, 
         'CLASS'     =>"cat_parent", 
         'PARENT'    =>''
     ));

@@ -91,12 +91,15 @@ switch ($action) {
             );
 
             $db->query($query);
+            
+            $submit_link = isset($rewrite) && $rewrite == 1 ? '1,' . $_POST['id'] . ',2,item.html' : 'index.php?p=2&amp;id=' . $_POST['id'] . '';
 
             // przydzielamy zmienne i parsujemy szablon
             $ft->assign(array(
                 'NEWS_ID'       =>$_POST['id'],
                 'STRING'        =>$page_string,
-                'CONFIRMATION'  =>$i18n['comments_add'][2]
+                'CONFIRMATION'  =>$i18n['comments_add'][2], 
+                'SUBMIT_LINK'   =>$submit_link
             ));
 
             $ft->parse('ROWS','.comments_submit');
@@ -169,6 +172,9 @@ switch ($action) {
             // przypisanie zmiennych
             $title  = $db->f('title');
             $id     = $db->f('id');
+            
+            $perma_link = isset($rewrite) && $rewrite == 1 ? '1,' . $id . ',1,item.html' : 'index.php?p=1&amp;id=' . $id . '';
+            $form_link  = isset($rewrite) && $rewrite == 1 ? '1,3,item.html' : 'index.php?p=3&amp;action=add';
 
             // przypisanie tablicy szablonów::ft
             $ft->assign(array(
@@ -176,7 +182,9 @@ switch ($action) {
                 'NEWS_ID'           =>$id,
                 'COMMENT_AUTHOR'    =>$comment_author,
                 'QUOTE'             =>'[quote]' . strip_tags(br2nl($cite)) . '[/quote]',
-                'STRING'            =>$page_string
+                'STRING'            =>$page_string,
+                'PERMA_LINK'        =>$perma_link,
+                'FORM_LINK'         =>$form_link
             ));
         } else {
 
@@ -199,6 +207,9 @@ switch ($action) {
             // przypisanie zmiennych
             $title  = $db->f('title');
             $id     = $db->f('id');
+            
+            $perma_link = isset($rewrite) && $rewrite == 1 ? '1,' . $id . ',1,item.html' : 'index.php?p=1&amp;id=' . $id . '';
+            $form_link  = isset($rewrite) && $rewrite == 1 ? '1,3,item.html' : 'index.php?p=3&amp;action=add';
 
             // przypisanie tablicy szablonów::ft
             $ft->assign(array(
@@ -206,7 +217,9 @@ switch ($action) {
                 'NEWS_ID'           =>$id,
                 'QUOTE'             =>'',
                 'COMMENT_AUTHOR'    =>$comment_author,
-                'STRING'            =>$page_string
+                'STRING'            =>$page_string, 
+                'PERMA_LINK'        =>$perma_link, 
+                'FORM_LINK'         =>$form_link
             ));
         }
 

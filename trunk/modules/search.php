@@ -6,8 +6,10 @@ $page_string = empty($page_string) ? '' : $page_string;
 $search_word = (isset($_POST['search_word']) ) ? $_POST['search_word'] : $_GET['search_word'];
 $search_word = trim($search_word);
 
+$search_link = isset($rewrite) && $rewrite == 1 ? 'search.' . $search_word . '.' : 'index.php?p=search&search_word=' . $search_word . '&amp;start=';
+
 // inicjowanie funkcji stronnicuj±cej wpisy
-main_pagination('search.' . $search_word . '.', '', 'mainposts_per_page', 'AND published = \'1\' AND text LIKE \'%' . $search_word . '%\' OR title LIKE \'%' . $search_word . '%\'', 'db_table');
+main_pagination($search_link, '', 'mainposts_per_page', 'AND published = \'1\' AND text LIKE \'%' . $search_word . '%\' OR title LIKE \'%' . $search_word . '%\'', 'db_table');
 
 if(!empty($search_word)) {
 	
@@ -125,6 +127,9 @@ if(!empty($search_word)) {
 			
 			$text			= strip_tags($text, '<br>');
 			
+			$perma_link    = isset($rewrite) && $rewrite == 1 ? '1,' . $id . ',1,item.html' : 'index.php?p=1&amp;id=' . $id . '';
+			$category_link = isset($rewrite) && $rewrite == 1 ? '1,' . $c_id . ',4,item.html' : 'index.php?p=4&amp;id=' . $c_id . '';
+			
 			$ft->assign(array(
                 'DATE'				=>$date,
                 'NEWS_TITLE'		=>$search->highlight($search_word, $title),
@@ -133,7 +138,9 @@ if(!empty($search_word)) {
                 'NEWS_ID'			=>$id,
                 'CATEGORY_NAME'		=>$c_name,
                 'NEWS_CATEGORY'		=>$c_id,
-                'STRING'			=>$page_string
+                'STRING'			=>$page_string, 
+                'PERMA_LINK'        =>$perma_link,
+                'CATEGORY_LINK'     =>$category_link
             ));
 								
 			if(($comments_allow) == 0 ) {
@@ -142,12 +149,18 @@ if(!empty($search_word)) {
 			} else {
 		
 				if($comments == 0) {
+				    
+				    $comments_link = isset($rewrite) && $rewrite == 1 ? '1,' . $id . ',3,item.html' : 'index.php?p=3&amp;id=' . $id . '';
+				    $ft->assign('COMMENTS_LINK', $comments_link);
 			
 					// template prepare
 					$ft->define('comments_link_empty', "comments_link_empty.tpl");
 				
 					$ft->parse('COMMENTS_ALLOW', "comments_link_empty");
 				} else {
+				    
+				    $comments_link = isset($rewrite) && $rewrite == 1 ? '1,' . $id . ',2,item.html' : 'index.php?p=2&amp;id=' . $id . '';
+				    $ft->assign('COMMENTS_LINK', $comments_link);
 			
 					// template prepare
 					$ft->define('comments_link_alter', "comments_link_alter.tpl");
@@ -167,11 +180,14 @@ if(!empty($search_word)) {
 			    if(is_file($img_path)) {
 		
 				    list($width, $height) = getimagesize($img_path);
+				    
+				    $photo_link = isset($rewrite) && $rewrite == 1 ? 'photo?id=' . $id . '' : 'photo.php?id=' . $id . '';
 				
 				    // wysokoæ, szeroko¶æ obrazka
 				    $ft->assign(array(
 				        'WIDTH'     =>$width,
-				        'HEIGHT'    =>$height
+				        'HEIGHT'    =>$height, 
+				        'PHOTO_LINK'=>$photo_link
 				    ));
 				    
 				    if($width > $max_photo_width) {

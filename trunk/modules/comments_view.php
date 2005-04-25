@@ -25,12 +25,17 @@ if(is_numeric($_GET['id'])) {
             $id             = $db->f('id');
             $title          = $db->f('title');
             $comments_id    = $db->f('id');
+            
+            $perma_link  = isset($rewrite) && $rewrite == 1 ? '1,' . $id . ',1,item.html' : 'index.php?p=1&amp;id=' . $id . '';
+            $submit_link = isset($rewrite) && $rewrite == 1 ? '1,' . $id . ',3,item.html' : 'index.php?p=3&amp;id=' . $id . '';
 
             $ft->assign(array(
                 'NEWS_TITLE'    =>$title,
                 'NEWS_ID'       =>$id,
                 'COMMENTS_ID'   =>$id,
-                'STRING'        =>$page_string
+                'STRING'        =>$page_string, 
+                'PERMA_LINK'    =>$perma_link, 
+                'SUBMIT_LINK'   =>$submit_link
             ));
 
             $query = sprintf("
@@ -72,6 +77,8 @@ if(is_numeric($_GET['id'])) {
                                 "</div>");
 
                 $text = preg_replace($search, $replace, $text);
+                
+                $quote_link = isset($rewrite) && $rewrite == 1 ? '1,' . $comments_id . ',3,' . $id . 'quote.html' : 'index.php?p=3&amp;id=' . $comments_id . '&amp;c=' . $id . '';
 
                 $ft->assign(array(
                     'DATE'              =>$date,
@@ -80,8 +87,8 @@ if(is_numeric($_GET['id'])) {
                     'COMMENTS_ID'       =>$comments_id,
                     'AUTHOR_EMAIL'      =>$email,
                     'STRING'            =>$page_string,
-                    'ID'                =>$id
-
+                    'ID'                =>$id, 
+                    'QUOTE_LINK'        =>$quote_link
                 ));
                 
                 $ft->define("comments_view", "comments_view.tpl");
