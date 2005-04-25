@@ -51,8 +51,8 @@
 		<span class="title">feed</span>
 		<br />
 		<ul>
-			<li><a href="./rss">rss</a></li>
-			<li><a href="./rsscomments">rss komentarze</a></li>
+			<li><a href="{RSS_LINK}">rss</a></li>
+			<li><a href="{RSSCOMMENTS_LINK}">rss komentarze</a></li>
 		</ul>
 		<br />
 		

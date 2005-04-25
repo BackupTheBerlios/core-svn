@@ -8,7 +8,7 @@
 	{NEWS_AUTHOR}
 </div>
 <div class="category">
-	<b>Kategoria:</b> <a href="1,{NEWS_CATEGORY},4,item.html">{CATEGORY_NAME}</a>
+	<b>Kategoria:</b> <a href="{CATEGORY_LINK}">{CATEGORY_NAME}</a>
 </div>
 <div align="right">
 	<a href="javascript:history.back()">powrót</a>
