@@ -10,6 +10,7 @@ switch ($action) {
         $mainposts_per_page = $_POST['mainposts_per_page'];
         $editposts_per_page = $_POST['editposts_per_page'];
         $max_photo_width    = $_POST['max_photo_width'];
+        $rewrite_allow      = $_POST['rewrite_allow'];
         
         $monit = array();
         
@@ -101,6 +102,22 @@ switch ($action) {
                     $mysql_data['db_table_config'], 
                     $_POST['max_photo_width'], 
                     'max_photo_width'
+                );
+            
+                $db->query($query);
+                
+                // set {MOD_REWRITE} variable
+                $query = sprintf("
+                    UPDATE 
+                        %1\$s 
+				    SET 
+				        config_value = '%2\$d' 
+				    WHERE 
+				        config_name = '%3\$s'",
+            
+                    $mysql_data['db_table_config'], 
+                    $_POST['rewrite_allow'], 
+                    'mod_rewrite'
                 );
             
                 $db->query($query);
@@ -212,7 +229,35 @@ switch ($action) {
 		$db->query($query);
         $db->next_record();
         
-		$max_photo_width = $db->f("config_value");
+        $max_photo_width = $db->f("config_value");
+        
+        // set {MOD_REWRITE} variable
+		// uzycie mod_rewrite po stronie wizualnej
+		// do nadpisywania linkow
+        $query = sprintf("
+            SELECT 
+                config_value 
+            FROM 
+                %1\$s 
+            WHERE 
+                config_name = '%2\$s'",
+        
+            $mysql_data['db_table_config'], 
+            'mod_rewrite'
+        );
+		
+		$db->query($query);
+        $db->next_record();
+        
+		$mod_rewrite = $db->f("config_value");
+		
+		if($mod_rewrite == 1) {
+
+			$ft->assign('REWRITE_YES', 'checked="checked"');
+		} else {
+			
+			$ft->assign('REWRITE_NO', 'checked="checked"');
+		}
 		
 		// Ustawiamy zmienne
         $ft->assign(array(
