@@ -78,7 +78,7 @@ if(is_numeric($_GET['id'])) {
 
                 $text = preg_replace($search, $replace, $text);
                 
-                $quote_link = isset($rewrite) && $rewrite == 1 ? '1,' . $comments_id . ',3,' . $id . 'quote.html' : 'index.php?p=3&amp;id=' . $comments_id . '&amp;c=' . $id . '';
+                $quote_link = isset($rewrite) && $rewrite == 1 ? '1,' . $comments_id . ',3,' . $id . ',1,quote.html' : 'index.php?p=3&amp;id=' . $comments_id . '&amp;c=' . $id . '';
 
                 $ft->assign(array(
                     'DATE'              =>$date,
