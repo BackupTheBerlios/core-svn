@@ -183,6 +183,18 @@ switch ($action) {
             );
 
             $db->query($query);
+            
+            // Ustawiamy mod_rewrite
+            $query = sprintf("
+                INSERT INTO 
+                    %1\$s 
+                VALUES 
+                    ('mod_rewrite', '0')", 
+
+                $t3
+            );
+
+            $db->query($query);
 
             // Ustawiamy ilo¶æ postów na stronie g³ównej
             $query = sprintf("
