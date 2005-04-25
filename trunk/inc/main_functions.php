@@ -102,7 +102,8 @@ function get_cat($page_id, $level) {
 	
 	global 
         $mysql_data, 
-        $ft;
+        $ft, 
+        $rewrite;
 
 	$query = sprintf("
         SELECT 
@@ -131,12 +132,15 @@ function get_cat($page_id, $level) {
 		$page_id 	= $db->f("id");
 		$parent_id 	= $db->f("parent_id");
 		$page_name 	= $db->f("title");
+		
+		$page_link  = isset($rewrite) && $rewrite == 1 ? '1,' . $page_id . ',5,item.html' : 'index.php?p=5&amp;id=' . $page_id . '';
 	
 		$ft->assign(array(
             'PAGE_NAME' =>$page_name,
             'PAGE_ID'   =>$page_id,
             'CLASS'     =>"child",
-            'PARENT'    =>str_repeat('&nbsp; ', $level)
+            'PARENT'    =>str_repeat('&nbsp; ', $level), 
+            'PAGE_LINK' =>$page_link
         ));
 
 		$ft->parse('PAGES_LIST', ".pages_row");
@@ -200,7 +204,8 @@ function get_category_cat($cat_id, $level) {
 	
 	global 
         $mysql_data, 
-        $ft;
+        $ft, 
+        $rewrite;
 
 	$query = sprintf("
         SELECT 
@@ -227,12 +232,15 @@ function get_category_cat($cat_id, $level) {
 		$cat_id           = $db->f("category_id");
 		$cat_parent_id    = $db->f("category_parent_id");
 		$cat_name         = $db->f("category_name");
+		
+		$cat_link = isset($rewrite) && $rewrite == 1 ? '1,' . $cat_id . ',4,item.html' : 'index.php?p=4&amp;id=' . $cat_id . '';
 	
 		$ft->assign(array(
             'CAT_NAME'  =>$cat_name,
             'NEWS_CAT'  =>$cat_id,
             'CLASS'     =>"cat_child",
-            'PARENT'    =>str_repeat('&nbsp; ', $level)
+            'PARENT'    =>str_repeat('&nbsp; ', $level), 
+            'CAT_LINK'   =>$cat_link
         ));
 
 		$ft->parse('CATEGORY_LIST', ".category_row");
