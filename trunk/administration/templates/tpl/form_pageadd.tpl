@@ -38,10 +38,10 @@
 		<td class="form" colspan="2"><input type="file" name="file" size="30" maxlength="255"></td>
 	</tr>
 	<tr>
-		<td class="form" width="80">Kategoria :&nbsp;</td>
+		<td class="form" width="80">Hierarchia :&nbsp;</td>
 		<td class="form" width="" colspan="2">
 		<select class="category_form" name="category_id">
-			<option> -- wybierz kategoriê -- </option>
+			<option> -- strona nadrzêdna -- </option>
 			
 			<!-- BEGIN DYNAMIC BLOCK: page_row -->
 			<option value="{C_ID}">{C_NAME}</option>
