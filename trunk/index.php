@@ -149,15 +149,17 @@ $start  = isset($_GET['start']) ? intval($_GET['start']) : 0;
 $val    = empty($val) ? '' : $val;
 
 // generowanie linkow do kanalow rss
-$rss_link  = isset($rewrite) && $rewrite == 1 ? './rss' : './rss.php';
-$rssc_link = isset($rewrite) && $rewrite == 1 ? './rsscomments' : './rsscomments.php';
+$rss_link       = isset($rewrite) && $rewrite == 1 ? './rss' : './rss.php';
+$rssc_link      = isset($rewrite) && $rewrite == 1 ? './rsscomments' : './rsscomments.php';
+$search_link    = isset($rewrite) && $rewrite == 1 ? 'index.search' : 'index.php?p=search';
 
 $ft->assign(array(
     'TITLE'             =>get_config('title_page'),
     'STATISTICS'        =>get_config('counter'),
     'ENGINE_VERSION'    =>$i18n['index'][1], 
     'RSS_LINK'          =>$rss_link,
-    'RSSCOMMENTS_LINK'  =>$rssc_link
+    'RSSCOMMENTS_LINK'  =>$rssc_link, 
+    'SEARCH_LINK'       =>$search_link
 ));
 
 $max_photo_width = get_config('max_photo_width');
