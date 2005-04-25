@@ -1,6 +1,6 @@
 	<span>Uwaga:</span> Wszystkie pola musz± zostaæ wype³nione
 	<br /><br />
-	<form id="installform" action="doinstall" method="post">
+	<form id="installform" action="install.php?action=send" method="post">
 	<table cellspacing="0" cellpadding="0">
 		<tr>
 			<td width="50%">
