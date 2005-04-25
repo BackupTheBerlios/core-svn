@@ -11,3 +11,6 @@ ALTER TABLE `core_pages`
     
 UPDATE `core_pages` 
     SET page_order = id *10;
+    
+INSERT INTO `core_config` 
+    VALUES ('mod_rewrite', '0');
