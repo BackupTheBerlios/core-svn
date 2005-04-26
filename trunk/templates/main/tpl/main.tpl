@@ -26,14 +26,26 @@
 		</form>
 		<br />
 		
-		<!-- NAME: pages_list.tpl -->
-			{PAGES_LIST}
-		<!-- END: pages_list.tpl -->
+        <span class="title">menu</span><br />
+        <ul>
 		
+            <!-- BEGIN DYNAMIC BLOCK: pages_row -->
+            <li class="{CLASS}">{PARENT}<a href="{PAGE_LINK}">{PAGE_NAME}</a></li>
+            <!-- END DYNAMIC BLOCK: pages_row -->
+        
+        </ul>
+        <br />
 
-		<!-- NAME: category_list.tpl -->
-			{CATEGORY_LIST}
-		<!-- END: category_list.tpl -->
+		<span class="title">kategorie</span><br />
+		<ul>
+		
+            <!-- BEGIN DYNAMIC BLOCK: category_row -->
+            <li class="{CLASS}">{PARENT}<a href="{CAT_LINK}">{CAT_NAME}</a></li>
+            <!-- END DYNAMIC BLOCK: category_row -->
+            
+            <li><br /><a href="./">wszystkie</a></li>
+		
+		</ul> 
 		
 		<br />
 		
