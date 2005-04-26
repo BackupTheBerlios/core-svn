@@ -107,25 +107,6 @@ $ft = new FastTemplate('./templates/' . $theme . '/tpl/');
 $templates_dir = 'templates/';
 $read_dir = @dir($templates_dir);
 
-$ft->define("design_switcher", "design_switcher.tpl");
-$ft->define_dynamic("alternate_design_row", "design_switcher");
-
-while($d = $read_dir->read()) {
-    
-    if($d[0] != '.') {
-        
-        // link do alternatywnego szablonu
-        $template_link = isset($rewrite) && $rewrite == 1 ? '2,' . $d . ',item.html' : 'design.php?issue=' . $d . '';
-        
-        $ft->assign(array(
-            'ALTERNATE_TEMPLATE'    =>$d,
-            'TEMPLATE_LINK'         =>$template_link
-        ));
-        $ft->parse('DESIGN_SWITCHER', ".alternate_design_row");
-    }
-}
-$ft->parse('DESIGN_SWITCHER', 'design_switcher');
-
 $ft->define(array(
     'main'              =>'main.tpl',
     'note_main'         =>'note_main.tpl',
@@ -143,6 +124,22 @@ $ft->define(array(
     'query_failed'      =>'query_failed.tpl'
 ));
 
+$ft->define_dynamic("alternate_design_row", "main");
+
+while($d = $read_dir->read()) {
+    
+    if($d[0] != '.') {
+        
+        // link do alternatywnego szablonu
+        $template_link = isset($rewrite) && $rewrite == 1 ? '2,' . $d . ',item.html' : 'design.php?issue=' . $d . '';
+        
+        $ft->assign(array(
+            'ALTERNATE_TEMPLATE'    =>$d,
+            'TEMPLATE_LINK'         =>$template_link
+        ));
+        $ft->parse('ALTERNATE_DESIGN_ROW', ".alternate_design_row");
+    }
+}
     
 // warto¶æ pocz¹tkowa zmiennej $start -> potrzebna przy stronnicowaniu
 $start  = isset($_GET['start']) ? intval($_GET['start']) : 0;
