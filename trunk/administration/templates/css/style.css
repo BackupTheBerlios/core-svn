@@ -327,11 +327,6 @@ textarea#file {
     width: 57px;
 }
 
-.button.i {
-    font-style: italic; 
-    width: 30px;
-}
-
 .button.e {
     font-style: italic; 
     width: 35px;
@@ -343,11 +338,19 @@ textarea#file {
 }
 
 .button.h {
-    width: 27px;
+    width: 30px;
+}
+
+.button.i {
+    width: 35px;
 }
 
 .button.t {
     width: 45px;
+}
+
+.button.w {
+    width: 50px;
 }
 
 .button.confirm {
