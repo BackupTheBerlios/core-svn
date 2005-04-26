@@ -17,14 +17,15 @@
 	<tr>
 		<td class="form" width="80">Znaki specjalne:&nbsp;</td>
 		<td class="form" colspan="2">
-		<input type="button" class="button b" accesskey="b" name="addbbcode0" value=" b " onClick="bbstyle(0)" onMouseOver="helpline('b')" />
-		<input type="button" class="button s" accesskey="s" name="addbbcode2" value=" strong " onClick="bbstyle(2)" onMouseOver="helpline('s')" />
-		<input type="button" class="button i" accesskey="i" name="addbbcode4" value=" i " onClick="bbstyle(4)" onMouseOver="helpline('i')" />
-		<input type="button" class="button e" accesskey="e" name="addbbcode6" value=" em " onClick="bbstyle(6)" onMouseOver="helpline('e')" />
-		<input type="button" class="button u" accesskey="u" name="addbbcode8" value=" u " onClick="bbstyle(8)" onMouseOver="helpline('u')" />
-		<input type="button" class="button h" accesskey="h" name="addbbcode10" value=" a " onClick="bbstyle(10)" onMouseOver="helpline('h')" />
-		<input type="button" class="button t" accesskey="t" name="addbbcode12" value=" abbr " onClick="bbstyle(12)" onMouseOver="helpline('t')" />
-		&nbsp;<a href="javascript:bbstyle(-1)" onMouseOver="helpline('a')">Zamknij Tagi HTML</a>
+		<input type="button" class="button s" accesskey="s" name="addbbcode0" value=" strong " onClick="bbstyle(0)" onMouseOver="helpline('s')" />
+		<input type="button" class="button e" accesskey="e" name="addbbcode2" value=" em " onClick="bbstyle(2)" onMouseOver="helpline('e')" />
+		<input type="button" class="button u" accesskey="u" name="addbbcode4" value=" u " onClick="bbstyle(4)" onMouseOver="helpline('u')" />
+		<input type="button" class="button i" accesskey="l" name="addbbcode6" value=" ul " onClick="bbstyle(6)" onMouseOver="helpline('l')" />
+		<input type="button" class="button i" accesskey="m" name="addbbcode8" value=" li " onClick="bbstyle(8)" onMouseOver="helpline('m')" />
+		<input type="button" class="button h" accesskey="h" name="addbbcode10" value=" url " onClick="bbstyle(10)" onMouseOver="helpline('h')" />
+		<input type="button" class="button i" accesskey="p" name="addbbcode12" value=" img " onClick="bbstyle(12)" onMouseOver="helpline('p')" />
+		<input type="button" class="button t" accesskey="t" name="addbbcode14" value=" abbr " onClick="bbstyle(14)" onMouseOver="helpline('t')" />
+		&nbsp;<a href="javascript:bbstyle(-1)" onMouseOver="helpline('a')">Domknij Tagi</a>
 		</td>
 	</tr>
 	<tr>
