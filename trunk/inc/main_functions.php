@@ -733,4 +733,30 @@ function main_pagination($url, $q, $p, $published, $table) {
 	return $ret;
 }
 
+
+function parse_markers($text, $break = 0, $tab = 0, $tab_long = 4) {
+    
+    $pregResultArr      = array();
+    $pregResultArrSize  = 0;
+    $hash               = md5($text);
+    $tempArr            = array();
+    
+    preg_match_all("#<(ul|li)[^>]*?>.*?</(\\1)>#si", $text, $pregResultArr);
+    
+    $pregResultArrSize = sizeOf($pregResultArr[0]);
+    
+    for($i=0; $i<$pregResultArrSize; $i++){
+        $tempArr[$i] = $hash.'_'.$i;
+    }
+    
+    $text = str_replace($pregResultArr[0], $tempArr, $text);
+    
+    $break  == 1 ? $text = str_nl2br($text) : '';
+    $tab    == 1 ? $text = str_replace("\t", str_repeat('&nbsp;', $tab_long), $text) : '';
+    
+    $text = str_replace($tempArr, $pregResultArr[0], $text);
+    
+    return $text;
+}
+
 ?>
