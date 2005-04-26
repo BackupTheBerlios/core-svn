@@ -337,8 +337,8 @@ function get_transfercategory_cat($page_id, $level) {
             'TARGET_CNAME'  =>str_repeat('&nbsp; ', $level) . "- " .$cat_name
         ));
 
-		$ft->parse('ROWS',              ".current_row");
-        $ft->parse('TARGET_CATEGORY',   ".form_targetcategory");
+		$ft->parse('CURRENT_ROW', ".current_row");
+        $ft->parse('TARGET_ROW', ".target_row");
 		
 		get_transfercategory_cat($cat_id, $level+2);
 	}
