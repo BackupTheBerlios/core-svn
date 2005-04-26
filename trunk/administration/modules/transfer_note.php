@@ -75,12 +75,10 @@ switch ($action) {
 
 	default:
 	
-        $ft->define(array(
-            "form_notetransfer"     =>"form_notetransfer.tpl",
-            "form_targetcategory"   =>"form_targetcategory.tpl"
-        ));
+        $ft->define("form_notetransfer", "form_notetransfer.tpl");
         
         $ft->define_dynamic("current_row", "form_notetransfer");
+        $ft->define_dynamic("target_row", "form_notetransfer");
 	
 		$query = sprintf("
             SELECT 
@@ -110,8 +108,8 @@ switch ($action) {
                 'TARGET_CNAME'  =>$c_name
             ));
 
-            $ft->parse('ROWS',              ".current_row");
-            $ft->parse('TARGET_CATEGORY',   ".form_targetcategory");
+            $ft->parse('CURRENT_ROW', ".current_row");
+            $ft->parse('TARGET_ROW', ".target_row");
             
             // rekurencyjnie pobieramy kategorie wpisów
             get_transfercategory_cat($c_id, 2);	
