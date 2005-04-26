@@ -5,10 +5,10 @@ $action         = empty($_GET['action']) ? '' : $_GET['action'];
 $template_dir   = isset($_POST['template_dir']) ? $_POST['template_dir'] : 'main';
 $tpl_dir        = isset($_GET['tpl_dir']) ? $_GET['tpl_dir'] : '';
 
-$ft->define("form_template_select", "form_template_select.tpl");
-
 $ft->define("editlist_templates", "editlist_templates.tpl");
+
 $ft->define_dynamic("template_row", "editlist_templates");
+$ft->define_dynamic("template_dir", "editlist_templates");
 
 switch($action) {
     
@@ -116,7 +116,7 @@ while($d = $read_dir->read()) {
             }
         }
         
-        $ft->parse('TEMPLATE_SELECTED', ".form_template_select");
+        $ft->parse('TEMPLATE_DIR', ".template_dir");
     }
 }
         
@@ -157,12 +157,12 @@ while($file = $dir->read()) {
         if(is_writeable($path . $file)) {
             
             $ft->assign('STAR', '');
-            $ft->parse('ROWS', ".template_row");
+            $ft->parse('TEMPLATE_ROW', ".template_row");
             
         } else {
             
             $ft->assign('STAR', '*');
-            $ft->parse('ROWS', ".template_row");
+            $ft->parse('TEMPLATE_ROW', ".template_row");
         }
     }
 }
