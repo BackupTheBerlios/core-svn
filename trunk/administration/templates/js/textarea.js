@@ -18,38 +18,28 @@ var is_win = ((clientPC.indexOf("win")!=-1) || (clientPC.indexOf("16bit") != -1)
 var is_mac = (clientPC.indexOf("mac")!=-1);
 
 // Helpline messages
-b_help = "Tekst pogrubiony: <b>tekst</b>  (alt+b)";
 s_help = "Tekst wzmocniony: <strong>tekst</strong>  (alt+s)";
-i_help = "Tekst kursyw±: <i>tekst</i>  (alt+i)";
-e_help = "Tekst wyró¿niony: <em>tekst</em>  (alt+e)";
+e_help = "Tekst kursyw±: <i>tekst</i>  (alt+e)";
 u_help = "Tekst podkre¶lony: <u>tekst</u>  (alt+u)";
+l_help = "Lista: <ul /> (alt+l)";
+m_help = "Element listy: <li>tekst</li> (alt+m)";
 h_help = "Odno¶nik: <a href=\"adresURI\">tekst</a>  (alt+h)";
+p_help = "Wstaw obrazek: <img src=\"nazwa_obrazka\" />  (alt+p)";
 t_help = "Definicja skrótu: <abbr title=\"definicja\">skrót</abbr>  (alt+t)";
-q_help = "Cytat: [quote]tekst[/quote]  (alt+q)";
-c_help = "Poka¿ kod: [code]kod[/code]  (alt+c)";
-l_help = "Lista: [list]tekst[/list] (alt+l)";
-o_help = "Lista uporz±dkowana: [list=]tekst[/list]  (alt+o)";
-p_help = "Wstaw obrazek: [img]http://adres_obrazka[/img]  (alt+p)";
-w_help = "Wstaw adres: [url]http://adres[/url] or [url=http://adres]Tekst adresu[/url]  (alt+w)";
-a_help = "Zamknij wszystkie otwarte tagi HTMLCode";
-f_help = "Rozmiar czcionki: [size=x-small]ma³y tekst[/size]";
+w_help = "Podziel tekst: tekst [podziel] dalsza czê¶æ  (alt+w)";
 
 // Define the bbCode tags
 bbcode = new Array();
 bbtags = new Array(
-    '<b>', '</b>', 
     '<strong>', '</strong>', 
-    '<i>', '</i>', 
     '<em>', '</em>', 
     '<u>', '</u>', 
-    '<a href="">', '</a>', 
+    '<ul>\n', '</ul>\n', 
+    '\t<li>', '</li>\n',
+    '<a href=" ">', '</a>', 
+    '<img src=" " alt=" " />', '',
     '<abbr title="">', '</abbr>', 
-    '[quote]', '[/quote]', 
-    '[code]', '[/code]', 
-    '[list]', '[/list]', 
-    '[list=]', '[/list]', 
-    '[img]', '[/img]', 
-    '[url]', '[/url]'
+    '[podziel]', ''
 );
 imageTag = false;
 
