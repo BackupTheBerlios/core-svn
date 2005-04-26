@@ -14,7 +14,13 @@ switch ($action) {
         if($permarr['writer']) {
 	
             //sprawdzania daty
-            $date = $_POST['date'] == 1 ? date("Y-m-d H:i:s") : $_POST['date'];
+            if (isset($_POST['now'])) {
+
+              $date = date("Y-m-d H:i:s");
+            } else {
+              
+              $date = $_POST['date'];
+            }
             
             $text = nl2br($_POST['text']);
 		

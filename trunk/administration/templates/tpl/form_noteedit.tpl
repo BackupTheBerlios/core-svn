@@ -11,7 +11,7 @@
 	<tr>
 		<td class="form" width="80">Data:&nbsp;</td>
 		<td class="form" width="234"><input type="text" name="date" size="30" maxlength="255" value="{DATE}" /></td>
-		<td class="form" width="130"><input class="checkbox" type="checkbox" name="date" value="1" align="top" />&nbsp;- aktualna data</td>
+		<td class="form" width="130"><input class="checkbox" type="checkbox" name="now" value="1" align="top" />&nbsp;- aktualna data</td>
 	</tr>
 	<tr>
 		<td class="form" width="80">Autor wpisu:&nbsp;</td>

@@ -15,7 +15,17 @@ switch ($action) {
 	case "show":// wy¶wietlanie wpisu pobranego do modyfikacji
 	
 		$query = sprintf("
-            SELECT * FROM 
+            SELECT
+                id,
+	            c_id,
+	            DATE_FORMAT(date, '%%d-%%m-%%Y %%T') AS date,
+	            title,
+	            author,
+	            text,
+	            image,
+	            comments_allow,
+	            published
+            FROM 
                 %1\$s 
             WHERE 
                 id = '%2\$d'", 
@@ -35,11 +45,6 @@ switch ($action) {
         $image          = $db->f("image");
 		$category		= $db->f("c_id");
 		$comments_allow = $db->f("comments_allow");
-		
-		$date	= substr($date, 0, 16);
-		$dat1	= explode(" ", $date);
-		$dat	= explode("-", $dat1[0]);
-		$date	= "$dat[2]-$dat[1]-$dat[0] $dat1[1]";
 		
 		/* nie dziala tak jak powinno, chwilowo zakomentowane
 		 *
@@ -143,7 +148,7 @@ switch ($action) {
 		
 		$note_author = $db->f("author");
 		
-		if($permarr['moderator'] || ($permarr['writer'] && ($note_author == $_SESSION['login']))) {
+		if($permarr['moderator'] || ($permarr['writer'] && $note_author == $_SESSION['login'])) {
 	
             $text		= str_nl2br($_POST['text']);
             $title		= $_POST['title'];
@@ -152,6 +157,15 @@ switch ($action) {
             $c_id		= $_POST['category_id'];
             
             $comments_allow = $_POST['comments_allow'];
+
+            //sprawdzania daty
+            if (isset($_POST['now']) || !preg_match('#^([0-9][0-9])-([0-9][0-9])-([0-9][0-9][0-9][0-9]) ([0-9][0-9]:[0-9][0-9]:[0-9][0-9])$#', $_POST['date'], $matches)) {
+
+                $date = date("Y-m-d H:i:s");
+            } else {
+
+              $date = sprintf('%s-%s-%s %s', $matches[3], $matches[2], $matches[1], $matches[4]);
+            }
 		
             $query = sprintf("
                 UPDATE 
@@ -162,9 +176,10 @@ switch ($action) {
                     text			= '%4\$s', 
                     published		= '%5\$s', 
                     c_id			= '%6\$d', 
-                    comments_allow	= '%7\$d'  
+                    comments_allow	= '%7\$d',
+                    date            = '%8\$s'
                 WHERE 
-                    id = '%8\$d'", 
+                    id = '%9\$d'", 
             
                 $mysql_data['db_table'], 
                 $title, 
@@ -173,6 +188,7 @@ switch ($action) {
                 $published, 
                 $c_id, 
                 $comments_allow, 
+                $date,
                 $_GET['id']
             );
             
