@@ -1,1 +1,0 @@
-<option value="{TARGET_CID}">{TARGET_CNAME}</option>
