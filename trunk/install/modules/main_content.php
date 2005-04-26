@@ -75,8 +75,15 @@ switch ($action) {
             define('DB_NAME', $dbname);
 
             $db = new DB_Sql;
-
-            $sql_query = explode(';', file_get_contents($db_schema));
+            
+            // poprawiono dla wersji php < 4.3.0
+            if(!function_exists('file_get_contents')) {
+                $sql_query = implode('', file($db_schema));
+                $sql_query = explode(';', $sql_query);
+            } else {
+                $sql_query = explode(';', file_get_contents($db_schema));
+            }
+            
             $sql_query = str_replace('core_', $dbprefix, $sql_query);
 
             $sql_size = sizeof($sql_query) - 1;
