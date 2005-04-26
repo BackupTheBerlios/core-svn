@@ -25,7 +25,9 @@
 		
             <option>Wybierz kategoriê</option>
 		
-            {TARGET_CATEGORY}
+            <!-- BEGIN DYNAMIC BLOCK: target_row -->
+            <option value="{TARGET_CID}">{TARGET_CNAME}</option>
+            <!-- END DYNAMIC BLOCK: target_row -->
 		
 		</select>
 		</td>
