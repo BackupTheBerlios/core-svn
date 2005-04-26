@@ -13,11 +13,13 @@ switch($action) {
 	
         if($permarr['writer']) {
 	
-            $text = nl2br($_POST['text']);
+            $text       = $_POST['text'];
 		
             $title 		= trim($_POST['title']);
             $published 	= $_POST['published'];
             $page_id	= $_POST['category_id'];
+            
+            $text = parse_markers($text, 1);
             
             // Sprawdzanie czy tytul strony jest wype³niony
             if(!empty($title)) {

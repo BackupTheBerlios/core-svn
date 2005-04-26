@@ -53,8 +53,10 @@ switch ($action) {
 	
         if($permarr['moderator']) {
 	
-            $text     = nl2br($_POST['text']);
+            $text     = $_POST['text'];
             $author   = $_POST['author'];
+            
+            $text = parse_markers($text, 1);
 		
             $query = sprintf("
                 UPDATE 

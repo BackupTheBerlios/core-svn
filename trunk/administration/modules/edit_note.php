@@ -150,7 +150,7 @@ switch ($action) {
 		
 		if($permarr['moderator'] || ($permarr['writer'] && $note_author == $_SESSION['login'])) {
 	
-            $text		= str_nl2br($_POST['text']);
+            $text		= $_POST['text'];
             $title		= $_POST['title'];
             $author		= $_POST['author'];
             $published	= $_POST['published'];
@@ -166,6 +166,8 @@ switch ($action) {
 
               $date = sprintf('%s-%s-%s %s', $matches[3], $matches[2], $matches[1], $matches[4]);
             }
+            
+            $text = parse_markers($text, 1);
 		
             $query = sprintf("
                 UPDATE 

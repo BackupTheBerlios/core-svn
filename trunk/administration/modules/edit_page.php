@@ -62,9 +62,11 @@ switch ($action) {
 	
         if($permarr['writer']) {
 	
-            $text		= nl2br($_POST['text']);
+            $text		= $_POST['text'];
             $title		= $_POST['title'];
             $published	= $_POST['published'];
+            
+            $text = parse_markers($text, 1);
 		
             $query = sprintf("
                 UPDATE 

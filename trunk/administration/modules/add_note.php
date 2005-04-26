@@ -22,13 +22,14 @@ switch ($action) {
               $date = $_POST['date'];
             }
             
-            $text = nl2br($_POST['text']);
-		
+            $text           = $_POST['text'];
             $title 			= $_POST['title'];
             $author 		= $_POST['author'];
             $category_id 	= $_POST['category_id'];
             $comments_allow = $_POST['comments_allow'];
             $published 		= $_POST['published'];
+            
+            $text = parse_markers($text, 1);
 		
             $query = sprintf("
                 INSERT INTO 
