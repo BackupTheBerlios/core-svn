@@ -252,6 +252,18 @@ switch ($action) {
 
             $db->query($query);
 
+            // wersja core
+            $query = sprintf("
+                INSERT INTO 
+                    %1\$s 
+                VALUES 
+                    ('core_version', '0.3.7')", 
+
+                $t3 
+            );
+
+            $db->query($query);
+
             if($fp == FALSE) {
 
                 $err .= "Instalator nie móg³ stworzyæ pliku konfiguracyjnego.<br />";

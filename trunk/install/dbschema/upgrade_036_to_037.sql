@@ -14,3 +14,6 @@ UPDATE `core_pages`
     
 INSERT INTO `core_config` 
     VALUES ('mod_rewrite', '0');
+
+INSERT INTO `core_config` 
+    VALUES ('core_version', '0.3.7');

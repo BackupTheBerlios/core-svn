@@ -38,7 +38,7 @@
 </div>
 
 <div id="footer">
-<span class="black">Core</span> - System Zarz±dzania Tre¶ci±<br />
+  <span class="black">Core</span> - System Zarz±dzania Tre¶ci± (v.{VERSION})<br />
 Copyright 2005 - Wszystkie Prawa Zastrze¿one: <span class="black">Core Dev Team</span>
 </div>
 </body>

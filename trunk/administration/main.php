@@ -139,7 +139,8 @@ $ft->define(array(
 $ft->assign(array(
     'PRIVILEGE_LEVEL'   =>$privilege_level,
     'PAGE_TITLE'        =>$i18n['main'][0],
-    'LOGGED_IN'         =>$_SESSION['login']
+    'LOGGED_IN'         =>$_SESSION['login'],
+    'VERSION'           =>get_config('core_version')
 ));
 
 $inc_modules = array(
