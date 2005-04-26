@@ -34,15 +34,13 @@ while($db->next_record()) {
         'PARENT'    =>''
     ));
     
-    $ft->define("category_list", "category_list.tpl");
-    $ft->define_dynamic("category_row", "category_list");
+    $ft->define_dynamic("category_row", "main");
     
-    $ft->parse('CATEGORY_LIST', ".category_row");
+    $ft->parse('CATEGORY_ROW', ".category_row");
     
     // funkcja pobieraj±ca rekurencyjnie strony dziedzicz±ce::child
     get_category_cat($cat_id, 2);
     
 }
 
-$ft->parse('CATEGORY_LIST', 'category_list');
 ?>

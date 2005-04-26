@@ -35,16 +35,14 @@ if($db->num_rows() > 0) {
         ));
         
         // Parsowanie nazw stron rodzicielskich::parent	
-        $ft->define("pages_list", "pages_list.tpl");
-        $ft->define_dynamic("pages_row", "pages_list");
+        $ft->define_dynamic("pages_row", "main");
     
-        $ft->parse('PAGES_LIST', ".pages_row");
+        $ft->parse('PAGES_ROW', ".pages_row");
         
         // funkcja pobieraj±ca rekurencyjnie strony dziedzicz±ce::child
         get_cat($page_id, 2);
     }
     
-    $ft->parse('PAGES_LIST', "pages_list");
 }
 
 ?>
