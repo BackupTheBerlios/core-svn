@@ -143,7 +143,7 @@ function get_cat($page_id, $level) {
             'PAGE_LINK' =>$page_link
         ));
 
-		$ft->parse('PAGES_LIST', ".pages_row");
+		$ft->parse('PAGES_ROW', ".pages_row");
 		get_cat($page_id, $level+2);
 	}
 }
@@ -243,7 +243,7 @@ function get_category_cat($cat_id, $level) {
             'CAT_LINK'   =>$cat_link
         ));
 
-		$ft->parse('CATEGORY_LIST', ".category_row");
+		$ft->parse('CATEGORY_ROW', ".category_row");
 		get_category_cat($cat_id, $level+2);
 	}
 }
