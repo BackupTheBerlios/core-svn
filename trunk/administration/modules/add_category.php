@@ -7,7 +7,7 @@ switch ($action) {
 	
 	case "add":
 	
-		$category_name        = $_POST['category_name'];
+		$category_name        = trim($_POST['category_name']);
 		$category_description = $_POST['category_description'];
 		$category_parent_id   = $_POST['category_id'];
 		
@@ -20,7 +20,7 @@ switch ($action) {
 		if($permarr['moderator']) {
 		    
 		    // Obs³uga formularza, jesli go zatwierdzono
-		    if(!eregi("^([^0-9]+){2,}$", $category_name)) {
+		    if($category_name == '') {
 		        
 		        $monit[] = $i18n['add_category'][0];
 		    }
