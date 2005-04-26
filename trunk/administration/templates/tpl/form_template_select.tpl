@@ -1,1 +1,0 @@
-<option value="{CURRENT_TEMPLATE}" {SELECTED}>{CURRENT_TEMPLATE}</option>
