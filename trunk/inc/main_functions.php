@@ -759,4 +759,22 @@ function parse_markers($text, $break = 0, $tab = 0, $tab_long = 4) {
     return $text;
 }
 
+
+function show_me_more($text) {
+    
+    global 
+        $perma_link, 
+        $i18n;
+    
+    $find = strpos($text, '[podziel]');
+	    
+	if($find) {
+	        
+	    $text = substr($text, 0, strpos($text, '[podziel]'));
+	    $text .= '<br /><a href=' . $perma_link . '>' . $i18n['main_view'][1] . '</a>';
+	}
+	
+	return $text;
+}
+
 ?>
