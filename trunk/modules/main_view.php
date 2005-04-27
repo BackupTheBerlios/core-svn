@@ -56,6 +56,8 @@ if($db->num_rows() !== 0) {
 	    $perma_link    = isset($rewrite) && $rewrite == 1 ? '1,' . $id . ',1,item.html' : 'index.php?p=1&amp;id=' . $id . '';
 	    $category_link = isset($rewrite) && $rewrite == 1 ? '1,' . $c_id . ',4,item.html' : 'index.php?p=4&amp;id=' . $c_id . '';
 	    
+	    $text = show_me_more($text);
+	    
 	    $ft->assign(array(
 	       'DATE'          =>$date,
 	       'NEWS_TITLE'    =>$title,

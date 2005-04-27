@@ -40,7 +40,7 @@ if($db->num_rows() > 0) {
 
     $date           = $db->f('date');
     $title          = $db->f('title');
-    $text           = $db->f('text');
+    $text           = str_replace('[podziel]', '', $db->f('text'));
     $author         = $db->f('author');
     $id             = $db->f('id');
     $c_id           = $db->f('c_id');
