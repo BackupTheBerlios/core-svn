@@ -25,7 +25,7 @@ if($db->num_rows() !== 0) {
     $image  = $db->f("image");
     
     $ft->assign(array(
-        'PAGE_TITLE'    =>ucfirst(strtolower($title)),
+        'PAGE_TITLE'    =>$title,
         'PAGE_TEXT'     =>$text,
         'PAGE_ID'       =>$id
     ));
