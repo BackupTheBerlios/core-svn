@@ -133,7 +133,7 @@ class upload {
 			}
 		} elseif($rename && file_exists($this->full_name)) {
 			
-			if(preg_match("/\..*+$/", $this->full_name)) {
+			if(preg_match("#\..*+$#", $this->full_name)) {
 				
 				$this->set_file_name(substr_replace($this->file_name, "_" . rand(0, rand(0, 999)), 0, 0));
 			}
