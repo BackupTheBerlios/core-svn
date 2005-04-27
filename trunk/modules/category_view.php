@@ -66,15 +66,16 @@ if(is_numeric($_GET['id'])) {
             $text = show_me_more($text);
             
             $ft->assign(array(
-                'DATE'          =>$date,
-                'NEWS_TITLE'    =>$title,
-                'NEWS_TEXT'     =>$text,
-                'NEWS_AUTHOR'   =>$author,
-                'NEWS_ID'       =>$id,
-                'CATEGORY_NAME' =>$c_name,
-                'NEWS_CATEGORY' =>$c_id, 
-                'PERMA_LINK'    =>$perma_link,
-                'CATEGORY_LINK' =>$category_link
+                'DATE'              =>$date,
+                'NEWS_TITLE'        =>$title,
+                'NEWS_TEXT'         =>$text,
+                'NEWS_AUTHOR'       =>$author,
+                'NEWS_ID'           =>$id,
+                'CATEGORY_NAME'     =>$c_name, 
+                'SELECTED_CATEGORY' =>$c_name, 
+                'NEWS_CATEGORY'     =>$c_id, 
+                'PERMA_LINK'        =>$perma_link,
+                'CATEGORY_LINK'     =>$category_link
             ));
                         
             if($page_string) {
