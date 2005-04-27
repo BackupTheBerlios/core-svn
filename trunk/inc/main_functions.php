@@ -766,12 +766,14 @@ function show_me_more($text) {
         $perma_link, 
         $i18n;
     
-    $find = strpos($text, '[podziel]');
-	    
-	if($find) {
+	if($find = strpos($text, '[podziel]')) {
 	        
-	    $text = substr($text, 0, strpos($text, '[podziel]'));
-	    $text .= '<br /><a href=' . $perma_link . '>' . $i18n['main_view'][1] . '</a>';
+        $text = sprintf('%s<br /><a href="%s">%s</a>',
+        
+            substr($text, 0, $find),
+            $perma_link,
+            $i18n['main_view'][1]
+        );
 	}
 	
 	return $text;
