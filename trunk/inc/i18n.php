@@ -49,6 +49,7 @@ $i18n['comments_view'][1] = 'Szukasz czego¶?';
 
 $i18n['main_view'] = array();
 $i18n['main_view'][0] = 'W bazie danych nie ma ¿adnego wpisu. Mo¿esz siê <a href="administration/">zalogowaæ</a>.';
+$i18n['main_view'][1] = '&raquo; czytaj dalej';
 
 $i18n['newsletter'] = array();
 $i18n['newsletter'][0] = 'Twój email znajduje siê ju¿ w bazie danych.';
