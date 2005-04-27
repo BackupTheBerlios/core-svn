@@ -12,6 +12,7 @@ $i18n = array();
 $i18n['index'] = array();
 $i18n['index'][0] = 'Brak wybranego skina do systemu <strong>CORE</strong>.';
 $i18n['index'][1] = 'Based on <a href="http://core.no1-else.com/" target="_blank">Core</a>';
+$i18n['index'][2] = 'Skasuj katalog <b>install/</b> zanim uruchomisz <strong>CORE</strong>.';
 
 $i18n['design'] = array();
 $i18n['design'][0] = 'Brak wybranego skina do systemu <strong>CORE</strong>.';
