@@ -47,27 +47,48 @@ switch ($action) {
         if($permarr['moderator']) {
 	
             $category_description	= nl2br($_POST['category_description']);
-            $category_name			= $_POST['category_name'];
+            $category_name			= trim($_POST['category_name']);
+            
+            $monit = array();
+            
+            // Obs³uga formularza, jesli go zatwierdzono
+		    if($category_name == '') {
+		        
+		        $monit[] = $i18n['add_category'][0];
+		    }
+		    
+		    if(empty($monit)) {
+		        
+		        $query = sprintf("
+                    UPDATE 
+                        %1\$s 
+                    SET 
+                        category_name = '%2\$s', 
+                        category_description = '%3\$s' 
+                    WHERE 
+                        category_id='%4\$d'", 
 		
-            $query = sprintf("
-                UPDATE 
-                    %1\$s 
-                SET 
-                    category_name = '%2\$s', 
-                    category_description = '%3\$s' 
-                WHERE 
-                    category_id='%4\$d'", 
+                    $mysql_data['db_table_category'], 
+                    $category_name, 
+                    $category_description, 
+                    $_GET['id']
+                );
 		
-                $mysql_data['db_table_category'], 
-                $category_name, 
-                $category_description, 
-                $_GET['id']
-            );
+                $db->query($query);
 		
-            $db->query($query);
-		
-            $ft->assign('CONFIRM', $i18n['edit_category'][2]);
-            $ft->parse('ROWS',	".result_note");
+                $ft->assign('CONFIRM', $i18n['edit_category'][2]);
+                $ft->parse('ROWS',	".result_note");
+		    } else {
+		        
+		        foreach ($monit as $error) {
+    
+                    $ft->assign('ERROR_MONIT', $error);
+                    
+                    $ft->parse('ROWS',	".error_row");
+                }
+                        
+                $ft->parse('ROWS', "error_reporting");
+		    }
         } else {
             
             $monit[] = $i18n['edit_category'][6];
