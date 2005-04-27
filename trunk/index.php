@@ -65,6 +65,12 @@ if(!get_magic_quotes_gpc()) {
     }
 }
 
+// sprawdzamy, czy katalog install/ nadal istnieje mimo instalacji.
+if(is_dir('install')) {
+    printf('<div style="font-family: Arial, sans-serif; font-size: 16px; background-color: #ccc; border: 1px solid red; padding: 15px; text-align: center;">%s</div>', $i18n['index'][2]);
+    exit;
+}
+
 //inicjacja polaczenie z MySQL
 $db = new DB_Sql;
 
