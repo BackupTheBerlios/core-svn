@@ -126,22 +126,24 @@ class upload {
 		}
 		
 		if(!is_bool($rename) && !empty($rename)) {
-			
-			if(preg_match("/\..*+$/", $this->name, $matches)) {
-				
-				$this->set_file_name($rename . $matches[0]);
-			}
+		    
+		    if(preg_match("/\..*+$/", $this->file_name, $matches)) $this->set_file_name($rename . $matches[0]);
 		} elseif($rename && file_exists($this->full_name)) {
 			
-			if(preg_match("#\..*+$#", addslashes($this->full_name))) {
-				
-				$this->set_file_name(substr_replace($this->file_name, "_" . rand(0, rand(0, 999)), 0, 0));
-			}
+		    if(preg_match("/\..*+$/", $this->file_name, $matches)) {
+		        
+		        $this->set_file_name(substr_replace($this->file_name, "_".rand(0, rand(0, 99)), -strlen($matches[0]), 0));
+		    }
 		}
-		
+
 		if(file_exists($this->full_name)) {
-			
-			$replace = $replace ? @unlink($this->full_name) : $this->error = "File error: File already exist";
+		    
+		    if($replace) {
+		        @unlink($this->full_name);
+		    } else {
+		        $this->error="File error : File already exists";
+		        return false;
+		    }
 		}
 		
 		$this->start_upload();
