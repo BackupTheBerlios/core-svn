@@ -264,6 +264,18 @@ switch ($action) {
 
             $db->query($query);
 
+            // format daty
+            $query = sprintf("
+                INSERT INTO 
+                    %1\$s 
+                VALUES 
+                    ('date_format', 'Y-m-d H:i:s')", 
+
+                $t3 
+            );
+
+            $db->query($query);
+
             if($fp == FALSE) {
 
                 $err .= "Instalator nie móg³ stworzyæ pliku konfiguracyjnego.<br />";

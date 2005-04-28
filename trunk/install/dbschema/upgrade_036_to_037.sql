@@ -17,3 +17,6 @@ INSERT INTO `core_config`
 
 INSERT INTO `core_config` 
     VALUES ('core_version', '0.3.7');
+
+INSERT INTO `core_config` 
+    VALUES ('date_format', 'Y-m-d H:i:s');
