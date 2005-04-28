@@ -13,28 +13,31 @@ main_pagination($search_link, '', 'mainposts_per_page', 'AND published = \'1\' A
 
 if(!empty($search_word)) {
 	
-	$query = "	SELECT 
-					a.*, b.*, c.comments_id, count(c.id) AS comments 
-				FROM 
-					$mysql_data[db_table] a 
-				LEFT JOIN 
-					$mysql_data[db_table_category] b 
-				ON 
-					b.category_id = a.c_id 
-				LEFT JOIN 
-					$mysql_data[db_table_comments] c 
-				ON 
-					a.id = c.comments_id
-				WHERE 
-					published = '1' 
-				AND 
-					a.text LIKE '%" . $search_word . "%' 
-				OR 
-					a.title LIKE '%" . $search_word . "%' 
-				GROUP BY 
-					a.date 
-				DESC LIMIT 
-					$start, $mainposts_per_page";
+    $query = "
+        SELECT 
+            a.*,
+            UNIX_TIMESTAMP(a.date) AS date,
+            b.*, c.comments_id, count(c.id) AS comments 
+		FROM 
+			$mysql_data[db_table] a 
+		LEFT JOIN 
+			$mysql_data[db_table_category] b 
+		ON 
+            b.category_id = a.c_id 
+        LEFT JOIN 
+            $mysql_data[db_table_comments] c 
+        ON 
+            a.id = c.comments_id
+        WHERE 
+            published = '1' 
+        AND 
+            a.text LIKE '%" . $search_word . "%' 
+        OR 
+            a.title LIKE '%" . $search_word . "%' 
+        GROUP BY 
+            a.date 
+        DESC LIMIT 
+            $start, $mainposts_per_page";
 	
 	$db->query($query);
 	
@@ -114,16 +117,13 @@ if(!empty($search_word)) {
 			// Zmiana '&' na ampersand - xhtml
 			$c_name 	= str_replace('&', '&amp;', $c_name);
 			
-			$date 			= $db->f("date");
+			$date 			= date($date_format, $db->f("date"));
 			$title 			= $db->f("title");
 			$text 			= $db->f("text");
 			$author 		= $db->f("author");
 			$id 			= $db->f("id");
 			$image			= $db->f("image");
 			$comments_allow = $db->f("comments_allow");
-			
-			// konwersja daty na bardziej ludzki format
-			$date			= coreDateConvert($date);
 			
 			$text			= strip_tags($text, '<br>');
 			
