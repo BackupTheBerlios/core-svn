@@ -101,7 +101,7 @@ switch ($action) {
                         country         = '%7\$s',
                     
                         www             = '%8\$s',
-                        gg              = '%9\$d',
+                        gg              = '%9\$s',
                         tlen            = '%10\$s', 
                         jid             = '%11\$s',
                     
