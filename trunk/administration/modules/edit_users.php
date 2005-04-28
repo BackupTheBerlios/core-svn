@@ -24,45 +24,26 @@ switch ($action) {
 		$db->query($query);
 		$db->next_record();
 		
-		$user_id     = $db->f("id");
-		$u_login     = $db->f("login");
-		$email       = $db->f("email");
-		$perms       = $db->f("permission_level");
-		$status      = $db->f("active");
-		
-		$name        = $db->f("name");
-		$surname     = $db->f("surname");
-		$city        = $db->f("city");
-		$country     = $db->f("country");
-		
-		$www         = $db->f("www");
-		$gg          = $db->f("gg");
-		$tlen        = $db->f("tlen");
-		$jid         = $db->f("jid");
-		
-		$hobby       = $db->f("hobby");
-		$adinfo      = $db->f("additional_info");
-		
 		$ft->assign(array(
-            'USER_ID'           =>$user_id,
+            'USER_ID'           =>$_GET['id'],
             
-            'LOGIN'             =>$u_login,
-            'EMAIL'             =>$email,
+            'LOGIN'             =>$db->f('login'),
+            'EMAIL'             =>$db->f("email"),
             
-            'NAME'              =>$name,
-            'SURNAME'           =>$surname,
-            'CITY'              =>$city,
-            'COUNTRY'           =>$country,
+            'NAME'              =>$db->f("name"),
+            'SURNAME'           =>$db->f("surname"),
+            'CITY'              =>$db->f("city"),
+            'COUNTRY'           =>$db->f("country"),
             
-            'WWW'               =>$www,
-            'GG'                =>$gg,
-            'TLEN'              =>$tlen,
-            'JID'               =>$jid,
+            'WWW'               =>$db->f("www"),
+            'GG'                =>$db->f("gg"),
+            'TLEN'              =>$db->f("tlen"),
+            'JID'               =>$db->f("jid"),
             
-            'HOBBY'             =>$hobby,
-            'ADDITIONAL_INFO'   =>$adinfo,
+            'HOBBY'             =>$db->f("hobby"),
+            'ADDITIONAL_INFO'   =>$db->f("additional_info"),
             
-            'SUBMIT_URL'		=>"main.php?p=13&amp;action=edit&amp;id=" . $user_id,
+            'SUBMIT_URL'		=>"main.php?p=13&amp;action=edit&amp;id=" . $_GET['id'],
             'SUBMIT_HREF_DESC'	=>"zmodyfikuj dane u¿ytkownika",
             'HEADER_DESC'		=>"<b>U¿ytkownicy - modyfikacja u¿ytkownika</b>"
         ));

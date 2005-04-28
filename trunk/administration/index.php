@@ -5,9 +5,9 @@ session_register("loggedIn");
 setlocale(LC_CTYPE, "pl_PL");
 
 if(isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === TRUE){
-	
-	header("Location: main.php");
-	break;
+    
+    header("Location: main.php");
+    break;
 }
 
 define('PATH_TO_CLASSES', 'classes');
@@ -32,7 +32,7 @@ $ft->define(array(
     'rows'              =>"rows.tpl",
     'form_login'        =>"form_login.tpl"
 ));
-		
+        
 $ft->assign(array(
     'TITLE'         =>$i18n['index'][0],
     'ERROR_MSG'     =>""
@@ -42,60 +42,55 @@ $ft->assign(array(
 $p = empty($_GET['p']) ? '' : $_GET['p'];
 
 if ($p == "log") {
-	
-	$login		= $_POST['login'];
-	$password	= md5($_POST['password']);
-	
-	if(empty($login) OR empty($password)) {
-		
-		// U¿ytkownik nie uzupe³ni³ wszystkich pól::form
-		$ft->assign('ERROR_MSG', $i18n['index'][1]);
-		$ft->parse('ROWS', ".form_login");
-	} else {
-		
-		$db = new DB_SQL;
-		$query = "	SELECT 
-						login, password, active 
-					FROM 
-						$mysql_data[db_table_users] 
-					WHERE 
-						login = '$login' 
-					AND 
-						password = '$password'";
-		
-		$db->query($query);
-	
-		$user 	= $db->f("login");
-		
-		if($db->num_rows() > 0) {
+    
+    $login       = trim($_POST['login']);
+    $password    = trim(md5($_POST['password']));
+    
+    if(empty($login) OR empty($password)) {
+        
+        // U¿ytkownik nie uzupe³ni³ wszystkich pól::form
+        $ft->assign('ERROR_MSG', $i18n['index'][1]);
+        $ft->parse('ROWS', ".form_login");
+    } else {
+        
+        $db = new DB_SQL;
+        $query = "  SELECT 
+                        active 
+                    FROM 
+                        $mysql_data[db_table_users] 
+                    WHERE 
+                        login = '$login' 
+                    AND 
+                        password = '$password'";
+        
+        $db->query($query);
+    
+        if($db->num_rows()) {
 
-			if(($active = $db->f("active")) !== "N") {
-				
-				// Rejestrujemy zmienne sesyjne
-				$_SESSION["login"]		= $login;
-				$_SESSION["loggedIn"]	= TRUE;
-		
-				if(isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === TRUE){
-				
-					header("Location: main.php");
-					break;
-				}
-			} else {
-				
-				// U¿ytkownik nie zaaktywowa³ konta::db
-				$ft->assign('ERROR_MSG', $i18n['index'][2]);
-				$ft->parse('ROWS', ".form_login");
-			}
-		} else {
-			// Niepoprawne dane wej¶cia<->wyj¶cia::form, db
-			$ft->assign('ERROR_MSG', $i18n['index'][3]);
-			$ft->parse('ROWS', ".form_login");
-		}
-	}
+            if($db->f("active") != "N") {
+                
+                // Rejestrujemy zmienne sesyjne
+                $_SESSION["login"]       = $login;
+                $_SESSION["loggedIn"]    = TRUE;
+        
+                header("Location: main.php");
+                break;
+            } else {
+                
+                // U¿ytkownik nie zaaktywowa³ konta::db
+                $ft->assign('ERROR_MSG', $i18n['index'][2]);
+                $ft->parse('ROWS', ".form_login");
+            }
+        } else {
+            // Niepoprawne dane wej¶cia<->wyj¶cia::form, db
+            $ft->assign('ERROR_MSG', $i18n['index'][3]);
+            $ft->parse('ROWS', ".form_login");
+        }
+    }
 } else {
-		
-	include("modules/login.php");
-	
+        
+    include("modules/login.php");
+    
 }
 
 $ft->parse('MAIN', array("main_loader", "main"));

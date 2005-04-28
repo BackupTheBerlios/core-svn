@@ -6,7 +6,7 @@
 	</tr>
 	<tr>
 		<td align="right"><div style="margin: 2px;">Twoje has³o:</div></td>
-		<td><input type="password" name="password" value="" maxlength="15" /></td>
+		<td><input type="password" name="password" value="" /></td>
 	</tr>
 	<tr>
 		<td>&nbsp;</td>

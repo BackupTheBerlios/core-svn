@@ -11,13 +11,13 @@
 	<tr>
 		<td class="form" width="80" align="right">Has³o:&nbsp;</td>
 		<td class="form" width="364" align="left" valign="top">
-            <input type="password" name="password" size="15" maxlength="15" />&nbsp;(6-15 znaków)
+          <input type="password" name="password" size="15" />&nbsp;(&gt;6 znaków)
         </td>
 	</tr>
 	<tr>
 		<td class="form" width="80" align="right">Powtórz Has³o:&nbsp;</td>
 		<td class="form" width="364" align="left" valign="top">
-            <input type="password" name="password_repeat" size="15" maxlength="15" />
+            <input type="password" name="password_repeat" size="15" />
         </td>
 	</tr>
 	<tr>
