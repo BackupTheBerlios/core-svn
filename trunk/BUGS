@@ -7,8 +7,4 @@ sa na rozne sposoby.
 
 3. zalogowalem sie jako user z uprawnieniami izszymi niz 5. konkretnie 2. dlaczego nie moge zmienic _swoich_ danych ?
 
-4. dlaczego po dodaniu usera, i przy niewpisanym numerku gg, pojawia sie w polu gg '0' ?
-
-5. limit znakow na login to imo 32. dlaczego nie ?
-
-6. limit znakow na haslo to imo nieporozumienie. po to jest haszowane md5 (m.in), zeby jego dlugosc byla stala w bazie (32 znaki).
+4. limit znakow na login to imo 32. dlaczego nie ?
