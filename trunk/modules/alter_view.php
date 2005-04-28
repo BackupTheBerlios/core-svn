@@ -2,7 +2,8 @@
 
 $query = sprintf("
     SELECT
-        a.*,
+        a.*, 
+        UNIX_TIMESTAMP(a.date) AS date, 
         b.*,
         c.comments_id,
         count(c.id)
@@ -38,7 +39,7 @@ if($db->num_rows() > 0) {
 
     $db->next_record();
 
-    $date           = $db->f('date');
+    $date           = date($date_format, $db->f("date"));
     $title          = $db->f('title');
     $text           = str_replace('[podziel]', '', $db->f('text'));
     $author         = $db->f('author');
@@ -53,9 +54,6 @@ if($db->num_rows() > 0) {
 
     // Przypisanie zmiennej $comments
     $comments       = $db->f('comments');
-
-    // konwersja daty na bardziej ludzki format
-    $date           = coreDateConvert($date);
     
     $perma_link    = isset($rewrite) && $rewrite == 1 ? '1,' . $id . ',1,item.html' : 'index.php?p=1&amp;id=' . $id . '';
 	$category_link = isset($rewrite) && $rewrite == 1 ? '1,' . $c_id . ',4,item.html' : 'index.php?p=4&amp;id=' . $c_id . '';
