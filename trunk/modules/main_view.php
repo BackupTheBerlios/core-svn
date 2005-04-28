@@ -51,15 +51,14 @@ if($db->num_rows() !== 0) {
 	    
 	    $c_name            = str_replace('&', '&amp;', $db->f('category_name'));
 	    
-        if (isset($rewrite) && $rewrite == 1)
-        {
-          
-          $perma_link = sprintf('1,%1\$s,1,item.html', $id);
-          $category_link = sprintf('1,%1\$s,4,item.html', $c_id);
+        if(isset($rewrite) && $rewrite == 1) {
+            
+            $perma_link     = sprintf('1,%s,1,item.html', $id);
+            $category_link  = sprintf('1,%s,4,item.html', $c_id);
         } else {
-
-          $perma_link = 'index.php?p=1&amp;id=' . $id;
-          $category_link = 'index.php?p=4&amp;id=' . $c_id;
+            
+            $perma_link = 'index.php?p=1&amp;id=' . $id;
+            $category_link = 'index.php?p=4&amp;id=' . $c_id;
         }
 	    
 	    $text = show_me_more($text);
