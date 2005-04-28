@@ -29,8 +29,8 @@ if(is_numeric($_GET['id'])) {
             if (isset($rewrite) && $rewrite == 1)
             {
               
-              $perma_link = sprintf('1,%1\$s,1,item.html', $id);
-              $submit_link = sprintf('1,%1\$s,3,item.html', $c_id);
+              $perma_link = sprintf('1,%s,1,item.html', $id);
+              $submit_link = sprintf('1,%s,3,item.html', $id);
             } else {
 
               $perma_link = 'index.php?p=1&amp;id=' . $id;

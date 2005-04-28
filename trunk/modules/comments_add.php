@@ -155,7 +155,7 @@ switch ($action) {
             // Pobieramy id i tytu³ wpisu jakiego dotyczy komentarz::db
             $query = sprintf("
                 SELECT
-                    id, title
+                    *
                 FROM
                     %s
                 WHERE
@@ -170,8 +170,10 @@ switch ($action) {
             $db->next_record();
 
             // przypisanie zmiennych
-            $title  = $db->f('title');
             $id     = $db->f('id');
+            $title  = $db->f('title');
+            $text   = $db->f('text');
+            $author = $db->f('author');
             
             $perma_link = isset($rewrite) && $rewrite == 1 ? '1,' . $id . ',1,item.html' : 'index.php?p=1&amp;id=' . $id . '';
             $form_link  = isset($rewrite) && $rewrite == 1 ? '1,3,item.html' : 'index.php?p=3&amp;action=add';
@@ -179,7 +181,9 @@ switch ($action) {
             // przypisanie tablicy szablonów::ft
             $ft->assign(array(
                 'NEWS_TITLE'        =>$title,
-                'NEWS_ID'           =>$id,
+                'NEWS_ID'           =>$id, 
+                'NEWS_TEXT'         =>$text, 
+                'NEWS_AUTHOR'       =>$author, 
                 'COMMENT_AUTHOR'    =>$comment_author,
                 'QUOTE'             =>'[quote]' . strip_tags(br2nl($cite)) . '[/quote]',
                 'STRING'            =>$page_string,
@@ -190,7 +194,7 @@ switch ($action) {
 
             $query = sprintf("
                 SELECT
-                    id, title
+                    *
                 FROM
                     %s
                 WHERE
@@ -205,8 +209,10 @@ switch ($action) {
             $db->next_record();
 
             // przypisanie zmiennych
-            $title  = $db->f('title');
             $id     = $db->f('id');
+            $title  = $db->f('title');
+            $text   = $db->f('text');
+            $author = $db->f('author');
             
             $perma_link = isset($rewrite) && $rewrite == 1 ? '1,' . $id . ',1,item.html' : 'index.php?p=1&amp;id=' . $id . '';
             $form_link  = isset($rewrite) && $rewrite == 1 ? '1,3,item.html' : 'index.php?p=3&amp;action=add';
@@ -214,7 +220,9 @@ switch ($action) {
             // przypisanie tablicy szablonów::ft
             $ft->assign(array(
                 'NEWS_TITLE'        =>$title,
-                'NEWS_ID'           =>$id,
+                'NEWS_ID'           =>$id, 
+                'NEWS_TEXT'         =>$text, 
+                'NEWS_AUTHOR'       =>$author, 
                 'QUOTE'             =>'',
                 'COMMENT_AUTHOR'    =>$comment_author,
                 'STRING'            =>$page_string, 
