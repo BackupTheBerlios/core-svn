@@ -26,8 +26,16 @@ if(is_numeric($_GET['id'])) {
             $title          = $db->f('title');
             $comments_id    = $db->f('id');
             
-            $perma_link  = isset($rewrite) && $rewrite == 1 ? '1,' . $id . ',1,item.html' : 'index.php?p=1&amp;id=' . $id . '';
-            $submit_link = isset($rewrite) && $rewrite == 1 ? '1,' . $id . ',3,item.html' : 'index.php?p=3&amp;id=' . $id . '';
+            if (isset($rewrite) && $rewrite == 1)
+            {
+              
+              $perma_link = sprintf('1,%1\$s,1,item.html', $id);
+              $submit_link = sprintf('1,%1\$s,3,item.html', $c_id);
+            } else {
+
+              $perma_link = 'index.php?p=1&amp;id=' . $id;
+              $submit_link = 'index.php?p=3&amp;id=' . $id;
+            }
 
             $ft->assign(array(
                 'NEWS_TITLE'    =>$title,
@@ -39,7 +47,15 @@ if(is_numeric($_GET['id'])) {
             ));
 
             $query = sprintf("
-                SELECT * FROM
+                SELECT
+                    id,
+                    UNIX_TIMESTAMP(date) AS date,
+                    comments_id,
+                    author,
+                    author_ip,
+                    email,
+                    text
+                FROM
                     %1\$s
                 WHERE
                     comments_id = '%2\$s'
@@ -56,15 +72,12 @@ if(is_numeric($_GET['id'])) {
             // Wy¶wietlamy komentarze do konkretnego wpisu
             while($db->next_record()) {
 
-                $date           = $db->f('date');
+                $date           = date($date_format, $db->f('date'));
                 $text           = $db->f('text');
                 $author         = $db->f('author');
                 $comments_id    = $db->f('comments_id');
                 $email          = $db->f('email');
                 $id             = $db->f('id');
-
-                // konwersja daty na bardziej ludzki format
-                $date            = coreDateConvert($date);
 
                 // przeszukanie text w poszukiwaniu ci±gów http, mail, ftp
                 // zamiana ich na format linków

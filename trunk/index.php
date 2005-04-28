@@ -173,6 +173,8 @@ foreach($inc_modules as $module) {
     include('modules/' . $module . '.php');
 }
 
+$date_format = get_config('date_format');
+
 // G³ówna prze³±cznica includowanej tre¶ci
 $p = empty($_GET['p']) ? '' : $_GET['p'];
 switch($p){

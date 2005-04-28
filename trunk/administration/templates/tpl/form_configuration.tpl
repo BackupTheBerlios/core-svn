@@ -3,7 +3,7 @@
 <form enctype="multipart/form-data" method="post" action="main.php?p=10&amp;action=add" id="formConfig">
 <table width="100%" align="left">
 	<tr>
-		<td form" width="200">Liczba postów na stronê:&nbsp;</td>
+		<td width="200">Liczba postów na stronê:&nbsp;</td>
 		<td width="164"><input class="short" type="text" name="mainposts_per_page" value="{MAINPOSTS_PER_PAGE}" /></td>
 	</tr>
 	<tr>
@@ -25,6 +25,10 @@
             <input class="radio" type="radio" name="rewrite_allow" value="0" align="top" {REWRITE_NO} />- nie
         </td>
 	</tr>
+    <tr>
+      <td class="form" width="80">Format daty (<a href="http://php.net/date">szczegó³y</a>):&nbsp;</td>
+      <td class="form" width="224"><input class="long" type="text" name="date_format" value="{DATE_FORMAT}" /></td>
+    </tr>
 	<tr>
       <td width="364" align="left" valign="top" colspan="2"><br /><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('formConfig').submit()">zapisz ustawienia</a></td>
 	</tr>

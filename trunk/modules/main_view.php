@@ -7,7 +7,8 @@ $pagination = main_pagination($pagination_link, '', 'mainposts_per_page', 'AND p
 
 $query = "
 	SELECT 
-		a.*,
+        a.*,
+        UNIX_TIMESTAMP(a.date) AS date,
 		b.*,
 		c.comments_id,
 		count(c.id) AS comments 
@@ -35,7 +36,7 @@ if($db->num_rows() !== 0) {
 
 	while($db->next_record()) {
 	    
-	    $date              = $db->f("date");
+	    $date              = date($date_format, $db->f("date"));
 	    $title             = $db->f("title");
 	    $text              = $db->f("text");
 	    $author            = $db->f("author");
@@ -48,13 +49,18 @@ if($db->num_rows() !== 0) {
 	    
 	    $comments          = $db->f("comments");
 	    
-	    // konwersja daty na bardziej ludzki format
-	    $date      = coreDateConvert($date);
+	    $c_name            = str_replace('&', '&amp;', $db->f('category_name'));
 	    
-	    $c_name    = str_replace('&', '&amp;', $db->f('category_name'));
-	    
-	    $perma_link    = isset($rewrite) && $rewrite == 1 ? '1,' . $id . ',1,item.html' : 'index.php?p=1&amp;id=' . $id . '';
-	    $category_link = isset($rewrite) && $rewrite == 1 ? '1,' . $c_id . ',4,item.html' : 'index.php?p=4&amp;id=' . $c_id . '';
+        if (isset($rewrite) && $rewrite == 1)
+        {
+          
+          $perma_link = sprintf('1,%1\$s,1,item.html', $id);
+          $category_link = sprintf('1,%1\$s,4,item.html', $c_id);
+        } else {
+
+          $perma_link = 'index.php?p=1&amp;id=' . $id;
+          $category_link = 'index.php?p=4&amp;id=' . $c_id;
+        }
 	    
 	    $text = show_me_more($text);
 	    
@@ -70,7 +76,7 @@ if($db->num_rows() !== 0) {
 	       'CATEGORY_LINK' =>$category_link
 	    ));
 	    
-	    if($pagination['page_string'] !== "") {
+	    if(!empty($pagination['page_string'])) {
 	        
 	        $ft->assign('STRING', "<b>Id¼ do strony:</b> " . $pagination['page_string']);
 	    } else {
@@ -80,6 +86,11 @@ if($db->num_rows() !== 0) {
 	    
 	    if(($comments_allow) == 0 ) {
 	        
+            /*
+             * WYWALIC HTML
+             *
+             */
+             
 	        $ft->assign('COMMENTS_ALLOW', '<br />');
 	    } else {
 	        

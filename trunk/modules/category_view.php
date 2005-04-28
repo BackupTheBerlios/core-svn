@@ -10,6 +10,7 @@ if(is_numeric($_GET['id'])) {
     $query = sprintf("
         SELECT 
             a.*,
+            UNIX_TIMESTAMP(a.date) AS date,
             b.*,
             c.comments_id,
             count(c.id) AS comments 
@@ -43,7 +44,7 @@ if(is_numeric($_GET['id'])) {
 
         while($db->next_record()) {
     
-            $date           = $db->f('date');
+            $date           = date($date_format, $db->f('date'));
             $title          = $db->f('title');
             $text           = $db->f('text');
             $author         = $db->f('author');
@@ -57,9 +58,6 @@ if(is_numeric($_GET['id'])) {
 
             $comments       = $db->f('comments');
     
-            // konwersja daty na bardziej ludzki format
-            $date           = coreDateConvert($date);
-            
             $perma_link    = isset($rewrite) && $rewrite == 1 ? '1,' . $id . ',1,item.html' : 'index.php?p=1&amp;id=' . $id . '';
             $category_link = isset($rewrite) && $rewrite == 1 ? '1,' . $c_id . ',4,item.html' : 'index.php?p=4&amp;id=' . $c_id . '';
             

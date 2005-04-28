@@ -15,7 +15,15 @@ switch ($action) {
 	case "show": // wy¶wietlanie wpisu pobranego do modyfikacji
 	
 		$query = sprintf("
-            SELECT * FROM 
+            SELECT
+                 id,
+                 DATE_FORMAT(date, '%%d-%%m-%%Y %%T') AS date,
+                 comments_id,
+                 author,
+                 author_ip,
+                 email,
+                 text
+            FROM 
                 %1\$s 
             WHERE 
                 id = '%2\$d'", 
@@ -32,11 +40,6 @@ switch ($action) {
 		$text 		= $db->f("text");
 		$author		= $db->f("author");
 		$published	= $db->f("published");
-		
-		$date	= substr($date, 0, 16);
-		$dat1	= explode(" ", $date);
-		$dat	= explode("-", $dat1[0]);
-		$date	= "$dat[2]-$dat[1]-$dat[0] $dat1[1]";
 		
 		$ft->assign(array(
             'AUTHOR'    =>$author,
@@ -58,18 +61,29 @@ switch ($action) {
             
             $text = parse_markers($text, 1);
 		
+            //sprawdzania daty
+            if (isset($_POST['now']) || !preg_match('#^([0-9][0-9])-([0-9][0-9])-([0-9][0-9][0-9][0-9]) ([0-9][0-9]:[0-9][0-9]:[0-9][0-9])$#', $_POST['date'], $matches)) {
+
+                $date = date("Y-m-d H:i:s");
+            } else {
+
+              $date = sprintf('%s-%s-%s %s', $matches[3], $matches[2], $matches[1], $matches[4]);
+            }
+
             $query = sprintf("
                 UPDATE 
                     %1\$s 
                 SET 
                     author	= '%2\$s', 
-                    text	= '%3\$s' 
+                    text	= '%3\$s',
+                    date    = '%4\$s'
                 WHERE 
-                    id = '%4\$d'", 
+                    id = '%5\$d'", 
 		
                 $mysql_data['db_table_comments'], 
                 $author, 
                 $text, 
+                $date,
                 $_GET['id']
             );
 		

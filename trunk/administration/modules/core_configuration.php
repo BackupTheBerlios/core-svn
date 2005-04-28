@@ -121,6 +121,22 @@ switch ($action) {
                 );
             
                 $db->query($query);
+
+                // set {DATE_FORMAT} variable
+                $query = sprintf("
+                    UPDATE 
+                        %1\$s 
+				    SET 
+				        config_value = '%2\$s' 
+				    WHERE 
+				        config_name = '%3\$s'",
+            
+                    $mysql_data['db_table_config'], 
+                    $_POST['date_format'], 
+                    'date_format'
+                );
+            
+                $db->query($query);
                 
                 $ft->assign('CONFIRM', $i18n['core_configuration'][5]);
                 $ft->parse('ROWS', ".result_note");
@@ -154,104 +170,7 @@ switch ($action) {
 
     default:
     
-        // set {MAINPOSTS_PER_PAGE} variable
-        // liczba listowanych wpisów w na stronie g³ównej::db
-        $query = sprintf("
-            SELECT 
-                config_value 
-            FROM 
-                %1\$s 
-            WHERE 
-                config_name = '%2\$s'",
-        
-            $mysql_data['db_table_config'], 
-            'mainposts_per_page'
-        );
-            
-        $db->query($query);
-        $db->next_record();
-        
-		$mainposts_per_page = $db->f("config_value");
-		
-		// set {EDITPOSTS_PER_PAGE} variable
-		// liczba listowanych wpisów w czê¶ci administracyjnej::db
-        $query = sprintf("
-            SELECT 
-                config_value 
-            FROM 
-                %1\$s 
-            WHERE 
-                config_name = '%2\$s'",
-        
-            $mysql_data['db_table_config'], 
-            'editposts_per_page'
-        );
-		
-		$db->query($query);
-        $db->next_record();
-        
-		$editposts_per_page = $db->f("config_value");
-		
-		// set {TITLE_PAGE} variable
-		// tytu³ strony, wy¶wietlany w miejscu title::db
-        $query = sprintf("
-            SELECT 
-                config_value 
-            FROM 
-                %1\$s 
-            WHERE 
-                config_name = '%2\$s'",
-        
-            $mysql_data['db_table_config'], 
-            'title_page'
-        );
-		
-		$db->query($query);
-        $db->next_record();
-        
-		$title_page = $db->f("config_value");
-		
-		// set {MAX_PHOTO_WIDTH} variable
-		// maksymalna szerko¶æ zdjêcia do³±czonego do wpisu, 
-		// jakie jest wy¶wietlane na stronie g³ównej::db
-        $query = sprintf("
-            SELECT 
-                config_value 
-            FROM 
-                %1\$s 
-            WHERE 
-                config_name = '%2\$s'",
-        
-            $mysql_data['db_table_config'], 
-            'max_photo_width'
-        );
-		
-		$db->query($query);
-        $db->next_record();
-        
-        $max_photo_width = $db->f("config_value");
-        
-        // set {MOD_REWRITE} variable
-		// uzycie mod_rewrite po stronie wizualnej
-		// do nadpisywania linkow
-        $query = sprintf("
-            SELECT 
-                config_value 
-            FROM 
-                %1\$s 
-            WHERE 
-                config_name = '%2\$s'",
-        
-            $mysql_data['db_table_config'], 
-            'mod_rewrite'
-        );
-		
-		$db->query($query);
-        $db->next_record();
-        
-		$mod_rewrite = $db->f("config_value");
-		
-		if($mod_rewrite == 1) {
+		if(get_config('mod_rewrite') == 1) {
 
 			$ft->assign('REWRITE_YES', 'checked="checked"');
 		} else {
@@ -261,10 +180,11 @@ switch ($action) {
 		
 		// Ustawiamy zmienne
         $ft->assign(array(
-            'MAINPOSTS_PER_PAGE'    =>$mainposts_per_page,
-            'EDITPOSTS_PER_PAGE'    =>$editposts_per_page,
-            'TITLE_PAGE'            =>$title_page,
-            'MAX_PHOTO_WIDTH'       =>$max_photo_width
+            'MAINPOSTS_PER_PAGE'    =>get_config('mainposts_per_page'),
+            'EDITPOSTS_PER_PAGE'    =>get_config('editposts_per_page'),
+            'TITLE_PAGE'            =>get_config('title_page'),
+            'MAX_PHOTO_WIDTH'       =>get_config('max_photo_width'),
+            'DATE_FORMAT'           =>get_config('date_format')
         ));
 			
 		// w przypadku braku akcji wy¶wietlanie formularza
