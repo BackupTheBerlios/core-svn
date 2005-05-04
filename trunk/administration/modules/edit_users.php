@@ -54,7 +54,24 @@ switch ($action) {
 
 	case "edit":
 	
-        if($permarr['admin']) {
+        $query = sprintf("
+            SELECT * FROM 
+                %1\$s 
+            WHERE 
+                id = '%2\$d'", 
+		
+            $mysql_data['db_table_users'],
+            $_GET['id']
+        );
+		
+		$db->query($query);
+		$db->next_record();
+		
+		$core_user = $db->f("login");
+	
+		// sprawdzamy, czy uzytkownik ma odpowiednie uprawniania, lub czy
+		// edytuje swoje dane - wowczas access granted
+        if($permarr['admin'] || ($permarr['writer'] && $core_user == $_SESSION['login'])) {
 
             // edycja wybranego wpisu
             $u_login    = $_POST['login_name'];
