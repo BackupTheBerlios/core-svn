@@ -120,6 +120,6 @@ $i18n['edit_users'][0] = 'Jeste¶ zalogowany jako u¿ytkownik, którego chcesz usun
 $i18n['edit_users'][1] = 'U¿ytkownik zosta³ zmodyfikowany.';
 $i18n['edit_users'][2] = 'U¿ytkownik zosta³ usuniêty.';
 $i18n['edit_users'][3] = '<b>Nie masz uprawnieñ</b> do usuwania u¿ytkowników.';
-$i18n['edit_users'][4] = '<b>Nie masz uprawnieñ</b> do edycji u¿ytkowników.';
+$i18n['edit_users'][4] = '<b>Nie masz uprawnieñ</b> do edycji u¿ytkowników lub edytujesz nie swoje dane.';
 
 ?>
