@@ -1,10 +1,6 @@
 1. skoro jest szumny doctype xhtml1.0 transitional, to moze trzymajmy sie tego pod wzgledem 
 semantycznym, i wywalmy zbedne atrybuty (width, height i inne) z tpli i uzywajmy css ?
 
-2. Obsluga bledow lezy i kwiczy wolajac o pomste do nieba ;-) Trza to jakos zunifikowac i najlepiej
-naskrobiac do tego jakas klase, bo teraz czesto zdarza sie tak, ze errory w kilku modulach obslugiwane
-sa na rozne sposoby.
-
 3. zalogowalem sie jako user z uprawnieniami izszymi niz 5. konkretnie 2. dlaczego nie moge zmienic _swoich_ danych ?
 
 4. limit znakow na login to imo 32. dlaczego nie ?
