@@ -16,6 +16,7 @@ define('PATH_TO_CLASSES', 'classes');
 
 require(PATH_TO_CLASSES. '/cls_db_mysql.php');
 require(PATH_TO_CLASSES. '/cls_upload.php');
+require(PATH_TO_CLASSES. '/cls_rss_parser.php');
 
 require_once("inc/config.php");
 include_once("../inc/main_functions.php");
@@ -130,7 +131,6 @@ $ft = new FastTemplate("./templates/tpl");
 $ft->define(array(
     'index'         =>"index.tpl",
     'main_loader'   =>"main_loader.tpl",
-    'main_site'     =>"main_site.tpl",
     
     // szablon obs³uguj±cy error handlera, jak i dodatkowe komunikaty
     'result_note'   =>"result_note.tpl"
