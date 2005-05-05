@@ -35,12 +35,10 @@ function str_cut($s, $i=110, $c=' ') {
 
 for($y = 0; $y < 5; $y++) {
     
-    
-    
     $ft->assign(array(
         'PERMA_LINK'    =>$allItems[$y]['LINK'],
         'NEWS_TITLE'    =>$allItems[$y]['TITLE'], 
-        'DATE'    =>$allItems[$y]['DATE'],
+        'DATE'          =>$allItems[$y]['DATE'],
         'NEWS_TEXT'     =>str_cut(strip_tags($allItems[$y]['DESCRIPTION'])) . '...'
     ));
     
