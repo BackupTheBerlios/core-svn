@@ -7,6 +7,12 @@ body {
 	font: 11px/1.3em Tahoma, Serif;
 }
 
+.main_table {
+    border: 1px solid #D4D4D4; 
+    padding: 0px 3px 2px;
+    width: 200px;
+}    
+
 td {
     text-align: left;
     vertical-align: top;
