@@ -19,10 +19,15 @@ if($db->num_rows() !== 0) {
     
     $db->next_record();
     
-    $title  = $db->f("title");
-    $text   = $db->f("text");
-    $id     = $db->f("id");
-    $image  = $db->f("image");
+    $title          = $db->f("title");
+    $text           = $db->f("text");
+    $id             = $db->f("id");
+    $image          = $db->f("image");
+    $assigned_tpl   = $db->f("assigned_tpl");
+    
+    // dynamiczne definiowanie szablonu, jaki ma byc
+    // przydzielony do konkretnej podstrony Core
+    $ft->define($assigned_tpl, $assigned_tpl . '.tpl');
     
     $ft->assign(array(
         'PAGE_TITLE'    =>$title,

@@ -34,7 +34,7 @@ while($db->next_record()) {
         'PARENT'    =>''
     ));
     
-    $ft->define_dynamic("category_row", "main");
+    $ft->define_dynamic("category_row", $assigned_tpl);
     
     $ft->parse('CATEGORY_ROW', ".category_row");
     

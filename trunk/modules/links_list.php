@@ -24,9 +24,8 @@ if($db->num_rows() > 0) {
             'LINK_NAME' =>$link_name,
             'LINK_URL'  =>$link_url
         ));
-    
-        //$ft->define("links_list", "links_list.tpl");
-        $ft->define_dynamic("links_row", "main");
+
+        $ft->define_dynamic("links_row", $assigned_tpl);
     
         $ft->parse('LINKS_ROW', ".links_row");
     }

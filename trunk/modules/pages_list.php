@@ -35,7 +35,7 @@ if($db->num_rows() > 0) {
         ));
         
         // Parsowanie nazw stron rodzicielskich::parent	
-        $ft->define_dynamic("pages_row", "main");
+        $ft->define_dynamic("pages_row", $assigned_tpl);
     
         $ft->parse('PAGES_ROW', ".pages_row");
         
