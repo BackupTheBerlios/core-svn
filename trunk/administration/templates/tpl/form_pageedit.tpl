@@ -39,6 +39,18 @@
 		<td class="form" width="130">{OVERWRITE_PHOTO}</td>
 	</tr>
 	<tr>
+		<td class="form" width="80">Szablon :&nbsp;</td>
+		<td class="form" width="" colspan="2">
+		<select class="category_form" name="template_name">
+			
+			<!-- BEGIN DYNAMIC BLOCK: template_row -->
+			<option value="{TEMPLATE_ASSIGNED}" {CURRENT_TPL}>{TEMPLATE_ASSIGNED}</option>
+			<!-- END DYNAMIC BLOCK: template_row -->
+
+		</select>
+		</td>
+	</tr>
+	<tr>
 		<td class="form" width="80">Publikowana:&nbsp;</td>
 		<td class="form" width="224">
             <input class="radio" type="radio" name="published" value="Y" align="top" {CHECKBOX_YES} />- tak&nbsp;
