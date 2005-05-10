@@ -62,7 +62,8 @@ CREATE TABLE core_pages (
   title varchar(50) NOT NULL default '',
   `text` mediumtext NOT NULL,
   image varchar(255) NOT NULL default '',
-  published enum('Y','N') NOT NULL default 'Y',
+  published enum('Y','N') NOT NULL default 'Y', 
+  `assigned_tpl` VARCHAR(255) DEFAULT 'main' NOT NULL, 
   PRIMARY KEY  (id)
 );
 
