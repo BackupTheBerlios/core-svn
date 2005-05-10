@@ -24,22 +24,75 @@ switch ($action) {
 		$db->query($query);
 		$db->next_record();
 		
-		$title 		= $db->f("title");
-		$text 		= $db->f("text");
-		$published	= $db->f("published");
-        $image      = $db->f("image");
+        $title          = $db->f("title");
+        $text           = $db->f("text");
+        $published      = $db->f("published");
+        $image          = $db->f("image");
+        $assigned_tpl   = $db->f("assigned_tpl");
 		
 		$ft->assign(array(
             'ID'	=>$_GET['id'],
             'TITLE'	=>$title,
             'TEXT'	=>br2nl($text)
         ));
+        
+        $path = '../templates/main/tpl/';
+        
+        $dir = @dir($path);
+        
+        // definiowanie dynamicznej czesci szablonu
+        $ft->define('form_pageedit', "form_pageedit.tpl");
+        $ft->define_dynamic("template_row", "form_pageedit");
+        
+        // nie pozwalamy wybrac szablonu, bedacego skladowa czescia Core
+        $not_allowed = array(
+            '.', 
+            '..', 
+            '.svn', 
+            'comments_form.tpl', 
+            'comments_link_alter.tpl', 
+            'comments_link_empty.tpl', 
+            'comments_submit.tpl', 
+            'comments_view.tpl', 
+            'error_reporting.tpl', 
+            'image_alter.tpl', 
+            'image_main.tpl', 
+            'newsletter.tpl', 
+            'note_main.tpl', 
+            'pages_view.tpl', 
+            'photo_main.tpl', 
+            'photo_view.tpl', 
+            'query_failed.tpl', 
+            'rows.tpl', 
+            'single_rows.tpl'
+        );
+        
+        // wyswietlanie listy dostepnych szablonow
+        while($file = $dir->read()) {
+            
+            // pomijamy szablony stanowiace skladowa calej strony
+            if(!in_array($file, $not_allowed)) {
+                
+                $file = explode('.', $file);
+                $ft->assign(array(
+                    'TEMPLATE_ASSIGNED'		=>$file[0]
+                ));
+                
+                if($assigned_tpl == $file[0]) {
+                    $ft->assign('CURRENT_TPL', 'selected="selected"');
+                } else {
+                    $ft->assign('CURRENT_TPL', '');
+                }
+                
+                $ft->parse('TEMPLATE_ROW', ".template_row");
+            }
+        }
+        
+        $dir->close();
 							
 		if($published == "Y") {
-
 			$ft->assign('CHECKBOX_YES', 'checked="checked"');
 		} else {
-			
 			$ft->assign('CHECKBOX_NO', 'checked="checked"');
 		}
 		
@@ -54,7 +107,6 @@ switch ($action) {
 			$ft->parse('IF_IMAGE_EXIST', ".form_imageedit");
 		}	
 
-		$ft->define('form_pageedit', "form_pageedit.tpl");
 		$ft->parse('ROWS',	".form_pageedit");
 		break;
 
@@ -62,9 +114,10 @@ switch ($action) {
 	
         if($permarr['writer']) {
 	
-            $text		= $_POST['text'];
-            $title		= $_POST['title'];
-            $published	= $_POST['published'];
+            $text           = $_POST['text'];
+            $title          = $_POST['title'];
+            $published      = $_POST['published'];
+            $template_name  = $_POST['template_name'];
             
             $text = parse_markers($text, 1);
 		
@@ -72,16 +125,18 @@ switch ($action) {
                 UPDATE 
                     %1\$s 
                 SET 
-                    title		= '%2\$s', 
-                    text		= '%3\$s', 
-                    published	= '%4\$s' 
+                    title           = '%2\$s', 
+                    text            = '%3\$s', 
+                    published       = '%4\$s', 
+                    assigned_tpl    = '%5\$s' 
                 WHERE 
-                    id = '%5\$d'", 
+                    id = '%6\$d'", 
 		
                 $mysql_data['db_table_pages'], 
                 $title, 
                 $text, 
                 $published, 
+                $template_name, 
                 $_GET['id']
             );
 		

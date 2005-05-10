@@ -13,11 +13,12 @@ switch($action) {
 	
         if($permarr['writer']) {
 	
-            $text       = $_POST['text'];
+            $text           = $_POST['text'];
 		
-            $title 		= trim($_POST['title']);
-            $published 	= $_POST['published'];
-            $page_id	= $_POST['category_id'];
+            $title          = trim($_POST['title']);
+            $published      = $_POST['published'];
+            $page_id        = $_POST['category_id'];
+            $template_name  = $_POST['template_name'];
             
             $text = parse_markers($text, 1);
             
@@ -43,14 +44,15 @@ switch($action) {
                     INSERT INTO 
                         %1\$s 
                     VALUES 
-                        ('', '%2\$d', '%3\$d', '%4\$s', '%5\$s', '', '%6\$s')", 
+                        ('', '%2\$d', '%3\$d', '%4\$s', '%5\$s', '', '%6\$s', '%7\$s')", 
 		
                     $mysql_data['db_table_pages'], 
                     $page_id, 
                     $max_order + 10, 
                     $title, 
                     $text, 
-                    $published
+                    $published, 
+                    $template_name
                 );
             
                 $db->query($query);
