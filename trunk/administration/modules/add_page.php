@@ -176,6 +176,53 @@ switch($action) {
         
             get_addpage_cat($page_id, 2);
         }
+        
+        $path = '../templates/main/tpl/';
+        
+        $dir = @dir($path);
+        
+        // definiowanie dynamicznej czesci szablonu
+        $ft->define_dynamic("template_row", "form_pageadd");
+        
+        // nie pozwalamy wybrac szablonu, bedacego skladowa czescia Core
+        $not_allowed = array(
+            '.', 
+            '..', 
+            '.svn', 
+            'comments_form.tpl', 
+            'comments_link_alter.tpl', 
+            'comments_link_empty.tpl', 
+            'comments_submit.tpl', 
+            'comments_view.tpl', 
+            'error_reporting.tpl', 
+            'image_alter.tpl', 
+            'image_main.tpl', 
+            'newsletter.tpl', 
+            'note_main.tpl', 
+            'pages_view.tpl', 
+            'photo_main.tpl', 
+            'photo_view.tpl', 
+            'query_failed.tpl', 
+            'rows.tpl', 
+            'single_rows.tpl'
+        );
+        
+        // wyswietlanie listy dostepnych szablonow
+        while($file = $dir->read()) {
+            
+            // pomijamy szablony stanowiace skladowa calej strony
+            if(!in_array($file, $not_allowed)) {
+                
+                $file = explode('.', $file);
+                $ft->assign(array(
+                    'TEMPLATE_ASSIGNED'		=>$file[0]
+                ));
+                
+                $ft->parse('TEMPLATE_ROW', ".template_row");
+            }
+        }
+        
+        $dir->close();
 	
         $ft->parse('ROWS', "form_pageadd");
         break;
