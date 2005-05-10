@@ -123,23 +123,6 @@ $ft->define(array(
     'newsletter'        =>'newsletter.tpl',
     'query_failed'      =>'query_failed.tpl'
 ));
-
-$ft->define_dynamic("alternate_design_row", "main");
-
-while($d = $read_dir->read()) {
-    
-    if($d[0] != '.') {
-        
-        // link do alternatywnego szablonu
-        $template_link = isset($rewrite) && $rewrite == 1 ? '2,' . $d . ',item.html' : 'design.php?issue=' . $d . '';
-        
-        $ft->assign(array(
-            'ALTERNATE_TEMPLATE'    =>$d,
-            'TEMPLATE_LINK'         =>$template_link
-        ));
-        $ft->parse('ALTERNATE_DESIGN_ROW', ".alternate_design_row");
-    }
-}
     
 // warto¶æ pocz¹tkowa zmiennej $start -> potrzebna przy stronnicowaniu
 $start  = isset($_GET['start']) ? intval($_GET['start']) : 0;
@@ -160,18 +143,6 @@ $ft->assign(array(
 ));
 
 $max_photo_width = get_config('max_photo_width');
-
-$inc_modules = array(
-    'category_list',
-    'pages_list',
-    'links_list'
-);
-
-foreach($inc_modules as $module) {
-    
-    // ³adowanie dodatkowych modu³ów
-    include('modules/' . $module . '.php');
-}
 
 $date_format = get_config('date_format');
 
@@ -216,7 +187,40 @@ switch($p){
         break;
 }
 
-$ft->parse('MAIN', array('note_main', 'main'));
+// wyznaczamy szablon jaki ma byc parsowany
+$assigned_tpl = isset($assigned_tpl) ? $assigned_tpl : 'main';
+
+$ft->define_dynamic("alternate_design_row", $assigned_tpl);
+
+while($d = $read_dir->read()) {
+    
+    if($d[0] != '.') {
+        
+        // link do alternatywnego szablonu
+        $template_link = isset($rewrite) && $rewrite == 1 ? '2,' . $d . ',item.html' : 'design.php?issue=' . $d . '';
+        
+        $ft->assign(array(
+            'ALTERNATE_TEMPLATE'    =>$d,
+            'TEMPLATE_LINK'         =>$template_link
+        ));
+        $ft->parse('ALTERNATE_DESIGN_ROW', ".alternate_design_row");
+    }
+}
+
+// tablica includowanych modulow
+$inc_modules = array(
+    'category_list',
+    'pages_list',
+    'links_list'
+);
+
+foreach($inc_modules as $module) {
+    
+    // ³adowanie dodatkowych modu³ów
+    include('modules/' . $module . '.php');
+}
+
+$ft->parse('MAIN', array('note_main', $assigned_tpl));
 $ft->FastPrint();
 exit;
 
