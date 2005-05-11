@@ -11,6 +11,17 @@ body {
     border: 1px solid #D4D4D4; 
     padding: 0px 3px 2px;
     width: 200px;
+}
+
+table.list {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table.list td {
+    padding-top: 3px;
+    padding-bottom: 1px;
+    vertical-align: middle;
 }    
 
 td {
