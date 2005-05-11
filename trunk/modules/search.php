@@ -17,7 +17,9 @@ if(!empty($search_word)) {
         SELECT 
             a.*,
             UNIX_TIMESTAMP(a.date) AS date,
-            b.*, c.comments_id, count(c.id) AS comments 
+            b.*,
+            c.comments_id,
+            count(c.id) AS comments 
 		FROM 
 			%1\$s a 
 		LEFT JOIN 
@@ -31,9 +33,9 @@ if(!empty($search_word)) {
         WHERE 
             published = '1' 
         AND 
-            a.text LIKE '%" . $search_word . "%' 
+            a.text LIKE '%%" . $search_word . "%%' 
         OR 
-            a.title LIKE '%" . $search_word . "%' 
+            a.title LIKE '%%" . $search_word . "%%' 
         GROUP BY 
             a.date 
         DESC LIMIT 
