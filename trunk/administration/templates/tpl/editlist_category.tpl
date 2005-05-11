@@ -1,7 +1,7 @@
 <div id="left">
 <img src="templates/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>Kategorie - edycja/usuwanie</b><br /><br />
 <!-- NAME: editlist_category.tpl -->
-<table align="left" cellspacing="0" cellpadding="0" border="0" width="100%">
+<table class="list">
 	<tr>
 		<td class="mainListHeader" width="7%">Id</td>
 		<td class="mainListHeader" width="57%">Kategoria</td>

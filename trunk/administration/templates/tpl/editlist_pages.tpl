@@ -1,6 +1,6 @@
 <div id="left">
 <img src="templates/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>Zarz±dzanie stronami - edycja</b><br /><br />
-<table align="left" cellspacing="0" cellpadding="0" border="0" width="100%">
+<table class="list">
 	<tr>
 		<td class="mainListHeader" width="7%">Id</td>
 		<td class="mainListHeader" width="55%">Tytu³ strony</td>
