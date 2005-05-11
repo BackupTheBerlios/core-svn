@@ -37,7 +37,7 @@ switch ($action) {
                 VALUES 
                     ('','%2\$d', '%3\$s','%4\$s','%5\$s','%6\$s', '', '%7\$d', '%8\$s')",
 		
-                $mysql_data['db_table'],
+                TABLE_MAIN,
                 $category_id,
                 $date,
                 $title,
@@ -55,7 +55,7 @@ switch ($action) {
                 FROM 
                     %1\$s",
         
-                $mysql_data['db_table']
+                TABLE_MAIN
             );
             
             $db->query($query);
@@ -84,7 +84,7 @@ switch ($action) {
                         WHERE 
                             id = '%3\$d'", 
 			    
-                        $mysql_data['db_table'],
+                        TABLE_MAIN,
                         $file,
                         $id
                     );
@@ -128,7 +128,7 @@ switch ($action) {
                 category_id 
             ASC", 
 	
-            $mysql_data['db_table_category'],
+            TABLE_CATEGORY,
             0
         );
 	

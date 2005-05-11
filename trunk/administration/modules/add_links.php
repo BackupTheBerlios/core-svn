@@ -42,7 +42,7 @@ switch ($action) {
                     VALUES 
                         ('', '%2\$s', '%3\$s')",
 			
-                    $mysql_data['db_table_links'],
+                    TABLE_LINKS,
                     $link_name,
                     $link_url
                 );

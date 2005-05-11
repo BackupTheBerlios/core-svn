@@ -30,7 +30,7 @@ switch ($action) {
             WHERE 
                 id = '%2\$d'", 
 		
-            $mysql_data['db_table'],
+            TABLE_MAIN,
             $_GET['id']
         );
 		
@@ -98,7 +98,7 @@ switch ($action) {
             WHERE 
                 category_parent_id = '%2\$d'", 
 		
-            $mysql_data['db_table_category'], 
+            TABLE_CATEGORY, 
             0
         );
 		
@@ -139,7 +139,7 @@ switch ($action) {
             WHERE 
                 id = '%2\$d'", 
 		
-            $mysql_data['db_table'],
+            TABLE_MAIN,
             $_GET['id']
         );
 		
@@ -183,7 +183,7 @@ switch ($action) {
                 WHERE 
                     id = '%9\$d'", 
             
-                $mysql_data['db_table'], 
+                TABLE_MAIN, 
                 $title, 
                 $author, 
                 $text, 
@@ -207,7 +207,7 @@ switch ($action) {
                     WHERE 
                         id = '%2\$d'", 
                 
-                    $mysql_data['db_table'], 
+                    TABLE_MAIN, 
                     $_GET['id']
                 );
                 
@@ -235,7 +235,7 @@ switch ($action) {
                         WHERE 
                             id = '%3\$d'", 
 			    
-                        $mysql_data['db_table'],
+                        TABLE_MAIN,
                         $file,
                         $_GET['id']
                     );
@@ -279,7 +279,7 @@ switch ($action) {
                         WHERE 
                             id = '%2\$d'", 
 		
-                        $mysql_data['db_table'], 
+                        TABLE_MAIN, 
                         $post_id
                     );
 		
@@ -337,7 +337,7 @@ switch ($action) {
                             WHERE 
                                 id = '%2\$d'", 
 		
-                            $mysql_data['db_table'], 
+                            TABLE_MAIN, 
                             $note_id
                         );
 		
@@ -359,7 +359,7 @@ switch ($action) {
                             WHERE 
                                 id = '%2\$d'", 
 		
-                            $mysql_data['db_table'], 
+                            TABLE_MAIN, 
                             $note_id
                         );
 		
@@ -398,7 +398,7 @@ switch ($action) {
             WHERE 
                 config_name = '%2\$s'", 
 		
-            $mysql_data['db_table_config'], 
+            TABLE_CONFIG, 
             "editposts_per_page"
         );
 		
@@ -417,7 +417,7 @@ switch ($action) {
             LIMIT 
                 %2\$d, %3\$d", 
 		
-            $mysql_data['db_table'], 
+            TABLE_MAIN, 
             $start, 
             $editposts_per_page
         );

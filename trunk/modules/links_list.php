@@ -9,7 +9,7 @@ $query = sprintf("
         id 
     ASC", 
 
-    $mysql_data['db_table_links']
+    TABLE_LINKS
 );
 
 $db->query($query);

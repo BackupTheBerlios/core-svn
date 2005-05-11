@@ -13,7 +13,7 @@ switch($m){
             WHERE 
                 email = '%2\$s'", 
         
-            $mysql_data['db_table_newsletter'],
+            TABLE_NEWSLETTER,
             $email
         );
         
@@ -32,7 +32,7 @@ switch($m){
                     %1\$s 
                 VALUES('$email')", 
             
-                $mysql_data['db_table_newsletter']
+                TABLE_NEWSLETTER
             );
             
             $db->query($query);
@@ -63,7 +63,7 @@ switch($m){
             WHERE 
                 email = '%2\$s'", 
         
-            $mysql_data['db_table_newsletter'], 
+            TABLE_NEWSLETTER, 
             $email
         );
         
@@ -83,7 +83,7 @@ switch($m){
                 WHERE 
                     email = '$email'", 
             
-                $mysql_data['db_table_newsletter']
+                TABLE_NEWSLETTER
             );
             
             $db->query($query);

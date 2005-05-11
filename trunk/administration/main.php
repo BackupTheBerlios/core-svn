@@ -83,7 +83,7 @@ $query = sprintf("
     WHERE 
         login = '%2\$s'",
     
-    $mysql_data['db_table_users'], 
+    TABLE_USERS, 
     $_SESSION['login']
 );
     

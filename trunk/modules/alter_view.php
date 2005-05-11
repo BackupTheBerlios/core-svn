@@ -27,9 +27,9 @@ $query = sprintf("
     DESC
     LIMIT 1",
 
-    $mysql_data['db_table'],
-    $mysql_data['db_table_category'],
-    $mysql_data['db_table_comments'],
+    TABLE_MAIN,
+    TABLE_CATEGORY,
+    TABLE_COMMENTS,
     $_GET['id']
 );
 

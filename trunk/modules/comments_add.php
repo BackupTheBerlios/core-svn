@@ -81,7 +81,7 @@ switch ($action) {
                 VALUES
                     ('','%s','%d','%s','%s','%s','%s')",
 
-                $mysql_data['db_table_comments'],
+                TABLE_COMMENTS,
                 $date,
                 $comments_id,
                 $author,
@@ -134,7 +134,7 @@ switch ($action) {
                     id = '%d'
                 LIMIT 1",
 
-                $mysql_data['db_table_comments'],
+                TABLE_COMMENTS,
                 $_GET['c']
              );
 
@@ -162,7 +162,7 @@ switch ($action) {
                     id = '%d'
                 LIMIT 1",
 
-                $mysql_data['db_table'],
+                TABLE_MAIN,
                 $_GET['id']
             );
 
@@ -201,7 +201,7 @@ switch ($action) {
                     id = '%d'
                     LIMIT 1",
 
-                $mysql_data['db_table'], 
+                TABLE_MAIN, 
                 $_GET['id']
             );
 

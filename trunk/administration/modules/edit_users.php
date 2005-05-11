@@ -17,7 +17,7 @@ switch ($action) {
             WHERE 
                 id = '%2\$d'", 
 		
-            $mysql_data['db_table_users'], 
+            TABLE_USERS, 
             $_GET['id']
         );
 		
@@ -60,7 +60,7 @@ switch ($action) {
             WHERE 
                 id = '%2\$d'", 
 		
-            $mysql_data['db_table_users'],
+            TABLE_USERS,
             $_GET['id']
         );
 		
@@ -127,7 +127,7 @@ switch ($action) {
                     WHERE 
                         id = '%14\$d'", 
 		
-                    $mysql_data['db_table_users'], 
+                    TABLE_USERS, 
                 
                     $u_login, 
                     $email, 
@@ -187,7 +187,7 @@ switch ($action) {
                         WHERE 
                             id = '%2\$d'",
         
-                        $mysql_data['db_table_users'], 
+                        TABLE_USERS, 
                         $post_id
                     );
         
@@ -207,7 +207,7 @@ switch ($action) {
                             WHERE 
                                 id = '%2\$d'", 
 		
-                            $mysql_data['db_table_users'], 
+                            TABLE_USERS, 
                             $post_id
                         );
             
@@ -267,7 +267,7 @@ switch ($action) {
                 LIMIT
                     1", 
 		    
-                $mysql_data['db_table_users'],
+                TABLE_USERS,
                 $_GET['id']
             );
             
@@ -333,7 +333,7 @@ switch ($action) {
                         WHERE 
                             id = %3\$d", 
                         
-                        $mysql_data['db_table_users'],
+                        TABLE_USERS,
                         $mask,
                         $_GET['id']
                     );
@@ -386,7 +386,7 @@ switch ($action) {
                         WHERE 
                             id = %3\$d", 
                         
-                        $mysql_data['db_table_users'],
+                        TABLE_USERS,
                         $mask,
                         $_GET['id']
                     );
@@ -406,7 +406,7 @@ switch ($action) {
                 id 
             ASC", 
 		
-            $mysql_data['db_table_users']
+            TABLE_USERS
         );
         
 		$db->query($query);

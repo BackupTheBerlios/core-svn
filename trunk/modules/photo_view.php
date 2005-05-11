@@ -7,7 +7,7 @@ $query = sprintf("
         id = '%2\$d' 
     LIMIT 1", 
 
-    $mysql_data['db_table'],
+    TABLE_MAIN,
     $_GET['id']
 );
 

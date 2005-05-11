@@ -13,7 +13,7 @@ $query = sprintf("
         category_order 
     ASC",
 
-    $mysql_data['db_table_category'],
+    TABLE_CATEGORY,
     0
 );
 

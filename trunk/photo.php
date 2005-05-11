@@ -46,7 +46,7 @@ $query = sprintf("
     WHERE
         config_name = 'title_page'",
 
-    $mysql_data['db_table_config']
+    TABLE_CONFIG
 );
 $db->query($query);
 $db->next_record();

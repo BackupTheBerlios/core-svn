@@ -33,7 +33,7 @@ switch ($action) {
                     FROM 
                         %1\$s",
         
-                    $mysql_data['db_table_category']
+                    TABLE_CATEGORY
                 );
             
                 $db->query($query);
@@ -48,7 +48,7 @@ switch ($action) {
                     VALUES 
                         ('', '%2\$d', '%3\$d', '%4\$s', '%5\$s')",
 			
-                    $mysql_data['db_table_category'], 
+                    TABLE_CATEGORY, 
                     $category_parent_id, 
                     $max_order + 10, 
                     $category_name,
@@ -102,7 +102,7 @@ switch ($action) {
                 category_id 
             ASC", 
 	
-            $mysql_data['db_table_category'],
+            TABLE_CATEGORY,
             0
         );
 	

@@ -19,7 +19,7 @@ switch ($action) {
             WHERE 
                 category_id = '%2\$d'", 
 	
-            $mysql_data['db_table_category'], 
+            TABLE_CATEGORY, 
             $_GET['id']
         );
 	
@@ -68,7 +68,7 @@ switch ($action) {
                     WHERE 
                         category_id='%4\$d'", 
 		
-                    $mysql_data['db_table_category'], 
+                    TABLE_CATEGORY, 
                     $category_name, 
                     $category_description, 
                     $_GET['id']
@@ -118,7 +118,7 @@ switch ($action) {
                 WHERE 
                     category_id='%3\$d'", 
 		
-                $mysql_data['db_table_category'], 
+                TABLE_CATEGORY, 
                 $move, 
                 $_GET['id']
             );
@@ -137,7 +137,7 @@ switch ($action) {
                     category_order 
                 ASC", 
     
-                $mysql_data['db_table_category']
+                TABLE_CATEGORY
             );
     
             $sql->query($query);
@@ -157,7 +157,7 @@ switch ($action) {
                     WHERE 
                         category_id = '$cid'", 
         
-                    $mysql_data['db_table_category']
+                    TABLE_CATEGORY
                 );
                     
                 $db->query($query);
@@ -212,8 +212,8 @@ switch ($action) {
                             category_id 
                         ASC", 
 		
-                        $mysql_data['db_table_category'], 
-                        $mysql_data['db_table'],
+                        TABLE_CATEGORY, 
+                        TABLE_MAIN,
                         $post_id
                     );
 	
@@ -237,7 +237,7 @@ switch ($action) {
                             WHERE 
                                 category_parent_id = '%3\$d'", 
 		
-                            $mysql_data['db_table_category'], 
+                            TABLE_CATEGORY, 
                             $cat_parent_id, 
                             $category_id
                         );
@@ -256,7 +256,7 @@ switch ($action) {
                             WHERE 
                                 c_id = '%3\$d'", 
 		
-                            $mysql_data['db_table'], 
+                            TABLE_MAIN, 
                             $cat_parent_id,
                             $post_id
                         );
@@ -273,7 +273,7 @@ switch ($action) {
                             WHERE 
                                 category_id = '%2\$d'", 
 		
-                            $mysql_data['db_table_category'], 
+                            TABLE_CATEGORY, 
                             $post_id
                         );
 		
@@ -339,7 +339,7 @@ switch ($action) {
             WHERE 
                 category_parent_id = '0'",
         
-            $mysql_data['db_table_category']
+            TABLE_CATEGORY
         );
             
         $db->query($query);
@@ -366,8 +366,8 @@ switch ($action) {
                 category_order 
             ASC", 
 		
-            $mysql_data['db_table_category'], 
-            $mysql_data['db_table'],
+            TABLE_CATEGORY, 
+            TABLE_MAIN,
             0
         );
 		

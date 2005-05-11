@@ -81,7 +81,7 @@ if(!isset($_COOKIE['devlog_counter'])){
         WHERE
             config_name = 'counter'",
             
-        $mysql_data['db_table_config'],
+        TABLE_CONFIG,
         get_config('counter') + 1
     );
 	$db->query($query);

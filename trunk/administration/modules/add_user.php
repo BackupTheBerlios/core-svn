@@ -30,7 +30,7 @@ switch ($action) {
                 WHERE 
                     login = '%2\$s'", 
         
-                $mysql_data['db_table_users'], 
+                TABLE_USERS, 
                 $_POST['login_name']
             );
         
@@ -76,7 +76,7 @@ switch ($action) {
                     VALUES 
                         ('', '%2\$s', '%3\$s', '%4\$s', '%5\$d', 'Y', '%6\$s', '%7\$s', '%8\$s', '%9\$s', '%10\$s', '%11\$s', '%12\$s', '%13\$s', '%14\$s', '%15\$s')",
 			
-                    $mysql_data['db_table_users'],
+                    TABLE_USERS,
                     $u_login,
                     $password,
                     $email,

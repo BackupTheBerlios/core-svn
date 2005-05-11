@@ -28,8 +28,8 @@ $query  = sprintf("
     LIMIT 
         %3\$d", 
 
-    $mysql_data['db_table_comments'],
-    $mysql_data['db_table'],
+    TABLE_COMMENTS,
+    TABLE_MAIN,
     10
 );
 

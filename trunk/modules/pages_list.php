@@ -11,7 +11,7 @@ $query = sprintf("
         page_order 
     ASC", 
 
-    $mysql_data['db_table_pages'],
+    TABLE_PAGES,
     0
 );
 

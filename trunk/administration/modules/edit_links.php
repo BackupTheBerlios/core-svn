@@ -16,7 +16,7 @@ switch ($action) {
             WHERE 
                 id = '%2\$d'", 
 		
-            $mysql_data['db_table_links'], 
+            TABLE_LINKS, 
             $_GET['id']
         );
 		
@@ -80,7 +80,7 @@ switch ($action) {
                     WHERE 
                         id = '%4\$d'", 
 			
-                $mysql_data['db_table_links'], 
+                TABLE_LINKS, 
                 $link_name, 
                 $link_url, 
                 $_GET['id']);
@@ -134,7 +134,7 @@ switch ($action) {
                         WHERE 
                             id = '%2\$d'", 
 		
-                        $mysql_data['db_table_links'], 
+                        TABLE_LINKS, 
                         $post_id
                     );
 		
@@ -190,7 +190,7 @@ switch ($action) {
                         WHERE 
                             id = '%2\$d'", 
 		
-                        $mysql_data['db_table_links'], 
+                        TABLE_LINKS, 
                         $link_id
                     );
 		
@@ -228,7 +228,7 @@ switch ($action) {
                 id 
             ASC", 
 		
-            $mysql_data['db_table_links']
+            TABLE_LINKS
         );
 		
 		$db->query($query);

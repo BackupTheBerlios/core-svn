@@ -31,7 +31,7 @@ switch($action) {
                     FROM 
                         %1\$s",
         
-                    $mysql_data['db_table_pages']
+                    TABLE_PAGES
                 );
             
                 $db->query($query);
@@ -46,7 +46,7 @@ switch($action) {
                     VALUES 
                         ('', '%2\$d', '%3\$d', '%4\$s', '%5\$s', '', '%6\$s', '%7\$s')", 
 		
-                    $mysql_data['db_table_pages'], 
+                    TABLE_PAGES, 
                     $page_id, 
                     $max_order + 10, 
                     $title, 
@@ -63,7 +63,7 @@ switch($action) {
                     FROM 
                         %1\$s", 
 
-                    $mysql_data['db_table_pages']
+                    TABLE_PAGES
                 );
             
                 $db->query($query);
@@ -92,7 +92,7 @@ switch($action) {
                             WHERE 
                                 id = '%3\$d'", 
 			    
-                            $mysql_data['db_table_pages'],
+                            TABLE_PAGES,
                             $file,
                             $id
                         );
@@ -154,7 +154,7 @@ switch($action) {
                 id 
             ASC", 
 	
-            $mysql_data['db_table_pages'],
+            TABLE_PAGES,
             0
         );
 	

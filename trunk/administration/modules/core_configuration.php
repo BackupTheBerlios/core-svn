@@ -47,7 +47,7 @@ switch ($action) {
 				    WHERE 
 				        config_name = '%3\$s'",
             
-                    $mysql_data['db_table_config'], 
+                    TABLE_CONFIG, 
                     $_POST['mainposts_per_page'], 
                     'mainposts_per_page'
                 );
@@ -64,7 +64,7 @@ switch ($action) {
 				    WHERE 
 				        config_name = '%3\$s'",
             
-                    $mysql_data['db_table_config'], 
+                    TABLE_CONFIG, 
                     $_POST['title_page'], 
                     'title_page'
                 );
@@ -81,7 +81,7 @@ switch ($action) {
 				    WHERE 
 				        config_name = '%3\$s'",
             
-                    $mysql_data['db_table_config'], 
+                    TABLE_CONFIG, 
                     $_POST['editposts_per_page'], 
                     'editposts_per_page'
                 );
@@ -99,7 +99,7 @@ switch ($action) {
 				    WHERE 
 				        config_name = '%3\$s'",
             
-                    $mysql_data['db_table_config'], 
+                    TABLE_CONFIG, 
                     $_POST['max_photo_width'], 
                     'max_photo_width'
                 );
@@ -115,7 +115,7 @@ switch ($action) {
 				    WHERE 
 				        config_name = '%3\$s'",
             
-                    $mysql_data['db_table_config'], 
+                    TABLE_CONFIG, 
                     $_POST['rewrite_allow'], 
                     'mod_rewrite'
                 );
@@ -131,7 +131,7 @@ switch ($action) {
 				    WHERE 
 				        config_name = '%3\$s'",
             
-                    $mysql_data['db_table_config'], 
+                    TABLE_CONFIG, 
                     $_POST['date_format'], 
                     'date_format'
                 );

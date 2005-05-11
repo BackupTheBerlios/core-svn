@@ -17,7 +17,7 @@ switch ($action) {
             WHERE 
                 id = '%2\$d'", 
 		
-            $mysql_data['db_table_pages'], 
+            TABLE_PAGES, 
             $_GET['id']
         );
 		
@@ -132,7 +132,7 @@ switch ($action) {
                 WHERE 
                     id = '%6\$d'", 
 		
-                $mysql_data['db_table_pages'], 
+                TABLE_PAGES, 
                 $title, 
                 $text, 
                 $published, 
@@ -153,7 +153,7 @@ switch ($action) {
                     WHERE 
                         id = '%2\$d'", 
                 
-                    $mysql_data['db_table_pages'], 
+                    TABLE_PAGES, 
                     $_GET['id']
                 );
                 
@@ -181,7 +181,7 @@ switch ($action) {
                         WHERE 
                             id = '%3\$d'", 
 			    
-                        $mysql_data['db_table_pages'],
+                        TABLE_PAGES,
                         $file,
                         $_GET['id']
                     );
@@ -225,7 +225,7 @@ switch ($action) {
                         WHERE 
                             id = '%2\$d'", 
 		
-                        $mysql_data['db_table_pages'], 
+                        TABLE_PAGES, 
                         $post_id
                     );
 		
@@ -281,7 +281,7 @@ switch ($action) {
                 WHERE 
                     id='%3\$d'", 
 		
-                $mysql_data['db_table_pages'], 
+                TABLE_PAGES, 
                 $move, 
                 $_GET['id']
             );
@@ -300,7 +300,7 @@ switch ($action) {
                     page_order 
                 ASC", 
     
-                $mysql_data['db_table_pages']
+                TABLE_PAGES
             );
     
             $sql->query($query);
@@ -319,7 +319,7 @@ switch ($action) {
                     WHERE 
                         id = '$pid'", 
         
-                    $mysql_data['db_table_pages']
+                    TABLE_PAGES
                 );
                     
                 $db->query($query);
@@ -356,7 +356,7 @@ switch ($action) {
             WHERE 
                 parent_id = '0'",
         
-            $mysql_data['db_table_pages']
+            TABLE_PAGES
         );
             
         $db->query($query);
@@ -389,7 +389,7 @@ switch ($action) {
                 page_order 
             ASC", 
 		
-            $mysql_data['db_table_pages'], 
+            TABLE_PAGES, 
             0
         );
 		

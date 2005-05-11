@@ -9,7 +9,7 @@ $query = sprintf("
         published = 'Y' 
     LIMIT 1", 
 
-    $mysql_data['db_table_pages'], 
+    TABLE_PAGES, 
     $_GET['id']
 );
 

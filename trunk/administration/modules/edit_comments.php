@@ -28,7 +28,7 @@ switch ($action) {
             WHERE 
                 id = '%2\$d'", 
 		
-            $mysql_data['db_table_comments'], 
+            TABLE_COMMENTS, 
             $_GET['id']
         );
 		
@@ -80,7 +80,7 @@ switch ($action) {
                 WHERE 
                     id = '%5\$d'", 
 		
-                $mysql_data['db_table_comments'], 
+                TABLE_COMMENTS, 
                 $author, 
                 $text, 
                 $date,
@@ -124,7 +124,7 @@ switch ($action) {
                         WHERE 
                             id = '%2\$d'", 
             
-                        $mysql_data['db_table_comments'], 
+                        TABLE_COMMENTS, 
                         $post_id
                     );
 		

@@ -36,9 +36,9 @@ $query  = sprintf("
     LIMIT 
         %4\$d", 
 
-    $mysql_data['db_table'], 
-    $mysql_data['db_table_category'], 
-    $mysql_data['db_table_comments'], 
+    TABLE_MAIN, 
+    TABLE_CATEGORY, 
+    TABLE_COMMENTS, 
     10
 );
 

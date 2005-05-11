@@ -9,7 +9,7 @@ if(is_numeric($_GET['id'])) {
             id = '%2\$d'
         LIMIT 1",
 
-        $mysql_data['db_table'],
+        TABLE_MAIN,
         $_GET['id']
     );
 
@@ -63,7 +63,7 @@ if(is_numeric($_GET['id'])) {
                     date
                 ASC",
 
-                $mysql_data['db_table_comments'],
+                TABLE_COMMENTS,
                 $_GET['id']
             );
 

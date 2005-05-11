@@ -120,7 +120,7 @@ function get_cat($page_id, $level) {
             id 
         ASC", 
 	
-        $mysql_data['db_table_pages'], 
+        TABLE_PAGES, 
         $page_id
     );
 
@@ -170,7 +170,7 @@ function get_addpage_cat($page_id, $level) {
             id 
         ASC", 
 	
-        $mysql_data['db_table_pages'], 
+        TABLE_PAGES, 
         $page_id
     );
 
@@ -220,7 +220,7 @@ function get_category_cat($cat_id, $level) {
             category_id 
         ASC", 
 	
-        $mysql_data['db_table_category'], 
+        TABLE_CATEGORY, 
         $cat_id
     );
 
@@ -269,7 +269,7 @@ function get_addcategory_cat($page_id, $level) {
             category_id 
         ASC", 
 	
-        $mysql_data['db_table_category'], 
+        TABLE_CATEGORY, 
         $page_id
     );
 
@@ -317,7 +317,7 @@ function get_transfercategory_cat($page_id, $level) {
             category_id 
         ASC", 
 	
-        $mysql_data['db_table_category'], 
+        TABLE_CATEGORY, 
         $page_id
     );
 
@@ -366,7 +366,7 @@ function get_editnews_cat($c_id, $level) {
             category_id 
         ASC", 
 	
-        $mysql_data['db_table_category'], 
+        TABLE_CATEGORY, 
         $c_id
     );
 
@@ -424,8 +424,8 @@ function get_editcategory_cat($category_id, $level) {
             category_id 
         ASC", 
 	
-        $mysql_data['db_table_category'], 
-        $mysql_data['db_table'],
+        TABLE_CATEGORY, 
+        TABLE_MAIN,
         $category_id
         );
 
@@ -503,7 +503,7 @@ function get_editpage_cat($page_id, $level) {
             id 
         ASC", 
 	
-        $mysql_data['db_table_pages'], 
+        TABLE_PAGES, 
         $page_id
     );
 
@@ -595,7 +595,7 @@ function get_config($name) {
         WHERE
             config_name = '%2\$s'",
           
-        $mysql_data['db_table_config'],
+        TABLE_CONFIG,
         $name
     );
 
@@ -628,7 +628,7 @@ function main_pagination($url, $q, $p, $published, $table) {
         WHERE 
             config_name = '%2\$s'", 
 	
-        $mysql_data['db_table_config'], 
+        TABLE_CONFIG, 
         $p
     );
     

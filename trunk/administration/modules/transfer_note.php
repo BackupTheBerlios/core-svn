@@ -38,7 +38,7 @@ switch ($action) {
                     WHERE
                         c_id = '%3\$d'",
                 
-                    $mysql_data['db_table'],
+                    TABLE_MAIN,
                     $target, 
                     $current
                 );
@@ -90,7 +90,7 @@ switch ($action) {
             WHERE 
                 category_parent_id = '%2\$d'",
 		
-            $mysql_data['db_table_category'], 
+            TABLE_CATEGORY, 
             0
         );
             
