@@ -187,9 +187,10 @@ switch($p){
         break;
 }
 
-// wyznaczamy szablon jaki ma byc parsowany
-$assigned_tpl = isset($assigned_tpl) ? $assigned_tpl : 'main';
-
+// wyznaczamy szablon jaki ma byc parsowany, sprawdzajac
+// czy faktycznie znajduje sie on w katalogu z szablonami
+$assigned_tpl = isset($assigned_tpl) && file_exists('./templates/' . $theme . '/tpl/' . $assigned_tpl . '.tpl') ? $assigned_tpl : 'main';
+        
 $ft->define_dynamic("alternate_design_row", $assigned_tpl);
 
 while($d = $read_dir->read()) {
