@@ -53,7 +53,7 @@ $db = new DB_SQL;
 $query = "	SELECT 
 				count(*) AS id 
 			FROM 
-				$mysql_data[db_table] 
+				TABLE_MAIN 
 			WHERE 
 				published = '1' 
 			ORDER BY 
@@ -67,7 +67,7 @@ $published_items 	= $db->f("id");
 $query = "	SELECT 
 				count(*) AS id 
 			FROM 
-				$mysql_data[db_table] 
+				TABLE_MAIN 
 			WHERE 
 				published = '-1' 
 			ORDER BY 

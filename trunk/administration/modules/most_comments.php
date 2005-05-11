@@ -10,7 +10,7 @@ switch ($action)
 	case "show":// wy¶wietlanie wpisu pobranego do modyfikacji
 		$query = "	SELECT * 
 					FROM 
-						$mysql_data[db_table_comments] 
+						TABLE_COMMENTS 
 					WHERE 
 						id = '$_GET[id]'";
 		
@@ -47,7 +47,7 @@ switch ($action)
 		$author		= $_POST['author'];
 		
 		$query = "	UPDATE 
-						$mysql_data[db_table_comments] 
+						TABLE_COMMENTS 
 					SET 
 						author = '$author', 
 						text = '$text' 
@@ -64,7 +64,7 @@ switch ($action)
 	case "delete":// usuwanie wybranego wpisu
 		$query = "	DELETE 
 					FROM 
-						$mysql_data[db_table_comments] 
+						TABLE_COMMENTS 
 					WHERE 
 						id = '$_GET[id]'";
 		
@@ -82,9 +82,9 @@ switch ($action)
 					AS 
 						comments 
 					FROM 
-						$mysql_data[db_table] n 
+						TABLE_MAIN n 
 					LEFT JOIN 
-						$mysql_data[db_table_comments] c 
+						TABLE_COMMENTS c 
 					ON 
 						n.id = c.comments_id 
 					GROUP BY 

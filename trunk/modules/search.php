@@ -19,13 +19,13 @@ if(!empty($search_word)) {
             UNIX_TIMESTAMP(a.date) AS date,
             b.*, c.comments_id, count(c.id) AS comments 
 		FROM 
-			$mysql_data[db_table] a 
+			TABLE_MAIN a 
 		LEFT JOIN 
-			$mysql_data[db_table_category] b 
+			TABLE_CATEGORY b 
 		ON 
             b.category_id = a.c_id 
         LEFT JOIN 
-            $mysql_data[db_table_comments] c 
+            TABLE_COMMENTS c 
         ON 
             a.id = c.comments_id
         WHERE 

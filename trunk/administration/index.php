@@ -57,7 +57,7 @@ if ($p == "log") {
         $query = "  SELECT 
                         active 
                     FROM 
-                        $mysql_data[db_table_users] 
+                        TABLE_USERS 
                     WHERE 
                         login = '$login' 
                     AND 

@@ -368,7 +368,7 @@ switch ($action) {
 	
 		$query = sprintf("
             SELECT * FROM 
-                $mysql_data[db_table_config] 
+                TABLE_CONFIG 
             WHERE 
                 config_name = '%1\$s'", 
 		

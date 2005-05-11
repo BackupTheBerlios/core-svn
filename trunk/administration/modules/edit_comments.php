@@ -170,7 +170,7 @@ switch ($action) {
 	
 		$query = sprintf("
 					SELECT * FROM 
-						$mysql_data[db_table_config] 
+						TABLE_CONFIG 
 					WHERE 
 						config_name = '%1\$s'", "editposts_per_page");
 		
@@ -181,7 +181,7 @@ switch ($action) {
 		
 		$query = sprintf("
 					SELECT * FROM 
-						$mysql_data[db_table_comments] 
+						TABLE_COMMENTS 
 					ORDER BY 
 						date 
 					DESC LIMIT 
