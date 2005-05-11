@@ -100,16 +100,15 @@ switch ($action) {
             $file .= 'define(\'DB_NAME\', \'' . $dbname . '\');' . "\n";
             $file .= 'define(\'PREFIX\', \'' . $dbprefix . '\');'."\n\n";
 
-            $file .= '$mysql_data = array(' . "\n";
-            $file .= "\t" . "'db_table'             =>PREFIX . 'devlog',\n";
-            $file .= "\t" . "'db_table_users'       =>PREFIX . 'users',\n";
-            $file .= "\t" . "'db_table_comments'    =>PREFIX . 'comments',\n";
-            $file .= "\t" . "'db_table_config'      =>PREFIX . 'config',\n";
-            $file .= "\t" . "'db_table_counter'     =>PREFIX . 'counter',\n";
-            $file .= "\t" . "'db_table_category'    =>PREFIX . 'category',\n";
-            $file .= "\t" . "'db_table_pages'       =>PREFIX . 'pages',\n";
-            $file .= "\t" . "'db_table_links'       =>PREFIX . 'links',\n";
-            $file .= "\t" . "'db_table_newsletter'  =>PREFIX . 'newsletter',\n";
+            $file .= "define('TABLE_MAIN',        PREFIX . 'devlog');\n";
+            $file .= "define('TABLE_USERS',       PREFIX . 'users');\n";
+            $file .= "define('TABLE_COMMENTS',    PREFIX . 'comments');\n";
+            $file .= "define('TABLE_CONFIG',      PREFIX . 'config');\n";
+            $file .= "define('TABLE_CATEGORY',    PREFIX . 'category');\n";
+            $file .= "define('TABLE_PAGES',       PREFIX . 'pages');\n";
+            $file .= "define('TABLE_LINKS',       PREFIX . 'links');\n";
+            $file .= "define('TABLE_NEWSLETTER',  PREFIX . 'newsletter');\n";
+
             $file .= ");\n\n";
 
             $file .= 'define(\'CORE_INSTALLED\', true);'."\n\n";
