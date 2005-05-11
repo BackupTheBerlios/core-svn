@@ -3,9 +3,9 @@
 $pagination_link = isset($rewrite) && $rewrite == 1 ? 'index.' : 'index.php?start=';
 
 // inicjowanie funkcji stronnicuj±cej wpisy
-$pagination = main_pagination($pagination_link, '', 'mainposts_per_page', 'AND published = \'1\'', 'db_table');
+$pagination = main_pagination($pagination_link, '', 'mainposts_per_page', 'AND published = \'1\'', TABLE_MAIN);
 
-$query = "
+$query = sprintf("
 	SELECT 
         a.*,
         UNIX_TIMESTAMP(a.date) AS date,
@@ -13,13 +13,13 @@ $query = "
 		c.comments_id,
 		count(c.id) AS comments 
 	FROM 
-		TABLE_MAIN a 
+		%1\$s a 
 	LEFT JOIN 
-		TABLE_CATEGORY b 
+		%2\$s b 
 	ON 
 		b.category_id = a.c_id 
 	LEFT JOIN 
-		TABLE_COMMENTS c 
+		%3\$s c 
 	ON 
 		a.id = c.comments_id
 	WHERE 
@@ -27,7 +27,12 @@ $query = "
 	GROUP BY 
 		a.date 
 	DESC 
-	LIMIT $start, $pagination[mainposts_per_page]";
+	LIMIT $start, $pagination[mainposts_per_page]", 
+    
+    TABLE_MAIN, 
+    TABLE_CATEGORY, 
+    TABLE_COMMENTS
+);
 
 $db->query($query);
 

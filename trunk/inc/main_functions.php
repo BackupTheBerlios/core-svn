@@ -638,14 +638,16 @@ function main_pagination($url, $q, $p, $published, $table) {
 	$mainposts_per_page = $db->f("config_value");
 	$mainposts_per_page = empty($mainposts_per_page) ? 10 : $mainposts_per_page;
 	
-	$query = "
+	$query = sprintf("
         SELECT 
             COUNT(*) AS id 
         FROM 
-            $mysql_data[$table] 
+            %1\$s 
         WHERE $q 
 			TO_DAYS(NOW()) - TO_DAYS(date) <= $days_to $published 
-        ORDER BY date";
+        ORDER BY date", 
+	
+        $table);
     
 	$db->query($query);
 	$db->next_record();
