@@ -9,23 +9,23 @@ $search_word = trim($search_word);
 $search_link = isset($rewrite) && $rewrite == 1 ? 'search.' . $search_word . '.' : 'index.php?p=search&search_word=' . $search_word . '&amp;start=';
 
 // inicjowanie funkcji stronnicuj±cej wpisy
-main_pagination($search_link, '', 'mainposts_per_page', 'AND published = \'1\' AND text LIKE \'%' . $search_word . '%\' OR title LIKE \'%' . $search_word . '%\'', 'db_table');
+main_pagination($search_link, '', 'mainposts_per_page', 'AND published = \'1\' AND text LIKE \'%' . $search_word . '%\' OR title LIKE \'%' . $search_word . '%\'', TABLE_MAIN);
 
 if(!empty($search_word)) {
 	
-    $query = "
+    $query = sprintf("
         SELECT 
             a.*,
             UNIX_TIMESTAMP(a.date) AS date,
             b.*, c.comments_id, count(c.id) AS comments 
 		FROM 
-			TABLE_MAIN a 
+			%1\$s a 
 		LEFT JOIN 
-			TABLE_CATEGORY b 
+			%2\$s b 
 		ON 
             b.category_id = a.c_id 
         LEFT JOIN 
-            TABLE_COMMENTS c 
+            %3\$s c 
         ON 
             a.id = c.comments_id
         WHERE 
@@ -37,7 +37,12 @@ if(!empty($search_word)) {
         GROUP BY 
             a.date 
         DESC LIMIT 
-            $start, $mainposts_per_page";
+            $start, $mainposts_per_page", 
+    
+        TABLE_MAIN, 
+        TABLE_CATEGORY, 
+        TABLE_COMMENTS
+    );
 	
 	$db->query($query);
 	
