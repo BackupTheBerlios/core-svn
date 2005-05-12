@@ -101,7 +101,6 @@ function str_nl2br($s) {
 function get_cat($page_id, $level) {
 	
 	global 
-        $mysql_data, 
         $ft, 
         $rewrite;
 
@@ -151,9 +150,7 @@ function get_cat($page_id, $level) {
 
 function get_addpage_cat($page_id, $level) {
 	
-	global 
-        $mysql_data, 
-        $ft;
+	global $ft;
 
 	$query = sprintf("
         SELECT 
@@ -203,7 +200,6 @@ function get_addpage_cat($page_id, $level) {
 function get_category_cat($cat_id, $level) {
 	
 	global 
-        $mysql_data, 
         $ft, 
         $rewrite;
 
@@ -252,9 +248,7 @@ function get_category_cat($cat_id, $level) {
 // funkcja pobierajaca rekurencyjnie kategorie
 function get_addcategory_cat($page_id, $level) {
 	
-	global 
-        $mysql_data, 
-        $ft;
+	global $ft;
 
 	$query = sprintf("
         SELECT 
@@ -302,7 +296,7 @@ function get_addcategory_cat($page_id, $level) {
 // funkcja pobierajaca rekurencyjnie kategorie::transfer wpisow
 function get_transfercategory_cat($page_id, $level) {
 	
-	global $mysql_data, $ft;
+	global $ft;
 
 	$query = sprintf("
         SELECT 
@@ -349,7 +343,6 @@ function get_transfercategory_cat($page_id, $level) {
 function get_editnews_cat($c_id, $level) {
 	
 	global 
-        $mysql_data, 
         $ft, 
         $category;
 
@@ -405,7 +398,11 @@ function get_editnews_cat($c_id, $level) {
 // funkcja pobierajaca rekurencyjnie kategorie::lista kategorii
 function get_editcategory_cat($category_id, $level) {
 	
-	global $mysql_data, $ft, $idx1, $count, $i18n;
+	global 
+	   $ft, 
+	   $idx1, 
+	   $count, 
+	   $i18n;
 
 	$query = sprintf("
         SELECT 
@@ -485,7 +482,6 @@ function get_editcategory_cat($category_id, $level) {
 function get_editpage_cat($page_id, $level) {
 	
 	global 
-        $mysql_data, 
         $ft, 
         $idx1;
 
@@ -585,7 +581,6 @@ function v_array($array, $exit = 0) {
 function get_config($name) {
 
     $db = new DB_SQL;
-    global $mysql_data;
 
     $query = sprintf("
         SELECT
@@ -615,8 +610,6 @@ function main_pagination($url, $q, $p, $published, $table) {
     
     global 
         $db, 
-        $days_to, 
-        $mysql_data, 
         $mainposts_per_page, 
         $page_string;
 
@@ -728,8 +721,6 @@ function main_pagination($url, $q, $p, $published, $table) {
 	    $page_string .= '&nbsp;&nbsp;<a href="' . $url . ($on_page * $mainposts_per_page) . '">' . "<b>nastêpna</b> " . '</a>';
 	}
 	
-	$ret['days_to']            = $days_to;
-	$ret['mysql_data']         = $mysql_data;
 	$ret['mainposts_per_page'] = $mainposts_per_page;
 	$ret['page_string']        = $page_string;
 	
@@ -781,5 +772,6 @@ function show_me_more($text) {
 	
 	return $text;
 }
+
 
 ?>
