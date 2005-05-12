@@ -1,7 +1,7 @@
 <?php
 
 // inicjowanie funkcji stronnicuj±cej wpisy
-main_pagination('main.php?p=5&amp;start=', '', 'editposts_per_page', '', 'db_table_comments');
+main_pagination('main.php?p=5&amp;start=', '', 'editposts_per_page', '', TABLE_COMMENTS);
 
 // deklaracja zmiennej $action::form
 $action = empty($_GET['action']) ? '' : $_GET['action'];
@@ -169,10 +169,14 @@ switch ($action) {
 	default:
 	
 		$query = sprintf("
-					SELECT * FROM 
-						TABLE_CONFIG 
-					WHERE 
-						config_name = '%1\$s'", "editposts_per_page");
+            SELECT * FROM 
+                %1\$s 
+            WHERE 
+                config_name = '%2\$s'", 
+		
+            TABLE_CONFIG, 
+            "editposts_per_page"
+        );
 		
 		$db->query($query);
 		$db->next_record();
@@ -180,12 +184,17 @@ switch ($action) {
 		$editposts_per_page = $db->f("config_value");
 		
 		$query = sprintf("
-					SELECT * FROM 
-						TABLE_COMMENTS 
-					ORDER BY 
-						date 
-					DESC LIMIT 
-						%1\$d, %2\$d", $start, $editposts_per_page);
+            SELECT * FROM 
+                %1\$s 
+            ORDER BY 
+                date 
+            DESC LIMIT 
+                %2\$d, %3\$d", 
+		
+            TABLE_COMMENTS, 
+            $start, 
+            $editposts_per_page
+        );
 		
 		$db->query($query);
 		

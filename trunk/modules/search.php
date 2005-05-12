@@ -9,7 +9,7 @@ $search_word = trim($search_word);
 $search_link = isset($rewrite) && $rewrite == 1 ? 'search.' . $search_word . '.' : 'index.php?p=search&search_word=' . $search_word . '&amp;start=';
 
 // inicjowanie funkcji stronnicuj±cej wpisy
-main_pagination($search_link, '', 'mainposts_per_page', 'AND published = \'1\' AND text LIKE \'%' . $search_word . '%\' OR title LIKE \'%' . $search_word . '%\'', TABLE_MAIN);
+main_pagination($search_link, '', 'mainposts_per_page', 'WHERE published = \'1\' AND text LIKE \'%' . $search_word . '%\' OR title LIKE \'%' . $search_word . '%\'', TABLE_MAIN);
 
 if(!empty($search_word)) {
 	

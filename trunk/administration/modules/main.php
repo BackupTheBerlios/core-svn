@@ -50,28 +50,38 @@ for($y = 0; $y < 5; $y++) {
 $db = new DB_SQL;
 
 // Zliczenie wszystkich publikowanych wpisów
-$query = "	SELECT 
-				count(*) AS id 
-			FROM 
-				TABLE_MAIN 
-			WHERE 
-				published = '1' 
-			ORDER BY 
-				date";
+$query = sprintf("
+    SELECT 
+        count(*) AS id 
+    FROM 
+        %1\$s 
+    WHERE 
+        published = '%2\$d' 
+    ORDER BY 
+        date", 
+
+    TABLE_MAIN, 
+    1
+);
 
 $db->query($query);
 $db->next_record();
 $published_items 	= $db->f("id");
 
 // Zliczenie wszystkich nie publikowanych wpisów
-$query = "	SELECT 
-				count(*) AS id 
-			FROM 
-				TABLE_MAIN 
-			WHERE 
-				published = '-1' 
-			ORDER BY 
-				date";
+$query = sprintf("
+    SELECT 
+        count(*) AS id 
+    FROM 
+        %1\$s 
+    WHERE 
+        published = '%2\$d' 
+    ORDER BY 
+        date", 
+
+    TABLE_MAIN, 
+    -1
+);
 
 $db->query($query);
 $db->next_record();
@@ -80,9 +90,11 @@ $nonpublished_items 	= $db->f("id");
 // Zliczenie wszystkich wpisów
 $num_items 	= $published_items + $nonpublished_items;
 
-$ft->assign(array(	'COUNT_NOTES'		=>$num_items,
-					'PUBLISHED_NOTES'	=>$published_items,
-					'NONPUBLISHED_NOTES'=>$nonpublished_items));
+$ft->assign(array(
+    'COUNT_NOTES'		=>$num_items,
+    'PUBLISHED_NOTES'	=>$published_items,
+    'NONPUBLISHED_NOTES'=>$nonpublished_items
+));
 					
 $ft->parse('ROWS', "main_site");
 ?>

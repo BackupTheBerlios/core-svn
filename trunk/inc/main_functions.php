@@ -643,11 +643,12 @@ function main_pagination($url, $q, $p, $published, $table) {
             COUNT(*) AS id 
         FROM 
             %1\$s 
-        WHERE $q 
-			TO_DAYS(NOW()) - TO_DAYS(date) <= $days_to $published 
+            %2\$s %3\$s 
         ORDER BY date", 
 	
-        $table);
+        $table, 
+        $q, 
+        $published);
     
 	$db->query($query);
 	$db->next_record();

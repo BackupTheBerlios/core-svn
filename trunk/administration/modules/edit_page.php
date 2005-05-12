@@ -368,10 +368,11 @@ switch ($action) {
 	
 		$query = sprintf("
             SELECT * FROM 
-                TABLE_CONFIG 
+                %1\$s 
             WHERE 
-                config_name = '%1\$s'", 
+                config_name = '%2\$s'", 
 		
+            TABLE_CONFIG, 
             "editposts_per_page"
         );
 		

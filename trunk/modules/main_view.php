@@ -3,7 +3,7 @@
 $pagination_link = isset($rewrite) && $rewrite == 1 ? 'index.' : 'index.php?start=';
 
 // inicjowanie funkcji stronnicuj±cej wpisy
-$pagination = main_pagination($pagination_link, '', 'mainposts_per_page', 'AND published = \'1\'', TABLE_MAIN);
+$pagination = main_pagination($pagination_link, '', 'mainposts_per_page', 'WHERE published = \'1\'', TABLE_MAIN);
 
 $query = sprintf("
 	SELECT 

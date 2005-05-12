@@ -5,14 +5,18 @@ $action = empty($_GET['action']) ? '' : $_GET['action'];
 
 $db = new DB_SQL;
 
-switch ($action)
-{
+switch ($action) {
+    
 	case "show":// wy¶wietlanie wpisu pobranego do modyfikacji
-		$query = "	SELECT * 
-					FROM 
-						TABLE_COMMENTS 
-					WHERE 
-						id = '$_GET[id]'";
+		$query = sprintf("
+            SELECT * FROM 
+                %1\$s 
+            WHERE 
+                id = '%2\$d'", 
+		
+            TABLE_COMMENTS, 
+            $_GET['id']
+        );
 		
 		$db->query($query);
 		$db->next_record();
@@ -33,26 +37,36 @@ switch ($action)
 		$text = preg_replace("/(\r\n)+/", "\\1\\1", $text);
 
 		
-		$ft->assign(array(	'AUTHOR'	=>$author,
-							'DATE' 		=>$date,
-							'ID'		=>$_GET['id'],
-							'TEXT'		=>$text));
+		$ft->assign(array(
+            'AUTHOR'	=>$author,
+            'DATE' 		=>$date,
+            'ID'		=>$_GET['id'],
+            'TEXT'		=>$text
+        ));
 
 		$ft->define('form_commentsedit', "form_commentsedit.tpl");
 		$ft->parse('ROWS',	".form_commentsedit");
 		break;
 
 	case "edit":// edycja wybranego wpisu
-		$text		= nl2br($_POST['text']);
-		$author		= $_POST['author'];
+	
+		$text	= nl2br($_POST['text']);
+		$author	= $_POST['author'];
 		
-		$query = "	UPDATE 
-						TABLE_COMMENTS 
-					SET 
-						author = '$author', 
-						text = '$text' 
-					WHERE 
-						id = '$_GET[id]'";
+		$query = sprintf("
+            UPDATE 
+                %1\$s 
+            SET 
+                author = '%2\$s', 
+                text = '%3\$s' 
+            WHERE 
+                id = '%4\$d'", 
+		
+            TABLE_COMMENTS, 
+            $author, 
+            $text, 
+            $_GET['id']
+        );
 		
 		$db->query($query);
 		
@@ -62,11 +76,16 @@ switch ($action)
 		break;
 
 	case "delete":// usuwanie wybranego wpisu
-		$query = "	DELETE 
-					FROM 
-						TABLE_COMMENTS 
-					WHERE 
-						id = '$_GET[id]'";
+	
+		$query = sprintf("
+            DELETE FROM 
+                %1\$s 
+            WHERE 
+                id = '%2\$d'", 
+		
+            TABLE_COMMENTS, 
+            $_GET['id']
+        );
 		
 		$db->query($query);
 		
@@ -76,26 +95,30 @@ switch ($action)
 		break;
 		
 	default:
-		$query = " 	SELECT 
-						n.id, n.title, n.date, 
-						count(DISTINCT c.id) 
-					AS 
-						comments 
-					FROM 
-						TABLE_MAIN n 
-					LEFT JOIN 
-						TABLE_COMMENTS c 
-					ON 
-						n.id = c.comments_id 
-					GROUP BY 
-						n.id 
-					HAVING 
-						count(c.id) > 0 	
-					ORDER BY 
-						comments 
-					DESC 
-					LIMIT 
-						20";
+		$query = sprintf("
+            SELECT 
+                n.id, n.title, n.date, count(DISTINCT c.id) 
+            AS 
+                comments 
+            FROM 
+                %1\$s n 
+            LEFT JOIN 
+                %2\$s c 
+            ON 
+                n.id = c.comments_id 
+            GROUP BY 
+                n.id 
+            HAVING 
+                count(c.id) > 0 
+            ORDER BY 
+                comments 
+            DESC LIMIT 
+                %3\$d", 
+		
+            TABLE_MAIN, 
+            TABLE_COMMENTS, 
+            20
+        );
 		
 		$db->query($query);
 		

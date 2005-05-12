@@ -54,14 +54,20 @@ if ($p == "log") {
     } else {
         
         $db = new DB_SQL;
-        $query = "  SELECT 
-                        active 
-                    FROM 
-                        TABLE_USERS 
-                    WHERE 
-                        login = '$login' 
-                    AND 
-                        password = '$password'";
+        $query = sprintf("
+            SELECT 
+                active 
+            FROM 
+                %1\$s 
+            WHERE 
+                login = '%2\$s' 
+            AND 
+                password = '%3\$s'", 
+        
+            TABLE_USERS, 
+            $login, 
+            $password
+        );
         
         $db->query($query);
     
