@@ -7,6 +7,28 @@ if(is_numeric($_GET['id'])) {
     // inicjowanie funkcji stronnicujacej wpisy
     main_pagination($cat_pagination_link, 'WHERE c_id=' . $_GET['id'] . ' AND ', 'mainposts_per_page', 'published = \'1\'', TABLE_MAIN);
     
+    // pobieramy nazwê szablonu jaki przydzielony jest do danej kategorii
+    $query = sprintf("
+        SELECT 
+            category_tpl 
+        FROM 
+            %1\$s 
+        WHERE 
+            category_id = '%2\$d' 
+        LIMIT 
+            %3\$d", 
+    
+        TABLE_CATEGORY, 
+        $_GET['id'], 
+        1
+    );
+    
+    $db->query($query);
+    $db->next_record();
+    
+    // zmienna przechowujaca przydzielony do kategorii szablon
+    $category_tpl = $db->f('category_tpl') . '_rows';
+    
     $query = sprintf("
         SELECT 
             a.*,
@@ -30,17 +52,29 @@ if(is_numeric($_GET['id'])) {
         GROUP BY 
             a.date 
         DESC
-        LIMIT  $start, $mainposts_per_page",
+        LIMIT  %5\$d, %6\$d",
         
         TABLE_MAIN,
         TABLE_CATEGORY,
         TABLE_COMMENTS,
-        $_GET['id']
+        $_GET['id'], 
+        $start, 
+        $mainposts_per_page
     );
     
     $db->query($query);
     
     if($db->num_rows() > 0) {
+        
+        // zabezpieczenie, jesli plik nie znajduje sie na serwerze
+        $category_tpl = file_exists('./templates/' . $theme . '/tpl/' . $category_tpl . '.tpl') ? $category_tpl : 'default_rows';
+        
+        // dynamiczne definiowanie szablonu, jaki ma byc
+        // przydzielony do konkretnej kategorii Core
+        $ft->define($category_tpl, $category_tpl . '.tpl');
+            
+        // definiujemy blok dynamiczny szablonu
+        $ft->define_dynamic("note_row", $category_tpl);
 
         while($db->next_record()) {
     
@@ -149,10 +183,12 @@ if(is_numeric($_GET['id'])) {
                 }
             }
             
-            $ft->assign('RETURN', ''); 
-                
-            $ft->parse('ROWS', '.rows');
+            $ft->assign('RETURN', '');
+            $ft->parse('ROWS', ".note_row");
         }
+        
+        // Parsowanie szablonu przydzielonego do danej kategorii
+        $ft->parse('ROWS', $category_tpl);
     } else {
         
         // Obs³uga b³êdu, kiedy ¿adana jest kategoria, jakiej nie ma w bazie danych
@@ -173,4 +209,5 @@ if(is_numeric($_GET['id'])) {
                         
     $ft->parse('ROWS', '.query_failed');
 }
+
 ?>

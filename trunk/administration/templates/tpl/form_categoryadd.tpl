@@ -25,6 +25,18 @@
 		</td>
 	</tr>
 	<tr>
+		<td class="form" width="80">Szablon :&nbsp;</td>
+		<td class="form" width="" colspan="2">
+		<select class="category_form" name="template_name">
+			
+			<!-- BEGIN DYNAMIC BLOCK: template_row -->
+			<option value="{TEMPLATE_ASSIGNED}">{TEMPLATE_ASSIGNED}</option>
+			<!-- END DYNAMIC BLOCK: template_row -->
+
+		</select>
+		</td>
+	</tr>
+	<tr>
       <td class="form" width="364" align="left" valign="top" colspan="2"><br /><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('formCat').submit()">{SUBMIT_HREF_DESC}</a></td>
 	</tr>
 </table>

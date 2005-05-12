@@ -214,10 +214,11 @@ if(!empty($search_word)) {
 				    }
 			    }
 			}
-			$ft->assign('RETURN', '');				
-				
-			$ft->parse('ROWS',".rows");
-
+			// definiujemy blok dynamiczny szablonu
+			$ft->define_dynamic("note_row", "rows");
+			
+			$ft->assign('RETURN', '');
+			$ft->parse('ROWS', ".note_row");
 		} 
 	} else {
 	

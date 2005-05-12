@@ -24,3 +24,7 @@ INSERT INTO `core_config`
 ALTER TABLE `core_pages` 
     ADD `assigned_tpl` VARCHAR(255) 
     DEFAULT 'main' NOT NULL;
+    
+ALTER TABLE `core_category` 
+    ADD `category_tpl` VARCHAR(255) 
+    DEFAULT 'default' NOT NULL;

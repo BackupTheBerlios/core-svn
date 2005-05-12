@@ -26,9 +26,10 @@ switch ($action) {
         $db->query($query);
         $db->next_record();
         
-        $cat_id            = $db->f("category_id");
-        $cat_name          = $db->f("category_name");
-        $cat_description   = $db->f("category_description");
+        $cat_id             = $db->f("category_id");
+        $cat_name           = $db->f("category_name");
+        $cat_description    = $db->f("category_description");
+        $category_tpl       = $db->f("category_tpl");
 		
 		$ft->assign(array(
             'CATEGORY_ID'		=>$cat_id,
@@ -37,8 +38,38 @@ switch ($action) {
             'CATNAME_DESC'		=>$cat_description,
             'SUBMIT_HREF_DESC'	=>$i18n['edit_category'][0]
         ));
+        
+        $path = '../templates/main/tpl/';
+        
+        $dir = @dir($path);
+        
+        // definiowanie dynamicznej czesci szablonu
+        $ft->define("form_categoryedit", "form_categoryedit.tpl");
+        $ft->define_dynamic("template_row", "form_categoryedit");
+        
+        // wyswietlanie listy dostepnych szablonow
+        while($file = $dir->read()) {
+            
+            // wyswietlamy szablony nazwane tylko w formie (.*)_rows.tpl
+            if(eregi("_rows.tpl", $file)) {
+                
+                $file = explode('_', $file);
+                $ft->assign(array(
+                    'TEMPLATE_ASSIGNED'		=>$file[0]
+                ));
+                
+                if($category_tpl == $file[0]) {
+                    $ft->assign('CURRENT_TPL', 'selected="selected"');
+                } else {
+                    $ft->assign('CURRENT_TPL', '');
+                }
+                
+                $ft->parse('TEMPLATE_ROW', ".template_row");
+            }
+        }
+        
+        $dir->close();
 
-		$ft->define("form_categoryedit", "form_categoryedit.tpl");
 		$ft->parse('ROWS',	".form_categoryedit");
 		break;
 		
@@ -48,6 +79,7 @@ switch ($action) {
 	
             $category_description	= nl2br($_POST['category_description']);
             $category_name			= trim($_POST['category_name']);
+            $template_name          = $_POST['template_name'];
             
             $monit = array();
             
@@ -64,13 +96,15 @@ switch ($action) {
                         %1\$s 
                     SET 
                         category_name = '%2\$s', 
-                        category_description = '%3\$s' 
+                        category_description = '%3\$s', 
+                        category_tpl = '%4\$s'
                     WHERE 
-                        category_id='%4\$d'", 
+                        category_id='%5\$d'", 
 		
                     TABLE_CATEGORY, 
                     $category_name, 
                     $category_description, 
+                    $template_name, 
                     $_GET['id']
                 );
 		

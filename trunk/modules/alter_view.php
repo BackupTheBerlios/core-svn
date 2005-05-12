@@ -134,9 +134,11 @@ if($db->num_rows() > 0) {
         }
     }
     
+    // definiujemy blok dynamiczny szablonu
+    $ft->define_dynamic("note_row", "rows");
+    
     $ft->assign('RETURN', 'powrót');
-
-    $ft->parse('ROWS','.rows');
+    $ft->parse('ROWS','.note_row');
 } else {
 
     $ft->assign(array(

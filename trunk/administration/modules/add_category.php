@@ -10,6 +10,7 @@ switch ($action) {
 		$category_name        = trim($_POST['category_name']);
 		$category_description = $_POST['category_description'];
 		$category_parent_id   = $_POST['category_id'];
+		$template_name        = $_POST['template_name'];
 		
 		$monit = array();
 		
@@ -46,13 +47,14 @@ switch ($action) {
                     INSERT INTO 
                         %1\$s 
                     VALUES 
-                        ('', '%2\$d', '%3\$d', '%4\$s', '%5\$s')",
+                        ('', '%2\$d', '%3\$d', '%4\$s', '%5\$s', '%6\$s')",
 			
                     TABLE_CATEGORY, 
                     $category_parent_id, 
                     $max_order + 10, 
                     $category_name,
-                    $category_description
+                    $category_description, 
+                    $template_name
                 );
                 
                 $db->query($query);
@@ -131,6 +133,30 @@ switch ($action) {
 		$ft->assign(array(
             'SUBMIT_HREF_DESC'	=>$i18n['add_category'][2]
 		));
+		
+		$path = '../templates/main/tpl/';
+        
+        $dir = @dir($path);
+        
+        // definiowanie dynamicznej czesci szablonu
+        $ft->define_dynamic("template_row", "form_categoryadd");
+        
+        // wyswietlanie listy dostepnych szablonow
+        while($file = $dir->read()) {
+            
+            // wyswietlamy szablony nazwane tylko w formie (.*)_rows.tpl
+            if(eregi("_rows.tpl", $file)) {
+                
+                $file = explode('_', $file);
+                $ft->assign(array(
+                    'TEMPLATE_ASSIGNED'		=>$file[0]
+                ));
+                
+                $ft->parse('TEMPLATE_ROW', ".template_row");
+            }
+        }
+        
+        $dir->close();
 		
 		// w przypadku braku akcji wy¶wietlanie formularza
 		$ft->parse('ROWS', "form_categoryadd");

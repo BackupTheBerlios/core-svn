@@ -3,7 +3,8 @@ CREATE TABLE core_category (
   category_parent_id mediumint(7) NOT NULL default '0',
   category_order mediumint(7) NOT NULL default '1',
   category_name varchar(40) NOT NULL default '',
-  category_description text NOT NULL,
+  category_description text NOT NULL, 
+  category_tpl varchar(255) DEFAULT 'default' NOT NULL, 
   KEY id (category_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
