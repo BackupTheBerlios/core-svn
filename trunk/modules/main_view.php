@@ -160,6 +160,7 @@ if($db->num_rows() !== 0) {
 	        }
 	    }
 	    
+	    $ft->assign('RETURN', '');
 	    $ft->parse('ROWS', ".rows");
 	}
 } else {

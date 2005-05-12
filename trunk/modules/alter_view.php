@@ -133,8 +133,10 @@ if($db->num_rows() > 0) {
             }
         }
     }
+    
+    $ft->assign('RETURN', 'powrót');
 
-    $ft->parse('ROWS','.single_rows');
+    $ft->parse('ROWS','.rows');
 } else {
 
     $ft->assign(array(

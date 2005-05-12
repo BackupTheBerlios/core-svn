@@ -213,7 +213,8 @@ if(!empty($search_word)) {
 				        $ft->parse('IMAGE', "image_main");
 				    }
 			    }
-			}						
+			}
+			$ft->assign('RETURN', '');				
 				
 			$ft->parse('ROWS',".rows");
 

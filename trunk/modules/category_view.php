@@ -147,7 +147,9 @@ if(is_numeric($_GET['id'])) {
                         $ft->parse('IMAGE', 'image_main');
                     }
                 }
-            }    
+            }
+            
+            $ft->assign('RETURN', ''); 
                 
             $ft->parse('ROWS', '.rows');
         }
