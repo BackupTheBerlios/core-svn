@@ -110,12 +110,10 @@ $read_dir = @dir($templates_dir);
 $ft->define(array(
     'main'              =>'main.tpl',
     'note_main'         =>'note_main.tpl',
-    'rss_view'          =>'rss_view.tpl',
     'main_denied'       =>'main_denied.tpl',
     'comments_main'     =>'comments_main.tpl',
     'comments_alter'    =>'comments_alter.tpl',
-    'rows'              =>'rows.tpl',
-    'single_rows'       =>'single_rows.tpl',
+    'rows'              =>'default_rows.tpl',
     'comments_form'     =>'comments_form.tpl',
     'comments_rows'     =>'comments_rows.tpl',
     'comments_submit'   =>'comments_submit.tpl',
