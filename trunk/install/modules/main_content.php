@@ -107,16 +107,13 @@ switch ($action) {
             $file .= "define('TABLE_CATEGORY',    PREFIX . 'category');\n";
             $file .= "define('TABLE_PAGES',       PREFIX . 'pages');\n";
             $file .= "define('TABLE_LINKS',       PREFIX . 'links');\n";
-            $file .= "define('TABLE_NEWSLETTER',  PREFIX . 'newsletter');\n";
-
-            $file .= ");\n\n";
+            $file .= "define('TABLE_NEWSLETTER',  PREFIX . 'newsletter');\n\n";
 
             $file .= 'define(\'CORE_INSTALLED\', true);'."\n\n";
 
             $file .= '//mail address to person who can repair if something in Your code is broken' . "\n";
             $file .= 'define(\'ADMIN_MAIL\', \'core@example.com\');'."\n\n";
 
-            $file .= '$days_to = 360;' . "\n\n";
             $file .= '?' . '>';
 
             $fp        = @fopen('../administration/inc/config.php', 'w');
