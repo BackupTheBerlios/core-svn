@@ -213,7 +213,7 @@ switch($action) {
         while($file = $dir->read()) {
             
             // pomijamy szablony stanowiace skladowa calej strony
-            if(!in_array($file, $not_allowed)) {
+            if(!in_array($file, $not_allowed) && !eregi("rows.tpl", $file)) {
                 
                 $file = explode('.', $file);
                 $ft->assign(array(
