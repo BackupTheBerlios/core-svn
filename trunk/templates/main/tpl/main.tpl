@@ -26,7 +26,8 @@
 		</form>
 		<br />
 		
-        <span class="title">menu</span><br />
+		<!-- IFDEF: PAGE_NAME -->
+		<span class="title">menu</span><br />
         <ul>
 		
             <!-- BEGIN DYNAMIC BLOCK: pages_row -->
@@ -35,6 +36,8 @@
         
         </ul>
         <br />
+        <!-- ELSE -->
+        <!-- ENDIF -->
 
 		<span class="title">kategorie</span><br />
 		<ul>
@@ -68,6 +71,7 @@
 		</ul>
 		<br />
 		
+		<!-- IFDEF: LINK_NAME -->
 		<span class="title">czasami czytane</span><br />
         <ul>
         
@@ -77,6 +81,8 @@
             
         </ul>
         <br />
+        <!-- ELSE -->
+        <!-- ENDIF -->
         
         <span class="title">alternatywnie</span><br />
         <ul>
