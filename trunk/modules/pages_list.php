@@ -43,6 +43,11 @@ if($db->num_rows() > 0) {
         get_cat($page_id, 2);
     }
     
+} else {
+    
+    // swiadomie deklarowana pusta zmienna potrzebna
+    // instrukcji warunkowej do przejscia do odpowiedniego miejsca szablonu
+    $ft->assign('PAGE_NAME', '');
 }
 
 ?>

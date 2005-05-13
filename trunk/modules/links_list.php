@@ -29,6 +29,11 @@ if($db->num_rows() > 0) {
     
         $ft->parse('LINKS_ROW', ".links_row");
     }
+} else {
     
+    // swiadomie deklarowana pusta zmienna potrzebna
+    // instrukcji warunkowej do przejscia do odpowiedniego miejsca szablonu
+    $ft->assign('LINK_NAME', '');
 }
+
 ?>
