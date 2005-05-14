@@ -6,31 +6,18 @@ define('DB_PASS', '');
 define('DB_NAME', '');
 define('PREFIX', 'core_');
 
-define('TABLE_MAIN',        PREFIX . 'devlog');
-define('TABLE_USERS',       PREFIX . 'users');
-define('TABLE_COMMENTS',    PREFIX . 'comments');
-define('TABLE_CONFIG',      PREFIX . 'config');
-define('TABLE_CATEGORY',    PREFIX . 'category');
-define('TABLE_PAGES',       PREFIX . 'pages');
-define('TABLE_LINKS',       PREFIX . 'links');
-define('TABLE_NEWSLETTER',  PREFIX . 'newsletter');
-
-$mysql_data = array(
-	'db_table'             =>PREFIX . 'devlog',
-	'db_table_users'       =>PREFIX . 'users',
-	'db_table_comments'    =>PREFIX . 'comments',
-	'db_table_config'      =>PREFIX . 'config',
-	'db_table_counter'     =>PREFIX . 'counter',
-	'db_table_category'    =>PREFIX . 'category',
-	'db_table_pages'       =>PREFIX . 'pages',
-	'db_table_links'       =>PREFIX . 'links',
-	'db_table_newsletter'  =>PREFIX . 'newsletter',
-);
+define('TABLE_MAIN',          PREFIX . 'devlog');
+define('TABLE_USERS',         PREFIX . 'users');
+define('TABLE_COMMENTS',      PREFIX . 'comments');
+define('TABLE_CONFIG',        PREFIX . 'config');
+define('TABLE_CATEGORY',      PREFIX . 'category');
+define('TABLE_PAGES',         PREFIX . 'pages');
+define('TABLE_LINKS',         PREFIX . 'links');
+define('TABLE_NEWSLETTER',    PREFIX . 'newsletter');
 
 define('CORE_INSTALLED', true);
+
 //mail address to person who can repair if something in Your code is broken
 define('ADMIN_MAIL', 'email@example.com');
-
-$days_to = 360;
 
 ?>
