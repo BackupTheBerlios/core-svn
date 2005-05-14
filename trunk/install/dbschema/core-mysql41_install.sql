@@ -88,3 +88,15 @@ CREATE TABLE core_users (
   additional_info mediumtext,
   PRIMARY KEY  (id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+INSERT INTO core_category VALUES ('', '', '10', 'ogólna', '', 'default');
+
+INSERT INTO core_config VALUES ('counter', '0');
+INSERT INTO core_config VALUES ('mainposts_per_page', '4');
+INSERT INTO core_config VALUES ('editposts_per_page', '15');
+INSERT INTO core_config VALUES ('mostcomments_on_page', '20');
+INSERT INTO core_config VALUES ('title_page', './Core {lektura wcale nie obowi±zkowa}');
+INSERT INTO core_config VALUES ('max_photo_width', '440');
+INSERT INTO core_config VALUES ('mod_rewrite', '0');
+INSERT INTO core_config VALUES ('date_format', 'Y-m-d H:i:s');
+INSERT INTO core_config VALUES ('core_version', '0.3.8');
