@@ -100,19 +100,19 @@ switch ($action) {
             $file .= 'define(\'DB_NAME\', \'' . $dbname . '\');' . "\n";
             $file .= 'define(\'PREFIX\', \'' . $dbprefix . '\');'."\n\n";
 
-            $file .= "define('TABLE_MAIN',        PREFIX . 'devlog');\n";
-            $file .= "define('TABLE_USERS',       PREFIX . 'users');\n";
-            $file .= "define('TABLE_COMMENTS',    PREFIX . 'comments');\n";
-            $file .= "define('TABLE_CONFIG',      PREFIX . 'config');\n";
-            $file .= "define('TABLE_CATEGORY',    PREFIX . 'category');\n";
-            $file .= "define('TABLE_PAGES',       PREFIX . 'pages');\n";
-            $file .= "define('TABLE_LINKS',       PREFIX . 'links');\n";
-            $file .= "define('TABLE_NEWSLETTER',  PREFIX . 'newsletter');\n\n";
+            $file .= "define('TABLE_MAIN',          PREFIX . 'devlog');\n";
+            $file .= "define('TABLE_USERS',         PREFIX . 'users');\n";
+            $file .= "define('TABLE_COMMENTS',      PREFIX . 'comments');\n";
+            $file .= "define('TABLE_CONFIG',        PREFIX . 'config');\n";
+            $file .= "define('TABLE_CATEGORY',      PREFIX . 'category');\n";
+            $file .= "define('TABLE_PAGES',         PREFIX . 'pages');\n";
+            $file .= "define('TABLE_LINKS',         PREFIX . 'links');\n";
+            $file .= "define('TABLE_NEWSLETTER',    PREFIX . 'newsletter');\n\n";
 
-            $file .= 'define(\'CORE_INSTALLED\', true);'."\n\n";
+            $file .= "define('CORE_INSTALLED',  true);\n\n";
 
             $file .= '//mail address to person who can repair if something in Your code is broken' . "\n";
-            $file .= 'define(\'ADMIN_MAIL\', \'core@example.com\');'."\n\n";
+            $file .= "define('ADMIN_MAIL',      'core@example.com');\n\n";
 
             $file .= '?' . '>';
 
@@ -147,127 +147,6 @@ switch ($action) {
                 $pass,
                 $coremail,
                 $bitmask
-            );
-
-            $db->query($query);
-
-            // wstawiamy domy¶lnie kategoriê ogóln±
-            $query = sprintf("
-                INSERT INTO
-                    %1\$s
-                VALUES
-                    ('', '', '10', 'ogólna', '')",
-
-                $t2
-            );
-
-            $db->query($query);
-
-            // ustawiamy warto¶æ licznika na 0
-            $query = sprintf("
-                INSERT INTO
-                    %1\$s
-                VALUES
-                    ('counter', '0')",
-
-                $t3
-            );
-            
-            $db->query($query);
-            
-            // Ustawiamy ilo¶æ postów na stronie w administracji
-            $query = sprintf("
-                INSERT INTO 
-                    %1\$s 
-                VALUES 
-                    ('editposts_per_page', '15')", 
-
-                $t3
-            );
-
-            $db->query($query);
-            
-            // Ustawiamy mod_rewrite
-            $query = sprintf("
-                INSERT INTO 
-                    %1\$s 
-                VALUES 
-                    ('mod_rewrite', '0')", 
-
-                $t3
-            );
-
-            $db->query($query);
-
-            // Ustawiamy ilo¶æ postów na stronie g³ównej
-            $query = sprintf("
-                INSERT INTO 
-                    %1\$s 
-                VALUES 
-                    ('mainposts_per_page', '4')", 
-
-                $t3
-            );
-
-            $db->query($query);
-
-            // Ustawiamy ilo¶æ postów najczê¶ciej komentowanych wpisów
-            $query = sprintf("
-                INSERT INTO 
-                    %1\$s 
-                VALUES 
-                    ('mostcomments_on_page', '20')", 
-
-                $t3
-            );
-
-            $db->query($query);
-
-            // Ustawiamy tytu³ strony
-            $query = sprintf("
-                INSERT INTO 
-                    %1\$s 
-                VALUES 
-                    ('title_page', './Core {lektura wcale nie obowi±zkowa}')",
-
-                $t3
-            );
-
-            $db->query($query);
-
-            // Ustawiamy maksymaln± szerko¶æ zdjêcia, jakie
-            // jest wyswietlane przy wpisie
-            $query = sprintf("
-                INSERT INTO 
-                    %1\$s 
-                VALUES 
-                    ('max_photo_width', '440')", 
-
-                $t3 
-            );
-
-            $db->query($query);
-
-            // wersja core
-            $query = sprintf("
-                INSERT INTO 
-                    %1\$s 
-                VALUES 
-                    ('core_version', '0.3.7')", 
-
-                $t3 
-            );
-
-            $db->query($query);
-
-            // format daty
-            $query = sprintf("
-                INSERT INTO 
-                    %1\$s 
-                VALUES 
-                    ('date_format', 'Y-m-d H:i:s')", 
-
-                $t3 
             );
 
             $db->query($query);
