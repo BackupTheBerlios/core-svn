@@ -198,21 +198,20 @@ if(!empty($search_word)) {
 				        'PHOTO_LINK'=>$photo_link
 				    ));
 				    
-				    if($width > $max_photo_width) {
-				        
-				        // template prepare
-				        $ft->define('image_alter', "image_alter.tpl");
-				        $ft->assign('UID', $id);
-				        
-				        $ft->parse('IMAGE', "image_alter");
-				    } else {
-				        
-				        // template prepare
-				        $ft->define('image_main', "image_main.tpl");
-				        $ft->assign('IMAGE_NAME', $image);
-				        
-				        $ft->parse('IMAGE', "image_main");
-				    }
+				    // template prepare
+                    $ft->define('image', "image.tpl");
+	            
+                    if($width > $max_photo_width) {
+	                
+                        $ft->assign(array(
+                            'UID'           =>$id,
+                            'IMAGE_NAME'    =>''
+                        ));
+                    } else {
+                        $ft->assign('IMAGE_NAME', $image);
+                    }
+	            
+                    $ft->parse('IMAGE', "image");
 			    }
 			}
 			// definiujemy blok dynamiczny szablonu
