@@ -36,24 +36,30 @@ if($db->num_rows() !== 0) {
     ));
     
     if(empty($image)) {
-
-		$ft->assign(array('IMAGE' =>""));
-	} else {
-	    
-	    $img_path = get_root() . '/photos/' . $image;
-		
-		if(is_file($img_path)) {
-			
-			list($width, $height) = getimagesize($img_path);
-		
-			// wysoko뜻, szeroko뜻 obrazka
-			$ft->assign(array(
-                'WIDTH'		=>$width,
-                'HEIGHT'	=>$height
+        
+        // IFDEF: IMAGE_EXIST zwraca pusta wartosc, przechodzimy
+        // do warunku ELSE
+        $ft->assign(array(
+            'IMAGE'         =>'', 
+            'IMAGE_EXIST'   =>false, 
+            'IMAGE_NAME'    =>false
+        ));
+    } else {
+        
+        $img_path = get_root() . '/photos/' . $image;
+        
+        if(is_file($img_path)) {
+            
+            list($width, $height) = getimagesize($img_path);
+            
+            $photo_link = isset($rewrite) && $rewrite == 1 ? 'photo?id=' . $id . '' : 'photo.php?id=' . $id . '';
+            
+            // wysoko뜻, szeroko뜻 obrazka
+            $ft->assign(array(
+                'WIDTH'         =>$width,
+                'HEIGHT'        =>$height,
+                'PHOTO_LINK'    =>$photo_link
             ));
-		
-			// template prepare
-            $ft->define('image', "image.tpl");
             
             if($width > $max_photo_width) {
                 
@@ -65,9 +71,15 @@ if($db->num_rows() !== 0) {
                 $ft->assign('IMAGE_NAME', $image);
             }
             
-            $ft->parse('IMAGE', "image");
-		}
-	}
+            $ft->assign('IMAGE_EXIST', true);
+        } else {
+            
+            $ft->assign(array(
+                'IMAGE_EXIST'   =>false, 
+                'IMAGE_NAME'    =>false
+            ));
+        }
+    }
 	
 	// template prepare
 	$ft->define('pages_view', "pages_view.tpl");
