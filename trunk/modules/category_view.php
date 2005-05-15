@@ -124,26 +124,27 @@ if(is_numeric($_GET['id'])) {
                 $ft->assign('COMMENTS_ALLOW', $i18n['category_view'][1]);
             } else {
         
+                // template prepare
+                $ft->define('comments_link', "comments_link.tpl");
+	        
                 if($comments == 0) {
-            
+	            
                     $comments_link = isset($rewrite) && $rewrite == 1 ? '1,' . $id . ',3,item.html' : 'index.php?p=3&amp;id=' . $id . '';
-                    $ft->assign('COMMENTS_LINK', $comments_link);
-                    
-                    // template prepare
-                    $ft->define('comments_link_empty', 'comments_link_empty.tpl');
-                
-                    $ft->parse('COMMENTS_ALLOW', 'comments_link_empty');
+                    $ft->assign(array(
+                        'COMMENTS_LINK' =>$comments_link, 
+                        'COMMENTS'      =>''
+                    ));
                 } else {
-                    
+	            
                     $comments_link = isset($rewrite) && $rewrite == 1 ? '1,' . $id . ',2,item.html' : 'index.php?p=2&amp;id=' . $id . '';
-                    $ft->assign('COMMENTS_LINK', $comments_link);
-            
-                    // template prepare
-                    $ft->define('comments_link_alter', 'comments_link_alter.tpl');
-                    $ft->assign('COMMENTS', $comments);
-                
-                    $ft->parse('COMMENTS_ALLOW', 'comments_link_alter');
-                }    
+                    $ft->assign(array(
+                        'COMMENTS_LINK' =>$comments_link, 
+                        'COMMENTS'      =>$comments
+                    ));
+                }
+	        
+                // template parse
+                $ft->parse('COMMENTS_ALLOW', "comments_link");   
             }
     
             if(empty($image)) {
