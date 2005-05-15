@@ -29,11 +29,9 @@
 		<!-- IFDEF: PAGE_NAME -->
 		<span class="title">menu</span><br />
         <ul>
-		
             <!-- BEGIN DYNAMIC BLOCK: pages_row -->
             <li class="{CLASS}">{PARENT}<a href="{PAGE_LINK}">{PAGE_NAME}</a></li>
             <!-- END DYNAMIC BLOCK: pages_row -->
-        
         </ul>
         <br />
         <!-- ELSE -->
@@ -41,13 +39,10 @@
 
 		<span class="title">kategorie</span><br />
 		<ul>
-		
             <!-- BEGIN DYNAMIC BLOCK: category_row -->
             <li class="{CLASS}">{PARENT}<a href="{CAT_LINK}">{CAT_NAME}</a></li>
             <!-- END DYNAMIC BLOCK: category_row -->
-            
             <li><br /><a href="./">wszystkie</a></li>
-		
 		</ul> 
 		
 		<br />
@@ -74,11 +69,9 @@
 		<!-- IFDEF: LINK_NAME -->
 		<span class="title">czasami czytane</span><br />
         <ul>
-        
             <!-- BEGIN DYNAMIC BLOCK: links_row -->
             <li><a href="{LINK_URL}" target="_blank">{LINK_NAME}</a></li>
             <!-- END DYNAMIC BLOCK: links_row -->
-            
         </ul>
         <br />
         <!-- ELSE -->
@@ -86,11 +79,9 @@
         
         <span class="title">alternatywnie</span><br />
         <ul>
-        
             <!-- BEGIN DYNAMIC BLOCK: alternate_design_row -->
             <li><a href="{TEMPLATE_LINK}">{ALTERNATE_TEMPLATE}</a></li>
             <!-- END DYNAMIC BLOCK: alternate_design_row -->
-            
         </ul>
         <br />
 		
@@ -113,15 +104,11 @@
 		</div>
 		
 		<div id="content">
-		<!-- main content/main template parsed -->
 			{MAIN}
-		<!-- end main content -->
 		</div>
 		
 		<div class="right">
-		<!-- main pagination/pagination template parsed -->
 			{STRING}
-		<!-- end main pagination -->
 		</div>
 		
 	</div>
