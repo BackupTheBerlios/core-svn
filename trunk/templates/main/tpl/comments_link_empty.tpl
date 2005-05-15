@@ -1,1 +1,0 @@
-<a class="comments" href="{COMMENTS_LINK}">skomentuj ten post</a>

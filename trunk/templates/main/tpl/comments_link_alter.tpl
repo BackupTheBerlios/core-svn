@@ -1,1 +1,0 @@
-<a class="comments" href="{COMMENTS_LINK}">komentarze ({COMMENTS})</a>
