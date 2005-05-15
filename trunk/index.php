@@ -111,18 +111,13 @@ $ft->define(array(
     'main_page'         =>'main_page.tpl',
     'note_main'         =>'note_main.tpl',
     'main_denied'       =>'main_denied.tpl',
-    'comments_main'     =>'comments_main.tpl',
-    'comments_alter'    =>'comments_alter.tpl',
     'rows'              =>'default_rows.tpl',
-    'comments_form'     =>'comments_form.tpl',
-    'comments_rows'     =>'comments_rows.tpl',
-    'comments_submit'   =>'comments_submit.tpl',
     'category_list'     =>'category_list.tpl',
     'newsletter'        =>'newsletter.tpl',
     'query_failed'      =>'query_failed.tpl'
 ));
     
-// warto¶æ pocz¹tkowa zmiennej $start -> potrzebna przy stronnicowaniu
+// warto¶æ poczatkowa zmiennej $start -> potrzebna przy stronnicowaniu
 $start  = isset($_GET['start']) ? intval($_GET['start']) : 0;
 $val    = empty($val) ? '' : $val;
 
