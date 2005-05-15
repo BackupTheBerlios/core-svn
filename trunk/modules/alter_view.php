@@ -71,55 +71,58 @@ if($db->num_rows() > 0) {
 	    'CATEGORY_LINK' =>$category_link
     ));
 
-    if(!$comments_allow) {
+    if(($comments_allow) == 0 ) {
 
-        $ft->assign(array('COMMENTS_ALLOW' =>'<br />'));
+        $ft->assign(array(
+            'COMMENTS_ALLOW'    =>false, 
+            'COMMENTS'          =>''
+        ));
     } else {
-
-        // template prepare
-	    $ft->define('comments_link', "comments_link.tpl");
 	        
-	    if($comments == 0) {
+        if($comments == 0) {
 	            
-	        $comments_link = isset($rewrite) && $rewrite == 1 ? '1,' . $id . ',3,item.html' : 'index.php?p=3&amp;id=' . $id . '';
-	        $ft->assign(array(
+            $comments_link = isset($rewrite) && $rewrite == 1 ? '1,' . $id . ',3,item.html' : 'index.php?p=3&amp;id=' . $id . '';
+            $ft->assign(array(
                 'COMMENTS_LINK' =>$comments_link, 
+                'COMMENTS_ALLOW'=>true, 
                 'COMMENTS'      =>''
             ));
 	    } else {
 	            
-	        $comments_link = isset($rewrite) && $rewrite == 1 ? '1,' . $id . ',2,item.html' : 'index.php?p=2&amp;id=' . $id . '';
-	        $ft->assign(array(
+            $comments_link = isset($rewrite) && $rewrite == 1 ? '1,' . $id . ',2,item.html' : 'index.php?p=2&amp;id=' . $id . '';
+            $ft->assign(array(
                 'COMMENTS_LINK' =>$comments_link, 
+                'COMMENTS_ALLOW'=>true, 
                 'COMMENTS'      =>$comments
             ));
 	    }
-	        
-	    // template parse
-	    $ft->parse('COMMENTS_ALLOW', "comments_link");
     }
 
     if(empty($image)) {
-
-        $ft->assign(array('IMAGE' =>''));
+        
+        // IFDEF: IMAGE_EXIST zwraca pusta wartosc, przechodzimy
+        // do warunku ELSE
+        $ft->assign(array(
+            'IMAGE'         =>'', 
+            'IMAGE_EXIST'   =>false, 
+            'IMAGE_NAME'    =>false
+        ));
     } else {
-
+        
         $img_path = get_root() . '/photos/' . $image;
-
+        
         if(is_file($img_path)) {
+            
             list($width, $height) = getimagesize($img_path);
             
             $photo_link = isset($rewrite) && $rewrite == 1 ? 'photo?id=' . $id . '' : 'photo.php?id=' . $id . '';
-
+            
             // wysoko¶æ, szeroko¶æ obrazka
             $ft->assign(array(
-                'WIDTH'     =>$width,
-                'HEIGHT'    =>$height, 
-                'PHOTO_LINK'=>$photo_link
+                'WIDTH'         =>$width,
+                'HEIGHT'        =>$height,
+                'PHOTO_LINK'    =>$photo_link
             ));
-
-            // template prepare
-            $ft->define('image', "image.tpl");
             
             if($width > $max_photo_width) {
                 
@@ -131,7 +134,13 @@ if($db->num_rows() > 0) {
                 $ft->assign('IMAGE_NAME', $image);
             }
             
-            $ft->parse('IMAGE', "image");
+            $ft->assign('IMAGE_EXIST', true);
+        } else {
+            
+            $ft->assign(array(
+                'IMAGE_EXIST'   =>false, 
+                'IMAGE_NAME'    =>false
+            ));
         }
     }
     
