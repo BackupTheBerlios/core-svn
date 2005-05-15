@@ -27,7 +27,7 @@ if($db->num_rows() !== 0) {
     
     // dynamiczne definiowanie szablonu, jaki ma byc
     // przydzielony do konkretnej podstrony Core
-    $ft->define($assigned_tpl, $assigned_tpl . '.tpl');
+    $ft->define($assigned_tpl, $assigned_tpl . '_page.tpl');
     
     $ft->assign(array(
         'PAGE_TITLE'    =>$title,
