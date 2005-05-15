@@ -102,7 +102,11 @@ switch ($action) {
                 'SUBMIT_LINK'   =>$submit_link
             ));
 
-            $ft->parse('ROWS','.comments_submit');
+            $ft->assign('SHOW_COMMENT_FORM', false);
+            $ft->define('comments_request', 'comments_request.tpl');
+            
+            // parsowanie szablonu::ft
+            $ft->parse('ROWS','.comments_request');
         } else {
             
             $ft->define("error_reporting", "error_reporting.tpl");
@@ -230,9 +234,12 @@ switch ($action) {
                 'FORM_LINK'         =>$form_link
             ));
         }
-
+        
+        $ft->assign('SHOW_COMMENT_FORM', true);
+        $ft->define('comments_request', 'comments_request.tpl');
+        
         // parsowanie szablonu::ft
-        $ft->parse('ROWS','.comments_form');
+        $ft->parse('ROWS','.comments_request');
         break;
 }
 
