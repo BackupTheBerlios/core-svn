@@ -12,3 +12,8 @@ ALTER TABLE `core_category`
 UPDATE `core_config` 
     SET config_value = '0.3.8' 
     WHERE config_name = 'core_version';
+    
+ALTER TABLE 
+    `core_category` 
+    ADD `category_post_perpage` 
+    INT(2) DEFAULT '6' NOT NULL;

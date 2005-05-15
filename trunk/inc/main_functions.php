@@ -606,7 +606,7 @@ function check_mail($email) {
 }
 
 // stronnicowanie 
-function main_pagination($url, $q, $p, $published, $table) {
+function main_pagination($url, $q, $p, $published, $table, $category_pagination) {
     
     global 
         $db, 
@@ -615,20 +615,41 @@ function main_pagination($url, $q, $p, $published, $table) {
 
 	$ret = array();
 	
-	$query = sprintf("
-        SELECT * FROM 
-            %1\$s 
-        WHERE 
-            config_name = '%2\$s'", 
+	if($category_pagination === true) {
+	    
+	    $query = sprintf("
+            SELECT
+                category_post_perpage 
+            FROM 
+                %1\$s 
+            WHERE 
+                category_id = '%2\$d'", 
 	
-        TABLE_CONFIG, 
-        $p
-    );
+            TABLE_CATEGORY, 
+            $_GET['id']
+        );
+        
+        $db->query($query);
+        $db->next_record();
+        
+        $mainposts_per_page = $db->f('category_post_perpage');
+	} else {
+	    $query = sprintf("
+            SELECT * FROM 
+                %1\$s 
+            WHERE 
+                config_name = '%2\$s'", 
+	
+            TABLE_CONFIG, 
+            $p
+        );
+        
+        $db->query($query);
+        $db->next_record();
+        
+        $mainposts_per_page = $db->f('config_value');
+	}
     
-	$db->query($query);
-	$db->next_record();
-		
-	$mainposts_per_page = $db->f("config_value");
 	$mainposts_per_page = empty($mainposts_per_page) ? 10 : $mainposts_per_page;
 	
 	$query = sprintf("

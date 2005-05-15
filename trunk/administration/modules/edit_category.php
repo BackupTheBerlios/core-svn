@@ -30,12 +30,14 @@ switch ($action) {
         $cat_name           = $db->f("category_name");
         $cat_description    = $db->f("category_description");
         $category_tpl       = $db->f("category_tpl");
+        $category_perpage   = $db->f("category_post_perpage");
 		
 		$ft->assign(array(
             'CATEGORY_ID'		=>$cat_id,
             'CATEGORY_NAME'		=>$cat_name,
             'CATEGORY_DESC'		=>br2nl($cat_description),
-            'CATNAME_DESC'		=>$cat_description,
+            'CATNAME_DESC'		=>$cat_description, 
+            'CATEGORY_PERPAGE'  =>$category_perpage, 
             'SUBMIT_HREF_DESC'	=>$i18n['edit_category'][0]
         ));
         
@@ -79,6 +81,7 @@ switch ($action) {
 	
             $category_description	= nl2br($_POST['category_description']);
             $category_name			= trim($_POST['category_name']);
+            $category_perpage       = $_POST['category_post_perpage'];
             $template_name          = $_POST['template_name'];
             
             $monit = array();
@@ -97,14 +100,16 @@ switch ($action) {
                     SET 
                         category_name = '%2\$s', 
                         category_description = '%3\$s', 
-                        category_tpl = '%4\$s'
+                        category_tpl = '%4\$s', 
+                        category_post_perpage = '%5\$d' 
                     WHERE 
-                        category_id='%5\$d'", 
+                        category_id='%6\$d'", 
 		
                     TABLE_CATEGORY, 
                     $category_name, 
                     $category_description, 
                     $template_name, 
+                    $category_perpage, 
                     $_GET['id']
                 );
 		

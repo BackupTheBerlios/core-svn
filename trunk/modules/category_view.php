@@ -5,7 +5,7 @@ if(is_numeric($_GET['id'])) {
     $cat_pagination_link = isset($rewrite) && $rewrite == 1 ? 'category.' . $_GET['id'] . '.' : 'index.php?p=4&id=' . $_GET['id'] . '&amp;start=';
     
     // inicjowanie funkcji stronnicujacej wpisy
-    main_pagination($cat_pagination_link, 'WHERE c_id=' . $_GET['id'] . ' AND ', 'mainposts_per_page', 'published = \'1\'', TABLE_MAIN);
+    main_pagination($cat_pagination_link, 'WHERE c_id=' . $_GET['id'] . ' AND ', 'mainposts_per_page', 'published = \'1\'', TABLE_MAIN, true);
     
     // pobieramy nazwê szablonu jaki przydzielony jest do danej kategorii
     $query = sprintf("

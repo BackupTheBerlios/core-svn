@@ -5,6 +5,7 @@ CREATE TABLE core_category (
   category_name varchar(40) NOT NULL default '',
   category_description text NOT NULL, 
   category_tpl varchar(255) DEFAULT 'default' NOT NULL, 
+  category_post_perpage int(2) DEFAULT '6' NOT NULL, 
   KEY id (category_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -89,7 +90,7 @@ CREATE TABLE core_users (
   PRIMARY KEY  (id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-INSERT INTO core_category VALUES ('', '', '10', 'ogólna', '', 'default');
+INSERT INTO core_category VALUES ('', '', '10', 'ogólna', '', 'default', '6');
 
 INSERT INTO core_config VALUES ('counter', '0');
 INSERT INTO core_config VALUES ('mainposts_per_page', '4');

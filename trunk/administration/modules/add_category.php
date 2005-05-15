@@ -10,6 +10,7 @@ switch ($action) {
 		$category_name        = trim($_POST['category_name']);
 		$category_description = $_POST['category_description'];
 		$category_parent_id   = $_POST['category_id'];
+		$category_perpage     = $_POST['category_post_perpage'];
 		$template_name        = $_POST['template_name'];
 		
 		$monit = array();
@@ -47,14 +48,15 @@ switch ($action) {
                     INSERT INTO 
                         %1\$s 
                     VALUES 
-                        ('', '%2\$d', '%3\$d', '%4\$s', '%5\$s', '%6\$s')",
+                        ('', '%2\$d', '%3\$d', '%4\$s', '%5\$s', '%6\$s', '%7\$d')",
 			
                     TABLE_CATEGORY, 
                     $category_parent_id, 
                     $max_order + 10, 
                     $category_name,
                     $category_description, 
-                    $template_name
+                    $template_name, 
+                    $category_perpage
                 );
                 
                 $db->query($query);

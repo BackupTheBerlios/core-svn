@@ -414,4 +414,8 @@ input.checkbox {
     border-bottom: 2px solid #F8F8F8;
     padding-top: 3px;
     padding-bottom: 3px;
-}    
+}
+
+.perpage {
+    width: 30px;
+}

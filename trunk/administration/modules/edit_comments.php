@@ -1,7 +1,7 @@
 <?php
 
 // inicjowanie funkcji stronnicuj±cej wpisy
-main_pagination('main.php?p=5&amp;start=', '', 'editposts_per_page', '', TABLE_COMMENTS);
+main_pagination('main.php?p=5&amp;start=', '', 'editposts_per_page', '', TABLE_COMMENTS, false);
 
 // deklaracja zmiennej $action::form
 $action = empty($_GET['action']) ? '' : $_GET['action'];

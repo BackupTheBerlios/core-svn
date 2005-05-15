@@ -37,7 +37,11 @@
 		</td>
 	</tr>
 	<tr>
-      <td class="form" width="364" align="left" valign="top" colspan="2"><br /><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('formCat').submit()">{SUBMIT_HREF_DESC}</a></td>
+		<td class="form" width="80" align="right">Ilo¶æ postów/stronê:&nbsp;</td>
+		<td class="form" width="364"><input class="perpage" type="text" name="category_post_perpage" value="6" /></td>
+	</tr>
+	<tr>
+      <td class="form" width="364" colspan="2"><br /><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('formCat').submit()">{SUBMIT_HREF_DESC}</a></td>
 	</tr>
 </table>
 </form>
