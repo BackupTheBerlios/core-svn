@@ -108,7 +108,7 @@ $templates_dir = 'templates/';
 $read_dir = @dir($templates_dir);
 
 $ft->define(array(
-    'main'              =>'main.tpl',
+    'main_page'         =>'main_page.tpl',
     'note_main'         =>'note_main.tpl',
     'main_denied'       =>'main_denied.tpl',
     'comments_main'     =>'comments_main.tpl',
@@ -187,7 +187,7 @@ switch($p){
 
 // wyznaczamy szablon jaki ma byc parsowany, sprawdzajac
 // czy faktycznie znajduje sie on w katalogu z szablonami
-$assigned_tpl = isset($assigned_tpl) && file_exists('./templates/' . $theme . '/tpl/' . $assigned_tpl . '.tpl') ? $assigned_tpl : 'main';
+$assigned_tpl = isset($assigned_tpl) && file_exists('./templates/' . $theme . '/tpl/' . $assigned_tpl . '_page.tpl') ? $assigned_tpl : 'main_page';
         
 $ft->define_dynamic("alternate_design_row", $assigned_tpl);
 
