@@ -16,7 +16,9 @@ require("inc/i18n.php");
 $db     = new DB_SQL;
 $query  = sprintf("
     SELECT 
-        a.*, b.*, c.comments_id, count(DISTINCT c.id) 
+        a.*,
+		  DATE_FORMAT( a.date , '%d %M %Y %H:%i:%s GMT' ) AS rss_date
+		  b.*, c.comments_id, count(DISTINCT c.id) 
     AS 
         comments 
     FROM 
@@ -61,7 +63,7 @@ printf("
 
 while($db->next_record()) {
 	
-	$date 			= $db->f("date");
+	$date 			= $db->f("rss_date");
 	$title 			= $db->f("title");
 	$text 			= $db->f("text");
 	$author 		= $db->f("author");
@@ -77,7 +79,8 @@ while($db->next_record()) {
 	$comments 		= $db->f("comments");
 	
 	// zmiana formatu wy¶wietlania daty
-	$date	= coreRssDateConvert($date);
+	// FIXME: Obsolete
+	//$date	= coreRssDateConvert($date);
 	
 	$text = strip_tags($text, '<br><a><div>');
 	
