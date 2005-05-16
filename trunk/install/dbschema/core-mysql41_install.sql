@@ -44,7 +44,8 @@ CREATE TABLE core_devlog (
 
 
 CREATE TABLE core_links (
-  id mediumint(7) NOT NULL auto_increment,
+  id mediumint(7) NOT NULL auto_increment, 
+  link_order mediumint(7) DEFAULT '1' NOT NULL,
   title varchar(40) NOT NULL default '',
   url varchar(255) NOT NULL default '',
   PRIMARY KEY  (id),

@@ -37,12 +37,28 @@ switch ($action) {
             if(empty($monit)) {
                 
                 $query = sprintf("
+                    SELECT 
+                        max(link_order) as max_order 
+                    FROM 
+                        %1\$s",
+        
+                    TABLE_LINKS
+                );
+            
+                $db->query($query);
+                $db->next_record();
+			
+                // Przypisanie zmiennej $id
+                $max_order = $db->f("max_order");
+                
+                $query = sprintf("
                     INSERT INTO 
                         %1\$s 
                     VALUES 
-                        ('', '%2\$s', '%3\$s')",
+                        ('', '%2\$d', '%3\$s', '%4\$s')",
 			
-                    TABLE_LINKS,
+                    TABLE_LINKS, 
+                    $max_order + 10, 
                     $link_name,
                     $link_url
                 );

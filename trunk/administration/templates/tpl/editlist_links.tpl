@@ -7,7 +7,8 @@
 		<td class="mainListHeader" width="7%">Id</td>
 		<td class="mainListHeader" width="5%"></td>
 		<td class="mainListHeader" width="30%">Tytu³</td>
-		<td class="mainListHeader" width="37%">URI</td>
+		<td class="mainListHeader" width="31%">URI</td>
+		<td class="mainListHeader" width="6%"></td>
 		<td class="mainListHeader" width="10%">Edycja</td>
 		<td class="mainListHeader" width="10%">Usuñ</td>
 	</tr>
@@ -17,6 +18,9 @@
 		<td class="{ID_CLASS} center"><input class="selected_note" type="checkbox" name="selected_links[]" value="{LINK_ID}" /></td>
 		<td class="{ID_CLASS}">{LINK_NAME}</td>
 		<td class="{ID_CLASS}">{LINK_URL}</td>
+		<td class="{ID_CLASS} center">
+		{UP} {DOWN}
+		</td>
 		<td class="{ID_CLASS} center"><a href="main.php?p=12&amp;action=show&amp;id={LINK_ID}">Edycja</a></td>
 		<td class="{ID_CLASS} center"><a href="main.php?p=12&amp;action=delete&amp;id={LINK_ID}">Usuñ</a></td>
 	</tr>

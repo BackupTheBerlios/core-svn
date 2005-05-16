@@ -6,7 +6,7 @@ $query = sprintf("
     FROM 
         %1\$s 
     ORDER BY 
-        id 
+        link_order 
     ASC", 
 
     TABLE_LINKS

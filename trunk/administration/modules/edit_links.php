@@ -115,6 +115,83 @@ switch ($action) {
         }
 		
 		break;
+		
+	case "remark": // zmiana pozycji wybranego linku
+	
+        if($permarr['moderator']) {
+            
+            $move = intval($_GET['move']);
+	
+            $query = sprintf("
+                UPDATE 
+                    %1\$s 
+                SET 
+                    link_order = link_order + '%2\$d' 
+                WHERE 
+                    id='%3\$d'", 
+		
+                TABLE_LINKS, 
+                $move, 
+                $_GET['id']
+            );
+		
+            $db->query($query);
+            
+            // instancja potrzebna
+            $sql = new DB_SQL;
+            
+            $query = sprintf("
+                SELECT * FROM 
+                    %1\$s 
+                ORDER BY 
+                    link_order 
+                ASC", 
+    
+                TABLE_LINKS
+            );
+    
+            $sql->query($query);
+    
+            $i = 10;
+            $inc = 10;
+    
+            while($sql->next_record()) {
+        
+                $lid = $sql->f("id");
+        
+                $query = sprintf("
+                    UPDATE 
+                        %1\$s 
+                    SET 
+                        link_order = '$i' 
+                    WHERE 
+                        id = '$lid'", 
+        
+                    TABLE_LINKS
+                );
+                    
+                $db->query($query);
+                    
+                $i += 10;
+            }
+            
+            header("Location: main.php?p=12");
+            exit;
+		
+        } else {
+            
+            $monit[] = $i18n['edit_category'][6];
+            
+            foreach ($monit as $error) {
+                
+                $ft->assign('ERROR_MONIT', $error);
+                
+                $ft->parse('ROWS',	".error_row");
+            }
+                        
+            $ft->parse('ROWS', "error_reporting");
+        }
+		break;
 
 	case "delete":// usuwanie wybranego wpisu
 	
@@ -221,11 +298,28 @@ switch ($action) {
 
 	default:
 	
+        $query = sprintf("
+            SELECT 
+                MIN(link_order) as min_order, 
+                MAX(link_order) as max_order 
+            FROM 
+                %1\$s",
+        
+            TABLE_LINKS
+        );
+            
+        $db->query($query);
+        $db->next_record();
+			
+        // Przypisanie zmiennej $id
+        $max_order = $db->f("max_order");
+        $min_order = $db->f("min_order");
+	
 		$query = sprintf("
             SELECT * FROM 
                 %1\$s 
             ORDER BY 
-                id 
+                link_order 
             ASC", 
 		
             TABLE_LINKS
@@ -240,6 +334,7 @@ switch ($action) {
             while($db->next_record()) {
 		
                 $link_id	= $db->f("id");
+                $link_order = $db->f("link_order");
                 $link_name	= $db->f("title");
                 $link_url	= $db->f("url");
                 
@@ -249,7 +344,27 @@ switch ($action) {
                     'LINK_ID'	=>$link_id,
                     'LINK_NAME'	=>$link_name,
                     'LINK_URL'	=>$link_url
-                ));			
+                ));
+                
+                if($link_order == $max_order) {
+                    // przydzielamy przycisk do podwy¿eszenia pozycji kategorii
+                    $ft->assign(array(
+                        'DOWN'  =>'',
+                        'UP'    =>'<a href="main.php?p=12&amp;action=remark&amp;move=-15&amp;id=' . $link_id . '"><img src="templates/images/up.gif" width="11" height="7" /></a>'
+                    ));
+                } elseif ($link_order == $min_order) {
+                    // przydzielamy przycisk do obnizenia pozycji kategorii
+                    $ft->assign(array(
+                        'DOWN'  =>'<a href="main.php?p=12&amp;action=remark&amp;move=15&amp;id=' . $link_id . '"><img src="templates/images/down.gif" width="11" height="7" /></a>', 
+                        'UP'    =>''
+                    ));
+                } else {
+                    // przydzielamy dwa przyciski do zmiany polozenia kategorii
+                    $ft->assign(array(
+                        'UP'    =>'<a href="main.php?p=12&amp;action=remark&amp;move=-15&amp;id=' . $link_id . '"><img src="templates/images/up.gif" width="11" height="7" /></a>', 
+                        'DOWN'  =>'<a href="main.php?p=12&amp;action=remark&amp;move=15&amp;id=' . $link_id . '"><img src="templates/images/down.gif" width="11" height="7" /></a>'
+                    ));
+                }		
 			
                 // deklaracja zmiennej $idx1::color switcher
                 $idx1 = empty($idx1) ? '' : $idx1;

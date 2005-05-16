@@ -143,7 +143,7 @@ switch ($action) {
         }
 		break;
 		
-	case "remark":// edycja wybranego wpisu
+	case "remark": // zmiana pozycji wybranej kategorii
 	
         if($permarr['moderator']) {
             
