@@ -88,8 +88,12 @@ switch ($action) {
             
             // Obs³uga formularza, jesli go zatwierdzono
 		    if($category_name == '') {
-		        
 		        $monit[] = $i18n['add_category'][0];
+		    }
+		    
+		    // Sprawdzamy czy liczba postow na stronie jest w odpowiednim przedziale
+		    if(!is_int($category_perpage) && ($category_perpage < 3 || $category_perpage > 99)) {
+		        $monit[] = $i18n['add_category'][5];
 		    }
 		    
 		    if(empty($monit)) {

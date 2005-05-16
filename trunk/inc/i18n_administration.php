@@ -24,6 +24,7 @@ $i18n['add_category'][1] = 'Kategoria zosta³a dodana do bazy danych.';
 $i18n['add_category'][2] = 'dodaj now± kategoriê';
 $i18n['add_category'][3] = '<b>Kategorie - dodaj now± kategoriê</b>';
 $i18n['add_category'][4] = '<b>Nie masz uprawnieñ</b> pozwalaj±cych na dodanie nowej kategorii.';
+$i18n['add_category'][5] = 'Liczba postów na stronie kategorii musi byæ w przedziale: 3 - 99';
 
 $i18n['add_links'] = array();
 $i18n['add_links'][0] = 'Musisz podaæ nazwê linku.';
