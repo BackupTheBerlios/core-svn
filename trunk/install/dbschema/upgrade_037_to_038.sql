@@ -10,7 +10,7 @@ ALTER TABLE `core_category`
     DEFAULT 'default' NOT NULL;
     
 UPDATE `core_config` 
-    SET config_value = '0.3.8' 
+    SET config_value = '0.4.0' 
     WHERE config_name = 'core_version';
     
 ALTER TABLE 
