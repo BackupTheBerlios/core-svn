@@ -206,7 +206,8 @@ if(!class_exists('FastTemplate')) {
 		        }
 		        
 		        $block        = array("/<!--\s(BEGIN|END)\sDYNAMIC\sBLOCK:\s([a-zA-Z\_0-9]*)\s-->/");
-		        $corrected    = array("\r\n <!-- \\1 DYNAMIC BLOCK: \\2 --> \r\n");
+		        // $corrected    = array("\r\n <!-- \\1 DYNAMIC BLOCK: \\2 --> \r\n");
+		        $corrected    = array("<!-- \\1 DYNAMIC BLOCK: \\2 -->"); // lark
 		        $contents     = preg_replace($block, $corrected, $contents);
 		        
 		        return trim($contents);
@@ -276,7 +277,9 @@ if(!class_exists('FastTemplate')) {
 		        (strpos($line, "<!-- IFNDEF:") === false) &&
 		        (strpos($line, "<!-- ELSE") === false) &&
 		        (strpos($line, "<!-- ENDIF") === false))
-		        $newTemplate .= trim($line) . "\n";
+		        
+		        //$newTemplate .= trim($line) . "\n";
+		        $newTemplate .= trim($line, '\t') . "\n"; // lark
 		        
 		        //by Alex Tonkov: Parse the start of define block and check the condition
 		        if(eregi("<!-- IFDEF: ([A-Z0-9_a-z]+)(\.([A-Z0-9_a-z]+))? -->", $line, $regs)) {
@@ -385,10 +388,16 @@ if(!class_exists('FastTemplate')) {
 		        $template = ereg_replace("{([A-Z0-9_\.]+)}","",$template); // by Voituk Vadim
 		        // $template = str_replace("{([A-Z0-9_]+)}","",$template); // GRAFX
 		        // by Alex Tonkov: paste each define block in one line
-		        $template = ereg_replace("(<!-- IFDEF: ([A-Z0-9_a-z]+)(\.([A-Z0-9_a-z]+))? -->)", "\n\\0\n", $template);
-		        $template = ereg_replace("(<!-- IFNDEF: ([A-Z0-9_a-z]+)(\.([A-Z0-9_a-z]+))? -->)", "\n\\0\n", $template);
-		        $template = ereg_replace("(<!-- ELSE -->)", "\n\\0\n", $template);
-		        $template = ereg_replace("(<!-- ENDIF -->)", "\n\\0\n", $template);
+		        // $template = ereg_replace("(<!-- IFDEF: ([A-Z0-9_a-z]+)(\.([A-Z0-9_a-z]+))? -->)", "\n\\0\n", $template);
+		        // $template = ereg_replace("(<!-- IFNDEF: ([A-Z0-9_a-z]+)(\.([A-Z0-9_a-z]+))? -->)", "\n\\0\n", $template);
+		        // $template = ereg_replace("(<!-- ELSE -->)", "\n\\0\n", $template);
+		        // $template = ereg_replace("(<!-- ENDIF -->)", "\n\\0\n", $template);
+		        
+		        // wyciecie pustych linii po usunieciu komentarzy: lark
+		        $template = ereg_replace("(<!-- IFDEF: ([A-Z0-9_a-z]+)(\.([A-Z0-9_a-z]+))? -->)", "\\0", $template);
+		        $template = ereg_replace("(<!-- IFNDEF: ([A-Z0-9_a-z]+)(\.([A-Z0-9_a-z]+))? -->)", "\\0", $template);
+		        $template = ereg_replace("(<!-- ELSE -->)", "\\0", $template);
+		        $template = ereg_replace("(<!-- ENDIF -->)", "\\0", $template);
 		        
 		        $template = ereg_replace("([\n]+)", "\n", $template);
 		        // by AiK: remove dynamic blocks
