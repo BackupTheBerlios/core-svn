@@ -102,7 +102,7 @@ while($db->next_record()) {
     $c_name = str_replace("&", " and ", $c_name);
 	
 	echo "<item>\n";
-	echo "	<pubDate>" . $date . " GMT</pubDate>\n";
+	echo "	<pubDate>" . $date . " </pubDate>\n";
 	echo "	<title>" . stripslashes($title) . "</title>\n";
 	echo "	<dc:creator>" . $author . "</dc:creator>\n";
 	echo "	<link>http://" . $_SERVER['HTTP_HOST'] . "/1," . $id . ",1,item.html</link>\n";
