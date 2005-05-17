@@ -1,5 +1,11 @@
 <?php
 
+if(empty($_GET['id'])) {
+    // jesli ktos probuje grzebac w adresie url
+    header("Location: index.php");
+    exit;
+}
+
 require_once('inc/i18n.php');
 require_once('inc/main_functions.php');
 
@@ -26,15 +32,9 @@ if(isset($_COOKIE['devlog_design']) && is_dir('./templates/' . $_COOKIE['devlog_
 
 // inicjowanie klasy, wkazanie katalogu przechowuj±cego szablony
 $ft = new FastTemplate('./templates/' . $theme . '/tpl/');
-
 $db = new DB_SQL;
 
-$ft->define(array(
-    'photo_main'    =>'photo_main.tpl',
-    'note_main'     =>'note_main.tpl',
-    'rows'          =>'rows.tpl',
-    'query_failed'  =>'query_failed.tpl'
-));
+$ft->define('photo_main', 'photo_main.tpl');
 
 // set {TITLE} variable
 // tytu³ strony, wy¶wietlany w miejscu title::db
@@ -53,9 +53,41 @@ $db->next_record();
 
 $ft->assign('TITLE', $db->f('config_value'));
 
-include('modules/photo_view.php');
-$ft->parse('MAIN', array('note_main', 'photo_main'));
-$ft->FastPrint();
+$query = sprintf("
+    SELECT * FROM 
+        %1\$s 
+    WHERE 
+        id = '%2\$d' 
+    LIMIT 1", 
+
+    TABLE_MAIN,
+    $_GET['id']
+);
+
+$db->query($query);
+
+if($db->num_rows() > 0) {
+    
+    $db->next_record();
+
+    $image  = $db->f("image");
+
+    list($width, $height) = getimagesize("photos/" . $image);
+
+    $ft->assign(array(
+        'IMAGE_NAME'    =>$image,
+        'IMAGE_WIDTH'   =>$width,
+        'IMAGE_HEIGHT'  =>$height
+    ));
+
+    $ft->parse('CONTENT', 'photo_main');
+} else {
+    // jesli ktos probuje grzebac w adresie url
+    header("Location: index.php");
+    exit;
+}
+    
+$ft->FastPrint('CONTENT');
 exit;
 
 ?>
