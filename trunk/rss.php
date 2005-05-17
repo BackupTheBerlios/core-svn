@@ -2,16 +2,13 @@
 
 header("Content-type: application/xml");
 
-echo('<?xml version="1.0" encoding="iso-8859-2"?>');
-echo "\n<rss version=\"2.0\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\">\n\n";
-
 define("PATH_TO_CLASSES", "administration/classes");
 
 require(PATH_TO_CLASSES. "/cls_db_mysql.php"); // dodawanie pliku konfigurujacego bibliotekę baz danych
+require(PATH_TO_CLASSES. '/cls_fast_template.php');
 require("administration/inc/config.php");
 
 require("inc/main_functions.php");
-require("inc/i18n.php");
 
 $db     = new DB_SQL;
 $query  = sprintf("
@@ -44,20 +41,19 @@ $query  = sprintf("
 
 $db->query($query);
 
-printf("	
-<channel>
-    <title>%1\$s</title>
-    <link>http://" . $_SERVER['HTTP_HOST'] . "</link>
-    <description>%2\$s</description>
-    <language>%3\$s</language>
-    <copyright>%4\$s</copyright>
-",
-  
-    $i18n['rss'][0],
-    $i18n['rss'][1],
-    $i18n['rss'][2],
-    $i18n['rss'][3]
-);
+// pobieranie informacji o uzyciu mod_rewrite
+$rewrite = get_config('mod_rewrite');
+
+// inicjowanie klasy, wkazanie katalogu przechowującego szablony
+$ft = new FastTemplate('./templates/main/tpl/');
+
+$ft->define('xml_feed', 'xml_feed.tpl');
+$ft->define_dynamic('xml_row', 'xml_feed');
+
+$ft->assign(array(
+    'MAINSITE_LINK' =>$_SERVER['HTTP_HOST'], 
+    'NEWS_FEED'     =>true
+));
 
 while($db->next_record()) {
 	
@@ -97,19 +93,24 @@ while($db->next_record()) {
     
     $text   = str_replace($pattern, $replacement, $text);
     $c_name = str_replace("&", " and ", $c_name);
-	
-	echo "<item>\n";
-	echo "	<pubDate>" . $date . " GMT</pubDate>\n";
-	echo "	<title>" . stripslashes($title) . "</title>\n";
-	echo "	<dc:creator>" . $author . "</dc:creator>\n";
-	echo "	<link>http://" . $_SERVER['HTTP_HOST'] . "/1," . $id . ",1,item.html</link>\n";
-	echo "	<description>" . stripslashes($text) . "</description>\n";
-	echo "	<category>" . $c_name . "</category>\n";
-	echo "	<comments>http://" . $_SERVER['HTTP_HOST'] . "/1," . $id . ",2,item.html</comments>\n";
-	echo "</item>\n\n";
+
+    $comments_link  = isset($rewrite) && $rewrite == 1 ? $_SERVER['HTTP_HOST'] . '/1,' . $id . ',2,item.html' : $_SERVER['HTTP_HOST'] . '/index.php?p=2&amp;id=' . $id . '';
+    $permanent_link = isset($rewrite) && $rewrite == 1 ? $_SERVER['HTTP_HOST'] . '/1,' . $id . ',1,item.html' : $_SERVER['HTTP_HOST'] . '/index.php?p=1&amp;id=' . $id . '';
+   
+    $ft->assign(array(
+        'DATE'          =>$date, 
+        'TITLE'         =>stripslashes($title), 
+        'AUTHOR'        =>$author, 
+        'PERMALINK'     =>$permanent_link, 
+        'TEXT'          =>stripslashes($text), 
+        'CATEGORY'      =>$c_name, 
+        'COMMENTS_LINK' =>$comments_link
+    ));
+    
+    $ft->parse('XML_ROW', ".xml_row");
 }
 
-echo "</channel>\n\n";
-echo "</rss>"
+$ft->parse('CONTENT', "xml_feed");
+$ft->FastPrint('CONTENT');
 
 ?>
