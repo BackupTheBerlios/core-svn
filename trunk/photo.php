@@ -54,7 +54,9 @@ $db->next_record();
 $ft->assign('TITLE', $db->f('config_value'));
 
 $query = sprintf("
-    SELECT * FROM 
+    SELECT 
+        image 
+    FROM 
         %1\$s 
     WHERE 
         id = '%2\$d' 
@@ -65,13 +67,12 @@ $query = sprintf("
 );
 
 $db->query($query);
+$db->next_record();
 
-if($db->num_rows() > 0) {
+$image = $db->f('image');
+
+if(!empty($image)) {
     
-    $db->next_record();
-
-    $image  = $db->f("image");
-
     list($width, $height) = getimagesize("photos/" . $image);
 
     $ft->assign(array(
