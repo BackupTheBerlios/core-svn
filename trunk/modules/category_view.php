@@ -194,11 +194,11 @@ if(is_numeric($_GET['id'])) {
             }
             
             $ft->assign('RETURN', '');
-            $ft->parse('ROWS', ".note_row");
+            $ft->parse('MAIN', ".note_row");
         }
         
         // Parsowanie szablonu przydzielonego do danej kategorii
-        $ft->parse('ROWS', $category_tpl);
+        $ft->parse('MAIN', $category_tpl);
     } else {
         
         // Obs³uga b³êdu, kiedy ¿adana jest kategoria, jakiej nie ma w bazie danych
@@ -207,7 +207,7 @@ if(is_numeric($_GET['id'])) {
             'STRING'        =>''
         ));
                             
-        $ft->parse('ROWS', '.query_failed');
+        $ft->parse('MAIN', '.query_failed');
     }                    
 } else {
     
@@ -217,7 +217,7 @@ if(is_numeric($_GET['id'])) {
         'STRING'        =>''
     ));
                         
-    $ft->parse('ROWS', '.query_failed');
+    $ft->parse('MAIN', '.query_failed');
 }
 
 ?>

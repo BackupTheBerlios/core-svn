@@ -106,7 +106,7 @@ switch ($action) {
             $ft->define('comments_request', 'comments_request.tpl');
             
             // parsowanie szablonu::ft
-            $ft->parse('ROWS','.comments_request');
+            $ft->parse('MAIN','.comments_request');
         } else {
             
             $ft->define("error_reporting", "error_reporting.tpl");
@@ -116,10 +116,10 @@ switch ($action) {
     
                 $ft->assign('ERROR_MONIT', $error);
                     
-                $ft->parse('ROWS',	".error_row");
+                $ft->parse('MAIN',	".error_row");
             }
                         
-            $ft->parse('ROWS', "error_reporting");
+            $ft->parse('MAIN', "error_reporting");
         }
         break;
 
@@ -239,7 +239,7 @@ switch ($action) {
         $ft->define('comments_request', 'comments_request.tpl');
         
         // parsowanie szablonu::ft
-        $ft->parse('ROWS','.comments_request');
+        $ft->parse('MAIN','.comments_request');
         break;
 }
 

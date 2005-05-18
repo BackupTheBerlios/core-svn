@@ -84,7 +84,7 @@ if($db->num_rows() !== 0) {
 	// template prepare
 	$ft->define('pages_view', "pages_view.tpl");
 
-	$ft->parse('ROWS',".pages_view");
+	$ft->parse('MAIN',".pages_view");
 } else {
 	
 	$ft->assign(array(
@@ -92,7 +92,7 @@ if($db->num_rows() !== 0) {
         'STRING'        =>""
     ));
 	
-	$ft->parse('ROWS', ".query_failed");
+	$ft->parse('MAIN', ".query_failed");
 }
 
 ?>

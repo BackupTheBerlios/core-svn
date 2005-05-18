@@ -107,12 +107,12 @@ if(is_numeric($_GET['id'])) {
                 $ft->define("comments_view", "comments_view.tpl");
                 $ft->define_dynamic("comments_row", "comments_view");
 
-                $ft->parse('ROWS',	".comments_row");
+                $ft->parse('MAIN',	".comments_row");
             }
         }
         
         // Parsowanie szablonu comments_view.tpl
-        $ft->parse('ROWS', "comments_view");
+        $ft->parse('MAIN', "comments_view");
         
     } else {
 
@@ -122,7 +122,7 @@ if(is_numeric($_GET['id'])) {
             'STRING'        =>''
         ));
 
-        $ft->parse('ROWS','.query_failed');
+        $ft->parse('MAIN','.query_failed');
     }
 } else {
 
@@ -132,7 +132,7 @@ if(is_numeric($_GET['id'])) {
         'STRING'        =>''
     ));
 
-    $ft->parse('ROWS', '.query_failed');
+    $ft->parse('MAIN', '.query_failed');
 }
 
 ?>

@@ -229,7 +229,7 @@ if(!empty($search_word)) {
 			$ft->define_dynamic("note_row", "rows");
 			
 			$ft->assign('RETURN', '');
-			$ft->parse('ROWS', ".note_row");
+			$ft->parse('MAIN', ".note_row");
 		} 
 	} else {
 	
@@ -238,7 +238,7 @@ if(!empty($search_word)) {
             'STRING'        =>$page_string
         ));
 						
-		$ft->parse('ROWS',".query_failed");
+		$ft->parse('MAIN',".query_failed");
 	}
 } else {
 	
@@ -247,7 +247,7 @@ if(!empty($search_word)) {
         'STRING'        =>''
     ));
 						
-	$ft->parse('ROWS',".query_failed");	
+	$ft->parse('MAIN',".query_failed");	
 }
 
 ?>

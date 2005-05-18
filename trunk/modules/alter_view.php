@@ -148,7 +148,7 @@ if($db->num_rows() > 0) {
     $ft->define_dynamic("note_row", "rows");
     
     $ft->assign('RETURN', 'powrót');
-    $ft->parse('ROWS','.note_row');
+    $ft->parse('MAIN','.note_row');
 } else {
 
     $ft->assign(array(
@@ -156,7 +156,7 @@ if($db->num_rows() > 0) {
         'STRING'        =>''
     ));
 
-    $ft->parse('ROWS','.query_failed');
+    $ft->parse('MAIN','.query_failed');
 }
 
 ?>

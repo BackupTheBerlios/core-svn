@@ -166,7 +166,7 @@ if($db->num_rows() !== 0) {
 	    $ft->define_dynamic("note_row", "rows");
 	    
 	    $ft->assign('RETURN', '');
-	    $ft->parse('ROWS', ".note_row");
+	    $ft->parse('MAIN', ".note_row");
 	}
 } else {
     
@@ -176,7 +176,7 @@ if($db->num_rows() !== 0) {
         'STRING'        =>""
     ));
     
-    $ft->parse('ROWS', ".query_failed");
+    $ft->parse('MAIN', ".query_failed");
 }
 
 ?>

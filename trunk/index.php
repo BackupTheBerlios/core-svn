@@ -214,7 +214,7 @@ foreach($inc_modules as $module) {
     include('modules/' . $module . '.php');
 }
 
-$ft->parse('MAIN', array('note_main', $assigned_tpl));
+$ft->parse('MAIN', $assigned_tpl);
 $ft->FastPrint();
 exit;
 
