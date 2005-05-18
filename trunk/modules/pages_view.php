@@ -52,7 +52,7 @@ if($db->num_rows() !== 0) {
             
             list($width, $height) = getimagesize($img_path);
             
-            $photo_link = isset($rewrite) && $rewrite == 1 ? 'photo?id=' . $id . '' : 'photo.php?id=' . $id . '';
+            $photo_link = isset($rewrite) && $rewrite == 1 ? 'photo?p=5&amp;id=' . $id . '' : 'photo.php?p=5&amp;id=' . $id . '';
             
             // wysoko¶æ, szeroko¶æ obrazka
             $ft->assign(array(

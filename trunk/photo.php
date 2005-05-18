@@ -62,7 +62,7 @@ $query = sprintf("
         id = '%2\$d' 
     LIMIT 1", 
 
-    TABLE_MAIN,
+    $table = empty($_GET['p']) ? TABLE_MAIN : TABLE_PAGES,
     $_GET['id']
 );
 
