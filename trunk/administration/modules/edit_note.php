@@ -326,46 +326,37 @@ switch ($action) {
         if($permarr['moderator']) {
             
             if(isset($_POST['selected_note']) || isset($_POST['selected_status'])) {
-            
                 if(!empty($_POST['selected_note'])) {
             
-                    foreach($_POST['selected_note'] as $note_id) {
-	
-                        $query = sprintf("
-                            DELETE FROM 
-                                %1\$s 
-                            WHERE 
-                                id = '%2\$d'", 
+                    $query = sprintf("
+                        DELETE FROM 
+                            %1\$s 
+                        WHERE 
+                            id
+                        IN(".implode(',', $_POST['selected_note']).")", 
 		
-                            TABLE_MAIN, 
-                            $note_id
-                        );
+                        TABLE_MAIN
+                    );
 		
-                        $db->query($query);
-                    }
-		
+                    $db->query($query);
                     $ft->assign('CONFIRM', 'Wpisy zosta³y usuniête.');
                 }
             
                 if(!empty($_POST['selected_status'])) {
             
-                    foreach($_POST['selected_status'] as $note_id) {
-	
-                        $query = sprintf("
-                            UPDATE 
-                                %1\$s 
-                            SET 
-                                published = published * -1 
-                            WHERE 
-                                id = '%2\$d'", 
+                    $query = sprintf("
+                        UPDATE 
+                            %1\$s 
+                        SET 
+                            published = published * -1 
+                        WHERE 
+                            id 
+                        IN(".implode(',', $_POST['selected_status']).")", 
 		
-                            TABLE_MAIN, 
-                            $note_id
-                        );
+                        TABLE_MAIN
+                    );
 		
-                        $db->query($query);
-                    }
-		
+                    $db->query($query);
                     $ft->assign('CONFIRM', 'Status wpisów zosta³ zmieniony.');
                 }
             

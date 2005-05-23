@@ -253,27 +253,23 @@ switch ($action) {
         }
     break;
 		
-    case "multidelete": // usuwanie wybranego wpisu
+    case "multidelete": // usuwanie zaznaczonych linkow
 	
         if($permarr['moderator']) {
             
             if(!empty($_POST['selected_links'])) {
-            
-                foreach($_POST['selected_links'] as $link_id) {
-	
-                    $query = sprintf("
-                        DELETE FROM 
-                            %1\$s 
-                        WHERE 
-                            id = '%2\$d'", 
+                
+                $query = sprintf("
+                    DELETE FROM 
+                        %1\$s 
+                    WHERE 
+                        id 
+                    IN(".implode(',', $_POST['selected_links']).")", 
 		
-                        TABLE_LINKS, 
-                        $link_id
-                    );
+                    TABLE_LINKS
+                );
 		
-                    $db->query($query);
-                }
-		
+                $db->query($query);
                 $ft->assign('CONFIRM', 'Linki zosta³y usuniête.');
             } else {
                 $ft->assign('CONFIRM', 'Nie zaznaczono ¿adnych linków.');
@@ -288,7 +284,6 @@ switch ($action) {
             foreach ($monit as $error) {
     
                 $ft->assign('ERROR_MONIT', $error);
-                    
                 $ft->parse('ROWS',	".error_row");
             }
                         
