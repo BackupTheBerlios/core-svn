@@ -27,6 +27,7 @@ h_help = "Odno¶nik: <a href=\"adresURI\">tekst</a>  (alt+h)";
 p_help = "Wstaw obrazek: <img src=\"nazwa_obrazka\" />  (alt+p)";
 t_help = "Definicja skrótu: <abbr title=\"definicja\">skrót</abbr>  (alt+t)";
 w_help = "Podziel tekst: tekst [podziel] dalsza czê¶æ  (alt+w)";
+a_help = "Zamknij wszystkie otwarte tagi HTMLCode";
 
 // Define the bbCode tags
 bbcode = new Array();
