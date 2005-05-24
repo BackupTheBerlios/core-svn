@@ -61,7 +61,7 @@ if($db->num_rows() !== 0) {
     // parsujemy menu na podstawie tablicy
     foreach ($pages_sort as $pid => $ptitle) {
     
-        $page_link  = isset($rewrite) && $rewrite == 1 ? '1,' . $pages_id[$pid] . ',5,item.html' : 'index.php?p=5&amp;id=' . $page_id . '';
+        $page_link  = isset($rewrite) && $rewrite == 1 ? '1,' . $pages_id[$pid] . ',5,item.html' : 'index.php?p=5&amp;id=' . $pages_id[$pid] . '';
         $ft->assign(array(
             'PAGE_LINK'   =>$page_link, 
             'PAGE_TITLE'  =>$ptitle
