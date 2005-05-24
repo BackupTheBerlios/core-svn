@@ -98,6 +98,62 @@ function str_nl2br($s) {
 }
 
 
+function get_breadcrumb($page_id, $level) {
+	
+	global 
+        $ft, 
+        $rewrite, 
+        $pages_sort, 
+        $pages_id;
+
+	$query = sprintf("
+        SELECT 
+            id, 
+            parent_id, 
+            title 
+        FROM 
+            %1\$s 
+        WHERE 
+            id = '%2\$d' 
+        AND 
+            published = 'Y' 
+        ORDER BY 
+            id 
+        ASC", 
+	
+        TABLE_PAGES, 
+        $page_id
+    );
+
+	$db = new DB_SQL;
+	$db->query($query);
+		
+	while($db->next_record()) {
+	
+		$page_id 	= $db->f("id");
+		$parent_id 	= $db->f("parent_id");
+		$page_name 	= $db->f("title");
+		
+		$page_link  = isset($rewrite) && $rewrite == 1 ? '1,' . $page_id . ',5,item.html' : 'index.php?p=5&amp;id=' . $page_id . '';
+	
+		$ft->assign(array(
+            'PAGE_TITLE'    =>$page_name,
+            'PAGE_ID'       =>$page_id,
+            'CLASS'         =>"child",
+            'PARENT'        =>str_repeat('&nbsp; ', $level), 
+            'PAGE_LINK'     =>$page_link
+        ));
+        
+        $pages_sort[]   = $page_name;
+        $pages_id[]     = $page_id;
+
+		//$ft->parse('BREADCRUMB_ROW', ".breadcrumb_row");
+		get_breadcrumb($parent_id, $level+2);
+	}
+	
+}
+
+
 function get_cat($page_id, $level) {
 	
 	global 

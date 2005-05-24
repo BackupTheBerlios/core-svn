@@ -1,5 +1,10 @@
 <span class="pageTitle">{PAGE_TITLE}</span><br />
 <span class="line"></span>
+<a href="./">index</a> 
+<!-- BEGIN DYNAMIC BLOCK: breadcrumb_row -->
+&raquo; <a href="{PAGE_LINK}">{PAGE_TITLE}</a> 
+<!-- END DYNAMIC BLOCK: breadcrumb_row -->
+<span class="line"></span>
 {PAGE_TEXT}<br />
 <!-- IFDEF: IMAGE_EXIST -->
     <!-- IFDEF: IMAGE_NAME -->

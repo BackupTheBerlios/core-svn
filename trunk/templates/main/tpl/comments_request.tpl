@@ -10,7 +10,7 @@ przechowywany wy³±cznie w bazie danych w celach czysto informacyjnych.<br /><br 
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 	<tr>
 		<td width="20%" height="25" valign="top">Autor:</td>
-		<td width="80\" class="nav" align="left">
+		<td width="80" class="nav" align="left">
 		<input type="text" name="author" size="30" maxlength="130" value="{COMMENT_AUTHOR}">
 		</td>
 	</tr>
@@ -29,7 +29,7 @@ przechowywany wy³±cznie w bazie danych w celach czysto informacyjnych.<br /><br 
 	<tr>
 		<td width="20%" height="25" valign="top">E-mail:</td>
 		<td width="80" align="left">
-		<input type="text" name="email" size="30" maxlength="255">&nbsp;.opcjonalnie
+		<input type="text" name="email" size="30" maxlength="255"> .opcjonalnie
 		</td>
 	</tr>
 	<tr>
@@ -41,7 +41,7 @@ przechowywany wy³±cznie w bazie danych w celach czysto informacyjnych.<br /><br 
 		<input type="button" class="button" name="addbbcode6" value=" abbr " style="width: 40px" onClick="bbstyle(6)" />
 		<input type="button" class="button" name="addbbcode8" value=" quote " style="width: 45px" onClick="bbstyle(8)" />
 		<input type="button" class="button" name="addbbcode10" value=" link " style="width: 40px" onClick="bbstyle(10)" />
-		&nbsp;<a href="javascript:bbstyle(-1)">Zamknij Tagi HTML</a>
+		 <a href="javascript:bbstyle(-1)">Zamknij Tagi HTML</a>
 		</td>
 	</tr>
 	<tr>
@@ -51,7 +51,7 @@ przechowywany wy³±cznie w bazie danych w celach czysto informacyjnych.<br /><br 
 		</td>
 	</tr>
 	<tr>
-		<td class="align_right" width="100%" height="25" colspan="2"><a href="#" onclick="checkForm()"><b>. dodaj komentarz</b></a>&nbsp;&nbsp;</td>
+		<td class="align_right" width="100%" height="25" colspan="2"><a href="#" onclick="checkForm()"><b>. dodaj komentarz</b></a>  </td>
 	</tr>
 </table>
 </form>
