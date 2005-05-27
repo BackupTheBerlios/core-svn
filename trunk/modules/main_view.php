@@ -65,8 +65,9 @@ if($db->num_rows() !== 0) {
             $perma_link = 'index.php?p=1&amp;id=' . $id;
             $category_link = 'index.php?p=4&amp;id=' . $c_id;
         }
-	    
-	    $text = show_me_more($text);
+        
+        $text   = highlighter($text, '<code>', '</code>');
+        $text   = show_me_more($text);
 	    
 	    $ft->assign(array(
 	       'DATE'          =>$date,

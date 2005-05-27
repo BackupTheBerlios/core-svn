@@ -33,6 +33,8 @@ if($db->num_rows() !== 0) {
     // przydzielony do konkretnej podstrony Core
     $ft->define($assigned_tpl, $assigned_tpl . '_page.tpl');
     
+    $text = highlighter($text, '<code>', '</code>');
+    
     $ft->assign(array(
         'PAGE_TITLE'    =>$title,
         'PAGE_TEXT'     =>$text,

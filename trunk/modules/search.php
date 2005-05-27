@@ -132,10 +132,12 @@ if(!empty($search_word)) {
 			$image			= $db->f("image");
 			$comments_allow = $db->f("comments_allow");
 			
-			$text			= strip_tags($text, '<br>');
+			//$text			= strip_tags($text, '<br>');
 			
 			$perma_link    = isset($rewrite) && $rewrite == 1 ? '1,' . $id . ',1,item.html' : 'index.php?p=1&amp;id=' . $id . '';
 			$category_link = isset($rewrite) && $rewrite == 1 ? '1,' . $c_id . ',4,item.html' : 'index.php?p=4&amp;id=' . $c_id . '';
+			
+			$text   = highlighter($text, '<code>', '</code>');
 			
 			$ft->assign(array(
                 'DATE'				=>$date,

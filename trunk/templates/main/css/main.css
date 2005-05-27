@@ -253,6 +253,11 @@ dd {
 	margin-left: 25px;
 }
 
+code {
+	padding: 2px;
+	font: 12px/1.3em Courier, Verdana, Helvetica, sans-serif;
+}
+
 .line {
 	display: block;
 	border-bottom: 1px dotted #D3D3D3;
