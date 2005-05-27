@@ -132,7 +132,8 @@ if(!empty($search_word)) {
 			$image			= $db->f("image");
 			$comments_allow = $db->f("comments_allow");
 			
-			//$text			= strip_tags($text, '<br>');
+			// usuwamy <a />
+			$text = preg_replace('/(?is)(<\/?(?:a)(?:|\s.*?)>)/', '', $text);
 			
 			$perma_link    = isset($rewrite) && $rewrite == 1 ? '1,' . $id . ',1,item.html' : 'index.php?p=1&amp;id=' . $id . '';
 			$category_link = isset($rewrite) && $rewrite == 1 ? '1,' . $c_id . ',4,item.html' : 'index.php?p=4&amp;id=' . $c_id . '';
