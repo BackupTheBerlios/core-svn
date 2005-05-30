@@ -169,6 +169,9 @@ if($db->num_rows() !== 0) {
 	    $ft->assign('RETURN', '');
 	    $ft->parse('MAIN', ".note_row");
 	}
+	
+	// Parsowanie elementów poza DYNAMIC BLOCK :: fixed
+    $ft->parse('MAIN', "rows");
 } else {
     
     // Obs³uga b³êdu, kiedy w bazie danych nie ma jeszcze ¿adnego wpisu
