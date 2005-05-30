@@ -54,7 +54,10 @@ CREATE TABLE core_links (
 
 
 CREATE TABLE core_newsletter (
-  email varchar(40) NOT NULL default ''
+  id mediumint(7) NOT NULL auto_increment,
+  email varchar(40) NOT NULL default '', 
+  active smallint(1) DEFAULT '1' NOT NULL, 
+  token varchar(32) NOT NULL default ''
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 

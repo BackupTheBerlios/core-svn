@@ -42,11 +42,38 @@ $i18n['main_view'][1] = '&raquo; czytaj dalej';
 
 $i18n['newsletter'] = array();
 $i18n['newsletter'][0] = 'Twój email znajduje siê ju¿ w bazie danych.';
-$i18n['newsletter'][1] = 'Twój adres zosta³ dodany do bazy danych.';
+$i18n['newsletter'][1] = '
+Twój adres zosta³ dodany do bazy danych. <br /><br />
+Na podany przez Ciebie adres zosta³ wys³any email potwierdzaj±cy, ¿e jeste¶ faktycznym 
+w³a¶cicielem tego konta e-mail. Zawiera on intrukcjê, która pomo¿e Ci dokoñczyæ proces 
+aktywacji Twojej subsrypcji.';
 $i18n['newsletter'][2] = 'Twój adres nie zosta³ dodany do bazy danych.';
 $i18n['newsletter'][3] = 'W bazie danych nie ma podanego przez Ciebie adresu e-mail.';
 $i18n['newsletter'][4] = 'Twój adres zosta³ skasowany z bazy danych.';
 $i18n['newsletter'][5] = 'Twój adres nie zosta³ skasowany z bazy danych.';
+$i18n['newsletter'][6] = '
+Zg³osi³e¶ chêæ subskrypcji newslettera na http://[link_1].
+    
+Aby dokoñczyæ proces rejestracji kliknij na znajduj±cy siê poni¿ej link:
+http://[link_2]
+
+-- 
+Wiadomo¶æ wygenerowana automatycznie.';
+$i18n['newsletter'][7] = 'Zg³oszenie subskrypcji: [link_1]';
+$i18n['newsletter'][8] = 'Weryfikacja zakoñczona pomy¶lnie. Dziêkujemy za skorzystanie z subskrypcji.';
+$i18n['newsletter'][9] = '
+Zg³osi³e¶ chêæ zakoñczenia subskrypcji newslettera na http://[link_1].
+    
+Aby dokoñczyæ proces usuniêcia Twojego adresu email z naszej bazy danych 
+kliknij na znajduj±cy siê poni¿ej link:
+http://[link_3]
+
+-- 
+Wiadomo¶æ wygenerowana automatycznie.';
+$i18n['newsletter'][10] = '
+Na podany przez Ciebie adres zosta³ wys³any email potwierdzaj±cy, ¿e jeste¶ faktycznym 
+w³a¶cicielem tego konta e-mail. Zawiera on intrukcjê, która pomo¿e Ci dokoñczyæ proces 
+zakoñczenia Twojej subsrypcji.';
 
 $i18n['pages_view'] = array();
 $i18n['pages_view'][0] = 'W bazie danych nie ma wpisu o ¿±danym id';
