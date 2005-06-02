@@ -656,6 +656,28 @@ function get_config($name) {
     return $db -> f('config_value');
 }
 
+function set_config($name, $value) {
+
+    $db = new DB_SQL;
+
+    $query = sprintf("
+        UPDATE
+            %1\$s
+        SET
+            config_value = '%2\$s'
+        WHERE
+            config_name = '%3\$s'",
+          
+        TABLE_CONFIG,
+        addslashes($value),
+        $name
+    );
+
+    $db -> query($query);
+
+    return true;
+}
+
 
 function check_mail($email) {
     return eregi("^([a-z0-9_]|\\-|\\.)+@(((([a-z0-9_]|\\-)+\\.)+[a-z]{2,4})|localhost)$", $email);
