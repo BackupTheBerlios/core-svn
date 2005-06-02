@@ -39,104 +39,26 @@ switch ($action) {
 		    
                 // set {MAINPOSTS_PER_PAGE} variable
                 // liczba listowanych wpisów w na stronie g³ównej::db
-                $query = sprintf("
-                    UPDATE 
-                        %1\$s 
-				    SET 
-				        config_value = '%2\$d' 
-				    WHERE 
-				        config_name = '%3\$s'",
-            
-                    TABLE_CONFIG, 
-                    $_POST['mainposts_per_page'], 
-                    'mainposts_per_page'
-                );
-            
-                $db->query($query);
+                set_config('mainposts_per_page', $_POST['mainposts_per_page']);
                 
                 // set {TITLE_PAGE} variable
                 // liczba listowanych wpisów w na stronie g³ównej::db
-                $query = sprintf("
-                    UPDATE 
-                        %1\$s 
-				    SET 
-				        config_value = '%2\$s' 
-				    WHERE 
-				        config_name = '%3\$s'",
-            
-                    TABLE_CONFIG, 
-                    $_POST['title_page'], 
-                    'title_page'
-                );
-            
-                $db->query($query);
+                set_config('title_page', $_POST['title_page']);
                 
                 // set {EDITOSTS_PER_PAGE} variable
                 // liczba listowanych wpisów w na stronie g³ównej::db
-                $query = sprintf("
-                    UPDATE 
-                        %1\$s 
-				    SET 
-				        config_value = '%2\$d' 
-				    WHERE 
-				        config_name = '%3\$s'",
-            
-                    TABLE_CONFIG, 
-                    $_POST['editposts_per_page'], 
-                    'editposts_per_page'
-                );
-            
-                $db->query($query);
+                set_config('editposts_per_page', $_POST['editposts_per_page']);
             
                 // set {MAX_PHOTO_WIDTH} variable
                 // maksymalna szerko¶æ zdjêcia do³±czonego do wpisu, 
                 // jakie jest wy¶wietlane na stronie g³ównej::db
-                $query = sprintf("
-                    UPDATE 
-                        %1\$s 
-				    SET 
-				        config_value = '%2\$d' 
-				    WHERE 
-				        config_name = '%3\$s'",
-            
-                    TABLE_CONFIG, 
-                    $_POST['max_photo_width'], 
-                    'max_photo_width'
-                );
-            
-                $db->query($query);
+                set_config('max_photo_width', $_POST['max_photo_width']);
                 
                 // set {MOD_REWRITE} variable
-                $query = sprintf("
-                    UPDATE 
-                        %1\$s 
-				    SET 
-				        config_value = '%2\$d' 
-				    WHERE 
-				        config_name = '%3\$s'",
-            
-                    TABLE_CONFIG, 
-                    $_POST['rewrite_allow'], 
-                    'mod_rewrite'
-                );
-            
-                $db->query($query);
+                set_config('mod_rewrite', $_POST['rewrite_allow']);
 
                 // set {DATE_FORMAT} variable
-                $query = sprintf("
-                    UPDATE 
-                        %1\$s 
-				    SET 
-				        config_value = '%2\$s' 
-				    WHERE 
-				        config_name = '%3\$s'",
-            
-                    TABLE_CONFIG, 
-                    $_POST['date_format'], 
-                    'date_format'
-                );
-            
-                $db->query($query);
+                set_config('date_format', $_POST['date_format']);
                 
                 $ft->assign('CONFIRM', $i18n['core_configuration'][5]);
                 $ft->parse('ROWS', ".result_note");
