@@ -21,7 +21,7 @@
 		<form style="margin-top:5px;" name="newsletter_form" action="#">
 			<input class="left" type="text" name="email" size="25" maxlength="255" />
 			<div class="right">
-				<a href="#" name="sign_in" onclick="send_data(this.name)">zapisz</a>&nbsp;.&nbsp;<a href="#" name="sign_out" onclick="send_data(this.name)">wypisz</a>
+				<a href="#" name="sign_in" onclick="send_data(this.name)">zapisz</a> . <a href="#" name="sign_out" onclick="send_data(this.name)">wypisz</a>
 			</div>
 		</form>
 		<br />
@@ -96,7 +96,7 @@
 		<br /><span class="counter">Wizyty: {STATISTICS}</span><br />
 	</div>
 	<div id="right">
-		<span class="title">./dev-log</span>&nbsp;<a href="./"><strong>index</strong></a><br />
+		<span class="title">./dev-log</span> <a href="./"><strong>index</strong></a><br />
 		
 		<div class="right">
 			<a href="javascript:text_resize('content',-1)"><img alt="Pomniejszenie tekstu" src="templates/main/images/minus.jpg" width="12" height="12" /></a>

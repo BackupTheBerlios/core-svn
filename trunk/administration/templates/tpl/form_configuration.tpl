@@ -43,7 +43,7 @@
           <optgroup label="kategorie aktualno¶ci">
             <!-- IFDEF: START_PAGE_CATEGORIES -->
                 <!-- BEGIN DYNAMIC BLOCK: categories_option -->
-                <option value="{START_PAGE_VALUE}">{START_PAGE_NAME}</option>
+                <option value="{START_CAT_VALUE}">{START_CAT_NAME}</option>
                 <!-- END DYNAMIC BLOCK: categories_option -->
             <!-- ELSE -->
             <!-- ENDIF -->

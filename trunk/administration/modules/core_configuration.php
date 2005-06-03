@@ -106,17 +106,30 @@ switch ($action) {
 
         $ft->assign('START_PAGE_PAGES', (bool)count($pages));
         $ft->assign('START_PAGE_CATEGORIES', (bool)count($cats));
-        foreach($cats as $id => $name)
-        {
+        
+        // w przypadku braku akcji wy¶wietlanie formularza
+		$ft->define('form_configuration', "form_configuration.tpl");
+		
+        $ft->define_dynamic('pages_option', 'form_configuration');
+        $ft->define_dynamic('categories_option', 'form_configuration');
+        
+        foreach($pages as $page_id=>$page_name) {
             $ft->assign(array(
-                'START_PAGE_VALUE' => $id,
-                'START_PAGE_NAME'  => $name
+                'START_PAGE_VALUE' =>$page_id,
+                'START_PAGE_NAME'  =>$page_name
             ));
+            
+            $ft->parse('PAGES_OPTION', ".pages_option");
         }
-
-        $ft->define_dynamic('PAGES_OPTION', 'form_configuraion');
-        $ft->define_dynamic('CATEGORIES_OPTION', 'form_configuration');
-
+        
+        foreach($cats as $cat_id=>$cat_name) {
+            $ft->assign(array(
+                'START_CAT_VALUE' =>$cat_id,
+                'START_CAT_NAME'  =>$cat_name
+            ));
+            
+            $ft->parse('CATEGORIES_OPTION', ".categories_option");
+        }
 
         
 		
@@ -129,9 +142,7 @@ switch ($action) {
             'DATE_FORMAT'           =>get_config('date_format')
         ));
 			
-		// w przypadku braku akcji wy¶wietlanie formularza
-		$ft->define('form_configuration', "form_configuration.tpl");
-		$ft->parse('ROWS', ".form_configuration");
+		$ft->parse('ROWS', "form_configuration");
 }
 
 ?>
