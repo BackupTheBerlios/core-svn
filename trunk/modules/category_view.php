@@ -119,80 +119,8 @@ if(is_numeric($_GET['id'])) {
                 $ft->assign('STRING', $page_string);
             }
 
-            if(($comments_allow) == 0 ) {
-                
-                $ft->assign(array(
-                    'COMMENTS_ALLOW'    =>false, 
-                    'COMMENTS'          =>''
-                ));
-            } else {
-                
-                if($comments == 0) {
-                    
-                    $comments_link = isset($rewrite) && $rewrite == 1 ? '1,' . $id . ',3,item.html' : 'index.php?p=3&amp;id=' . $id . '';
-                    
-                    $ft->assign(array(
-                        'COMMENTS_LINK' =>$comments_link, 
-                        'COMMENTS_ALLOW'=>true, 
-                        'COMMENTS'      =>''
-                    ));
-                } else {
-                    
-                    $comments_link = isset($rewrite) && $rewrite == 1 ? '1,' . $id . ',2,item.html' : 'index.php?p=2&amp;id=' . $id . '';
-                    
-                    $ft->assign(array(
-                        'COMMENTS_LINK' =>$comments_link, 
-                        'COMMENTS_ALLOW'=>true, 
-                        'COMMENTS'      =>$comments
-                    ));
-                }
-            }
-    
-            if(empty($image)) {
-	        
-                // IFDEF: IMAGE_EXIST zwraca pusta wartosc, przechodzimy
-                // do warunku ELSE
-                $ft->assign(array(
-                    'IMAGE'         =>'', 
-                    'IMAGE_EXIST'   =>false, 
-                    'IMAGE_NAME'    =>false
-                ));
-            } else {
-                
-                $img_path = get_root() . '/photos/' . $image;
-                
-                if(is_file($img_path)) {
-                    
-                    list($width, $height) = getimagesize($img_path);
-                    
-                    $photo_link = isset($rewrite) && $rewrite == 1 ? 'photo?id=' . $id . '' : 'photo.php?id=' . $id . '';
-                    
-                    // wysoko¶æ, szeroko¶æ obrazka
-                    $ft->assign(array(
-                        'WIDTH'         =>$width,
-                        'HEIGHT'        =>$height,
-                        'PHOTO_LINK'    =>$photo_link
-                    ));
-                    
-                    if($width > $max_photo_width) {
-                        
-                        $ft->assign(array(
-                            'UID'           =>$id,
-                            'IMAGE_NAME'    =>''
-                        ));
-                    } else {
-                        $ft->assign('IMAGE_NAME', $image);
-                    }
-                    
-                    $ft->assign('IMAGE_EXIST', true);
-                } else {
-                    
-                    $ft->assign(array(
-                        'IMAGE_EXIST'   =>false, 
-                        'IMAGE_NAME'    =>false
-                    ));
-                }
-            }
+            get_comments_link($comments_allow, $comments, $id);
+            get_image_status($image, $id);
             
             $ft->assign('RETURN', '');
             $ft->parse('MAIN', ".note_row");
