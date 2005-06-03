@@ -59,6 +59,9 @@ switch ($action) {
 
                 // set {DATE_FORMAT} variable
                 set_config('date_format', $_POST['date_format']);
+
+                set_config('start_page_type', 'page');
+                set_config('start_page_id', 0);
                 
                 $ft->assign('CONFIRM', $i18n['core_configuration'][5]);
                 $ft->parse('ROWS', ".result_note");
@@ -101,21 +104,18 @@ switch ($action) {
         }
 
 
-        $cats = array('asd', 'fgh', 'jkl');
-        $pages = array('qwe', 'rty', 'uio', 'p');
-
-        $ft->assign('START_PAGE_PAGES', (bool)count($pages));
-        $ft->assign('START_PAGE_CATEGORIES', (bool)count($cats));
         
         // w przypadku braku akcji wy¶wietlanie formularza
 		$ft->define('form_configuration', "form_configuration.tpl");
 		
-        $ft->define_dynamic('page_row', 'form_configuration');
-        $ft->define_dynamic('categories_option', 'form_configuration');
         
+
+
         $query = sprintf("
             SELECT 
-                id, parent_id, title 
+                id,
+                parent_id,
+                title 
             FROM 
                 %1\$s 
             WHERE 
@@ -131,31 +131,78 @@ switch ($action) {
         );
 	
         $db->query($query);
+
+        if ( (bool)$db -> nf() )
+        {
+            $ft->define_dynamic('page_row', 'form_configuration');
+            $ft->assign('START_PAGE_PAGES', true);
         
-        while($db->next_record()) {
-		
-            $page_id      = $db->f("id");
-            $parent_id    = $db->f("parent_id");
-            $title        = $db->f("title");
-            
-            $ft->assign(array(
-                'C_ID'		=>$page_id,
-                'C_NAME'	=>$title
-            ));
-        
-            $ft->parse('ROWS', ".page_row");
-        
-            get_addpage_cat($page_id, 2);
+            while($db->next_record()) {
+          
+                $page_id      = $db->f("id");
+                $parent_id    = $db->f("parent_id");
+                $title        = $db->f("title");
+              
+                $ft->assign(array(
+                    'C_ID'		=>$page_id,
+                    'C_NAME'	=>$title
+                ));
+          
+                $ft->parse('ROWS', ".page_row");
+          
+                get_addpage_cat($page_id, 2);
+            }
+        }
+        else
+        {
+            $ft->assign('START_PAGE_PAGES', false);
         }
 
-        
-        foreach($cats as $cat_id=>$cat_name) {
-            $ft->assign(array(
-                'START_CAT_VALUE' =>$cat_id,
-                'START_CAT_NAME'  =>$cat_name
-            ));
+
+
+        $query = sprintf("
+            SELECT 
+                category_id, 
+                category_parent_id,
+                category_name 
+            FROM 
+                %1\$s 
+            WHERE 
+                category_parent_id = '%2\$d' 
+            ORDER BY 
+                category_id 
+            ASC", 
+	
+            TABLE_CATEGORY,
+            0
+        );
+	
+        $db->query($query);
+        if ( (bool)$db->nf() )
+        {
+            $ft->define_dynamic('page_row', 'form_configuration');
+            $ft->assign('START_PAGE_CATEGORIES', true);
+	
+            while($db->next_record()) {
+		
+                $category_id        = $db->f("category_id");
+                $category_parent_id = $db->f("category_parent_id");
+                $category_name      = $db->f("category_name");
             
-            $ft->parse('CATEGORIES_OPTION', ".categories_option");
+                $ft->assign(array(
+                    'C_ID'		=>$category_id,
+                    'C_NAME'	=>$category_name
+                ));
+        
+                $ft->parse('ROWS', ".page_row");
+        
+                get_addcategory_cat($category_id, 2);
+            }
+
+        }
+        else
+        {
+            $ft->assign('START_PAGE_CATEGORIES', false);
         }
 
         
