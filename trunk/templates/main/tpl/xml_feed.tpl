@@ -13,11 +13,11 @@
         <pubDate>{DATE} GMT</pubDate>
         <title>{TITLE}</title>
         <dc:creator>{AUTHOR}</dc:creator>
-        <link>{PERMALINK}</link>
+        <link>http://{PERMALINK}</link>
         <description>{TEXT}</description>
         <!-- IFDEF: NEWS_FEED -->
-        <category>{CATEGORY}</category>
-        <comments>{COMMENTS_LINK}</comments>
+        <category>http://{CATEGORY}</category>
+        <comments>http://{COMMENTS_LINK}</comments>
         <!-- ELSE -->
         <!-- ENDIF -->
     </item>
