@@ -419,3 +419,10 @@ input.checkbox {
 .perpage {
     width: 30px;
 }
+
+optgroup {
+    background-color: #FFF; 
+    font-family: tahoma, verdana, arial; 
+    font-size: 11px; 
+    color: #505050;
+}
