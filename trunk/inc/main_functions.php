@@ -669,7 +669,7 @@ function set_config($name, $value) {
             config_name = '%3\$s'",
           
         TABLE_CONFIG,
-        addslashes($value),
+        $value,
         $name
     );
 
