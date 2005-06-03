@@ -239,14 +239,11 @@ function get_addpage_cat($page_id, $level) {
 		$title 		= $db->f("title");
 	
 		$ft->assign(array(
-            'C_ID'		=>$page_id,
-            'C_NAME'	=>str_repeat('&nbsp; ', $level) . "- " .$title
+            'P_ID'  =>$page_id,
+            'P_NAME'=>str_repeat('&nbsp; ', $level) . "- " .$title
         ));
-
-		$ft->define("form_pageadd", "form_pageadd.tpl");
-        $ft->define_dynamic("page_row", "form_pageadd");
         
-        $ft->parse('ROWS', ".page_row");
+        $ft->parse('PAGE_ROW', ".page_row");
 		
 		get_addpage_cat($page_id, $level+2);
 	}
@@ -339,10 +336,7 @@ function get_addcategory_cat($page_id, $level) {
             'C_NAME'	=>str_repeat('&nbsp; ', $level) . "- " .$cat_name
         ));
 
-		$ft->define("form_category", "form_category.tpl");
-        $ft->define_dynamic("category_row", "form_category");
-        
-        $ft->parse('ROWS', ".category_row");
+        $ft->parse('CATEGORY_ROW', ".category_row");
 		
 		get_addcategory_cat($cat_id, $level+2);
 	}

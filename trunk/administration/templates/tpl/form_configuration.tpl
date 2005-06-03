@@ -35,16 +35,16 @@
           <optgroup label="strony">
             <!-- IFDEF: START_PAGE_PAGES -->
                 <!-- BEGIN DYNAMIC BLOCK: page_row -->
-                <option value="{C_ID}">{C_NAME}</option>
+                <option value="{P_ID}">{P_NAME}</option>
                 <!-- END DYNAMIC BLOCK: page_row -->
             <!-- ELSE -->
             <!-- ENDIF -->
           </optgroup>
           <optgroup label="kategorie aktualno¶ci">
             <!-- IFDEF: START_PAGE_CATEGORIES -->
-                <!-- BEGIN DYNAMIC BLOCK: page_row -->
+                <!-- BEGIN DYNAMIC BLOCK: category_row -->
                 <option value="{C_ID}">{C_NAME}</option>
-                <!-- END DYNAMIC BLOCK: page_row -->
+                <!-- END DYNAMIC BLOCK: category_row -->
             <!-- ELSE -->
             <!-- ENDIF -->
           </optgroup>

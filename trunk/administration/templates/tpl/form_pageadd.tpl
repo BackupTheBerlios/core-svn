@@ -45,7 +45,7 @@
 			<option> -- strona nadrzêdna -- </option>
 			
 			<!-- BEGIN DYNAMIC BLOCK: page_row -->
-			<option value="{C_ID}">{C_NAME}</option>
+			<option value="{P_ID}">{P_NAME}</option>
 			<!-- END DYNAMIC BLOCK: page_row -->
 
 		</select>

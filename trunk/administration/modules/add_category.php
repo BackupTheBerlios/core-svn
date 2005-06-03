@@ -130,7 +130,7 @@ switch ($action) {
                 'C_NAME'	=>$category_name
             ));
         
-            $ft->parse('ROWS', ".category_row");
+            $ft->parse('CATEGORY_ROW', ".category_row");
         
             get_addcategory_cat($category_id, 2);
         }

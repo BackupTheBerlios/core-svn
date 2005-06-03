@@ -170,11 +170,11 @@ switch($action) {
             $title        = $db->f("title");
             
             $ft->assign(array(
-                'C_ID'		=>$page_id,
-                'C_NAME'	=>$title
+                'P_ID'		=>$page_id,
+                'P_NAME'	=>$title
             ));
         
-            $ft->parse('ROWS', ".page_row");
+            $ft->parse('PAGE_ROW', ".page_row");
         
             get_addpage_cat($page_id, 2);
         }

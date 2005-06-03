@@ -132,8 +132,7 @@ switch ($action) {
 	
         $db->query($query);
 
-        if ( (bool)$db -> nf() )
-        {
+        if ((bool)$db->nf()) {
             $ft->define_dynamic('page_row', 'form_configuration');
             $ft->assign('START_PAGE_PAGES', true);
         
@@ -144,17 +143,15 @@ switch ($action) {
                 $title        = $db->f("title");
               
                 $ft->assign(array(
-                    'C_ID'		=>$page_id,
-                    'C_NAME'	=>$title
+                    'P_ID'		=>$page_id,
+                    'P_NAME'	=>$title
                 ));
           
-                $ft->parse('ROWS', ".page_row");
+                $ft->parse('PAGE_ROW', ".page_row");
           
                 get_addpage_cat($page_id, 2);
             }
-        }
-        else
-        {
+        } else {
             $ft->assign('START_PAGE_PAGES', false);
         }
 
@@ -178,9 +175,8 @@ switch ($action) {
         );
 	
         $db->query($query);
-        if ( (bool)$db->nf() )
-        {
-            $ft->define_dynamic('page_row', 'form_configuration');
+        if ((bool)$db->nf()) {
+            $ft->define_dynamic('category_row', 'form_configuration');
             $ft->assign('START_PAGE_CATEGORIES', true);
 	
             while($db->next_record()) {
@@ -194,14 +190,12 @@ switch ($action) {
                     'C_NAME'	=>$category_name
                 ));
         
-                $ft->parse('ROWS', ".page_row");
+                $ft->parse('CATEGORY_ROW', ".category_row");
         
                 get_addcategory_cat($category_id, 2);
             }
 
-        }
-        else
-        {
+        } else {
             $ft->assign('START_PAGE_CATEGORIES', false);
         }
 

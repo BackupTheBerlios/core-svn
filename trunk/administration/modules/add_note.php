@@ -148,7 +148,7 @@ switch ($action) {
                 'C_NAME'	=>$title
             ));
         
-            $ft->parse('ROWS', ".category_row");
+            $ft->parse('CATEGORY_ROW', ".category_row");
         
             get_addcategory_cat($page_id, 2);
         }
