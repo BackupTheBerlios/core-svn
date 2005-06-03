@@ -34,9 +34,9 @@
       <td class="form" width=224"><select name="start_page" id="startPage">
           <optgroup label="strony">
             <!-- IFDEF: START_PAGE_PAGES -->
-                <!-- BEGIN DYNAMIC BLOCK: pages_option -->
-                <option value="{START_PAGE_VALUE}">{START_PAGE_NAME}</option>
-                <!-- END DYNAMIC BLOCK: pages_option -->
+                <!-- BEGIN DYNAMIC BLOCK: page_row -->
+                <option value="{C_ID}">{C_NAME}</option>
+                <!-- END DYNAMIC BLOCK: page_row -->
             <!-- ELSE -->
             <!-- ENDIF -->
           </optgroup>

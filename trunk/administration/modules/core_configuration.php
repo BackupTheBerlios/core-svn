@@ -110,17 +110,44 @@ switch ($action) {
         // w przypadku braku akcji wy¶wietlanie formularza
 		$ft->define('form_configuration', "form_configuration.tpl");
 		
-        $ft->define_dynamic('pages_option', 'form_configuration');
+        $ft->define_dynamic('page_row', 'form_configuration');
         $ft->define_dynamic('categories_option', 'form_configuration');
         
-        foreach($pages as $page_id=>$page_name) {
-            $ft->assign(array(
-                'START_PAGE_VALUE' =>$page_id,
-                'START_PAGE_NAME'  =>$page_name
-            ));
+        $query = sprintf("
+            SELECT 
+                id, parent_id, title 
+            FROM 
+                %1\$s 
+            WHERE 
+                published = 'Y' 
+            AND 
+                parent_id = '%2\$d' 
+            ORDER BY 
+                id 
+            ASC", 
+	
+            TABLE_PAGES,
+            0
+        );
+	
+        $db->query($query);
+        
+        while($db->next_record()) {
+		
+            $page_id      = $db->f("id");
+            $parent_id    = $db->f("parent_id");
+            $title        = $db->f("title");
             
-            $ft->parse('PAGES_OPTION', ".pages_option");
+            $ft->assign(array(
+                'C_ID'		=>$page_id,
+                'C_NAME'	=>$title
+            ));
+        
+            $ft->parse('ROWS', ".page_row");
+        
+            get_addpage_cat($page_id, 2);
         }
+
         
         foreach($cats as $cat_id=>$cat_name) {
             $ft->assign(array(
