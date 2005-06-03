@@ -8,3 +8,11 @@ ALTER TABLE core_newsletter
     
 ALTER TABLE core_newsletter 
     ADD token VARCHAR(32) NOT NULL;
+
+UPDATE core_config
+    SET 'config_value' = '0.4.1'
+    WHERE 'config_name' = 'core_version';
+
+INSERT INTO core_config VALUES
+    ('start_page_type', 'page'),
+    ('start_page_id', '0');
