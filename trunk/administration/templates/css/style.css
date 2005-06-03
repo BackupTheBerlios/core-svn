@@ -421,8 +421,10 @@ input.checkbox {
 }
 
 optgroup {
+    padding-left: 2px;
     background-color: #FFF; 
     font-family: tahoma, verdana, arial; 
+    font-style: normal;
     font-size: 11px; 
     color: #505050;
 }
