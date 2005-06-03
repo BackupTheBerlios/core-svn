@@ -29,29 +29,12 @@ if(isset($_COOKIE['devlog_design']) && is_dir('./templates/' . $_COOKIE['devlog_
 
 @setcookie('devlog_design', $theme, time() + 3600 * 24 * 365);
 
-
 // inicjowanie klasy, wkazanie katalogu przechowuj±cego szablony
 $ft = new FastTemplate('./templates/' . $theme . '/tpl/');
 $db = new DB_SQL;
 
 $ft->define('photo_main', 'photo_main.tpl');
-
-// set {TITLE} variable
-// tytu³ strony, wy¶wietlany w miejscu title::db
-$query = sprintf("
-    SELECT
-        config_value
-    FROM
-        %s
-    WHERE
-        config_name = 'title_page'",
-
-    TABLE_CONFIG
-);
-$db->query($query);
-$db->next_record();
-
-$ft->assign('TITLE', $db->f('config_value'));
+$ft->assign('TITLE', get_config('title_page'));
 
 $query = sprintf("
     SELECT 
@@ -72,7 +55,6 @@ $db->next_record();
 $image = $db->f('image');
 
 if(!empty($image)) {
-    
     list($width, $height) = getimagesize("photos/" . $image);
 
     $ft->assign(array(
