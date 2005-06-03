@@ -29,6 +29,27 @@
       <td class="form" width="80">Format daty (<a href="http://php.net/date">szczegó³y</a>):&nbsp;</td>
       <td class="form" width="224"><input class="long" type="text" name="date_format" value="{DATE_FORMAT}" /></td>
     </tr>
+    <tr>
+      <td class="form" width="80">Strona startowa:&nbsp;</td>
+      <td class="form" width=224"><select name="start_page" id="startPage">
+          <optgroup label="strony">
+            <!-- IFDEF: START_PAGE_PAGES -->
+                <!-- BEGIN DYNAMIC BLOCK: pages_option -->
+                <option value="{START_PAGE_VALUE}">{START_PAGE_NAME}</option>
+                <!-- END DYNAMIC BLOCK: pages_option -->
+            <!-- ELSE -->
+            <!-- ENDIF -->
+          </optgroup>
+          <optgroup label="kategorie aktualno¶ci">
+            <!-- IFDEF: START_PAGE_CATEGORIES -->
+                <!-- BEGIN DYNAMIC BLOCK: categories_option -->
+                <option value="{START_PAGE_VALUE}">{START_PAGE_NAME}</option>
+                <!-- END DYNAMIC BLOCK: categories_option -->
+            <!-- ELSE -->
+            <!-- ENDIF -->
+          </optgroup>
+      </select></td>
+    </tr>
 	<tr>
       <td width="364" align="left" valign="top" colspan="2"><br /><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('formConfig').submit()">zapisz ustawienia</a></td>
 	</tr>

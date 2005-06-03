@@ -92,13 +92,33 @@ switch ($action) {
 
     default:
     
-		if(get_config('mod_rewrite') == 1) {
+		if((bool)get_config('mod_rewrite')) {
 
 			$ft->assign('REWRITE_YES', 'checked="checked"');
 		} else {
 			
 			$ft->assign('REWRITE_NO', 'checked="checked"');
-		}
+        }
+
+
+        $cats = array('asd', 'fgh', 'jkl');
+        $pages = array('qwe', 'rty', 'uio', 'p');
+
+        $ft->assign('START_PAGE_PAGES', (bool)count($pages));
+        $ft->assign('START_PAGE_CATEGORIES', (bool)count($cats));
+        foreach($cats as $id => $name)
+        {
+            $ft->assign(array(
+                'START_PAGE_VALUE' => $id,
+                'START_PAGE_NAME'  => $name
+            ));
+        }
+
+        $ft->define_dynamic('PAGES_OPTION', 'form_configuraion');
+        $ft->define_dynamic('CATEGORIES_OPTION', 'form_configuration');
+
+
+        
 		
 		// Ustawiamy zmienne
         $ft->assign(array(
