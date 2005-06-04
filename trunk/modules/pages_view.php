@@ -10,7 +10,7 @@ $query = sprintf("
     LIMIT 1", 
 
     TABLE_PAGES, 
-    $_GET['id']
+    $id
 );
 
 // template prepare

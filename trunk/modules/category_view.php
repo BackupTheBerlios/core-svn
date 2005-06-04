@@ -1,12 +1,12 @@
 <?php
 
-if(is_numeric($_GET['id'])) {
-    
-    $cat_pagination_link = isset($rewrite) && $rewrite == 1 ? 'category.' . $_GET['id'] . '.' : 'index.php?p=4&id=' . $_GET['id'] . '&amp;start=';
-    
+if(is_numeric($id)) {
+
+    $cat_pagination_link = isset($rewrite) && $rewrite == 1 ? 'category.' . $id . '.' : 'index.php?p=4&id=' . $id . '&amp;start=';
+
     // inicjowanie funkcji stronnicujacej wpisy
-    main_pagination($cat_pagination_link, 'WHERE c_id=' . $_GET['id'] . ' AND ', 'mainposts_per_page', 'published = \'1\'', TABLE_MAIN, true);
-    
+    main_pagination($cat_pagination_link, 'WHERE c_id=' . $id . ' AND ', 'mainposts_per_page', 'published = \'1\'', TABLE_MAIN, true);
+
     // pobieramy nazwê szablonu jaki przydzielony jest do danej kategorii
     $query = sprintf("
         SELECT 
@@ -17,18 +17,18 @@ if(is_numeric($_GET['id'])) {
             category_id = '%2\$d' 
         LIMIT 
             %3\$d", 
-    
+
         TABLE_CATEGORY, 
-        $_GET['id'], 
+        $id, 
         1
     );
-    
+
     $db->query($query);
     $db->next_record();
-    
+
     // zmienna przechowujaca przydzielony do kategorii szablon
     $category_tpl = $db->f('category_tpl') . '_rows';
-    
+
     $query = sprintf("
         SELECT 
             a.*,
@@ -59,7 +59,7 @@ if(is_numeric($_GET['id'])) {
         TABLE_MAIN,
         TABLE_CATEGORY,
         TABLE_COMMENTS,
-        $_GET['id'], 
+        $id, 
         $start, 
         $mainposts_per_page
     );
