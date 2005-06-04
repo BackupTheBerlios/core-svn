@@ -1,6 +1,6 @@
 <?php
 
-$pagination_link = isset($rewrite) && $rewrite == 1 ? 'index.' : 'index.php?start=';
+$pagination_link = isset($rewrite) && $rewrite == 1 ? 'index.' : 'index.php?p=all&amp;start=';
 
 // inicjowanie funkcji stronnicuj±cej wpisy
 $pagination = main_pagination($pagination_link, '', 'mainposts_per_page', 'WHERE published = \'1\'', TABLE_MAIN, false);
