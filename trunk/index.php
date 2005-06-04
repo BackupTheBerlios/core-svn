@@ -143,14 +143,21 @@ if (!isset($_GET['p'])) {
         case 'page':
             $p = 5;
             break;
-        case 'news':
-            $p = 4; break;
+
+        case 'cat':
+            $p = 4;
+            break;
+            
+        case 'all':
+            $p = 'all';
+            break;
+
         default:
             $p = '';
     }
-    unset($start_page_type);
 
-    $id = get_config('start_page_id');
+    $start_page_id = get_config('start_page_id');
+    $id = $start_page_id;
 } else {
     $id = isset($_GET['id']) ? $_GET['id'] : '';
     $p = $_GET['p'];
