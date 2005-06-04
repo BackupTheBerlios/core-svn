@@ -24,7 +24,8 @@ switch ($action) {
 	            text,
 	            image,
 	            comments_allow,
-	            published
+	            published, 
+	            only_in_category
             FROM 
                 %1\$s 
             WHERE 
@@ -37,14 +38,15 @@ switch ($action) {
 		$db->query($query);
 		$db->next_record();
 		
-        $date           = $db->f("date");
-		$title 			= $db->f("title");
-		$text 			= $db->f("text");
-		$author			= $db->f("author");
-		$published		= $db->f("published");
-        $image          = $db->f("image");
-		$category		= $db->f("c_id");
-		$comments_allow = $db->f("comments_allow");
+        $date           = $db->f('date');
+		$title 			= $db->f('title');
+		$text 			= $db->f('text');
+		$author			= $db->f('author');
+		$published		= $db->f('published');
+        $image          = $db->f('image');
+		$category		= $db->f('c_id');
+		$comments_allow = $db->f('comments_allow');
+        $only_in_cat    = $db->f('only_in_category');
 		
 		/* nie dziala tak jak powinno, chwilowo zakomentowane
 		 *
@@ -62,12 +64,16 @@ switch ($action) {
         ));
 
 		if($comments_allow == 1) {
-
 			$ft->assign('COMMENTS_YES', 'checked="checked"');
 		} else {
-			
 			$ft->assign('COMMENTS_NO', 'checked="checked"');
-		}					
+		}
+
+		if($only_in_cat == "1") {
+			$ft->assign('ONLYINCAT_YES', 'checked="checked"');
+		} else {
+			$ft->assign('ONLYINCAT_NO', 'checked="checked"');
+		}	
 								
 		if($published == "1") {
 
@@ -157,6 +163,7 @@ switch ($action) {
             $c_id		= $_POST['category_id'];
             
             $comments_allow = $_POST['comments_allow'];
+            $only_in_cat    = $_POST['only_in_category'];
 
             //sprawdzania daty
             if (isset($_POST['now']) || !preg_match('#^([0-9][0-9])-([0-9][0-9])-([0-9][0-9][0-9][0-9]) ([0-9][0-9]:[0-9][0-9]:[0-9][0-9])$#', $_POST['date'], $matches)) {
@@ -179,9 +186,10 @@ switch ($action) {
                     published		= '%5\$s', 
                     c_id			= '%6\$d', 
                     comments_allow	= '%7\$d',
-                    date            = '%8\$s'
+                    date            = '%8\$s', 
+                    only_in_category= '%9\$s'
                 WHERE 
-                    id = '%9\$d'", 
+                    id = '%10\$d'", 
             
                 TABLE_MAIN, 
                 $title, 
@@ -190,7 +198,8 @@ switch ($action) {
                 $published, 
                 $c_id, 
                 $comments_allow, 
-                $date,
+                $date, 
+                $only_in_cat, 
                 $_GET['id']
             );
             

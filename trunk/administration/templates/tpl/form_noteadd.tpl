@@ -61,6 +61,10 @@
 		</td>
 	</tr>
 	<tr>
+		<td class="form" width="100">Tylko w kategorii:&nbsp;</td>
+		<td class="form" width="364" colspan="2"><input class="radio" type="radio" name="only_in_category" value="1" align="top" />- tak&nbsp;<input type="radio" name="only_in_category" value="-1" align="top" checked="checked" />- nie</td>
+	</tr>
+	<tr>
 		<td class="form" width="80">Komentarze:&nbsp;</td>
 		<td class="form" width="224"><input class="radio" type="radio" name="comments_allow" value="1" align="top" checked="checked" />- zezwalaj&nbsp;<input style="border: 0px;" type="radio" name="comments_allow" value="0" align="top" />- nie zezwalaj</td>
 		<td class="form" width="110"><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="checkForm()">dodaj wpis</a></td>

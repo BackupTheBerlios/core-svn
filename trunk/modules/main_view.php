@@ -24,6 +24,8 @@ $query = sprintf("
 		a.id = c.comments_id
 	WHERE 
 		published = '1' 
+    AND 
+        only_in_category = '-1' 
 	GROUP BY 
 		a.date 
 	DESC 

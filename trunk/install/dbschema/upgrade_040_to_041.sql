@@ -16,3 +16,6 @@ UPDATE core_config
 INSERT INTO core_config VALUES
     ('start_page_type', 'page'),
     ('start_page_id', '0');
+
+ALTER TABLE core_devlog ADD only_in_category SMALLINT(1) 
+    DEFAULT '-1' NOT NULL;

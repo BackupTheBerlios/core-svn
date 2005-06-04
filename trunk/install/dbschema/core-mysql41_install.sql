@@ -38,7 +38,8 @@ CREATE TABLE core_devlog (
   `text` mediumtext NOT NULL,
   image varchar(255) NOT NULL default '',
   comments_allow char(1) NOT NULL default '1',
-  published smallint(1) DEFAULT '1' NOT NULL,
+  published smallint(1) DEFAULT '1' NOT NULL, 
+  only_in_category smallint(1) DEFAULT '-1' NOT NULL, 
   KEY id (id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 

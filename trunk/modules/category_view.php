@@ -49,6 +49,8 @@ if(is_numeric($_GET['id'])) {
             b.category_id='%4\$d' 
         AND 
             published = '1' 
+        AND 
+            only_in_category IN(1, -1) 
         GROUP BY 
             a.date 
         DESC

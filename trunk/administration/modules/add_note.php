@@ -28,6 +28,7 @@ switch ($action) {
             $category_id 	= $_POST['category_id'];
             $comments_allow = $_POST['comments_allow'];
             $published 		= $_POST['published'];
+            $only_in_cat    = $_POST['only_in_category'];
             
             $text = parse_markers($text, 1);
 		
@@ -35,7 +36,7 @@ switch ($action) {
                 INSERT INTO 
                     %1\$s 
                 VALUES 
-                    ('','%2\$d', '%3\$s','%4\$s','%5\$s','%6\$s', '', '%7\$d', '%8\$s')",
+                    ('','%2\$d', '%3\$s','%4\$s','%5\$s','%6\$s', '', '%7\$d', '%8\$s', '%9\$s')",
 		
                 TABLE_MAIN,
                 $category_id,
@@ -44,7 +45,8 @@ switch ($action) {
                 $author,
                 $text,
                 $comments_allow,
-                $published
+                $published, 
+                $only_in_cat
             );
             
             $db->query($query);

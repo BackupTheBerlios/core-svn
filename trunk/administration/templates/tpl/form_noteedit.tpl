@@ -61,21 +61,26 @@
 		</td>
 	</tr>
 	<tr>
+		<td class="form" width="100">Tylko w kategorii:&nbsp;</td>
+		<td class="form" width="364" colspan="2"><input class="radio" type="radio" name="only_in_category" value="1" align="top" {ONLYINCAT_YES} />- tak&nbsp;<input type="radio" name="only_in_category" value="-1" align="top" {ONLYINCAT_NO} />- nie</td>
+	</tr>
+	<tr>
 		<td class="form" width="80">Komentarze:&nbsp;</td>
-		<td class="form" width="224">
+		<td class="form" width="364" colspan="2">
             <input class="radio" type="radio" name="comments_allow" value="1" align="top" {COMMENTS_YES} />- zezwalaj&nbsp;
             <input class="radio" type="radio" name="comments_allow" value="0" align="top" {COMMENTS_NO} />- nie zewalaj
         </td>
 	</tr>
 	<tr>
 		<td class="form" width="80">Publikowana:&nbsp;</td>
-		<td class="form" width="224">
+		<td class="form" width="364" colspan="2">
             <input class="radio" type="radio" name="published" value="1" align="top" {CHECKBOX_YES} />- tak&nbsp;
             <input class="radio" type="radio" name="published" value="-1" align="top" {CHECKBOX_NO} />- nie
         </td>
 	</tr>
 	<tr>
-      <td colspan="2" class="align_right"><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('formNote').submit()">zmodyfikuj wpis</a></td>
+      <td colspan="2" class="align_right"></td>
+      <td><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('formNote').submit()">zmodyfikuj wpis</a></td>
 	</tr>
 </table>
 </form>
