@@ -204,7 +204,7 @@ function get_cat($page_id, $level) {
 }
 
 
-function get_addpage_cat($page_id, $level) {
+function get_addpage_cat($page_id, $level, $pageid_prefix = '') {
 	
 	global $ft;
 
@@ -239,13 +239,13 @@ function get_addpage_cat($page_id, $level) {
 		$title 		= $db->f("title");
 	
 		$ft->assign(array(
-            'P_ID'  =>$page_id,
+            'P_ID'  =>$pageid_suff . $page_id,
             'P_NAME'=>str_repeat('&nbsp; ', $level) . "- " .$title
         ));
         
         $ft->parse('PAGE_ROW', ".page_row");
 		
-		get_addpage_cat($page_id, $level+2);
+		get_addpage_cat($page_id, $level+2, $pageid_prefix);
 	}
 }
 
@@ -299,7 +299,7 @@ function get_category_cat($cat_id, $level) {
 
 
 // funkcja pobierajaca rekurencyjnie kategorie
-function get_addcategory_cat($page_id, $level) {
+function get_addcategory_cat($page_id, $level, $pageid_prefix = '') {
 	
 	global $ft;
 
@@ -332,13 +332,13 @@ function get_addcategory_cat($page_id, $level) {
 		$cat_name         = $db->f("category_name");
 	
 		$ft->assign(array(
-            'C_ID'		=>$cat_id,
+            'C_ID'		=>$pageid_suff . $cat_id,
             'C_NAME'	=>str_repeat('&nbsp; ', $level) . "- " .$cat_name
         ));
 
         $ft->parse('CATEGORY_ROW', ".category_row");
 		
-		get_addcategory_cat($cat_id, $level+2);
+		get_addcategory_cat($cat_id, $level+2, $pageid_prefix);
 	}
 }
 
