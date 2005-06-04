@@ -151,16 +151,16 @@ function bbstyle(bbnumber) {
 			return;
 	} else { // Open tags
 
-		if (imageTag && (bbnumber != 14)) {		// Close image tag before adding another
-			txtarea.value += bbtags[15];
+		if (imageTag && (bbnumber != 12)) {		// Close image tag before adding another
+			//txtarea.value += bbtags[12];
 			lastValue = arraypop(bbcode) - 1;	// Remove the close image tag from the list
-			document.post.addbbcode14.value = "Img";	// Return button back to normal state
+			document.post.addbbcode12.value = "img";	// Return button back to normal state
 			imageTag = false;
 		}
 
 		// Open tag
 		txtarea.value += bbtags[bbnumber];
-		if ((bbnumber == 14) && (imageTag == false)) imageTag = 1; // Check to stop additional tags after an unclosed image tag
+		if ((bbnumber == 12) && (imageTag == false)) imageTag = 1; // Check to stop additional tags after an unclosed image tag
 		arraypush(bbcode,bbnumber+1);
 		eval('document.post.addbbcode'+bbnumber+'.value += "*"');
 		txtarea.focus();
