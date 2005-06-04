@@ -145,13 +145,14 @@ if (!isset($_GET['p'])) {
             break;
         case 'news':
             $p = 4; break;
+        default:
+            $p = '';
     }
     unset($start_page_type);
 
     $id = get_config('start_page_id');
 } else {
     $id = isset($_GET['id']) ? $_GET['id'] : '';
-    $p = ($id == 'all') ? 0 : $_GET['p'];
     $p = $_GET['p'];
 }
 
