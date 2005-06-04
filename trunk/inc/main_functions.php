@@ -683,7 +683,10 @@ function main_pagination($url, $q, $p, $published, $table, $category_pagination)
     global 
         $db, 
         $mainposts_per_page, 
-        $page_string;
+        $page_string,
+        $id;
+    
+    //$id = is_null($id) ? $_GET['id'] : $id;
 
 	$ret = array();
 	
@@ -698,7 +701,7 @@ function main_pagination($url, $q, $p, $published, $table, $category_pagination)
                 category_id = '%2\$d'", 
 	
             TABLE_CATEGORY, 
-            $_GET['id']
+            $id
         );
         
         $db->query($query);
