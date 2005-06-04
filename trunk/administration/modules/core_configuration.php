@@ -137,7 +137,8 @@ switch ($action) {
         if ((bool)$db->nf()) {
             $ft->define_dynamic('page_row', 'form_configuration');
             $ft->assign('START_PAGE_PAGES', true);
-        
+            $selected_start_id = $start_page_type=='page' ? $start_page_id : 0;
+
             while($db->next_record()) {
           
                 $page_id      = $db->f("id");
@@ -147,12 +148,12 @@ switch ($action) {
                 $ft->assign(array(
                     'P_ID'		    =>'page#' . $page_id,
                     'P_NAME'	    =>$title,
-                    'CURRENT_PAGE'  =>($start_page_type == 'page' && $page_id == $start_page_id) ? 'selected="selected"' : ''
+                    'CURRENT'       =>$page_id==$selected_start_id ? 'selected="selected"' : ''
                 ));
           
                 $ft->parse('PAGE_ROW', ".page_row");
           
-                get_addpage_cat($page_id, 2, 'page#');
+                get_addpage_cat($page_id, 2, $selected_start_id, 'page#');
             }
         } else {
             $ft->assign('START_PAGE_PAGES', false);
@@ -181,6 +182,7 @@ switch ($action) {
         if ((bool)$db->nf()) {
             $ft->define_dynamic('category_row', 'form_configuration');
             $ft->assign('START_PAGE_CATEGORIES', true);
+            $selected_start_id = $start_page_type == 'cat' ? $start_page_id : 0;
 	
             while($db->next_record()) {
 		
@@ -191,12 +193,12 @@ switch ($action) {
                 $ft->assign(array(
                     'C_ID'		    =>'cat#' . $category_id,
                     'C_NAME'	    =>$category_name,
-                    'CURRENT_CAT'   =>($start_page_type == 'cat' && $category_id == $start_page_id) ? 'selected="selected"' : ''
+                    'CURRENT'       =>$category_id==$selected_start_id ? 'selected="selected"' : ''
                 ));
         
                 $ft->parse('CATEGORY_ROW', ".category_row");
         
-                get_addcategory_cat($category_id, 2, 'cat#');
+                get_addcategory_cat($category_id, 2, $selected_start_id, 'cat#');
             }
 
         } else {
