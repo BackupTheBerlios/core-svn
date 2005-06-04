@@ -21,6 +21,11 @@ function mail(user, domain, subject) {
 }
 
 
+function jid(user, domain) {
+    locationstring = "xmpp:" + user + "@" + domain;
+    window.location = locationstring;
+}
+
 // Funkcja odpowiadaj±ca za otwieranie nowego okna
 function foto(path, w, h) {
 	
