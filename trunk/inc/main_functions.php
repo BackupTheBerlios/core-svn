@@ -239,7 +239,7 @@ function get_addpage_cat($page_id, $level, $pageid_prefix = '') {
 		$title 		= $db->f("title");
 	
 		$ft->assign(array(
-            'P_ID'  =>$pageid_suff . $page_id,
+            'P_ID'  =>$pageid_prefix . $page_id,
             'P_NAME'=>str_repeat('&nbsp; ', $level) . "- " .$title
         ));
         
@@ -332,7 +332,7 @@ function get_addcategory_cat($page_id, $level, $pageid_prefix = '') {
 		$cat_name         = $db->f("category_name");
 	
 		$ft->assign(array(
-            'C_ID'		=>$pageid_suff . $cat_id,
+            'C_ID'		=>$pageid_prefix . $cat_id,
             'C_NAME'	=>str_repeat('&nbsp; ', $level) . "- " .$cat_name
         ));
 
