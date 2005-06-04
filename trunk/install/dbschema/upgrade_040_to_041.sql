@@ -14,7 +14,7 @@ UPDATE core_config
     WHERE 'config_name' = 'core_version';
 
 INSERT INTO core_config VALUES
-    ('start_page_type', 'page'),
+    ('start_page_type', 'all'),
     ('start_page_id', '0');
 
 ALTER TABLE core_devlog ADD only_in_category SMALLINT(1) 
