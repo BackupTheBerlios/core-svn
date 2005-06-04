@@ -72,19 +72,7 @@ $db = new DB_Sql;
 if(!isset($_COOKIE['devlog_counter'])){
 	
 	@setcookie('devlog_counter', 'hit', time()+10800);
-	
-    $query = sprintf("
-        UPDATE
-            %1\$s
-		SET
-            config_value = '%2\$s'
-        WHERE
-            config_name = 'counter'",
-            
-        TABLE_CONFIG,
-        get_config('counter') + 1
-    );
-	$db->query($query);
+    set_config('counter', get_config('counter') + 1);
 }
 
 //konfiguracja szablonow i design switchera
@@ -122,9 +110,17 @@ $start  = isset($_GET['start']) ? intval($_GET['start']) : 0;
 $val    = empty($val) ? '' : $val;
 
 // generowanie linkow do kanalow rss
-$rss_link       = isset($rewrite) && $rewrite == 1 ? './rss' : './rss.php';
-$rssc_link      = isset($rewrite) && $rewrite == 1 ? './rsscomments' : './rsscomments.php';
-$search_link    = isset($rewrite) && $rewrite == 1 ? 'index.search' : 'index.php?p=search';
+if ((bool)$rewrite) {
+    $rss_link       = './rss';
+    $rssc_link      = './rsscomments';
+    $search_link    = 'index.search';
+    $cat_all_link   = '1,0,all,item.html';
+} else {
+    $rss_link       = './rss.php';
+    $rssc_link      = './rsscomments.php';
+    $search_link    = 'index.php?p=search';
+    $cat_all_link   = 'index.php?p=all';
+}
 
 $ft->assign(array(
     'TITLE'             =>get_config('title_page'),
@@ -132,15 +128,34 @@ $ft->assign(array(
     'ENGINE_VERSION'    =>$i18n['index'][1], 
     'RSS_LINK'          =>$rss_link,
     'RSSCOMMENTS_LINK'  =>$rssc_link, 
-    'SEARCH_LINK'       =>$search_link
+    'SEARCH_LINK'       =>$search_link,
+    'CAT_ALL_LINK'      =>$cat_all_link
 ));
 
 $max_photo_width = get_config('max_photo_width');
 
 $date_format = get_config('date_format');
 
+if (!isset($_GET['p'])) {
+
+    $start_page_type = get_config('start_page_type');
+    switch ($start_page_type) {
+        case 'page':
+            $p = 5;
+            break;
+        case 'news':
+            $p = 4; break;
+    }
+    unset($start_page_type);
+
+    $id = get_config('start_page_id');
+} else {
+    $id = isset($_GET['id']) ? $_GET['id'] : '';
+    $p = ($id == 'all') ? 0 : $_GET['p'];
+    $p = $_GET['p'];
+}
+
 // G³ówna prze³±cznica includowanej tre¶ci
-$p = empty($_GET['p']) ? '' : $_GET['p'];
 switch($p){
             
     case '1': 
