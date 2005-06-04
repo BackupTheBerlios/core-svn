@@ -11,6 +11,7 @@ switch ($action) {
         $editposts_per_page = $_POST['editposts_per_page'];
         $max_photo_width    = $_POST['max_photo_width'];
         $rewrite_allow      = $_POST['rewrite_allow'];
+        $start_page         = explode('#', $_POST['start_page']);
         
         $monit = array();
         
@@ -60,8 +61,8 @@ switch ($action) {
                 // set {DATE_FORMAT} variable
                 set_config('date_format', $_POST['date_format']);
 
-                set_config('start_page_type', 'page');
-                set_config('start_page_id', 0);
+                set_config('start_page_type', $start_page[0]);
+                set_config('start_page_id', $start_page[1]);
                 
                 $ft->assign('CONFIRM', $i18n['core_configuration'][5]);
                 $ft->parse('ROWS', ".result_note");
@@ -109,7 +110,8 @@ switch ($action) {
 		$ft->define('form_configuration', "form_configuration.tpl");
 		
         
-
+        $start_page_type    = get_config('start_page_type');
+        $start_page_id      = get_config('start_page_id');
 
         $query = sprintf("
             SELECT 
@@ -143,13 +145,14 @@ switch ($action) {
                 $title        = $db->f("title");
               
                 $ft->assign(array(
-                    'P_ID'		=>$page_id,
-                    'P_NAME'	=>$title
+                    'P_ID'		    =>'page#' . $page_id,
+                    'P_NAME'	    =>$title,
+                    'CURRENT_PAGE'  =>($start_page_type == 'page' && $page_id == $start_page_id) ? 'selected="selected"' : ''
                 ));
           
                 $ft->parse('PAGE_ROW', ".page_row");
           
-                get_addpage_cat($page_id, 2);
+                get_addpage_cat($page_id, 2, 'page#');
             }
         } else {
             $ft->assign('START_PAGE_PAGES', false);
@@ -186,13 +189,14 @@ switch ($action) {
                 $category_name      = $db->f("category_name");
             
                 $ft->assign(array(
-                    'C_ID'		=>$category_id,
-                    'C_NAME'	=>$category_name
+                    'C_ID'		    =>'cat#' . $category_id,
+                    'C_NAME'	    =>$category_name,
+                    'CURRENT_CAT'   =>($start_page_type == 'cat' && $category_id == $start_page_id) ? 'selected="selected"' : ''
                 ));
         
                 $ft->parse('CATEGORY_ROW', ".category_row");
         
-                get_addcategory_cat($category_id, 2);
+                get_addcategory_cat($category_id, 2, 'cat#');
             }
 
         } else {
