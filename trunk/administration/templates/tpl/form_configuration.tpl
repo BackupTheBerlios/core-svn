@@ -32,6 +32,7 @@
     <tr>
       <td class="form" width="80">Strona startowa:&nbsp;</td>
       <td class="form" width=224"><select name="start_page" id="startPage" class="category_form">
+          <option value="all#0">wszystkie kategorie</option>
           <optgroup label="strony">
             <!-- IFDEF: START_PAGE_PAGES -->
                 <!-- BEGIN DYNAMIC BLOCK: page_row -->
