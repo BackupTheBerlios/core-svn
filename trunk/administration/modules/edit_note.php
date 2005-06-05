@@ -17,7 +17,6 @@ switch ($action) {
 		$query = sprintf("
             SELECT
                 id,
-	            c_id,
 	            DATE_FORMAT(date, '%%d-%%m-%%Y %%T') AS date,
 	            title,
 	            author,
@@ -44,7 +43,6 @@ switch ($action) {
 		$author			= $db->f('author');
 		$published		= $db->f('published');
         $image          = $db->f('image');
-		$category		= $db->f('c_id');
 		$comments_allow = $db->f('comments_allow');
         $only_in_cat    = $db->f('only_in_category');
 		
@@ -107,6 +105,7 @@ switch ($action) {
             TABLE_CATEGORY, 
             0
         );
+        $sql = new DB_SQL;
 		
 		$db->query($query);
 		while($db->next_record()) {
@@ -114,23 +113,42 @@ switch ($action) {
 			$c_id 	= $db->f("category_id");
 			$c_name = $db->f("category_name");
 			
-			if($c_id == $category) {
-				
-				$ft->assign('CURRENT_CAT', 'selected="selected"');
+			$query = sprintf("
+                SELECT * FROM 
+                    %1\$s 
+                WHERE 
+                    category_id = '%2\$d' 
+                AND 
+                    news_id = '%3\$d'", 
+			
+                TABLE_ASSIGN2CAT, 
+                $c_id, 
+                $_GET['id']
+            );
+            
+            $sql->query($query);
+            $sql->next_record();
+            
+            $assigned = $sql->f("category_id");
+            
+            if($c_id == $assigned) {
+                $ft->assign('CURRENT_CAT', 'checked="checked"');
 			} else {
 				$ft->assign('CURRENT_CAT', '');
 			}
 		
 			$ft->assign(array(
                 'C_ID'		=>$c_id,
-                'C_NAME'	=>$c_name
+                'C_NAME'	=>$c_name, 
+                'PAD'       =>''
             ));
             
             $ft->define("form_noteedit", "form_noteedit.tpl");
-			$ft->define_dynamic("category_row", "form_noteedit");
+			$ft->define_dynamic("cat_row", "form_noteedit");
 
-			$ft->parse('ROWS',	".category_row");	
-			get_editnews_cat($c_id, 2);				
+			$ft->parse('CAT_ROW', ".cat_row");
+			
+			get_editnews_assignedcat($c_id, 2);		
 		
 		}
 		

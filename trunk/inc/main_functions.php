@@ -436,7 +436,7 @@ function get_editnews_cat($c_id, $level) {
 		$ft->define("form_noteedit", "form_noteedit.tpl");
         $ft->define_dynamic("category_row", "form_noteedit");
         
-        $ft->parse('ROWS', ".category_row");
+        $ft->parse('CATEGORY_ROW', ".category_row");
 		
 		get_editnews_cat($cat_id, $level+2);
 	}
@@ -675,7 +675,7 @@ function check_mail($email) {
 }
 
 // stronnicowanie 
-function main_pagination($url, $q, $p, $published, $table, $category_pagination) {
+function main_pagination($url, $q, $p, $published, $table, $category_pagination, $cat_count=false) {
     
     global 
         $db, 
@@ -727,17 +727,41 @@ function main_pagination($url, $q, $p, $published, $table, $category_pagination)
     
 	$mainposts_per_page = empty($mainposts_per_page) ? 10 : $mainposts_per_page;
 	
-	$query = sprintf("
-        SELECT 
-            COUNT(*) AS id 
-        FROM 
-            %1\$s 
-            %2\$s %3\$s 
-        ORDER BY date", 
+	if($cat_count == true) {
+	    
+        $query = sprintf("
+            SELECT 
+                COUNT(*) AS id 
+            FROM 
+                %1\$s a 
+            LEFT JOIN 
+                %2\$s b 
+            ON 
+                a.id = b.news_id 
+            WHERE 
+                b.category_id = %3\$d 
+            AND
+                published = 1
+            ORDER BY date", 
 	
-        $table, 
-        $q, 
-        $published);
+            TABLE_MAIN, 
+            TABLE_ASSIGN2CAT, 
+            $q
+        );
+	} else {
+	    $query = sprintf("
+            SELECT 
+                COUNT(*) AS id 
+            FROM 
+                %1\$s 
+                %2\$s %3\$s 
+            ORDER BY date", 
+	
+            $table, 
+            $q, 
+            $published
+        );
+	}
     
 	$db->query($query);
 	$db->next_record();
@@ -996,6 +1020,171 @@ function get_image_status($image, $id) {
 
 function replace_amp($s) {
     return str_replace('&', '&amp;', $s);
+}
+
+
+// funkcja pobierajaca rekurencyjnie kategorie::edycja newsa
+function get_editnews_assignedcat($c_id, $level) {
+	
+	global 
+        $ft, 
+        $category, 
+        $sql;
+
+	$query = sprintf("
+        SELECT 
+            category_id, 
+            category_parent_id, 
+            category_name 
+        FROM 
+            %1\$s 
+        WHERE 
+            category_parent_id = '%2\$s' 
+        ORDER BY 
+            category_id 
+        ASC", 
+	
+        TABLE_CATEGORY, 
+        $c_id
+    );
+
+	$db = new DB_SQL;
+	$db->query($query);
+	
+	$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+		
+	while($db->next_record()) {
+	
+		$cat_id           = $db->f("category_id");
+		$cat_parent_id    = $db->f("category_parent_id");
+		$cat_name         = $db->f("category_name");
+		
+		$query = sprintf("
+            SELECT * FROM 
+                %1\$s 
+            WHERE 
+                category_id = '%2\$d' 
+            AND 
+                news_id = '%3\$d'", 
+		
+            TABLE_ASSIGN2CAT, 
+            $cat_id, 
+            $_GET['id']
+        );
+        
+        $sql->query($query);
+        $sql->next_record();
+        
+        $assigned = $sql->f("category_id");
+        
+        if($cat_id == $assigned) {
+            $ft->assign('CURRENT_CAT', 'checked="checked"');
+		} else {
+			$ft->assign('CURRENT_CAT', '');
+		}
+	
+		$ft->assign(array(
+            'C_ID'		=>$cat_id,
+            'PAD'       =>'style="padding-left:' . 8*$level . 'px;" ', 
+            'C_NAME'	=>$cat_name,
+        ));
+        
+        $ft->parse('CAT_ROW', ".cat_row");
+		
+		get_editnews_assignedcat($cat_id, $level+2);
+	}
+}
+
+
+function get_addcategory_assignedcat($page_id, $level, $current_id = 0, $pageid_prefix = '') {
+	
+	global $ft;
+
+	$query = sprintf("
+        SELECT 
+            category_id, 
+            category_parent_id, 
+            category_name 
+        FROM 
+            %1\$s 
+        WHERE 
+            category_parent_id = '%2\$d' 
+        ORDER BY 
+            category_id 
+        ASC", 
+	
+        TABLE_CATEGORY, 
+        $page_id
+    );
+
+	$db = new DB_SQL;
+	$db->query($query);
+	
+	$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+		
+	while($db->next_record()) {
+	
+		$cat_id           = $db->f("category_id");
+		$cat_parent_id    = $db->f("category_parent_id");
+		$cat_name         = $db->f("category_name");
+	
+		$ft->assign(array(
+            'C_ID'		=>$pageid_prefix . $cat_id, 
+            'PAD'       =>'style="padding-left:' . 8*$level . 'px;" ', 
+            'C_NAME'	=>$cat_name,
+            'CURRENT'   => ($cat_id == $current_id) ? 'selected="selected"' : ''
+        ));
+
+        $ft->parse('CAT_ROW', ".cat_row");
+		
+		get_addcategory_assignedcat($cat_id, $level+2, $current_id, $pageid_prefix);
+	}
+}
+
+
+function list_assigned_categories($id) {
+    
+    global 
+        $ft, 
+        $rewrite;
+    
+    $query = sprintf("
+        SELECT 
+            a.*, b.* 
+        FROM 
+            %1\$s a 
+        LEFT JOIN 
+            %2\$s b 
+        ON 
+            a.category_id = b.category_id 
+        WHERE 
+            a.news_id = '%3\$d'", 
+	    
+        TABLE_ASSIGN2CAT, 
+        TABLE_CATEGORY, 
+        $id
+    );
+	    
+    $sql = new DB_SQL;
+    $sql->query($query);
+    
+    while($sql->next_record()) {
+        
+        $cname = replace_amp($sql->f('category_name'));
+        $cid   = $sql->f('category_id');
+        
+        $category_link  = (bool)$rewrite ? sprintf('1,%s,4,item.html', $cid) : 'index.php?p=4&amp;id=' . $cid;
+        
+        $ft->assign(array(
+            'CATEGORY_NAME' =>$cname, 
+            'CATEGORY_LINK' =>$category_link
+        ));
+        
+        $ft->parse('CAT_ROW', ".cat_row");
+    }
+    
+    // CAT_ROW musi byc czyste
+    $ft->clear_parse('CAT_ROW');
 }
 
 ?>

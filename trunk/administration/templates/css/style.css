@@ -393,3 +393,19 @@ optgroup {
     font-size: 11px; 
     color: #505050;
 }
+
+.cat_list {
+    display: block;
+}
+
+fieldset label.selectit {
+	font-size: 11px;
+}
+
+#categorydiv {
+	border: none;
+}
+
+.cat_input {
+    border: 0px;
+}    

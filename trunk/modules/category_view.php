@@ -9,7 +9,7 @@ if(is_numeric($id)) {
     }
 
     // inicjowanie funkcji stronnicujacej wpisy
-    main_pagination($cat_pagination_link, 'WHERE c_id=' . $id . ' AND ', 'mainposts_per_page', 'published = \'1\'', TABLE_MAIN, true);
+    main_pagination($cat_pagination_link, $id, 'mainposts_per_page', '', TABLE_MAIN, true, true);
 
     // pobieramy nazwê szablonu jaki przydzielony jest do danej kategorii
     $query = sprintf("
@@ -33,22 +33,26 @@ if(is_numeric($id)) {
 
     $query = sprintf("
         SELECT 
-            a.*,
-            UNIX_TIMESTAMP(a.date) AS date,
-            b.*,
-            c.comments_id,
+            a.*, 
+            UNIX_TIMESTAMP(a.date) AS date, 
+            b.*, 
+            c.comments_id, 
             count(c.id) AS comments 
         FROM 
             %1\$s a,
-            %2\$s b
+            %2\$s b 
         LEFT JOIN 
-            %3\$s  c 
+            %3\$s c 
         ON 
-            a.id = c.comments_id
+            a.id = c.comments_id 
+        LEFT JOIN 
+            %4\$s d 
+        ON 
+            a.id = d.news_id 
         WHERE 
-            a.c_id='%4\$d' 
+            d.category_id='%5\$d' 
         AND 
-            b.category_id='%4\$d' 
+            b.category_id='%5\$d' 
         AND 
             published = '1' 
         AND 
@@ -56,11 +60,12 @@ if(is_numeric($id)) {
         GROUP BY 
             a.date 
         DESC
-        LIMIT  %5\$d, %6\$d",
+        LIMIT  %6\$d, %7\$d",
         
         TABLE_MAIN,
         TABLE_CATEGORY,
-        TABLE_COMMENTS,
+        TABLE_COMMENTS, 
+        TABLE_ASSIGN2CAT, 
         $id, 
         $start, 
         $mainposts_per_page
@@ -79,6 +84,7 @@ if(is_numeric($id)) {
             
         // definiujemy blok dynamiczny szablonu
         $ft->define_dynamic("note_row", $category_tpl);
+        $ft->define_dynamic("cat_row", $category_tpl);
 
         while($db->next_record()) {
     
@@ -87,22 +93,13 @@ if(is_numeric($id)) {
             $text           = $db->f('text');
             $author         = $db->f('author');
             $id             = $db->f('id');
-            $c_id           = $db->f('c_id');
             $image          = $db->f('image');
             $comments_allow = $db->f('comments_allow');
-    
-            $c_name         = $db->f('category_name');
-            $c_id           = $db->f('category_id');
 
             $comments       = $db->f('comments');
-    
-            if ((bool)$rewrite) {
-                $perma_link    = '1,' . $id . ',1,item.html';
-                $category_link = '1,' . $c_id . ',4,item.html';
-            } else {
-                $perma_link    = 'index.php?p=1&amp;id=' . $id . '';
-                $category_link = 'index.php?p=4&amp;id=' . $c_id . '';
-            }
+            
+            list_assigned_categories($id);
+            $perma_link = (bool)$rewrite ? sprintf('1,%s,1,item.html', $id) : 'index.php?p=1&amp;id=' . $id;
             
             $text   = highlighter($text, '<code>', '</code>');
             $text   = show_me_more($text);
@@ -113,11 +110,10 @@ if(is_numeric($id)) {
                 'NEWS_TEXT'         =>$text,
                 'NEWS_AUTHOR'       =>$author,
                 'NEWS_ID'           =>$id,
-                'CATEGORY_NAME'     =>$c_name, 
-                'SELECTED_CATEGORY' =>$c_name, 
-                'NEWS_CATEGORY'     =>$c_id, 
-                'PERMA_LINK'        =>$perma_link,
-                'CATEGORY_LINK'     =>$category_link
+                //'CATEGORY_NAME'     =>$c_name, 
+                //'SELECTED_CATEGORY' =>$c_name, 
+                //'NEWS_CATEGORY'     =>$c_id, 
+                'PERMA_LINK'        =>$perma_link
             ));
                         
             if($page_string) {

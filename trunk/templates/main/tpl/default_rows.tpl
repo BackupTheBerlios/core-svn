@@ -32,7 +32,10 @@
 	{NEWS_AUTHOR}
 </div>
 <div class="category">
-	<b>Kategoria:</b> <a href="{CATEGORY_LINK}">{CATEGORY_NAME}</a>
+	<b>Kategoria:</b>
+	<!-- BEGIN DYNAMIC BLOCK: cat_row -->
+	<a href="{CATEGORY_LINK}">{CATEGORY_NAME}</a>, 
+	<!-- END DYNAMIC BLOCK: cat_row -->
 </div>
 <!-- IFDEF: RETURN -->
 <div class="right">

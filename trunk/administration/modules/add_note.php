@@ -25,10 +25,10 @@ switch ($action) {
             $text           = $_POST['text'];
             $title 			= $_POST['title'];
             $author 		= $_POST['author'];
-            $category_id 	= $_POST['category_id'];
             $comments_allow = $_POST['comments_allow'];
             $published 		= $_POST['published'];
             $only_in_cat    = $_POST['only_in_category'];
+            $assign2cat     = $_POST['assign2cat'];
             
             $text = parse_markers($text, 1);
 		
@@ -36,10 +36,9 @@ switch ($action) {
                 INSERT INTO 
                     %1\$s 
                 VALUES 
-                    ('','%2\$d', '%3\$s','%4\$s','%5\$s','%6\$s', '', '%7\$d', '%8\$s', '%9\$s')",
+                    ('', '%2\$s','%3\$s','%4\$s','%5\$s', '', '%6\$d', '%7\$s', '%8\$s')",
 		
                 TABLE_MAIN,
-                $category_id,
                 $date,
                 $title,
                 $author,
@@ -65,6 +64,19 @@ switch ($action) {
 			
             // Przypisanie zmiennej $id
             $id = $db->f("0");
+            
+            foreach ($assign2cat as $selected_cat) {
+                $query = sprintf("
+                    INSERT INTO 
+                        %1\$s 
+                    VALUES('', '%2\$d', '%3\$d')", 
+                
+                    TABLE_ASSIGN2CAT, 
+                    $id, 
+                    $selected_cat
+                );
+                $db->query($query);
+            }
 		
             if(!empty($_FILES['file']['name'])) {
 			
@@ -137,7 +149,7 @@ switch ($action) {
         $db->query($query);
 	
         $ft->define("form_noteadd", "form_noteadd.tpl");
-        $ft->define_dynamic("category_row", "form_noteadd");
+        $ft->define_dynamic("cat_row", "form_noteadd");
         
         while($db->next_record()) {
 		
@@ -147,12 +159,13 @@ switch ($action) {
             
             $ft->assign(array(
                 'C_ID'		=>$page_id,
-                'C_NAME'	=>$title
+                'C_NAME'	=>$title, 
+                'PAD'       =>''
             ));
         
-            $ft->parse('CATEGORY_ROW', ".category_row");
+            $ft->parse('CAT_ROW', ".cat_row");
         
-            get_addcategory_cat($page_id, 2);
+            get_addcategory_assignedcat($page_id, 2);
         }
 
 		$ft->assign(array(

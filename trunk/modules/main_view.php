@@ -13,15 +13,10 @@ $query = sprintf("
 	SELECT 
         a.*,
         UNIX_TIMESTAMP(a.date) AS date,
-		b.*,
 		c.comments_id,
 		count(c.id) AS comments 
 	FROM 
 		%1\$s a 
-	LEFT JOIN 
-		%2\$s b 
-	ON 
-		b.category_id = a.c_id 
 	LEFT JOIN 
 		%3\$s c 
 	ON 
@@ -44,6 +39,10 @@ $query = sprintf("
 
 $db->query($query);
 
+// definiujemy blok dynamiczny szablonu
+$ft->define_dynamic("note_row", "rows");
+$ft->define_dynamic("cat_row", "rows");
+
 // Sprawdzamy, czy w bazie danych s± ju¿ jakie¶ wpisy
 if($db->num_rows() > 0) {
 
@@ -58,21 +57,11 @@ if($db->num_rows() > 0) {
 	    $image             = $db->f("image");
 	    $comments_allow    = $db->f("comments_allow");
 	    
-	    $c_id              = $db->f("category_id");
-	    
 	    $comments          = $db->f("comments");
 	    
-	    $c_name            = replace_amp($db->f('category_name'));
+	    list_assigned_categories($id);
 	    
-        if((bool)$rewrite) {
-            
-            $perma_link     = sprintf('1,%s,1,item.html', $id);
-            $category_link  = sprintf('1,%s,4,item.html', $c_id);
-        } else {
-            
-            $perma_link = 'index.php?p=1&amp;id=' . $id;
-            $category_link = 'index.php?p=4&amp;id=' . $c_id;
-        }
+	    $perma_link = (bool)$rewrite ? sprintf('1,%s,1,item.html', $id) : 'index.php?p=1&amp;id=' . $id;
         
         $text   = highlighter($text, '<code>', '</code>');
         $text   = show_me_more($text);
@@ -83,28 +72,22 @@ if($db->num_rows() > 0) {
 	       'NEWS_TEXT'     =>$text,
 	       'NEWS_AUTHOR'   =>$author,
 	       'NEWS_ID'       =>$id,
-	       'CATEGORY_NAME' =>$c_name,
 	       'NEWS_CATEGORY' =>$c_id,
 	       'PERMA_LINK'    =>$perma_link,
-	       'CATEGORY_LINK' =>$category_link
 	    ));
 	    
 	    if(!empty($pagination['page_string'])) {
-	        
 	        $ft->assign('STRING', sprintf("<b>%s</b> %s", $i18n['main_view'][0], $pagination['page_string']));
 	    } else {
-	        
 	        $ft->assign('STRING', $pagination['page_string']);
 	    }
 	    
 	    get_comments_link($comments_allow, $comments, $id);
 	    get_image_status($image, $id);
 	    
-	    // definiujemy blok dynamiczny szablonu
-	    $ft->define_dynamic("note_row", "rows");
-	    
 	    $ft->assign('RETURN', '');
 	    $ft->parse('MAIN', ".note_row");
+	    
 	}
 	
 	// Parsowanie elementów poza DYNAMIC BLOCK :: fixed

@@ -19,3 +19,11 @@ INSERT INTO core_config VALUES
 
 ALTER TABLE core_devlog ADD only_in_category SMALLINT(1) 
     DEFAULT '-1' NOT NULL;
+
+CREATE TABLE core_assign2cat (
+    id int(7) NOT NULL auto_increment,
+    news_id int(7) NOT NULL default '0',
+    category_id int(7) NOT NULL default '0',
+    PRIMARY KEY (id),
+    KEY news_id (news_id, category_id)
+);

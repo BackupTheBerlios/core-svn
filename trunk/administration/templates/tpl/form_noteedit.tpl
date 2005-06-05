@@ -1,8 +1,8 @@
+<form enctype="multipart/form-data" method="post" name="post" action="main.php?p=2&amp;action=edit&amp;id={ID}" id="formNote">
 <div id="left">
 <img src="templates/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>Aktualno¶ci - edycja wpisu</b><br /><br />
 
 <script type="text/javascript" src="./templates/js/textarea.js"></script>
-<form enctype="multipart/form-data" method="post" name="post" action="main.php?p=2&amp;action=edit&amp;id={ID}" id="formNote">
 <table width="100%" align="left">
 	<tr>
 		<td class="form" width="100">Tytu³ wpisu:&nbsp;</td>
@@ -44,18 +44,6 @@
 		<td class="form">{OVERWRITE_PHOTO}</td>
 	</tr>
 	<tr>
-		<td class="form">Kategoria :&nbsp;</td>
-		<td class="form" colspan="2">
-		<select class="category_form" name="category_id">
-		
-            <!-- BEGIN DYNAMIC BLOCK: category_row -->
-            <option value="{C_ID}" {CURRENT_CAT}>{C_NAME}</option>
-            <!-- END DYNAMIC BLOCK: category_row -->
-            
-		</select>
-		</td>
-	</tr>
-	<tr>
 		<td class="form">Tylko w kategorii:&nbsp;</td>
 		<td class="form" colspan="2"><input class="radio" type="radio" name="only_in_category" value="1" align="top" {ONLYINCAT_YES} />- tak&nbsp;<input type="radio" name="only_in_category" value="-1" align="top" {ONLYINCAT_NO} />- nie</td>
 	</tr>
@@ -78,5 +66,18 @@
       <td><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('formNote').submit()">zmodyfikuj wpis</a></td>
 	</tr>
 </table>
-</form>
 </div>
+
+<div id="right">
+<b>Przydziel wpis do kategorii</b><br /><br />
+<fieldset id="categorydiv">
+    <div>
+    <!-- BEGIN DYNAMIC BLOCK: cat_row -->
+    <span {PAD}class="cat_list">
+    <label for="category-{C_ID}" class="selectit"><input class="cat_input" value="{C_ID}" type="checkbox" name="assign2cat[]"  id="category-{C_ID}" {CURRENT_CAT} />{C_NAME}</label>
+    </span>
+    <!-- END DYNAMIC BLOCK: cat_row -->
+    </div>
+</fieldset>
+</div>
+</form>

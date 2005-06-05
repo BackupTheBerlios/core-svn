@@ -1,8 +1,8 @@
+<form action="main.php?p=1&amp;action=add" enctype="multipart/form-data" name="post" method="post" id="formNote">
 <div id="left">
 <img src="templates/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>Aktualno¶ci - dodaj kolejny wpis</b><br /><br />
 
 <script type="text/javascript" src="./templates/js/textarea.js"></script>
-<form action="main.php?p=1&amp;action=add" enctype="multipart/form-data" name="post" method="post" id="formNote">
 <table width="100%" align="left">
 	<tr>
 		<td class="form" width="100">Tytu³ wpisu:&nbsp;</td>
@@ -45,31 +45,32 @@
 		<td class="form" colspan="2"><input type="file" name="file" size="30" maxlength="255"></td>
 	</tr>
 	<tr>
-		<td class="form">Kategoria :&nbsp;</td>
-		<td class="form" colspan="2">
-		<select class="category_form" name="category_id">
-		
-            <!-- BEGIN DYNAMIC BLOCK: category_row -->
-            <option value="{C_ID}">{C_NAME}</option>
-            <!-- END DYNAMIC BLOCK: category_row -->
-		
-		</select>
-		</td>
-	</tr>
-	<tr>
 		<td class="form">Tylko w kategorii:&nbsp;</td>
-		<td class="form" colspan="2"><input class="radio" type="radio" name="only_in_category" value="1" align="top" />- tak&nbsp;<input type="radio" name="only_in_category" value="-1" align="top" checked="checked" />- nie</td>
+		<td class="form" colspan="2"><input class="radio" type="radio" name="only_in_category" value="1" align="top" />- tak&nbsp;<input class="radio" type="radio" name="only_in_category" value="-1" align="top" checked="checked" />- nie</td>
 	</tr>
 	<tr>
 		<td class="form">Komentarze:&nbsp;</td>
-		<td class="form"><input class="radio" type="radio" name="comments_allow" value="1" align="top" checked="checked" />- zezwalaj&nbsp;<input style="border: 0px;" type="radio" name="comments_allow" value="0" align="top" />- nie zezwalaj</td>
-		<td class="form"><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="checkForm()">dodaj wpis</a></td>
+		<td class="form"><input class="radio" type="radio" name="comments_allow" value="1" align="top" checked="checked" />- zezwalaj&nbsp;<input class="radio" type="radio" name="comments_allow" value="0" align="top" />- nie zezwalaj</td>
+		<td class="form"><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('formNote').submit()">dodaj wpis</a></td>
 	</tr>
 	<tr>
 		<td class="form">Publikowana:&nbsp;</td>
-		<td class="form"><input class="radio" type="radio" name="published" value="1" align="top" checked="checked" />- tak&nbsp;<input style="border: 0px;" type="radio" name="published" value="-1" align="top" />- nie</td>
+		<td class="form"><input class="radio" type="radio" name="published" value="1" align="top" checked="checked" />- tak&nbsp;<input class="radio" type="radio" name="published" value="-1" align="top" />- nie</td>
         <td class="form"><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('formNote').reset()">wyczy¶æ formularz</a></td>
 	</tr>
 </table>
-</form>
 </div>
+
+<div id="right">
+<b>Przydziel wpis do kategorii</b><br /><br />
+<fieldset id="categorydiv">
+    <div>
+    <!-- BEGIN DYNAMIC BLOCK: cat_row -->
+    <span {PAD}class="cat_list">
+    <label for="category-{C_ID}" class="selectit"><input class="cat_input" value="{C_ID}" type="checkbox" name="assign2cat[]"  id="category-{C_ID}" />{C_NAME}</label>
+    </span>
+    <!-- END DYNAMIC BLOCK: cat_row -->
+    </div>
+</fieldset>
+</div>
+</form>

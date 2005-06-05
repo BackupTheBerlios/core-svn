@@ -7,7 +7,16 @@ CREATE TABLE core_category (
   category_tpl varchar(255) DEFAULT 'default' NOT NULL, 
   category_post_perpage int(2) DEFAULT '6' NOT NULL, 
   KEY id (category_id)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8; 
+
+
+CREATE TABLE core_assign2cat (
+    id int(7) NOT NULL auto_increment,
+    news_id int(7) NOT NULL default '0',
+    category_id int(7) NOT NULL default '0',
+    PRIMARY KEY (id),
+    KEY news_id (news_id, category_id)
+);
 
 
 CREATE TABLE core_comments (
@@ -31,7 +40,6 @@ CREATE TABLE core_config (
 
 CREATE TABLE core_devlog (
   id mediumint(7) NOT NULL auto_increment,
-  c_id int(7) NOT NULL default '1',
   `date` datetime NOT NULL default '0000-00-00 00:00:00',
   title varchar(50) NOT NULL default '',
   author varchar(30) NOT NULL default '',
