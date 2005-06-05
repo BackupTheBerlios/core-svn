@@ -302,3 +302,11 @@ li.child {
 .center {
     text-align: center;
 } 
+.ed_button {
+  margin-right: 3px;
+}
+.helpline {
+    width:100%; 
+    border: 0px; 
+    padding: 0px;
+}

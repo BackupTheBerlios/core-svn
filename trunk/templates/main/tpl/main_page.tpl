@@ -9,6 +9,7 @@
 		<meta name="generator" content="Core ``svn snapshot``" /> <!-- zostaw dla statystyk -->
 	
 		<script type="text/javascript" src="templates/main/js/functions.js"></script>
+		<script type="text/javascript" src="templates/main/js/js_quicktags/js_quicktags.js"></script>
 
 		<link rel="stylesheet" href="templates/main/css/main.css" type="text/css" media="screen" />
 	</head>
@@ -118,6 +119,11 @@
 	<div class="engine">
         Based on <a href="http://core.no1-else.com/" target="_blank">Core</a>
 	</div>
+    <script type="text/javascript">
+    <!--
+    edCanvas = document.getElementById('canvas')
+    //-->
+    </script>
 </div>
 </body>
 </html>

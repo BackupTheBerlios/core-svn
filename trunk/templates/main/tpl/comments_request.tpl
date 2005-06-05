@@ -35,19 +35,20 @@ przechowywany wy³±cznie w bazie danych w celach czysto informacyjnych.<br /><br 
 	<tr>
 		<td class="form" width="20%">Znaki specjalne:</td>
 		<td class="form" width="80%" align="left" valign="top" colspan="2" style="padding-bottom: 3px;">
-		<input type="button" class="button" name="addbbcode0" value=" b " style="font-weight:bold; width: 30px" onClick="bbstyle(0)" />
-		<input type="button" class="button" name="addbbcode2" value=" i " style="font-style:italic; width: 30px" onClick="bbstyle(2)" />
-		<input type="button" class="button" name="addbbcode4" value=" u " style="text-decoration: underline; width: 30px" onClick="bbstyle(4)" />
-		<input type="button" class="button" name="addbbcode6" value=" abbr " style="width: 40px" onClick="bbstyle(6)" />
-		<input type="button" class="button" name="addbbcode8" value=" quote " style="width: 45px" onClick="bbstyle(8)" />
-		<input type="button" class="button" name="addbbcode10" value=" link " style="width: 40px" onClick="bbstyle(10)" />
-		 <a href="javascript:bbstyle(-1)">Zamknij Tagi HTML</a>
+            <script type="text/javascript">
+                edToolbar()
+            </script>
+		</td>
+	</tr>
+	<tr>
+		<td class="form" align="left" valign="top" colspan="3" style="padding-bottom: 3px;">
+            <input type="text" name="helpbox" size="45" maxlength="100" class="helpline" value="Rada: Style mog± byæ stosowane szybko do zaznaczonego tekstu" readonly="readonly" />
 		</td>
 	</tr>
 	<tr>
 		<td width="20%" height="25" valign="top">Tre¶æ komentarza:</td>
 		<td width="80" class="nav" align="left">
-		<textarea wrap="virtual" tabindex="3" name="text" cols="65" rows="12" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);">{QUOTE}</textarea>
+		<textarea wrap="virtual" tabindex="3" name="text" cols="65" rows="12" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" id="canvas">{QUOTE}</textarea>
 		</td>
 	</tr>
 	<tr>
