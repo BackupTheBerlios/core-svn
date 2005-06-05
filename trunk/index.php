@@ -16,8 +16,11 @@ require_once(PATH_TO_CLASSES. '/cls_db_mysql.php'); // dodawanie pliku konfiguru
 require_once(PATH_TO_CLASSES. '/cls_phpmailer.php'); // dodawanie pliku konfigurujacego bibliotekê wysy³ania mail'i
 require_once(PATH_TO_CLASSES. '/cls_fast_template.php');
 
-// pobieranie informacji o uzyciu mod_rewrite
-$rewrite = get_config('mod_rewrite');
+
+$rewrite = get_config('mod_rewrite'); // pobieranie informacji o uzyciu mod_rewrite
+$max_photo_width = get_config('max_photo_width'); //maksymalna szerokosc fotki
+$date_format = get_config('date_format'); //format daty
+
 
 // automatyczne sprawdzanie stanu magic_quotes
 // i w zaleznosci od tego wstawianie addslashes, badz nie.
@@ -103,6 +106,8 @@ if(isset($_COOKIE['devlog_design']) && is_dir('./templates/' . $_COOKIE['devlog_
 
 @setcookie('devlog_design', $theme, time() + 3600 * 24 * 365);
 
+
+
 // inicjowanie klasy, wkazanie katalogu przechowuj±cego szablony
 $ft = new FastTemplate('./templates/' . $theme . '/tpl/');
 
@@ -120,10 +125,12 @@ $ft->define(array(
 ));
     
 // warto¶æ poczatkowa zmiennej $start -> potrzebna przy stronnicowaniu
-$start  = isset($_GET['start']) ? intval($_GET['start']) : 0;
+$start  = isset($_GET['start']) ? (int)$_GET['start'] : 0;
 $val    = empty($val) ? '' : $val;
 
-// generowanie linkow do kanalow rss
+
+
+// generowanie linkow
 if ((bool)$rewrite) {
     $rss_link       = './rss';
     $rssc_link      = './rsscomments';
@@ -146,31 +153,18 @@ $ft->assign(array(
     'CAT_ALL_LINK'      =>$cat_all_link
 ));
 
-$max_photo_width = get_config('max_photo_width');
-
-$date_format = get_config('date_format');
-
 if (!isset($_GET['p'])) {
 
     $start_page_type = get_config('start_page_type');
+    $start_page_id = get_config('start_page_id');
+
     switch ($start_page_type) {
-        case 'page':
-            $p = 5;
-            break;
-
-        case 'cat':
-            $p = 4;
-            break;
-            
-        case 'all':
-            $p = 'all';
-            break;
-
-        default:
-            $p = '';
+        case 'page':    $p = 5;     break;
+        case 'cat':     $p = 4;     break;
+        case 'all':     $p = 'all'; break;
+        default:        $p = '';
     }
 
-    $start_page_id = get_config('start_page_id');
     $id = $start_page_id;
 } else {
     $id = isset($_GET['id']) ? $_GET['id'] : '';
@@ -179,57 +173,38 @@ if (!isset($_GET['p'])) {
 
 // G³ówna prze³±cznica includowanej tre¶ci
 switch($p){
-            
-    case '1': 
-        include('modules/alter_view.php');
-        break;
-        
-    case '2': 
-        include('modules/comments_view.php');
-        break;
-        
-    case '3':
-        include('modules/comments_add.php');
-        break;
-        
-    case '4':
-        include('modules/category_view.php');
-        break;
-        
-    case '5':
-        include('modules/pages_view.php');
-        break;
-        
-    case '6':
-        include('modules/articles_view.php');
-        break;        
-        
-    case 'newsletter':
-        include('modules/newsletter.php');
-        break;
-        
-    case 'search':
-        include('modules/search.php');
-        break;
-        
-    default:
-        include('modules/main_view.php');
-        break;
+    case '1'            : include('modules/alter_view.php');     break;
+    case '2'            : include('modules/comments_view.php');  break;
+    case '3'            : include('modules/comments_add.php');   break;
+    case '4'            : include('modules/category_view.php');  break;
+    case '5'            : include('modules/pages_view.php');     break;
+    case '6'            : include('modules/articles_view.php');  break;        
+    case 'newsletter'   : include('modules/newsletter.php');     break;
+    case 'search'       : include('modules/search.php');         break;
+    default             : include('modules/main_view.php');
 }
 
 // wyznaczamy szablon jaki ma byc parsowany, sprawdzajac
 // czy faktycznie znajduje sie on w katalogu z szablonami
-$assigned_tpl = isset($assigned_tpl) && file_exists('./templates/' . $theme . '/tpl/' . $assigned_tpl . '_page.tpl') ? $assigned_tpl : 'main_page';
-        
+if (!isset($assigned_tpl) || !file_exists('./templates/' . $theme . '/tpl/' . $assigned_tpl . '_page.tpl')) {
+  $assigned_tpl = 'main_page';
+}
+
+
+
 $ft->define_dynamic("alternate_design_row", $assigned_tpl);
 
 while($d = $read_dir->read()) {
-    
+
     if($d[0] != '.') {
-        
+
         // link do alternatywnego szablonu
-        $template_link = isset($rewrite) && $rewrite == 1 ? '2,' . $d . ',item.html' : 'design.php?issue=' . $d . '';
-        
+        if ((bool)$rewrite) {
+            $template_link = sprintf('2,%s,item.html', $d);
+        } else {
+            $template_link = : 'design.php?issue=' . $d;
+        }
+
         $ft->assign(array(
             'ALTERNATE_TEMPLATE'    =>$d,
             'TEMPLATE_LINK'         =>$template_link
