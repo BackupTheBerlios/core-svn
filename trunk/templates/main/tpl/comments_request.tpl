@@ -29,7 +29,7 @@ przechowywany wy³±cznie w bazie danych w celach czysto informacyjnych.<br /><br 
 	<tr>
 		<td width="20%" height="25" valign="top">E-mail:</td>
 		<td width="80" align="left">
-		<input type="text" name="email" size="30" maxlength="255"> .opcjonalnie
+		<input type="text" name="email" size="30" maxlength="255">&nbsp;.opcjonalnie
 		</td>
 	</tr>
 	<tr>
