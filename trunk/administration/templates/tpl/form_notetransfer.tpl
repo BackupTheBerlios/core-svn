@@ -5,8 +5,8 @@
 <form action="main.php?p=15&amp;action=add" enctype="multipart/form-data" method="post" id="formTransfer">
 <table width="100%" align="left">
 	<tr>
-		<td class="form" width="80" align="right" valign="top">Kategoria bie¿±ca:&nbsp;</td>
-		<td class="form" width="364" align="left" valign="top" colspan="2">
+		<td class="form" width="100">Kategoria bie¿±ca:&nbsp;</td>
+		<td class="form">
 		<select name="current_cat_id" style="BACKGROUND-COLOR: #FFF; FONT-FAMILY: tahoma, verdana, arial; FONT-SIZE: 11px; color: #505050">
 		
             <option>Wybierz kategoriê</option>
@@ -19,8 +19,8 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="form" width="80" align="right" valign="top">Kategoria docelowa:&nbsp;</td>
-		<td class="form" width="364" align="left" valign="top" colspan="2">
+		<td class="form">Kategoria docelowa:&nbsp;</td>
+		<td class="form">
 		<select name="target_cat_id" style="BACKGROUND-COLOR: #FFF; FONT-FAMILY: tahoma, verdana, arial; FONT-SIZE: 11px; color: #505050">
 		
             <option>Wybierz kategoriê</option>
@@ -33,7 +33,7 @@
 		</td>
 	</tr>
 	<tr>
-        <td class="form" width="110" align="left" colspan="3"><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('formTransfer').submit()">transferuj wpisy</a></td>
+        <td class="form" width="364" colspan="2"><br /><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('formTransfer').submit()">transferuj wpisy</a></td>
 	</tr>
 </table>
 </form>
