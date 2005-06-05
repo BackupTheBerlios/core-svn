@@ -706,7 +706,7 @@ function main_pagination($url, $q, $p, $published, $table, $category_pagination)
         
         $mainposts_per_page = $db->f('category_post_perpage');
     } else {
-        /*
+
 	    $query = sprintf("
             SELECT * FROM 
                 %1\$s 
@@ -721,8 +721,8 @@ function main_pagination($url, $q, $p, $published, $table, $category_pagination)
         $db->next_record();
         
         $mainposts_per_page = $db->f('config_value');
-        */
-        $mainposts_per_page = get_config('config_value');
+        
+        // $mainposts_per_page = get_config('config_value');
 	}
     
 	$mainposts_per_page = empty($mainposts_per_page) ? 10 : $mainposts_per_page;
