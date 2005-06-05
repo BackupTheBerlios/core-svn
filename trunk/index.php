@@ -202,7 +202,7 @@ while($d = $read_dir->read()) {
         if ((bool)$rewrite) {
             $template_link = sprintf('2,%s,item.html', $d);
         } else {
-            $template_link = : 'design.php?issue=' . $d;
+            $template_link = 'design.php?issue=' . $d;
         }
 
         $ft->assign(array(
