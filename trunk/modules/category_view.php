@@ -110,17 +110,12 @@ if(is_numeric($id)) {
                 'NEWS_TEXT'         =>$text,
                 'NEWS_AUTHOR'       =>$author,
                 'NEWS_ID'           =>$id,
-                //'CATEGORY_NAME'     =>$c_name, 
-                //'SELECTED_CATEGORY' =>$c_name, 
-                //'NEWS_CATEGORY'     =>$c_id, 
                 'PERMA_LINK'        =>$perma_link
             ));
                         
             if($page_string) {
-        
                 $ft->assign('STRING', $i18n['category_view'][0] . $page_string);
             } else {
-        
                 $ft->assign('STRING', $page_string);
             }
 

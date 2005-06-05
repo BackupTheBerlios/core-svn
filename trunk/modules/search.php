@@ -12,11 +12,50 @@ if ((bool)$rewrite) {
 }
 
 // inicjowanie funkcji stronnicuj±cej wpisy
-main_pagination($search_link, '', 'mainposts_per_page', 'WHERE published = \'1\' AND text LIKE \'%' . $search_word . '%\' OR title LIKE \'%' . $search_word . '%\'', TABLE_MAIN, false);
+main_pagination($search_link, '', 'mainposts_per_page', '', TABLE_MAIN, false, false, true);
 
 if(!empty($search_word)) {
 	
     $query = sprintf("
+        SELECT 
+            a.*, 
+            UNIX_TIMESTAMP(a.date) AS date, 
+            b.*, 
+            c.comments_id, 
+            count(c.id) AS comments 
+        FROM 
+            %1\$s a 
+        LEFT JOIN 
+            %3\$s c 
+        ON 
+            a.id = c.comments_id 
+        LEFT JOIN 
+            %4\$s d 
+        ON 
+            a.id = d.news_id 
+        LEFT JOIN 
+            %2\$s b 
+        ON 
+            b.category_id = d.category_id
+        WHERE 
+            published = '1'    
+        AND 
+            a.text LIKE '%%" . $search_word . "%%' 
+        OR 
+            a.title LIKE '%%" . $search_word . "%%' 
+        GROUP BY 
+            a.date 
+        DESC
+        LIMIT  %5\$d, %6\$d",
+        
+        TABLE_MAIN,
+        TABLE_CATEGORY,
+        TABLE_COMMENTS, 
+        TABLE_ASSIGN2CAT, 
+        $start, 
+        $mainposts_per_page
+    
+        /*
         SELECT 
             a.*,
             UNIX_TIMESTAMP(a.date) AS date,
@@ -48,6 +87,7 @@ if(!empty($search_word)) {
         TABLE_COMMENTS,
         $start,
         $mainposts_per_page
+        */
     );
 	
 	$db->query($query);
@@ -115,15 +155,11 @@ if(!empty($search_word)) {
 
 	if($db->num_rows() !== 0) {
 	
+	    $ft->define_dynamic("cat_row", "rows");
+	    
 		while($db->next_record()) {
-			
-			$c_id		= $db->f("c_id");
-			$c_name		= $db->f("category_name");
-			$c_id		= $db->f("category_id");
 
 			$comments 	= $db->f("comments");
-	
-			$c_name 	= replace_amp($c_name);
 			
 			$date 			= date($date_format, $db->f("date"));
 			$title 			= $db->f("title");
@@ -136,13 +172,8 @@ if(!empty($search_word)) {
 			// usuwamy <a />
 			$text = preg_replace('/(?is)(<\/?(?:a)(?:|\s.*?)>)/', '', $text);
 			
-            if ((bool)$rewrite) {
-			    $perma_link    = sprintf('1,%s,1,item.html', $id);
-    			$category_link = sprintf('1,%s,4,item.html', $c_id);
-            } else {
-			    $perma_link    = 'index.php?p=1&amp;id=' . $id;
-    			$category_link = 'index.php?p=4&amp;id=' . $c_id;
-            }
+            list_assigned_categories($id);
+            $perma_link = (bool)$rewrite ? sprintf('1,%s,1,item.html', $id) : 'index.php?p=1&amp;id=' . $id;
 			
 			$text   = highlighter($text, '<code>', '</code>');
 			
@@ -152,11 +183,8 @@ if(!empty($search_word)) {
                 'NEWS_TEXT'			=>$search->highlight($search_word, $text),
                 'NEWS_AUTHOR'		=>$author,
                 'NEWS_ID'			=>$id,
-                'CATEGORY_NAME'		=>$c_name,
-                'NEWS_CATEGORY'		=>$c_id,
                 'STRING'			=>$page_string, 
-                'PERMA_LINK'        =>$perma_link,
-                'CATEGORY_LINK'     =>$category_link
+                'PERMA_LINK'        =>$perma_link
             ));
 								
 			get_comments_link($comments_allow, $comments, $id);

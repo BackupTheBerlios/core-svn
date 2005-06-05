@@ -675,7 +675,7 @@ function check_mail($email) {
 }
 
 // stronnicowanie 
-function main_pagination($url, $q, $p, $published, $table, $category_pagination, $cat_count=false) {
+function main_pagination($url, $q, $p, $published, $table, $category_pagination, $cat_count=false, $search_count=false) {
     
     global 
         $db, 
@@ -742,6 +742,31 @@ function main_pagination($url, $q, $p, $published, $table, $category_pagination,
                 b.category_id = %3\$d 
             AND
                 published = 1
+            ORDER BY date", 
+	
+            TABLE_MAIN, 
+            TABLE_ASSIGN2CAT, 
+            $q
+        );
+	} elseif($search_count == true) {
+	    
+	    $search_word = trim($_REQUEST['search_word']);
+	    
+	    $query = sprintf("
+            SELECT 
+                COUNT(*) AS id 
+            FROM 
+                %1\$s a 
+            LEFT JOIN 
+                %2\$s b 
+            ON 
+                a.id = b.news_id 
+            WHERE 
+                published = 1 
+            AND 
+                a.text LIKE '%%" . $search_word . "%%' 
+            OR 
+                a.title LIKE '%%" . $search_word . "%%' 
             ORDER BY date", 
 	
             TABLE_MAIN, 

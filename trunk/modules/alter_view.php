@@ -4,22 +4,18 @@ $query = sprintf("
     SELECT
         a.*, 
         UNIX_TIMESTAMP(a.date) AS date, 
-        b.*,
         c.comments_id,
         count(c.id)
     AS
        comments
     FROM
-        %s a,
-        %s b
-    LEFT JOIN
-            %s c
-        ON
-            a.id = c.comments_id
+        %1\$s a 
+    LEFT JOIN 
+        %3\$s c 
+    ON 
+        a.id = c.comments_id
     WHERE
-        a.id = '%d'
-    AND
-        b.category_id = a.c_id
+        a.id = '%4\$d'
     AND
         published = '1'
     GROUP BY
@@ -44,24 +40,16 @@ if($db->num_rows() > 0) {
     $text           = str_replace('[podziel]', '', $db->f('text'));
     $author         = $db->f('author');
     $id             = $db->f('id');
-    $c_id           = $db->f('c_id');
     $image          = $db->f('image');
     $comments_allow = $db->f('comments_allow');
-
-    $c_id           = $db->f('category_id');
-
-    $c_name         = str_replace('&', '&amp;', $db->f('category_name'));
 
     // Przypisanie zmiennej $comments
     $comments       = $db->f('comments');
     
-    if ((bool)$rewrite) {
-        $perma_link    = '1,' . $id . ',1,item.html';
-    	$category_link = '1,' . $c_id . ',4,item.html';
-    } else {
-        $perma_link    = 'index.php?p=1&amp;id=' . $id;
-    	$category_link = 'index.php?p=4&amp;id=' . $c_id;
-    }
+    $ft->define_dynamic("cat_row", "rows");
+    
+    list_assigned_categories($id);
+    $perma_link = (bool)$rewrite ? sprintf('1,%s,1,item.html', $id) : 'index.php?p=1&amp;id=' . $id;
 	
 	$text   = highlighter($text, '<code>', '</code>');
 
@@ -71,11 +59,8 @@ if($db->num_rows() > 0) {
         'NEWS_TEXT'     =>$text,
         'NEWS_AUTHOR'   =>$author,
         'NEWS_ID'       =>$id,
-        'CATEGORY_NAME' =>$c_name,
-        'NEWS_CATEGORY' =>$c_id,
         'STRING'        =>'', 
-        'PERMA_LINK'    =>$perma_link,
-	    'CATEGORY_LINK' =>$category_link
+        'PERMA_LINK'    =>$perma_link
     ));
 
     get_comments_link($comments_allow, $comments, $id);
