@@ -4,10 +4,15 @@
 
 <script type="text/javascript" src="./templates/js/textarea.js"></script>
 <form action="main.php?p=14&amp;action=add&amp;tpl_dir={TPL_DIR}" enctype="multipart/form-data" name="post" method="post">
-<table width="100%" align="left">
+<table width="100%" align="left" id="templateEdit">
 	<tr>
 		<td class="form" width="100%" colspan="3">
-		<textarea id="file" wrap="virtual" tabindex="3" name="text" cols="75" rows="20" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);">{FILE_CONTENT}</textarea>
+            <script type="text/javascript">
+            <!--
+                edToolbar()
+            //-->
+            </script>
+		    <textarea id="canvas" wrap="virtual" tabindex="3" name="text" cols="75" rows="20" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);">{FILE_CONTENT}</textarea>
 		</td>
 	</tr>
 	<tr>

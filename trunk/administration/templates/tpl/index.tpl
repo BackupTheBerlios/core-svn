@@ -16,6 +16,7 @@
  	    }
  	}
     </script>
+    <script src="templates/js/js_quicktags/js_quicktags.js" type="text/javascript"></script>
 </head>
 
 <body>
@@ -41,5 +42,10 @@
   <span class="black">Core</span> - System Zarz±dzania Tre¶ci± (v.{VERSION})<br />
 Copyright 2005 - Wszystkie Prawa Zastrze¿one: <span class="black">Core Dev Team</span>
 </div>
+<script type="text/javascript">
+    <!--
+    edCanvas = document.getElementById('canvas')
+    //-->
+</script>
 </body>
 </html>

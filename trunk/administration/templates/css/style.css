@@ -306,7 +306,7 @@ a.file span {
     font-weight: bold;
 }
 
-textarea#file {
+#templateEdit textarea#canvas {
 	font-family: Courier;
 	font-size: 12px;
 	color: #000;
@@ -330,50 +330,10 @@ textarea#file {
     width: 163px;
 }
 
-.button {
-    
+.ed_button {
+  margin-right: 3px;
+  text-transform: lowercase;
 }
-
-.button.b {
-    font-weight: bold;
-    width: 30px;
-}
-
-.button.s {
-    font-weight: bold; 
-    width: 57px;
-}
-
-.button.e {
-    font-style: italic; 
-    width: 35px;
-}
-
-.button.u {
-    text-decoration: underline; 
-    width: 30px;
-}
-
-.button.h {
-    width: 30px;
-}
-
-.button.i {
-    width: 35px;
-}
-
-.button.t {
-    width: 45px;
-}
-
-.button.w {
-    width: 50px;
-}
-
-.button.confirm {
-    width: 45px;
-}
-
 .category_form {
     background-color: #FFF; 
     font-family: tahoma, verdana, arial; 
