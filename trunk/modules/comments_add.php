@@ -19,20 +19,14 @@ switch ($action) {
             $monit[] = $i18n['comments_add'][0];
         }
 
-        if($_POST['email'] != '') {
-
-            // Sprawdzenie poprawnosci adresu e-mail
-            if(!check_mail($_POST['email'])) {
-                
-                $monit[] = $i18n['comments_add'][1];
-            }
+        // Sprawdzenie poprawnosci adresu e-mail
+        if(!empty($_POST['email']) && !check_mail($_POST['email'])) {
+            
+            $monit[] = $i18n['comments_add'][1];
         }
 
         // Je¿eli dane spe³niaja wszystkie kryteria dodanie nowego komentarza
         if(empty($monit)) {
-
-            $tmp  = time();
-            $date = date('Y-m-d H:i:s', $tmp);
 
             $text = str_nl2br($_POST['text']);
 
@@ -54,17 +48,7 @@ switch ($action) {
             // [link=] i [/link] dla odsy³aczy.
             $text = preg_replace('/\[link=([^\"]+)\]([^\"]+)\[\/link\]/','<a href="\\1" target="_blank">\\2</a>', $text);
 
-            /*
-             *czy preg_match_all i for ponizej sa potrzebne?
-             *sam str_replace powinien wymienic wszystkie te stringi na ich odpowiedniki...
-             *
-             */
-            $match_count = preg_match_all('#\[quote\](.*?)\[/quote\]#si', $text, $matches);
-
-            for ($i = 0; $i < $match_count; $i++) {
-
-                $text = str_replace(array('[quote]', '[/quote]'), array('<div class="quote">', '</div>'), $text);
-            }
+            $text = str_replace(array('[quote]', '[/quote]'), array('<div class="quote">', '</div>'), $text);
 
             $id             = $_POST['id'];
             $comments_id    = $_POST['comments_id'];
@@ -79,10 +63,9 @@ switch ($action) {
                 INSERT INTO
                     %s
                 VALUES
-                    ('','%s','%d','%s','%s','%s','%s')",
+                    ('',NOW(),'%d','%s','%s','%s','%s')",
 
                 TABLE_COMMENTS,
-                $date,
                 $comments_id,
                 $author,
                 $author_ip,
@@ -92,7 +75,11 @@ switch ($action) {
 
             $db->query($query);
             
-            $submit_link = isset($rewrite) && $rewrite == 1 ? '1,' . $_POST['id'] . ',2,item.html' : 'index.php?p=2&amp;id=' . $_POST['id'] . '';
+            if ((bool)$rewrite) {
+                $submit_link = '1,' . $_POST['id'] . ',2,item.html';
+            } else {
+                $submit_link = 'index.php?p=2&amp;id=' . $_POST['id'] . '';
+            }
 
             // przydzielamy zmienne i parsujemy szablon
             $ft->assign(array(
@@ -115,7 +102,6 @@ switch ($action) {
             foreach ($monit as $error) {
     
                 $ft->assign('ERROR_MONIT', $error);
-                    
                 $ft->parse('MAIN',	".error_row");
             }
                         
@@ -149,12 +135,7 @@ switch ($action) {
             $cite   = $db->f('text');
             $author = $db->f('author');
 
-            $match_count = preg_match_all('#\<div class="quote"\>(.*?)\</div\>#si', $cite, $matches);
-
-            for ($i = 0; $i < $match_count; $i++) {
-
-                $cite = str_replace(array('<div class="quote">', '</div>'), array('[quote]', '[/quote]'), $cite);
-            }
+            $cite = str_replace(array('<div class="quote">', '</div>'), array('[quote]', '[/quote]'), $cite);
 
             // Pobieramy id i tytu³ wpisu jakiego dotyczy komentarz::db
             $query = sprintf("
@@ -179,8 +160,14 @@ switch ($action) {
             $text   = $db->f('text');
             $author = $db->f('author');
             
-            $perma_link = isset($rewrite) && $rewrite == 1 ? '1,' . $id . ',1,item.html' : 'index.php?p=1&amp;id=' . $id . '';
-            $form_link  = isset($rewrite) && $rewrite == 1 ? '1,3,item.html' : 'index.php?p=3&amp;action=add';
+            if ((bool)$rewrite)
+            {
+                $perma_link = '1,' . $id . ',1,item.html';
+                $form_link  = '1,3,item.html';
+            } else {
+                $perma_link = 'index.php?p=1&amp;id=' . $id . '';
+                $form_link  = 'index.php?p=3&amp;action=add';
+            }
 
             // przypisanie tablicy szablonów::ft
             $ft->assign(array(
@@ -189,7 +176,7 @@ switch ($action) {
                 'NEWS_TEXT'         =>$text, 
                 'NEWS_AUTHOR'       =>$author, 
                 'COMMENT_AUTHOR'    =>$comment_author,
-                'QUOTE'             =>'[quote]' . strip_tags(br2nl($cite)) . '[/quote]',
+                'QUOTE'             =>sprintf('[quote]%s[/quote]', strip_tags(br2nl($cite))),
                 'STRING'            =>$page_string,
                 'PERMA_LINK'        =>$perma_link,
                 'FORM_LINK'         =>$form_link
@@ -218,8 +205,13 @@ switch ($action) {
             $text   = $db->f('text');
             $author = $db->f('author');
             
-            $perma_link = isset($rewrite) && $rewrite == 1 ? '1,' . $id . ',1,item.html' : 'index.php?p=1&amp;id=' . $id . '';
-            $form_link  = isset($rewrite) && $rewrite == 1 ? '1,3,item.html' : 'index.php?p=3&amp;action=add';
+            if ((bool)$rewrite) {
+                $perma_link = '1,' . $id . ',1,item.html';
+                $form_link  = '1,3,item.html';
+            } else {
+                $perma_link = 'index.php?p=1&amp;id=' . $id;
+                $form_link  = 'index.php?p=3&amp;action=add';
+            }
 
             // przypisanie tablicy szablonów::ft
             $ft->assign(array(

@@ -2,7 +2,11 @@
 
 if(is_numeric($id)) {
 
-    $cat_pagination_link = isset($rewrite) && $rewrite == 1 ? 'category.' . $id . '.' : 'index.php?p=4&id=' . $id . '&amp;start=';
+    if ((bool)$rewrite) {
+        $cat_pagination_link = 'category.' . $id . '.';
+    } else {
+        $cat_pagination_link = 'index.php?p=4&id=' . $id . '&amp;start=';
+    }
 
     // inicjowanie funkcji stronnicujacej wpisy
     main_pagination($cat_pagination_link, 'WHERE c_id=' . $id . ' AND ', 'mainposts_per_page', 'published = \'1\'', TABLE_MAIN, true);
@@ -15,12 +19,10 @@ if(is_numeric($id)) {
             %1\$s 
         WHERE 
             category_id = '%2\$d' 
-        LIMIT 
-            %3\$d", 
+        LIMIT 1", 
 
         TABLE_CATEGORY, 
-        $id, 
-        1
+        $id
     );
 
     $db->query($query);
@@ -94,8 +96,13 @@ if(is_numeric($id)) {
 
             $comments       = $db->f('comments');
     
-            $perma_link    = isset($rewrite) && $rewrite == 1 ? '1,' . $id . ',1,item.html' : 'index.php?p=1&amp;id=' . $id . '';
-            $category_link = isset($rewrite) && $rewrite == 1 ? '1,' . $c_id . ',4,item.html' : 'index.php?p=4&amp;id=' . $c_id . '';
+            if ((bool)$rewrite) {
+                $perma_link    = '1,' . $id . ',1,item.html';
+                $category_link = '1,' . $c_id . ',4,item.html';
+            } else {
+                $perma_link    = 'index.php?p=1&amp;id=' . $id . '';
+                $category_link = 'index.php?p=4&amp;id=' . $c_id . '';
+            }
             
             $text   = highlighter($text, '<code>', '</code>');
             $text   = show_me_more($text);
