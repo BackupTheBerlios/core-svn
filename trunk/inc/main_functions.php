@@ -83,17 +83,12 @@ function coreRssDateConvert($date) {
 }
 
 
-function br2nl($text) {
-    
-    $text = preg_replace( "#(?:\n|\r)?<br />(?:\n|\r)?#", "\r\n", $text);
-    $text = preg_replace( "#(?:\n|\r)?<br>(?:\n|\r)?#"  , "\r\n", $text);
-    
-    return $text;
+function br2nl($text, $nl = "\r\n") {
+    return str_replace(array('<br />', '<br>', '<br/>'), $nl, $text);
 }
 
 
 function str_nl2br($s) {
-	
 	return str_replace(array("\r\n", "\r", "\n"), '<br />', $s);
 }
 
@@ -710,7 +705,8 @@ function main_pagination($url, $q, $p, $published, $table, $category_pagination)
         $db->next_record();
         
         $mainposts_per_page = $db->f('category_post_perpage');
-	} else {
+    } else {
+        /*
 	    $query = sprintf("
             SELECT * FROM 
                 %1\$s 
@@ -725,6 +721,8 @@ function main_pagination($url, $q, $p, $published, $table, $category_pagination)
         $db->next_record();
         
         $mainposts_per_page = $db->f('config_value');
+        */
+        $mainposts_per_page = get_config('config_value');
 	}
     
 	$mainposts_per_page = empty($mainposts_per_page) ? 10 : $mainposts_per_page;
@@ -762,7 +760,7 @@ function main_pagination($url, $q, $p, $published, $table, $category_pagination)
 		$on_page = 0;
 	}
 	
-	if($total_pages == 1) echo '';
+	//if($total_pages == 1) echo '';
 	
 	$page_string = '';
 	

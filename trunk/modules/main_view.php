@@ -1,6 +1,10 @@
 <?php
 
-$pagination_link = isset($rewrite) && $rewrite == 1 ? 'index.' : 'index.php?p=all&amp;start=';
+if ((bool)$rewrite) {
+    $pagination_link = 'index.';
+} else {
+    $pagination_link = 'index.php?p=all&amp;start=';
+}
 
 // inicjowanie funkcji stronnicuj±cej wpisy
 $pagination = main_pagination($pagination_link, '', 'mainposts_per_page', 'WHERE published = \'1\' AND only_in_category = \'-1\'', TABLE_MAIN, false);
@@ -23,23 +27,25 @@ $query = sprintf("
 	ON 
 		a.id = c.comments_id
 	WHERE 
-		published = '1' 
+		published = 1 
     AND 
-        only_in_category = '-1' 
+        only_in_category = -1 
 	GROUP BY 
 		a.date 
 	DESC 
-	LIMIT $start, $pagination[mainposts_per_page]", 
+	LIMIT %4\$d, %5\$d",
     
     TABLE_MAIN, 
     TABLE_CATEGORY, 
-    TABLE_COMMENTS
+    TABLE_COMMENTS,
+    $start,
+    $pagination['mainposts_per_page']
 );
 
 $db->query($query);
 
 // Sprawdzamy, czy w bazie danych s± ju¿ jakie¶ wpisy
-if($db->num_rows() !== 0) {
+if($db->num_rows() > 0) {
 
 	while($db->next_record()) {
 	    
@@ -56,9 +62,9 @@ if($db->num_rows() !== 0) {
 	    
 	    $comments          = $db->f("comments");
 	    
-	    $c_name            = str_replace('&', '&amp;', $db->f('category_name'));
+	    $c_name            = replace_amp($db->f('category_name'));
 	    
-        if(isset($rewrite) && $rewrite == 1) {
+        if((bool)$rewrite) {
             
             $perma_link     = sprintf('1,%s,1,item.html', $id);
             $category_link  = sprintf('1,%s,4,item.html', $c_id);
@@ -85,7 +91,7 @@ if($db->num_rows() !== 0) {
 	    
 	    if(!empty($pagination['page_string'])) {
 	        
-	        $ft->assign('STRING', "<b>Id¼ do strony:</b> " . $pagination['page_string']);
+	        $ft->assign('STRING', sprintf("<b>%s</b> %s", $i18n['main_view'][0], $pagination['page_string']));
 	    } else {
 	        
 	        $ft->assign('STRING', $pagination['page_string']);
@@ -107,7 +113,7 @@ if($db->num_rows() !== 0) {
     
     // Obs³uga b³êdu, kiedy w bazie danych nie ma jeszcze ¿adnego wpisu
     $ft->assign(array(
-        'QUERY_FAILED'  =>$i18n['main_view'][0],
+        'QUERY_FAILED'  =>$i18n['main_view'][1],
         'STRING'        =>""
     ));
     

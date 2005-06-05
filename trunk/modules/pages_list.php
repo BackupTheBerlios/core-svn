@@ -25,7 +25,11 @@ if($db->num_rows() > 0) {
         $parent_id 	= $db->f("parent_id");
         $page_name 	= $db->f("title");
         
-        $page_link  = isset($rewrite) && $rewrite == 1 ? '1,' . $page_id . ',5,item.html' : 'index.php?p=5&amp;id=' . $page_id . '';
+        if ((bool)$rewrite) {
+          $page_link  = sprintf('1,%s,5,item.html', $page_id);
+        } else {
+          $page_link  = 'index.php?p=5&amp;id=' . $page_id . '';
+        }
         
         $ft->assign(array(
             'PAGE_NAME' =>$page_name,

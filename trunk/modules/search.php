@@ -3,10 +3,13 @@
 $page_string = empty($page_string) ? '' : $page_string;
 
 // inicjowanie zmiennej przechowuj±cej szukan± frazê
-$search_word = (isset($_POST['search_word']) ) ? $_POST['search_word'] : $_GET['search_word'];
-$search_word = trim($search_word);
+$search_word = trim($_REQUEST['search_word']);
 
-$search_link = isset($rewrite) && $rewrite == 1 ? 'search.' . $search_word . '.' : 'index.php?p=search&search_word=' . $search_word . '&amp;start=';
+if ((bool)$rewrite) {
+    $search_link = sprintf('search.%s.', $search_word);
+} else {
+    $search_link = sprintf('index.php?p=search&search_word=%s&amp;start=', $search_word);
+}
 
 // inicjowanie funkcji stronnicuj±cej wpisy
 main_pagination($search_link, '', 'mainposts_per_page', 'WHERE published = \'1\' AND text LIKE \'%' . $search_word . '%\' OR title LIKE \'%' . $search_word . '%\'', TABLE_MAIN, false);
@@ -38,12 +41,13 @@ if(!empty($search_word)) {
             a.title LIKE '%%" . $search_word . "%%' 
         GROUP BY 
             a.date 
-        DESC LIMIT 
-            $start, $mainposts_per_page", 
+        DESC LIMIT %4\$d, %5\$d",
     
         TABLE_MAIN, 
         TABLE_CATEGORY, 
-        TABLE_COMMENTS
+        TABLE_COMMENTS,
+        $start,
+        $mainposts_per_page
     );
 	
 	$db->query($query);
@@ -54,7 +58,7 @@ if(!empty($search_word)) {
 		
 		function highlight($words, $haystack){
 	
-			if (trim($words) != '') {
+			if (trim($words)) {
 		
 				$term = @explode(' ', trim($words));
 				$count = count($term);
@@ -63,9 +67,7 @@ if(!empty($search_word)) {
 					if (strlen($term[$i]) >= 2 && !$this->grep_values($term[$i], $this->common)) {
 				
 						$terms[] = $term[$i];
-					} else {
-						continue;
-					} 
+					}
 				}
 		
 				if (isset($terms)) {
@@ -96,7 +98,6 @@ if(!empty($search_word)) {
 	
 			$newarray = Array();
             foreach ($newarray as $key => $val) {
-			//while (list($key, $val) = each($newarray)) {
 			
 				$pattern = urlencode($pattern);
 				if (preg_match("/" . $pattern . "/i", $val)) {
@@ -122,8 +123,7 @@ if(!empty($search_word)) {
 
 			$comments 	= $db->f("comments");
 	
-			// Zmiana '&' na ampersand - xhtml
-			$c_name 	= str_replace('&', '&amp;', $c_name);
+			$c_name 	= replace_amp($c_name);
 			
 			$date 			= date($date_format, $db->f("date"));
 			$title 			= $db->f("title");
@@ -136,8 +136,13 @@ if(!empty($search_word)) {
 			// usuwamy <a />
 			$text = preg_replace('/(?is)(<\/?(?:a)(?:|\s.*?)>)/', '', $text);
 			
-			$perma_link    = isset($rewrite) && $rewrite == 1 ? '1,' . $id . ',1,item.html' : 'index.php?p=1&amp;id=' . $id . '';
-			$category_link = isset($rewrite) && $rewrite == 1 ? '1,' . $c_id . ',4,item.html' : 'index.php?p=4&amp;id=' . $c_id . '';
+            if ((bool)$rewrite) {
+			    $perma_link    = sprintf('1,%s,1,item.html', $id);
+    			$category_link = sprintf('1,%s,4,item.html', $c_id);
+            } else {
+			    $perma_link    = 'index.php?p=1&amp;id=' . $id;
+    			$category_link = 'index.php?p=4&amp;id=' . $c_id;
+            }
 			
 			$text   = highlighter($text, '<code>', '</code>');
 			
@@ -166,7 +171,7 @@ if(!empty($search_word)) {
 	} else {
 	
 		$ft->assign(array(
-            'QUERY_FAILED'  =>$i18n['search'][0] . '<span class="search">' . $_POST['search_word'] . '</span>.',
+            'QUERY_FAILED'  =>sprintf('%s <span class="search">%s</span>.', $i18n['search'][0], $_POST['search_word']),
             'STRING'        =>$page_string
         ));
 						

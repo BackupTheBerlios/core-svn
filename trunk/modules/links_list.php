@@ -18,7 +18,7 @@ if($db->num_rows() > 0) {
     while($db->next_record()) {
     
         $link_name  = $db->f("title");
-        $link_url   = str_replace('&', '&amp;', $db->f("url"));
+        $link_url   = replace_amp($db->f("url"));
     
         $ft->assign(array(
             'LINK_NAME' =>$link_name,

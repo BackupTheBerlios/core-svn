@@ -83,15 +83,13 @@ if(is_numeric($_GET['id'])) {
                 // zamiana ich na format linków
                 $text            = coreMakeClickable($text);
 
-                $search = array("'\[quote\]'si",
-                                "'\[\/quote\]'si");
-
-                $replace= array("<div class=\"quote\">",
-                                "</div>");
-
-                $text = preg_replace($search, $replace, $text);
+                $text = str_replace(array('[quote]', '[/quote]'), array('<div class="quote">', '</div>'), $text);
                 
-                $quote_link = isset($rewrite) && $rewrite == 1 ? '1,' . $comments_id . ',3,' . $id . ',1,quote.html' : 'index.php?p=3&amp;id=' . $comments_id . '&amp;c=' . $id . '';
+                if ((bool)$rewrite) {
+                    $quote_link = sprintf('1,%s,3,%s,1,quote.html', $comments_idi, $id);
+                } else {
+                    $quote_link = sprintf('index.php?p=3&amp;id=%s&&&amp;c=%s', $comments_id, $id);
+                }
 
                 $ft->assign(array(
                     'DATE'              =>$date,
