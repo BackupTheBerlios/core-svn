@@ -86,9 +86,9 @@ if(is_numeric($_GET['id'])) {
                 $text = str_replace(array('[quote]', '[/quote]'), array('<div class="quote">', '</div>'), $text);
                 
                 if ((bool)$rewrite) {
-                    $quote_link = sprintf('1,%s,3,%s,1,quote.html', $comments_idi, $id);
+                    $quote_link = sprintf('1,%s,3,%s,1,quote.html', $comments_id, $id);
                 } else {
-                    $quote_link = sprintf('index.php?p=3&amp;id=%s&&&amp;c=%s', $comments_id, $id);
+                    $quote_link = sprintf('index.php?p=3&amp;id=%s&amp;c=%s', $comments_id, $id);
                 }
 
                 $ft->assign(array(
