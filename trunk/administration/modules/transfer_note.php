@@ -34,11 +34,11 @@ switch ($action) {
                     UPDATE 
                         %1\$s
                     SET 
-                        c_id = '%2\$d' 
+                        category_id = '%2\$d' 
                     WHERE
-                        c_id = '%3\$d'",
+                        category_id = '%3\$d'",
                 
-                    TABLE_MAIN,
+                    TABLE_ASSIGN2CAT,
                     $target, 
                     $current
                 );
