@@ -94,8 +94,13 @@ while($db->next_record()) {
     $text   = str_replace($pattern, $replacement, $text);
     $c_name = str_replace("&", " and ", $c_name);
 
-    $comments_link  = isset($rewrite) && $rewrite == 1 ? $_SERVER['HTTP_HOST'] . '/1,' . $id . ',2,item.html' : $_SERVER['HTTP_HOST'] . '/index.php?p=2&amp;id=' . $id . '';
-    $permanent_link = isset($rewrite) && $rewrite == 1 ? $_SERVER['HTTP_HOST'] . '/1,' . $id . ',1,item.html' : $_SERVER['HTTP_HOST'] . '/index.php?p=1&amp;id=' . $id . '';
+    if ((bool)$rewrite) {
+        $comments_link  = $_SERVER['HTTP_HOST'] . '/1,' . $id . ',2,item.html';
+        $permanent_link = $_SERVER['HTTP_HOST'] . '/1,' . $id . ',1,item.html';
+    } else {
+        $comments_link  = $_SERVER['HTTP_HOST'] . '/index.php?p=2&amp;id=' . $id;
+        $permanent_link = $_SERVER['HTTP_HOST'] . '/index.php?p=1&amp;id=' . $id;
+    }
    
     $ft->assign(array(
         'DATE'          =>$date, 
