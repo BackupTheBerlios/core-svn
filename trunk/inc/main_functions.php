@@ -459,7 +459,7 @@ function get_editcategory_cat($category_id, $level) {
         LEFT JOIN 
             %2\$s b 
         ON 
-            a.category_id = b.c_id 
+            a.category_id = b.category_id 
         WHERE 
             category_parent_id = '%3\$d'
         GROUP BY 
@@ -469,7 +469,7 @@ function get_editcategory_cat($category_id, $level) {
         ASC", 
 	
         TABLE_CATEGORY, 
-        TABLE_MAIN,
+        TABLE_ASSIGN2CAT,
         $category_id
         );
 
@@ -493,10 +493,8 @@ function get_editcategory_cat($category_id, $level) {
         ));
         
         if(empty($category_description)) {
-            
             $ft->assign('CATEGORY_DESC', $i18n['edit_category'][4]);
         } else {
-            
             $ft->assign('CATEGORY_DESC', $category_description);
         }
 		
@@ -504,23 +502,17 @@ function get_editcategory_cat($category_id, $level) {
 		$idx1 = empty($idx1) ? '' : $idx1;
 				
 		$idx1++;
-		
-        $ft->define("editlist_links", "editlist_links.tpl");
-        $ft->define_dynamic("row", "editlist_links");
 			
 		// naprzemienne kolorowanie wierszy tabeli
 		if (($idx1%2)==1) {
-				
 			$ft->assign('ID_CLASS', 'mainList');
 			
 			$ft->parse('ROWS',	".row");
 		} else {
-				
 			$ft->assign('ID_CLASS', 'mainListAlter');
 			
 			$ft->parse('ROWS',	".row");
 		}
-		
 		get_editcategory_cat($category_id, $level+2);
 	}
 }
@@ -965,7 +957,9 @@ function highlighter($text, $code_start, $code_end) {
 
 function get_comments_link($comments_allow, $comments, $id) {
     
-    global $ft;
+    global 
+        $ft, 
+        $rewrite;
     
     if(($comments_allow) == 0 ) {
         $ft->assign(array(
@@ -974,14 +968,14 @@ function get_comments_link($comments_allow, $comments, $id) {
         ));
     } else {
         if($comments == 0) {
-            $comments_link = isset($rewrite) && $rewrite == 1 ? '1,' . $id . ',3,item.html' : 'index.php?p=3&amp;id=' . $id . '';
+            $comments_link = (bool)$rewrite ? '1,' . $id . ',3,item.html' : 'index.php?p=3&amp;id=' . $id . '';
             $ft->assign(array(
                 'COMMENTS_LINK' =>$comments_link, 
                 'COMMENTS_ALLOW'=>true, 
                 'COMMENTS'      =>''
             ));
 	    } else {
-            $comments_link = isset($rewrite) && $rewrite == 1 ? '1,' . $id . ',2,item.html' : 'index.php?p=2&amp;id=' . $id . '';
+            $comments_link = (bool)$rewrite ? '1,' . $id . ',2,item.html' : 'index.php?p=2&amp;id=' . $id . '';
             $ft->assign(array(
                 'COMMENTS_LINK' =>$comments_link, 
                 'COMMENTS_ALLOW'=>true, 

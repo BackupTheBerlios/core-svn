@@ -178,10 +178,10 @@ switch ($action) {
             $title		= $_POST['title'];
             $author		= $_POST['author'];
             $published	= $_POST['published'];
-            $c_id		= $_POST['category_id'];
             
             $comments_allow = $_POST['comments_allow'];
             $only_in_cat    = $_POST['only_in_category'];
+            $assign2cat     = $_POST['assign2cat'];
 
             //sprawdzania daty
             if (isset($_POST['now']) || !preg_match('#^([0-9][0-9])-([0-9][0-9])-([0-9][0-9][0-9][0-9]) ([0-9][0-9]:[0-9][0-9]:[0-9][0-9])$#', $_POST['date'], $matches)) {
@@ -202,19 +202,17 @@ switch ($action) {
                     author			= '%3\$s', 
                     text			= '%4\$s', 
                     published		= '%5\$s', 
-                    c_id			= '%6\$d', 
-                    comments_allow	= '%7\$d',
-                    date            = '%8\$s', 
-                    only_in_category= '%9\$s'
+                    comments_allow	= '%6\$d',
+                    date            = '%7\$s', 
+                    only_in_category= '%8\$s'
                 WHERE 
-                    id = '%10\$d'", 
+                    id = '%9\$d'", 
             
                 TABLE_MAIN, 
                 $title, 
                 $author, 
                 $text, 
                 $published, 
-                $c_id, 
                 $comments_allow, 
                 $date, 
                 $only_in_cat, 
@@ -222,6 +220,31 @@ switch ($action) {
             );
             
             $db->query($query);
+            
+            $query = sprintf("
+                DELETE FROM 
+                    %1\$s 
+                WHERE 
+                    news_id = '%2\$d'", 
+            
+                TABLE_ASSIGN2CAT, 
+                $_GET['id']
+            );
+            $db->query($query);
+            
+            // wprowadzamy informacje o przynaleznych kategoriach
+            foreach ($assign2cat as $selected_cat) {
+                $query = sprintf("
+                    INSERT INTO 
+                        %1\$s 
+                    VALUES('', '%2\$d', '%3\$d')", 
+                
+                    TABLE_ASSIGN2CAT, 
+                    $_GET['id'], 
+                    $selected_cat
+                );
+                $db->query($query);
+            }
             
             // usuwamy istniej±ce zdjêcie
             if(isset($_POST['delete_image']) && (($_POST['delete_image']) == 1)) {

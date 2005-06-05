@@ -246,17 +246,17 @@ switch ($action) {
                         LEFT JOIN 
                             %2\$s b 
                         ON 
-                            a.category_id = b.c_id 
+                            a.category_id = b.category_id 
                         WHERE 
-                            category_id = '%3\$d'
+                            a.category_id = '%3\$d'
                         GROUP BY 
-                            category_id 
+                            a.category_id 
                         ORDER BY 
-                            category_id 
+                            a.category_id 
                         ASC", 
 		
                         TABLE_CATEGORY, 
-                        TABLE_MAIN,
+                        TABLE_ASSIGN2CAT,
                         $post_id
                     );
 	
@@ -295,11 +295,11 @@ switch ($action) {
                             UPDATE 
                                 %1\$s 
                             SET 
-                                c_id = '%2\$d' 
+                                category_id = '%2\$d' 
                             WHERE 
-                                c_id = '%3\$d'", 
+                                category_id = '%3\$d'", 
 		
-                            TABLE_MAIN, 
+                            TABLE_ASSIGN2CAT, 
                             $cat_parent_id,
                             $post_id
                         );
@@ -400,7 +400,7 @@ switch ($action) {
             LEFT JOIN 
                 %2\$s b 
             ON 
-                a.category_id = b.c_id 
+                a.category_id = b.category_id 
             WHERE 
                 category_parent_id = '%3\$d'
             GROUP BY 
@@ -410,7 +410,7 @@ switch ($action) {
             ASC", 
 		
             TABLE_CATEGORY, 
-            TABLE_MAIN,
+            TABLE_ASSIGN2CAT,
             0
         );
 		
