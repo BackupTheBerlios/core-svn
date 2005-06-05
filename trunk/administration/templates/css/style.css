@@ -100,14 +100,14 @@ ul.error li {
 
 #left {
 	float: left;
-	width: 600px;
+	width: 650px;
 }
 
 #right {
 	padding-left: 5px;
 	float: left;
-	width: 350px !important;
-	width: 330px;
+	width: 250px !important;
+	width: 230px;
 }
 
 #box {
@@ -342,9 +342,14 @@ a.file span {
 }
 
 .note_textarea {
-    width: 450px; 
+    width: 500px; 
     height: 200px;
-} 
+}
+
+.tpl_textarea {
+    width: 500px; 
+    height: 200px;
+}
 
 .helpline {
     width:350px; 

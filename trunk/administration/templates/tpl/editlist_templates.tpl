@@ -12,7 +12,11 @@
                 edToolbar()
             //-->
             </script>
-		    <textarea id="canvas" wrap="virtual" tabindex="3" name="text" cols="75" rows="20" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);">{FILE_CONTENT}</textarea>
+		</td>
+	</tr>
+	<tr>
+		<td class="form" width="100%" colspan="3">
+		<textarea id="canvas" wrap="virtual" tabindex="3" name="text" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);">{FILE_CONTENT}</textarea>
 		</td>
 	</tr>
 	<tr>
@@ -29,8 +33,8 @@
 </div>
 
 <div id="right">
-<b>Edytuj szablon</b><br />
-<form action="main.php?p=14" method="post" style="margin-top:0px;">
+<b>Edytuj szablon</b><br /><br />
+<form action="main.php?p=14" method="post" style="margin-top:5px;">
 <select class="tpl_selector" name="template_dir" onchange="document.forms[1].submit()">
 
 <!-- BEGIN DYNAMIC BLOCK: template_dir -->
