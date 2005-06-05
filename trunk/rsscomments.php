@@ -54,12 +54,8 @@ while($db->next_record()) {
 	$text 			= $db->f("text");
 	$author 		= $db->f("author");
 	$id 			= $db->f("id");
-	$c_id			= $db->f("c_id");
 	$image			= $db->f("image");
 	$comments_allow = $db->f("comments_allow");
-	
-	$c_name 		= $db->f("category_name");
-	$c_id 			= $db->f("category_id");
 	 
 	// Przypisanie zmiennej $comments
 	$comments 		= $db->f("comments");
@@ -84,9 +80,8 @@ while($db->next_record()) {
     );
     
     $text   = str_replace($pattern, $replacement, $text);
-    $c_name = str_replace("&", " and ", $c_name);
 
-    $permanent_link = isset($rewrite) && $rewrite == 1 ? $_SERVER['HTTP_HOST'] . '/1,' . $id . ',1,item.html' : $_SERVER['HTTP_HOST'] . '/index.php?p=1&amp;id=' . $id . '';
+    $permanent_link = (bool)$rewrite ? $_SERVER['HTTP_HOST'] . '/1,' . $id . ',1,item.html' : $_SERVER['HTTP_HOST'] . '/index.php?p=1&amp;id=' . $id . '';
    
     $ft->assign(array(
         'DATE'          =>$date, 

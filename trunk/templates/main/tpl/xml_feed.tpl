@@ -16,7 +16,11 @@
         <link>http://{PERMALINK}</link>
         <description>{TEXT}</description>
         <!-- IFDEF: NEWS_FEED -->
-        <category>http://{CATEGORY}</category>
+        <category>
+        <!-- BEGIN DYNAMIC BLOCK: cat_row -->
+        {CATEGORY_NAME} 
+        <!-- END DYNAMIC BLOCK: cat_row -->
+        </category>
         <comments>http://{COMMENTS_LINK}</comments>
         <!-- ELSE -->
         <!-- ENDIF -->

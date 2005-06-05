@@ -22,20 +22,23 @@ $query  = sprintf("
     LEFT JOIN 
         %3\$s c 
     ON 
-        a.id = c.comments_id
+        a.id = c.comments_id 
+    LEFT JOIN 
+        %4\$s d 
+    ON 
+        a.id = d.news_id
     WHERE 
-        b.category_id = a.c_id 
-    AND 
         published = '1' 
     GROUP BY 
         a.date 
     DESC 
     LIMIT 
-        %4\$d", 
+        %5\$d", 
 
     TABLE_MAIN, 
     TABLE_CATEGORY, 
     TABLE_COMMENTS, 
+    TABLE_ASSIGN2CAT, 
     10
 );
 
@@ -49,6 +52,7 @@ $ft = new FastTemplate('./templates/main/tpl/');
 
 $ft->define('xml_feed', 'xml_feed.tpl');
 $ft->define_dynamic('xml_row', 'xml_feed');
+$ft->define_dynamic("cat_row", "xml_feed");
 
 $ft->assign(array(
     'MAINSITE_LINK' =>$_SERVER['HTTP_HOST'], 
@@ -62,12 +66,8 @@ while($db->next_record()) {
 	$text 			= $db->f("text");
 	$author 		= $db->f("author");
 	$id 			= $db->f("id");
-	$c_id			= $db->f("c_id");
 	$image			= $db->f("image");
 	$comments_allow = $db->f("comments_allow");
-	
-	$c_name 		= $db->f("category_name");
-	$c_id 			= $db->f("category_id");
 	 
 	// Przypisanie zmiennej $comments
 	$comments 		= $db->f("comments");
@@ -92,15 +92,11 @@ while($db->next_record()) {
     );
     
     $text   = str_replace($pattern, $replacement, $text);
-    $c_name = str_replace("&", " and ", $c_name);
+    
+    list_assigned_categories($id);
 
-    if ((bool)$rewrite) {
-        $comments_link  = $_SERVER['HTTP_HOST'] . '/1,' . $id . ',2,item.html';
-        $permanent_link = $_SERVER['HTTP_HOST'] . '/1,' . $id . ',1,item.html';
-    } else {
-        $comments_link  = $_SERVER['HTTP_HOST'] . '/index.php?p=2&amp;id=' . $id;
-        $permanent_link = $_SERVER['HTTP_HOST'] . '/index.php?p=1&amp;id=' . $id;
-    }
+    $comments_link  = (bool)$rewrite ? $_SERVER['HTTP_HOST'] . '/1,' . $id . ',2,item.html' : $_SERVER['HTTP_HOST'] . '/index.php?p=2&amp;id=' . $id;
+    $permanent_link = (bool)$rewrite ? $_SERVER['HTTP_HOST'] . '/1,' . $id . ',1,item.html' : $_SERVER['HTTP_HOST'] . '/index.php?p=1&amp;id=' . $id;
    
     $ft->assign(array(
         'DATE'          =>$date, 
@@ -108,7 +104,6 @@ while($db->next_record()) {
         'AUTHOR'        =>$author, 
         'PERMALINK'     =>$permanent_link, 
         'TEXT'          =>stripslashes($text), 
-        'CATEGORY'      =>$c_name, 
         'COMMENTS_LINK' =>$comments_link
     ));
     
