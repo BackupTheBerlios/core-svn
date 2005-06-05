@@ -18,76 +18,32 @@ if(!empty($search_word)) {
 	
     $query = sprintf("
         SELECT 
-            a.*, 
-            UNIX_TIMESTAMP(a.date) AS date, 
-            b.*, 
-            c.comments_id, 
+            a.*,
+            UNIX_TIMESTAMP(a.date) AS date,
+            c.comments_id,
             count(c.id) AS comments 
         FROM 
             %1\$s a 
         LEFT JOIN 
             %3\$s c 
         ON 
-            a.id = c.comments_id 
-        LEFT JOIN 
-            %4\$s d 
-        ON 
-            a.id = d.news_id 
-        LEFT JOIN 
-            %2\$s b 
-        ON 
-            b.category_id = d.category_id
-        WHERE 
-            published = '1'    
-        AND 
-            a.text LIKE '%%" . $search_word . "%%' 
-        OR 
-            a.title LIKE '%%" . $search_word . "%%' 
-        GROUP BY 
-            a.date 
-        DESC
-        LIMIT  %5\$d, %6\$d",
-        
-        TABLE_MAIN,
-        TABLE_CATEGORY,
-        TABLE_COMMENTS, 
-        TABLE_ASSIGN2CAT, 
-        $start, 
-        $mainposts_per_page
-    
-        /*
-        SELECT 
-            a.*,
-            UNIX_TIMESTAMP(a.date) AS date,
-            b.*,
-            c.comments_id,
-            count(c.id) AS comments 
-		FROM 
-			%1\$s a 
-		LEFT JOIN 
-			%2\$s b 
-		ON 
-            b.category_id = a.c_id 
-        LEFT JOIN 
-            %3\$s c 
-        ON 
             a.id = c.comments_id
         WHERE 
-            published = '1' 
+            published = 1 
         AND 
             a.text LIKE '%%" . $search_word . "%%' 
         OR 
             a.title LIKE '%%" . $search_word . "%%' 
         GROUP BY 
             a.date 
-        DESC LIMIT %4\$d, %5\$d",
+        DESC 
+        LIMIT %4\$d, %5\$d",
     
         TABLE_MAIN, 
         TABLE_CATEGORY, 
         TABLE_COMMENTS,
         $start,
         $mainposts_per_page
-        */
     );
 	
 	$db->query($query);
@@ -158,8 +114,6 @@ if(!empty($search_word)) {
 	    $ft->define_dynamic("cat_row", "rows");
 	    
 		while($db->next_record()) {
-
-			$comments 	= $db->f("comments");
 			
 			$date 			= date($date_format, $db->f("date"));
 			$title 			= $db->f("title");
@@ -171,6 +125,8 @@ if(!empty($search_word)) {
 			
 			// usuwamy <a />
 			$text = preg_replace('/(?is)(<\/?(?:a)(?:|\s.*?)>)/', '', $text);
+			
+			$comments 	= $db->f("comments");
 			
             list_assigned_categories($id);
             $perma_link = (bool)$rewrite ? sprintf('1,%s,1,item.html', $id) : 'index.php?p=1&amp;id=' . $id;
