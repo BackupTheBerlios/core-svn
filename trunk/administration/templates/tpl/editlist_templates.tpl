@@ -16,7 +16,7 @@
 	</tr>
 	<tr>
 		<td class="form" width="100%" colspan="3">
-		<textarea id="canvas" wrap="virtual" tabindex="3" name="text" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);">{FILE_CONTENT}</textarea>
+		<textarea id="canvas" wrap="virtual" tabindex="3" name="text">{FILE_CONTENT}</textarea>
 		</td>
 	</tr>
 	<tr>
