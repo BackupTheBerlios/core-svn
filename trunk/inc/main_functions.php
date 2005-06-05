@@ -996,4 +996,8 @@ function get_image_status($image, $id) {
     }
 }
 
+function replace_amp($s) {
+    return str_replace('&', '&amp;', $s);
+}
+
 ?>
