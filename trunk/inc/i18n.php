@@ -18,7 +18,8 @@ $i18n['design'] = array();
 $i18n['design'][0] = 'Brak wybranego skina do systemu <strong>CORE</strong>.';
 
 $i18n['alter_view'] = array();
-$i18n['alter_view'][0] = 'W bazie danych nie ma wpisu o ¿±danym id';
+$i18n['alter_view'][0] = 'powrót';
+$i18n['alter_view'][1] = 'W bazie danych nie ma wpisu o ¿±danym id';
 
 $i18n['category_view'] = array();
 $i18n['category_view'][0] = '<b>Id¼ do strony:</b> ';

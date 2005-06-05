@@ -55,8 +55,13 @@ if($db->num_rows() > 0) {
     // Przypisanie zmiennej $comments
     $comments       = $db->f('comments');
     
-    $perma_link    = isset($rewrite) && $rewrite == 1 ? '1,' . $id . ',1,item.html' : 'index.php?p=1&amp;id=' . $id . '';
-	$category_link = isset($rewrite) && $rewrite == 1 ? '1,' . $c_id . ',4,item.html' : 'index.php?p=4&amp;id=' . $c_id . '';
+    if ((bool)$rewrite) {
+        $perma_link    = '1,' . $id . ',1,item.html';
+    	$category_link = '1,' . $c_id . ',4,item.html';
+    } else {
+        $perma_link    = 'index.php?p=1&amp;id=' . $id;
+    	$category_link = 'index.php?p=4&amp;id=' . $c_id;
+    }
 	
 	$text   = highlighter($text, '<code>', '</code>');
 
@@ -79,12 +84,12 @@ if($db->num_rows() > 0) {
     // definiujemy blok dynamiczny szablonu
     $ft->define_dynamic("note_row", "rows");
     
-    $ft->assign('RETURN', 'powrót');
+    $ft->assign('RETURN', $i18n['alter_view'][0]);
     $ft->parse('MAIN','.note_row');
 } else {
 
     $ft->assign(array(
-        'QUERY_FAILED'  =>$i18n['alter_view'][0],
+        'QUERY_FAILED'  =>$i18n['alter_view'][1],
         'STRING'        =>''
     ));
 
