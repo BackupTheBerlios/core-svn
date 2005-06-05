@@ -95,7 +95,8 @@ if(!empty($search_word)) {
 		function grep_values($pattern, $array) {
 	
 			$newarray = Array();
-			while (list($key, $val) = each($newarray)) {
+            foreach ($newarray as $key => $val) {
+			//while (list($key, $val) = each($newarray)) {
 			
 				$pattern = urlencode($pattern);
 				if (preg_match("/" . $pattern . "/i", $val)) {

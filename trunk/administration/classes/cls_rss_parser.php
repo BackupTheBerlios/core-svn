@@ -1,4 +1,4 @@
-<?
+<?php
 
 class rss_parser {
     
@@ -165,7 +165,8 @@ class rss_parser {
         $data   = str_replace("</channel>", "", $data);
         $lines  = split("\n", $data);
         
-        while(list($key, $line) = each($lines)) {
+        foreach ($lines as $key => $line) {
+        //while(list($key, $line) = each($lines)) {
             
             $line = trim($line);
             if(!empty($line)) {

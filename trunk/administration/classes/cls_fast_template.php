@@ -269,7 +269,8 @@ if(!class_exists('FastTemplate')) {
 		    $needparsedef[$depth]["defs"]     = false;
 		    $needparsedef[$depth]["parse"]    = true;
 		    
-		    while(list($num, $line) = each($lines)) {
+            foreach ($lines as $num => $line) {
+            //while(list($num, $line) = each($lines)) {
 		        
 		        //Added "necessary" lines to new string
 		        if(((!$needparsedef[$depth]["defs"]) || ($needparsedef[$depth]["parse"])) &&
@@ -369,7 +370,8 @@ if(!class_exists('FastTemplate')) {
 		    }
 		    
 		    reset($ft_array);
-		    while(list($key, $val) = each($ft_array)) {
+            foreach ($ft_array as $key => $val) {
+		    //while(list($key, $val) = each($ft_array)) {
 		        if(!(empty($key))) {
 		            if(gettype($val) != "string") {
 		                settype($val,"string");
@@ -409,7 +411,8 @@ if(!class_exists('FastTemplate')) {
 		        
 		        $template = "";
 		        
-		        while(list($num, $line) = each($lines)) {
+                foreach ($lines as $num => $line) {
+                //while(list($num, $line) = each($lines)) {
 		            if(substr_count($line, "<!-- BEGIN DYNAMIC BLOCK:") > 0 ) {
 		                $inside_block = true;
 		            }
@@ -429,7 +432,8 @@ if(!class_exists('FastTemplate')) {
 		        // Warn about unresolved template variables
 		        if(ereg("({[A-Z0-9_]+})", $template)) {
 		            $unknown = split("\n", $template);
-		            while(list($Element, $Line) = each($unknown)) {
+                    foreach ($unknown as $Element => $Line) {
+                    //while(list($Element, $Line) = each($unknown)) {
 		                $UnkVar = $Line;
 		                if(!(empty($UnkVar))) {
 		                    $this->show_unknowns($UnkVar);
@@ -458,7 +462,8 @@ if(!class_exists('FastTemplate')) {
 		    //echo "startparse $ReturnVar";
 		    if(gettype($FileTags) == "array") {
 		        unset($this->$ReturnVar); // Clear any previous data
-		        while(list($key , $val) = each($FileTags)) {
+                foreach ($FileTags as $key => $val) {
+                //while(list($key , $val) = each($FileTags)) {
 		            if((!isset($this->$val)) || (empty($this->$val))) {
 		                $this->LOADED["$val"] = 1;
 		                if(isset($this->DYNAMIC["$val"])) {
@@ -745,7 +750,8 @@ if(!class_exists('FastTemplate')) {
                 $start      = false;
                 $end        = false;
                 
-                while(list($lineNum, $lineData) = each($DataArray)) {
+                foreach ($DataArray as $lineNum => $lineData) {
+                //while(list($lineNum, $lineData) = each($DataArray)) {
                     
                     $lineTest = trim($lineData);
                     if("<!-- BEGIN DYNAMIC BLOCK: $Macro -->" == "$lineTest") {
@@ -814,7 +820,8 @@ if(!class_exists('FastTemplate')) {
                 $start      = false;
                 $end        = false;
                 
-                while(list($lineNum, $lineData) = each($DataArray)) {
+                foreach ($DataArray as $lineNum => $lineData) {
+                //while(list($lineNum, $lineData) = each($DataArray)) {
                     
                     $lineTest = trim($lineData);
                     if("<!-- BEGIN DYNAMIC BLOCK: $Macro -->" == "$lineTest") {
@@ -854,7 +861,8 @@ if(!class_exists('FastTemplate')) {
         function define($fileList, $value = null) {
             
             if((gettype($fileList) != "array") && !is_null($value)) $fileList = array($fileList => $value);
-            while(list($FileTag,$FileName) = each($fileList)) {
+            foreach ($fileList as $FileTag => $FileName) {
+            //while(list($FileTag,$FileName) = each($fileList)) {
                 $this->FILELIST["$FileTag"] = $FileName;
             }
             
@@ -875,14 +883,16 @@ if(!class_exists('FastTemplate')) {
                     unset($this->$ReturnVar);
                     return;
                 } else {
-                    while(list($key, $val) = each($ReturnVar)) {
+                    foreach ($ReturnVar as $key => $val) {
+                    //while(list($key, $val) = each($ReturnVar)) {
                         unset($this->$val);
                     }
                     return;
                 }
             }
             
-            while(list($key, $val) = each($this->HANDLE)) {
+            foreach ($this->HANDLE as $key => $val) {
+            //while(list($key, $val) = each($this->HANDLE)) {
                 $KEY = $key;
                 unset($this->$KEY);
             }
@@ -911,7 +921,8 @@ if(!class_exists('FastTemplate')) {
             
             if(empty($fileHandle)) {
                 // Clear ALL fileHandles
-                while(list($key, $val) = each($this->LOADED)) {
+                foreach ($this->LOADED as $key => $val) {
+                //while(list($key, $val) = each($this->LOADED)) {
                     unset($this->$key);
                 }
                 
@@ -927,7 +938,8 @@ if(!class_exists('FastTemplate')) {
                         return true;
                     }
                 } else {
-                    while(list($Key, $Val) = each($fileHandle)) {
+                    foreach ($fileHandle as $Key => $Val) {
+                    //while(list($Key, $Val) = each($fileHandle)) {
                         unset($this->LOADED[$Key]);
                         unset($this->$Key);
                     }
@@ -950,7 +962,8 @@ if(!class_exists('FastTemplate')) {
                 unset($this->FILELIST[$FileTag]);
                 return;
             } else {
-                while(list($Tag, $Val) = each($FileTag)) {
+                foreach ($FileTag as $Tag => $Val) {
+                //while(list($Tag, $Val) = each($FileTag)) {
                     unset($this->FILELIST[$Tag]);
                 }
                 
@@ -962,7 +975,8 @@ if(!class_exists('FastTemplate')) {
         function clear_assign() {
             
             if(!(empty($this->PARSEVARS))) {
-                while(list($Ref, $Val) = each($this->PARSEVARS)) {
+                foreach ($this->PARSEVARS as $Ref => $Val) {
+                //while(list($Ref, $Val) = each($this->PARSEVARS)) {
                     unset($this->PARSEVARS["$Ref"]);
                 }
             }
@@ -975,7 +989,8 @@ if(!class_exists('FastTemplate')) {
                     unset($this->PARSEVARS[$href]);
                     return;
                 } else {
-                    while(list($Ref, $val) = each($href)) {
+                    foreach ($href as $Ref => $val) {
+                    //while(list($Ref, $val) = each($href)) {
                         unset($this->PARSEVARS[$Ref]);
                     }
                     return;
@@ -1005,7 +1020,8 @@ if(!class_exists('FastTemplate')) {
         
         function assign($ft_array, $trailer="") {
             if(gettype($ft_array) == "array") {
-                while(list($key, $val) = each($ft_array)) {
+                foreach ($ft_array as $key => $val) {
+                //while(list($key, $val) = each($ft_array)) {
                     if(!(empty($key))) {
                         //  Empty values are allowed
                         //  Empty Keys are NOT
@@ -1067,7 +1083,8 @@ if(!class_exists('FastTemplate')) {
          * @since 1.1.3
          */
         function multiple_assign($pattern) {
-            while(list($key,$value) = each($GLOBALS)) {
+            foreach ($GLOBALS as $key => $value) {
+            //while(list($key,$value) = each($GLOBALS)) {
                 if(substr($key, 0, strlen($pattern)) == $pattern) {
                     $this->assign(strtoupper($key), $value);
                 }
