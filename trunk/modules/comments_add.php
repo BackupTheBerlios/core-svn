@@ -206,7 +206,7 @@ switch ($action) {
             $author = $db->f('author');
             
             if ((bool)$rewrite) {
-                $perma_link = '1,' . $id . ',1,item.html';
+                $perma_link = sprintf('1,%s,1,item.html', $id);
                 $form_link  = '1,3,item.html';
             } else {
                 $perma_link = 'index.php?p=1&amp;id=' . $id;
