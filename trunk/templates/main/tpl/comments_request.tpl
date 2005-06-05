@@ -41,7 +41,8 @@ przechowywany wy³±cznie w bazie danych w celach czysto informacyjnych.<br /><br 
 		</td>
 	</tr>
 	<tr>
-		<td class="form" align="left" valign="top" colspan="3" style="padding-bottom: 3px;">
+        <td width="20%" height="18" valign="top"></td>
+		<td class="form" align="left" valign="top">
             <input type="text" name="helpbox" size="45" maxlength="100" class="helpline" value="Rada: Style mog± byæ stosowane szybko do zaznaczonego tekstu" readonly="readonly" />
 		</td>
 	</tr>
