@@ -100,6 +100,7 @@ switch ($action) {
             $file .= 'define(\'DB_NAME\', \'' . $dbname . '\');' . "\n";
             $file .= 'define(\'PREFIX\', \'' . $dbprefix . '\');'."\n\n";
 
+            $file .= "define('TABLE_ASSIGN2CAT',    PREFIX . 'assign2cat');\n";
             $file .= "define('TABLE_MAIN',          PREFIX . 'devlog');\n";
             $file .= "define('TABLE_USERS',         PREFIX . 'users');\n";
             $file .= "define('TABLE_COMMENTS',      PREFIX . 'comments');\n";
