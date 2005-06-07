@@ -3,7 +3,7 @@
 <span class="warning">{WRITE_ERROR}</span><br />
 
 <script type="text/javascript" src="./templates/js/textarea.js"></script>
-<form action="main.php?p=14&amp;action=add&amp;tpl_dir={TPL_DIR}" enctype="multipart/form-data" name="post" method="post">
+<form action="main.php?p=14&amp;action=add&amp;tpl_dir={TPL_DIR}" enctype="multipart/form-data" name="post" method="post" id="templateEdit">
 <table width="100%" align="left" id="templateEdit">
 	<tr>
 		<td class="form" width="100%" colspan="3">
@@ -26,7 +26,7 @@
 	</tr>
 	<tr>
 		<td class="form" width="324" colspan="2"></td>
-		<td class="form align_right" width="110"><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="checkForm()">Zapisz szablon</a></td>
+		<td class="form align_right" width="110"><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('templateEdit').submit()">Zapisz szablon</a></td>
 	</tr>
 </table>
 </form>

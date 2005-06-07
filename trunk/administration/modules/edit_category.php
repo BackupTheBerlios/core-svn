@@ -57,14 +57,9 @@ switch ($action) {
                 
                 $file = explode('_', $file);
                 $ft->assign(array(
-                    'TEMPLATE_ASSIGNED'		=>$file[0]
+                    'TEMPLATE_ASSIGNED' =>$file[0], 
+                    'CURRENT_TPL'       =>$category_tpl == $file[0] ? 'selected="selected"' : ''
                 ));
-                
-                if($category_tpl == $file[0]) {
-                    $ft->assign('CURRENT_TPL', 'selected="selected"');
-                } else {
-                    $ft->assign('CURRENT_TPL', '');
-                }
                 
                 $ft->parse('TEMPLATE_ROW', ".template_row");
             }

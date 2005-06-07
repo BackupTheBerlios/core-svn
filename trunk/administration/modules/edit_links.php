@@ -369,18 +369,10 @@ switch ($action) {
                 $ft->define("editlist_links", "editlist_links.tpl");
                 $ft->define_dynamic("row", "editlist_links");
 			
-                // naprzemienne kolorowanie wierszy
-                if (($idx1%2)==1) {
-			    
-                    $ft->assign('ID_CLASS', 'mainList');
-			    
-                    $ft->parse('ROWS', ".row");
-                } else {
-			    
-                    $ft->assign('ID_CLASS', 'mainListAlter');
-			    
-                    $ft->parse('ROWS', ".row");
-                }
+                // naprzemienne kolorowanie wierszy tabeli
+				$ft->assign('ID_CLASS', $idx1%2 ? 'mainList' : 'mainListAlter');
+				
+				$ft->parse('ROW', ".row");
             }
             $ft->parse('ROWS', "editlist_links");
 		} else {

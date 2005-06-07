@@ -46,12 +46,6 @@ switch ($action) {
 		$comments_allow = $db->f('comments_allow');
         $only_in_cat    = $db->f('only_in_category');
 		
-		/* nie dziala tak jak powinno, chwilowo zakomentowane
-		 *
-		 * $text = str_replace("<br />", "\r\n", $text);
-		 * $text = preg_replace("/(\r\n){2,}/", "\\1\\1", $text);
-		*/
-		
 		$ft->assign(array(
             'SESSION_LOGIN'	=>$_SESSION['login'],
             'AUTHOR'		=>$author,
@@ -130,17 +124,12 @@ switch ($action) {
             $sql->next_record();
             
             $assigned = $sql->f("category_id");
-            
-            if($c_id == $assigned) {
-                $ft->assign('CURRENT_CAT', 'checked="checked"');
-			} else {
-				$ft->assign('CURRENT_CAT', '');
-			}
 		
 			$ft->assign(array(
-                'C_ID'		=>$c_id,
-                'C_NAME'	=>$c_name, 
-                'PAD'       =>''
+                'C_ID'		    =>$c_id,
+                'C_NAME'	   =>$c_name, 
+                'PAD'           =>'', 
+                'CURRENT_CAT'   =>$c_id == $assigned ? 'checked="checked"' : ''
             ));
             
             $ft->define("form_noteedit", "form_noteedit.tpl");
@@ -185,11 +174,9 @@ switch ($action) {
 
             //sprawdzania daty
             if (isset($_POST['now']) || !preg_match('#^([0-9][0-9])-([0-9][0-9])-([0-9][0-9][0-9][0-9]) ([0-9][0-9]:[0-9][0-9]:[0-9][0-9])$#', $_POST['date'], $matches)) {
-
                 $date = date("Y-m-d H:i:s");
             } else {
-
-              $date = sprintf('%s-%s-%s %s', $matches[3], $matches[2], $matches[1], $matches[4]);
+                $date = sprintf('%s-%s-%s %s', $matches[3], $matches[2], $matches[1], $matches[4]);
             }
             
             $text = parse_markers($text, 1);
@@ -483,24 +470,10 @@ switch ($action) {
                     'ID'        =>$id,
                     'TITLE'     =>$title,
                     'DATE'      =>$date[0],
-                    'AUTHOR'    =>$author
+                    'AUTHOR'    =>$author, 
+                    'PUBLISHED' =>$published == 1 ? "Tak" : "Nie", 
+                    'STRING'    =>$page_string !== "" ? '<b>Id¼ do strony:</b> ' . $page_string : $page_string
                 ));
-								
-				if($published == '1') {
-
-					$ft->assign('PUBLISHED', "Tak");
-				} else {
-				
-					$ft->assign('PUBLISHED', "Nie");
-				}		
-								
-				if($page_string !== "") {
-			
-					$ft->assign('STRING', "<b>Id¼ do strony:</b> " . $page_string);
-				} else {
-			
-					$ft->assign('STRING', $page_string);
-				}					
 			
 				// deklaracja zmiennej $idx1::color switcher
 				$idx1 = empty($idx1) ? '' : $idx1;
@@ -510,19 +483,10 @@ switch ($action) {
 				$ft->define("editlist_notes", "editlist_notes.tpl");
 				$ft->define_dynamic("row", "editlist_notes");
 				
-				// naprzemienne kolorowanie wierszy
-				if (($idx1%2)==1) {
+				// naprzemienne kolorowanie wierszy tabeli
+				$ft->assign('ID_CLASS', $idx1%2 ? 'mainList' : 'mainListAlter');
 				
-					$ft->assign('ID_CLASS', 'mainList');
-					
-					$ft->parse('ROWS',	".row");
-
-				} else {
-				
-					$ft->assign('ID_CLASS', 'mainListAlter');
-				    
-				    $ft->parse('ROWS',	".row");
-				}
+				$ft->parse('ROW', ".row");
 			}
 		
 			$ft->parse('ROWS', "editlist_notes");

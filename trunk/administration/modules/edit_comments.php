@@ -56,18 +56,14 @@ switch ($action) {
 	
         if($permarr['moderator']) {
 	
-            $text     = $_POST['text'];
+            $text     = parse_markers($_POST['text'], 1);
             $author   = $_POST['author'];
-            
-            $text = parse_markers($text, 1);
 		
             //sprawdzania daty
-            if (isset($_POST['now']) || !preg_match('#^([0-9][0-9])-([0-9][0-9])-([0-9][0-9][0-9][0-9]) ([0-9][0-9]:[0-9][0-9]:[0-9][0-9])$#', $_POST['date'], $matches)) {
-
+            if(isset($_POST['now']) || !preg_match('#^([0-9][0-9])-([0-9][0-9])-([0-9][0-9][0-9][0-9]) ([0-9][0-9]:[0-9][0-9]:[0-9][0-9])$#', $_POST['date'], $matches)) {
                 $date = date("Y-m-d H:i:s");
             } else {
-
-              $date = sprintf('%s-%s-%s %s', $matches[3], $matches[2], $matches[1], $matches[4]);
+                $date = sprintf('%s-%s-%s %s', $matches[3], $matches[2], $matches[1], $matches[4]);
             }
 
             $query = sprintf("
@@ -219,19 +215,14 @@ switch ($action) {
 					$text = $text;
 				}
 			
-				$ft->assign(array(	'ID'		=>$id,
-									'TEXT'		=>$text,
-									'DATE'		=>$date[0],
-									'AUTHOR'	=>$author,
-									'AUTHOR_IP'	=>$author_ip));	
-								
-				if($page_string !== "") {
-			
-					$ft->assign('STRING', "<b>Id¼ do strony:</b> " . $page_string);
-				} else {
-			
-					$ft->assign('STRING', $page_string);
-				}					
+				$ft->assign(array(
+				    'ID'		=>$id,
+				    'TEXT'		=>$text,
+				    'DATE'		=>$date[0],
+				    'AUTHOR'	=>$author,
+				    'AUTHOR_IP'	=>$author_ip, 
+				    'STRING'    =>$page_string !== '' ? '<b>Id¼ do strony:</b> ' . $page_string : $page_string
+				));					
 			
 				// deklaracja zmiennej $idx1::color switcher
 				$idx1 = empty($idx1) ? '' : $idx1;
@@ -241,19 +232,10 @@ switch ($action) {
 				$ft->define("editlist_comments", "editlist_comments.tpl");
 				$ft->define_dynamic("row", "editlist_comments");
 				
-				// naprzemienne kolorowanie wierszy
-				if (($idx1%2)==1) {
+				// naprzemienne kolorowanie wierszy tabeli
+				$ft->assign('ID_CLASS', $idx1%2 ? 'mainList' : 'mainListAlter');
 				
-					$ft->assign('ID_CLASS', 'mainList');
-					
-					$ft->parse('ROWS',	".row");
-
-				} else {
-				
-					$ft->assign('ID_CLASS', 'mainListAlter');
-				    
-				    $ft->parse('ROWS',	".row");
-				}
+				$ft->parse('ROW', ".row");
 			}
 		
 			$ft->parse('ROWS', "editlist_comments");;

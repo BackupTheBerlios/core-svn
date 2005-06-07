@@ -48,11 +48,8 @@ switch($action) {
         $template 	= get_root() . "/templates/main/tpl/" . $tpl . ".tpl";
         
         if(!is_writeable($template)) {
-            
             $ft->assign('WRITE_ERROR', $i18n['edit_templates'][3]);
-        
         } else {
-            
             $ft->assign('WRITE_ERROR', '');
         }
         
@@ -63,7 +60,6 @@ switch($action) {
             // Sztywna obs³uga </textarea> w szablonie, aby by³
             // on wy¶wietlany poprawnie w polu formularza
             $file_content = str_replace('</textarea>', '&lt;/textarea>', $file_content);
-            
             $file_content = str_replace('{ROWS}', '{NOTE_ROWS}', $file_content);
             
             // Zabronimy FT ukrywanie nie przydzielonych zmiennych
@@ -95,43 +91,21 @@ $read_dir = @dir($templates_dir);
 while($d = $read_dir->read()) {
     
     if($d[0] != '.') {
-        
         $ft->assign('CURRENT_TEMPLATE', $d);
+        
         if(isset($_GET['tpl_dir'])) {
-            
-            if($d == $tpl_dir) {
-                
-                $ft->assign('SELECTED', 'selected="selected"');
-            } else {
-                
-                $ft->assign('SELECTED', '');
-            }
+            $ft->assign('SELECTED', $d == $tpl_dir ? 'selected="selected"' : '');
         } else {
-            if($d == $template_dir) {
-                
-                $ft->assign('SELECTED', 'selected="selected"');
-            } else {
-                
-                $ft->assign('SELECTED', '');
-            }
+            $ft->assign('SELECTED', $d == $template_dir ? 'selected="selected"' : '');
         }
         
         $ft->parse('TEMPLATE_DIR', ".template_dir");
     }
 }
-        
-
 
 //lista szablonów
-if(!isset($_GET['tpl_dir'])) {
-    
-    $path = "../templates/" . $template_dir . "/tpl/";
-} else {
-    
-    $path = "../templates/" . $tpl_dir . "/tpl/";   
-}
-
-$dir = @dir($path);
+$path   = !isset($_GET['tpl_dir']) ? "../templates/" . $template_dir . "/tpl/" : "../templates/" . $tpl_dir . "/tpl/";
+$dir    = @dir($path);
 
 while($file = $dir->read()) {
     
@@ -142,23 +116,15 @@ while($file = $dir->read()) {
         $file = explode('.', $file);
         $ft->assign(array(
             'FILE'		=>$file[0] . "." . $file[1],
-            'FILE_PATH'	=>$file[0]
+            'FILE_PATH'	=>$file[0], 
+            'TPL_DIR'   =>!isset($_GET['tpl_dir']) ? $template_dir : $tpl_dir
         ));
-        
-        if(!isset($_GET['tpl_dir'])) {
-            
-            $ft->assign('TPL_DIR', $template_dir);
-        } else {
-            
-            $ft->assign('TPL_DIR', $tpl_dir);
-        }
         
         //jesli plik nie jest zapisywalny, to tpl z gwiazdka
         if(is_writeable($path . $file)) {
             
             $ft->assign('STAR', '');
             $ft->parse('TEMPLATE_ROW', ".template_row");
-            
         } else {
             
             $ft->assign('STAR', '*');

@@ -20,13 +20,6 @@ switch ($action) {
         $ft->define_dynamic("error_row", "error_reporting");
         
         if($permarr['admin']) {
-        
-            /*
-             * $monit[] = !is_numeric($mainposts_per_page) ? $i18n['core_configuration'][0] : '';
-             * $monit[] = !is_numeric($editposts_per_page) ? $i18n['core_configuration'][2] : '';
-             *        
-             * $monit[] = !is_numeric($max_photo_width) ? $i18n['core_configuration'][4] : '';
-             */
             
             if(!is_numeric($mainposts_per_page)) $monit[] = $i18n['core_configuration'][0];
             if(!is_numeric($editposts_per_page)) $monit[] = $i18n['core_configuration'][2];
@@ -204,8 +197,6 @@ switch ($action) {
         } else {
             $ft->assign('START_PAGE_CATEGORIES', false);
         }
-
-        
 		
 		// Ustawiamy zmienne
         $ft->assign(array(
