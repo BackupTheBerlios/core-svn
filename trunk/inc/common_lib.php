@@ -3,6 +3,10 @@
 // automatyczne sprawdzanie stanu magic_quotes
 // i w zaleznosci od tego wstawianie addslashes, badz nie.
 if(!get_magic_quotes_gpc()) {
+    
+    /**
+     * fix me 
+     
     if (function_exists('array_walk_recursive')) {
 
         function core_addslashes($k, $v) {
@@ -15,6 +19,7 @@ if(!get_magic_quotes_gpc()) {
         @reset($_POST);
         @reset($_COOKIE);
     } else {
+    */
 
         if(is_array($_GET)) {
             foreach($_GET as $k => $v) {
@@ -57,7 +62,7 @@ if(!get_magic_quotes_gpc()) {
             }
             @reset($_COOKIE);
         }
-    }
+    //}
 }
 
 ?>
