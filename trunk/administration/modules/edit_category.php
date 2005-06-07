@@ -429,9 +429,11 @@ switch ($action) {
 			$category_description = strlen($category_description) > 70 ? substr_replace($category_description, '...',70) : $category_description;
 			
 			$ft->assign(array(
-                'CATEGORY_ID'		=>$category_id,
-                'CATEGORY_NAME'		=>$category_name,
-                'COUNT'				=>$count
+                'CATEGORY_ID'   =>$category_id,
+                'CATEGORY_NAME' =>$category_name,
+                'COUNT'         =>$count, 
+                'CATEGORY_DESC' =>empty($category_description) ? $i18n['edit_category'][4] : $category_description, 
+                'STRING'        =>$page_string = empty($page_string) ? '' : $page_string
             ));
             
             if($category_order == $max_order) {
@@ -454,17 +456,6 @@ switch ($action) {
                     'DOWN'  =>'<a href="main.php?p=9&amp;action=remark&amp;move=15&amp;id=' . $category_id . '"><img src="templates/images/down.gif" width="11" height="7" /></a>'
                 ));
             }
-								
-			if(empty($category_description)) {
-
-				$ft->assign('CATEGORY_DESC', $i18n['edit_category'][4]);
-			} else {
-				
-				$ft->assign('CATEGORY_DESC', $category_description);
-			}	
-
-			// deklaracja zmiennej $page_string::page switcher
-			$page_string = empty($page_string) ? '' : $page_string;
 				
 			$ft->assign('STRING', $page_string);					
 			
@@ -476,18 +467,10 @@ switch ($action) {
 			$ft->define("editlist_category", "editlist_category.tpl");
 			$ft->define_dynamic("row", "editlist_category");
 			
-			// naprzemienne kolorowanie wierszy
-			if (($idx1%2)==1) {
-			    
-			    $ft->assign('ID_CLASS', 'mainList');
-			    
-			    $ft->parse('ROWS',	".row");
-			} else {
-			    
-			    $ft->assign('ID_CLASS', 'mainListAlter');
-			    
-			    $ft->parse('ROWS', ".row");
-			}
+			// naprzemienne kolorowanie wierszy tabeli
+			$ft->assign('ID_CLASS', $idx1%2 ? 'mainList' : 'mainListAlter');
+			
+			$ft->parse('ROWS', ".row");
 			
 			get_editcategory_cat($category_id, 2);
 		}

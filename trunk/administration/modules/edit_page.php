@@ -385,17 +385,10 @@ switch ($action) {
 				$published		= $db->f("published");
 			
 				$ft->assign(array(
-				    'ID'	=>$page_id,
-					'TITLE'	=>$title
+				    'ID'        =>$page_id,
+                    'TITLE'     =>$title, 
+                    'PUBLISHED' =>$published == 'Y' ? 'Tak' : 'Nie'
                 ));
-								
-				if($published == 'Y') {
-
-					$ft->assign('PUBLISHED', "Tak");
-				} else {
-				
-					$ft->assign('PUBLISHED', "Nie");
-				}
 
 				if($page_order == $max_order) {
                     // przydzielamy przycisk do podwy¿eszenia pozycji kategorii
@@ -427,17 +420,9 @@ switch ($action) {
 				$ft->define_dynamic("row", "editlist_pages");
 			
 				// naprzemienne kolorowanie wierszy tabeli
-				if (($idx1%2)==1) {
+				$ft->assign('ID_CLASS', $idx1%2 ? 'mainList' : 'mainListAlter');
 				
-					$ft->assign('ID_CLASS', 'mainList');
-					
-					$ft->parse('ROWS', ".row");
-				} else {
-				
-					$ft->assign('ID_CLASS', 'mainListAlter');
-					
-					$ft->parse('ROWS', ".row");
-				}
+				$ft->parse('ROWS', ".row");
 				
 				get_editpage_cat($page_id, 2);
 			}

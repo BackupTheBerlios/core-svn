@@ -2,22 +2,10 @@
 
 function coreMakeClickable($text) {
 
-	// pad it with a space so we can match things at the start of the 1st line.
 	$ret = ' ' . $text;
 
-	// matches an "xxxx://yyyy" URL at the start of a line, or after a space.
-	// xxxx can only be alpha characters.
-	// yyyy is anything up to the first space, newline, comma, double quote or <
 	$text = preg_replace("#(^|[\n ])([\w]+?://[^ \"\n\r\t<]*)#is", "\\1<a href=\"\\2\" target=\"_blank\">\\2</a>", $text);
-
-	// matches a "www|ftp.xxxx.yyyy[/zzzz]" kinda lazy URL thing
-	// Must contain at least 2 dots. xxxx contains either alphanum, or "-"
-	// zzzz is optional.. will contain everything up to the first space, newline, 
-	// comma, double quote or <.
 	$text = preg_replace("#(^|[\n ])((www|ftp)\.[^ \"\t\n\r<]*)#is", "\\1<a href=\"http://\\2\" target=\"_blank\">\\2</a>", $text);
-
-	// matches an email@domain type address at the start of a line, or after a space.
-	// Note: Only the followed chars are valid; alphanums, "-", "_" and or ".".
 	$text = preg_replace("#(^|[\n ])([a-z0-9&\-_.]+?)@([\w\-]+\.([\w\-\.]+\.)*[\w]+)#i", "\\1<a href=\"mailto:\\2@\\3\">\\2@\\3</a>", $text);
 
 	// Remove our padding..
@@ -27,39 +15,11 @@ function coreMakeClickable($text) {
 }
 
 
-function coreDateConvert($date) {
-	
-	$newdate	= explode(' ', $date);
-	
-	$date_ex	= explode('-', $newdate[0]);
-	$months = array(
-		'01' => 'Stycznia',
-		'02' => 'Lutego',
-		'03' => 'Marca',
-		'04' => 'Kwietnia',
-		'05' => 'Maja',
-		'06' => 'Czerwca',
-		'07' => 'Lipca',
-		'08' => 'Sierpnia',
-		'09' => 'Wrze¶nia',
-		'10' => 'Pa¼dziernika',
-		'11' => 'Listopada',
-		'12' => 'Grudnia'
-	);
-	
-	$date_ex[1] = $months[$date_ex[1]];
-	
-	$date		= $date_ex[2] . " " . $date_ex[1] . ", " . $date_ex[0] . "&nbsp;&nbsp;" . $newdate[1];
-	
-	return $date;
-}
-
-
 function coreRssDateConvert($date) {
 	
-	$newdate	= explode(' ', $date);
+	$newdate = explode(' ', $date);
+	$date_ex = explode('-', $newdate[0]);
 	
-	$date_ex	= explode('-', $newdate[0]);
 	$months = array(
 		'01' => 'Jan',
 		'02' => 'Feb',
@@ -76,7 +36,6 @@ function coreRssDateConvert($date) {
 	);
 	
 	$date_ex[1] = $months[$date_ex[1]];
-		
 	$date		= $date_ex[2] . " " . $date_ex[1] . " " . $date_ex[0] . " " . $newdate[1];
 	
 	return $date;
@@ -128,8 +87,7 @@ function get_breadcrumb($page_id, $level) {
 		$page_id 	= $db->f("id");
 		$parent_id 	= $db->f("parent_id");
 		$page_name 	= $db->f("title");
-		
-		$page_link  = isset($rewrite) && $rewrite == 1 ? '1,' . $page_id . ',5,item.html' : 'index.php?p=5&amp;id=' . $page_id . '';
+		$page_link  = (bool)$rewrite ? '1,' . $page_id . ',5,item.html' : 'index.php?p=5&amp;id=' . $page_id . '';
 	
 		$ft->assign(array(
             'PAGE_TITLE'    =>$page_name,
@@ -142,10 +100,8 @@ function get_breadcrumb($page_id, $level) {
         $pages_sort[]   = $page_name;
         $pages_id[]     = $page_id;
 
-		//$ft->parse('BREADCRUMB_ROW', ".breadcrumb_row");
 		get_breadcrumb($parent_id, $level+2);
 	}
-	
 }
 
 
@@ -182,8 +138,7 @@ function get_cat($page_id, $level) {
 		$page_id 	= $db->f("id");
 		$parent_id 	= $db->f("parent_id");
 		$page_name 	= $db->f("title");
-		
-		$page_link  = isset($rewrite) && $rewrite == 1 ? '1,' . $page_id . ',5,item.html' : 'index.php?p=5&amp;id=' . $page_id . '';
+		$page_link  = (bool)$rewrite ? '1,' . $page_id . ',5,item.html' : 'index.php?p=5&amp;id=' . $page_id . '';
 	
 		$ft->assign(array(
             'PAGE_NAME' =>$page_name,
@@ -277,15 +232,14 @@ function get_category_cat($cat_id, $level) {
 		$cat_id           = $db->f("category_id");
 		$cat_parent_id    = $db->f("category_parent_id");
 		$cat_name         = $db->f("category_name");
-		
-		$cat_link = isset($rewrite) && $rewrite == 1 ? '1,' . $cat_id . ',4,item.html' : 'index.php?p=4&amp;id=' . $cat_id . '';
+		$cat_link         = (bool)$rewrite ? '1,' . $cat_id . ',4,item.html' : 'index.php?p=4&amp;id=' . $cat_id . '';
 	
 		$ft->assign(array(
             'CAT_NAME'  =>$cat_name,
             'NEWS_CAT'  =>$cat_id,
             'CLASS'     =>"cat_child",
             'PARENT'    =>str_repeat('&nbsp; ', $level), 
-            'CAT_LINK'   =>$cat_link
+            'CAT_LINK'  =>$cat_link
         ));
 
 		$ft->parse('CATEGORY_ROW', ".category_row");
@@ -330,7 +284,7 @@ function get_addcategory_cat($page_id, $level, $current_id = 0, $pageid_prefix =
 		$ft->assign(array(
             'C_ID'		=>$pageid_prefix . $cat_id,
             'C_NAME'	=>str_repeat('&nbsp; ', $level) . "- " .$cat_name,
-            'CURRENT'   => ($cat_id == $current_id) ? 'selected="selected"' : ''
+            'CURRENT'   =>$cat_id == $current_id ? 'selected="selected"' : ''
         ));
 
         $ft->parse('CATEGORY_ROW', ".category_row");
@@ -386,62 +340,6 @@ function get_transfercategory_cat($page_id, $level) {
 }
 
 
-// funkcja pobierajaca rekurencyjnie kategorie::edycja newsa
-function get_editnews_cat($c_id, $level) {
-	
-	global 
-        $ft, 
-        $category;
-
-	$query = sprintf("
-        SELECT 
-            category_id, 
-            category_parent_id, 
-            category_name 
-        FROM 
-            %1\$s 
-        WHERE 
-            category_parent_id = '%2\$s' 
-        ORDER BY 
-            category_id 
-        ASC", 
-	
-        TABLE_CATEGORY, 
-        $c_id
-    );
-
-	$db = new DB_SQL;
-	$db->query($query);
-	
-	$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-		
-	while($db->next_record()) {
-	
-		$cat_id           = $db->f("category_id");
-		$cat_parent_id    = $db->f("category_parent_id");
-		$cat_name         = $db->f("category_name");
-		
-		if($cat_id == $category) {
-		    
-		    $ft->assign('CURRENT_CAT', 'selected="selected"');
-		} else {
-		    $ft->assign('CURRENT_CAT', '');
-		}
-	
-		$ft->assign(array(
-            'C_ID'		=>$cat_id,
-            'C_NAME'	=>str_repeat('&nbsp; ', $level) . "- " .$cat_name
-        ));
-
-		$ft->define("form_noteedit", "form_noteedit.tpl");
-        $ft->define_dynamic("category_row", "form_noteedit");
-        
-        $ft->parse('CATEGORY_ROW', ".category_row");
-		
-		get_editnews_cat($cat_id, $level+2);
-	}
-}
-
 // funkcja pobierajaca rekurencyjnie kategorie::lista kategorii
 function get_editcategory_cat($category_id, $level) {
 	
@@ -485,18 +383,13 @@ function get_editcategory_cat($category_id, $level) {
 		$count                = $db->f("count");
 	
 		$ft->assign(array(
-            'CATEGORY_ID'		=>$category_id,
-            'CATEGORY_NAME'		=>str_repeat('&nbsp; ', $level) . "<img src=\"templates/images/ar.gif\" />&nbsp;" . $category_name,
-            'COUNT'				=>$count, 
-            'UP'                =>'', 
-            'DOWN'              =>''
+            'CATEGORY_ID'   =>$category_id,
+            'CATEGORY_NAME' =>str_repeat('&nbsp; ', $level) . "<img src=\"templates/images/ar.gif\" />&nbsp;" . $category_name,
+            'COUNT'         =>$count, 
+            'UP'            =>'', 
+            'DOWN'          =>'', 
+            'CATEGORY_DESC' =>empty($category_description) ? $i18n['edit_category'][4] : $category_description
         ));
-        
-        if(empty($category_description)) {
-            $ft->assign('CATEGORY_DESC', $i18n['edit_category'][4]);
-        } else {
-            $ft->assign('CATEGORY_DESC', $category_description);
-        }
 		
 		// deklaracja zmiennej $idx1::color switcher
 		$idx1 = empty($idx1) ? '' : $idx1;
@@ -504,15 +397,10 @@ function get_editcategory_cat($category_id, $level) {
 		$idx1++;
 			
 		// naprzemienne kolorowanie wierszy tabeli
-		if (($idx1%2)==1) {
-			$ft->assign('ID_CLASS', 'mainList');
-			
-			$ft->parse('ROWS',	".row");
-		} else {
-			$ft->assign('ID_CLASS', 'mainListAlter');
-			
-			$ft->parse('ROWS',	".row");
-		}
+		$ft->assign('ID_CLASS', $idx1%2 ? 'mainList' : 'mainListAlter');
+		
+		$ft->parse('ROWS', ".row");
+		
 		get_editcategory_cat($category_id, $level+2);
 	}
 }
@@ -552,19 +440,12 @@ function get_editpage_cat($page_id, $level) {
 		$published	= $db->f("published");
 	
 		$ft->assign(array(
-            'ID'    =>$page_id,
-            'TITLE' =>str_repeat('&nbsp; ', $level) . "<img src=\"templates/images/ar.gif\" />&nbsp;" . $title, 
-            'UP'    =>'', 
-            'DOWN'  =>''
+            'ID'        =>$page_id,
+            'TITLE'     =>str_repeat('&nbsp; ', $level) . "<img src=\"templates/images/ar.gif\" />&nbsp;" . $title, 
+            'UP'        =>'', 
+            'DOWN'      =>'', 
+            'PUBLISHED' =>$published == 'Y' ? 'Tak' : 'Nie'
         ));
-							
-		if($published == 'Y') {
-
-			$ft->assign('PUBLISHED', "Tak");
-		} else {
-				
-			$ft->assign('PUBLISHED', "Nie");
-		}
 		
 		// deklaracja zmiennej $idx1::color switcher
 		$idx1 = empty($idx1) ? '' : $idx1;
@@ -575,17 +456,9 @@ function get_editpage_cat($page_id, $level) {
         $ft->define_dynamic("row", "editlist_pages");
 			
 		// naprzemienne kolorowanie wierszy tabeli
-		if (($idx1%2)==1) {
-				
-			$ft->assign('ID_CLASS', 'mainList');
-			
-			$ft->parse('ROWS',	".row");
-		} else {
-				
-			$ft->assign('ID_CLASS', 'mainListAlter');
-			
-			$ft->parse('ROWS',	".row");
-		}
+		$ft->assign('ID_CLASS', $idx1%2 ? 'mainList' : 'mainListAlter');
+		
+		$ft->parse('ROWS', ".row");
 		
 		get_editpage_cat($page_id, $level+2);
 	}
@@ -611,8 +484,7 @@ function v_array($array, $exit = 0) {
 	
 	printf('<pre>%s</pre>', print_r($array, 1));
 	
-	if ($exit) {
-		
+	if($exit){
 		exit;
 	}
 }
@@ -633,10 +505,10 @@ function get_config($name) {
         $name
     );
 
-    $db -> query($query);
-    $db -> next_record();
+    $db->query($query);
+    $db->next_record();
 
-    return $db -> f('config_value');
+    return $db->f('config_value');
 }
 
 function set_config($name, $value) {
@@ -872,7 +744,7 @@ function parse_markers($text, $break = 0, $tab = 0, $tab_long = 4) {
     $hash               = md5($text);
     $tempArr            = array();
     
-    preg_match_all("#<(ul|li)[^>]*?>.*?</(\\1)>#si", $text, $pregResultArr);
+    preg_match_all("#<(ul|li|ol)[^>]*?>.*?</(\\1)>#si", $text, $pregResultArr);
     
     $pregResultArrSize = sizeOf($pregResultArr[0]);
     
@@ -884,8 +756,7 @@ function parse_markers($text, $break = 0, $tab = 0, $tab_long = 4) {
     
     $break  == 1 ? $text = str_nl2br($text) : '';
     $tab    == 1 ? $text = str_replace("\t", str_repeat('&nbsp;', $tab_long), $text) : '';
-    
-    $text = str_replace($tempArr, $pregResultArr[0], $text);
+    $text   = str_replace($tempArr, $pregResultArr[0], $text);
     
     return $text;
 }
@@ -988,10 +859,12 @@ function get_comments_link($comments_allow, $comments, $id) {
 
 function get_image_status($image, $id) {
     
-    global $ft, $max_photo_width;
+    global 
+        $ft, 
+        $max_photo_width, 
+        $rewrite;
     
     if(empty($image)) {
-        
         // IFDEF: IMAGE_EXIST zwraca pusta wartosc, przechodzimy
         // do warunku ELSE
         $ft->assign(array(
@@ -1007,7 +880,7 @@ function get_image_status($image, $id) {
             
             list($width, $height) = getimagesize($img_path);
             
-            $photo_link = isset($rewrite) && $rewrite == 1 ? 'photo?id=' . $id . '' : 'photo.php?id=' . $id . '';
+            $photo_link = (bool)$rewrite ? 'photo?id=' . $id . '' : 'photo.php?id=' . $id . '';
             
             // wysoko¶æ, szeroko¶æ obrazka
             $ft->assign(array(
@@ -1093,19 +966,12 @@ function get_editnews_assignedcat($c_id, $level) {
         
         $sql->query($query);
         $sql->next_record();
-        
-        $assigned = $sql->f("category_id");
-        
-        if($cat_id == $assigned) {
-            $ft->assign('CURRENT_CAT', 'checked="checked"');
-		} else {
-			$ft->assign('CURRENT_CAT', '');
-		}
 	
 		$ft->assign(array(
-            'C_ID'		=>$cat_id,
-            'PAD'       =>'style="padding-left:' . 8*$level . 'px;" ', 
-            'C_NAME'	=>$cat_name,
+            'C_ID'          =>$cat_id,
+            'PAD'           =>'style="padding-left:' . 8*$level . 'px;" ', 
+            'C_NAME'        =>$cat_name, 
+            'CURRENT_CAT'   =>$cat_id == ($assigned = $sql->f("category_id")) ? 'checked="checked"' : ''
         ));
         
         $ft->parse('CAT_ROW', ".cat_row");
@@ -1151,7 +1017,7 @@ function get_addcategory_assignedcat($page_id, $level, $current_id = 0, $pageid_
             'C_ID'		=>$pageid_prefix . $cat_id, 
             'PAD'       =>'style="padding-left:' . 8*$level . 'px;" ', 
             'C_NAME'	=>$cat_name,
-            'CURRENT'   => ($cat_id == $current_id) ? 'selected="selected"' : ''
+            'CURRENT'   =>$cat_id == $current_id ? 'selected="selected"' : ''
         ));
 
         $ft->parse('CAT_ROW', ".cat_row");

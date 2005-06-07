@@ -41,7 +41,7 @@ $ft->assign(array(
 // deklaracja zmiennej $p
 $p = empty($_GET['p']) ? '' : $_GET['p'];
 
-if ($p == "log") {
+if($p == "log") {
     
     $login       = trim($_POST['login']);
     $password    = trim(md5($_POST['password']));
@@ -94,7 +94,6 @@ if ($p == "log") {
         }
     }
 } else {
-        
     include("modules/login.php");
     
 }
