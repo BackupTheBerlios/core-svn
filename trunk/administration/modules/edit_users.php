@@ -422,21 +422,11 @@ switch ($action) {
 			
 			switch ($perm_level) {
 			    
-			    case '1': $level = 1;
-			    break;
-			    
-			    case '3': $level = 2;
-			    break;
-			    
-			    case '7': $level = 3;
-			    break;
-			    
-			    case '15':$level = 4;
-			    break;
-			    
-			    case '31':$level = 5;
-			    break;
-			   
+			    case '1': $level = 1;    break;
+			    case '3': $level = 2;    break;
+			    case '7': $level = 3;    break;
+			    case '15':$level = 4;    break;
+			    case '31':$level = 5;    break;
 			}
 			
 			if($permarr["admin"]){
@@ -453,7 +443,6 @@ switch ($action) {
                     
                     case '2':
                     case '3':
-                    
                     
                     $ft->assign(array(
                         'LEVEL_DOWN'    =>'&nbsp;<a href="main.php?p=13&amp;plevel=down&amp;id=' . $user_id . '">-</a>',
@@ -475,16 +464,9 @@ switch ($action) {
                 'USER_ID'   =>$user_id,
                 'NAME'      =>$u_login,
                 'EMAIL'     =>$email,
-                'LEVEL'     =>$level,
+                'LEVEL'     =>$level, 
+                'STATUS'    =>$status == 'Y' ? 'Tak' : 'Nie'
 			));
-			
-			if($status == 'Y') {
-			    
-			    $ft->assign('STATUS', 'Tak');
-			} else {
-			    
-			    $ft->assign('STATUS', 'Nie');
-			}
 			
 			// deklaracja zmiennej $idx1::color switcher
 			$idx1 = empty($idx1) ? '' : $idx1;
@@ -494,19 +476,12 @@ switch ($action) {
 			$ft->define("editlist_users", "editlist_users.tpl");
 			$ft->define_dynamic("row", "editlist_users");
 			
-			// naprzemienne kolorowanie wierszy
-			if (($idx1%2)==1) {
-			    
-			    $ft->assign('ID_CLASS', 'mainList');
-			    
-			    $ft->parse('ROWS',	".row");
-			} else {
-			    
-			    $ft->assign('ID_CLASS', 'mainListAlter');
-			    
-			    $ft->parse('ROWS', ".row");
-			}
+			// naprzemienne kolorowanie wierszy tabeli
+			$ft->assign('ID_CLASS', $idx1%2 ? 'mainList' : 'mainListAlter');
+			
+			$ft->parse('ROW', ".row");
 		}
+		
 		$ft->parse('ROWS', "editlist_users");
 		$ft->parse('ROWS', ".result_note");
 }

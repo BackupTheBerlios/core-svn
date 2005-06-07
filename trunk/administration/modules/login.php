@@ -1,5 +1,5 @@
 <?php
 
-$ft->parse('ROWS',".form_login");
+$ft->parse('ROWS', ".form_login");
 
 ?>

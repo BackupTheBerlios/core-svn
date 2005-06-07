@@ -93,7 +93,7 @@ if(!empty($p)) {
             'MENU_NUMBER'   =>$menu_num, 
             'MENU_DESC'     =>$menu_desc
         ));
-    
+
         $ft->parse('SUBCAT_MENU', ".menu_row");
     }
 

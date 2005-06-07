@@ -1,6 +1,6 @@
 <?php
 
-$file = 'http://core.no1-else.com/rss';       // iSyndicate RSS
+$file = 'http://core-cms.com/rss';       // iSyndicate RSS
 $data = !function_exists('file_get_contents') ? implode('', file($file)) : file_get_contents($file);
 
 $simple = 1;
@@ -20,8 +20,7 @@ $pattern = array(
 );
     
 $data   = str_replace($pattern, $replacement, $data);
-
-$rss  = new rss_parser($data, $simple);
+$rss    = new rss_parser($data, $simple);
 
 $allItems   = $rss->getAllItems();
 $itemCount  = count($allItems);
@@ -97,4 +96,5 @@ $ft->assign(array(
 ));
 					
 $ft->parse('ROWS', "main_site");
+
 ?>

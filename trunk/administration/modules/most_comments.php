@@ -3,11 +3,10 @@
 // deklaracja zmiennej $action::form
 $action = empty($_GET['action']) ? '' : $_GET['action'];
 
-$db = new DB_SQL;
-
 switch ($action) {
     
-	case "show":// wy¶wietlanie wpisu pobranego do modyfikacji
+	case "show":
+	
 		$query = sprintf("
             SELECT * FROM 
                 %1\$s 
@@ -26,7 +25,6 @@ switch ($action) {
 		$text 		= $db->f("text");
 		$author		= $db->f("author");
 		$published	= $db->f("published");
-
 		
 		$date	= substr($date, 0, 16);
 		$dat1	= explode(" ", $date);
@@ -135,10 +133,12 @@ switch ($action) {
 			
 				$date = explode(' ', $date);
 			
-				$ft->assign(array(	'ID'		=>$id,
-									'TITLE'		=>$title,
-									'DATE'		=>$date[0],
-									'COMMENTS'	=>$comments));				
+				$ft->assign(array(
+				    'ID'		=>$id,
+				    'TITLE'		=>$title,
+				    'DATE'		=>$date[0],
+				    'COMMENTS'	=>$comments
+				));				
 			
 				// deklaracja zmiennej $idx1::color switcher
 				$idx1 = empty($idx1) ? '' : $idx1;
@@ -148,19 +148,10 @@ switch ($action) {
 				$ft->define("editlist_mostcomments", "editlist_mostcomments.tpl");
 				$ft->define_dynamic("row", "editlist_mostcomments");
 				
-				// naprzemienne kolorowanie wierszy
-				if (($idx1%2)==1) {
+				// naprzemienne kolorowanie wierszy tabeli
+				$ft->assign('ID_CLASS', $idx1%2 ? 'mainList' : 'mainListAlter');
 				
-					$ft->assign('ID_CLASS', 'mainList');
-					
-					$ft->parse('ROWS',	".row");
-
-				} else {
-				
-					$ft->assign('ID_CLASS', 'mainListAlter');
-				    
-				    $ft->parse('ROWS',	".row");
-				}
+				$ft->parse('ROW', ".row");
 			}
 		
 			$ft->parse('ROWS', "editlist_mostcomments");

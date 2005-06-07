@@ -9,7 +9,6 @@ switch ($action) {
 	
         $current    = $_POST['current_cat_id'];
         $target     = $_POST['target_cat_id'];
-        
         $monit      = array();
         
         // definicja szablonow parsujacych wyniki bledow.
@@ -113,7 +112,6 @@ switch ($action) {
             
             // rekurencyjnie pobieramy kategorie wpisów
             get_transfercategory_cat($c_id, 2);	
-		
 		}
 
 		$ft->assign(array(
