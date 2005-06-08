@@ -14,6 +14,7 @@ require_once('inc/main_functions.php');
 require_once('inc/common_lib.php');
 
 define('PATH_TO_CLASSES', get_root() . '/administration/classes');
+define('PATH_TO_MODULES', 'modules');
 
 require_once(PATH_TO_CLASSES. '/cls_db_mysql.php'); // dodawanie pliku konfigurujacego bibliotekê baz danych
 require_once(PATH_TO_CLASSES. '/cls_fast_template.php');
@@ -46,8 +47,6 @@ if(isset($_COOKIE['devlog_design']) && is_dir('./templates/' . $_COOKIE['devlog_
 
 @setcookie('devlog_design', $theme, time() + 3600 * 24 * 365);
 
-
-
 // inicjowanie klasy, wkazanie katalogu przechowuj±cego szablony
 $ft = new FastTemplate('./templates/' . $theme . '/tpl/');
 
@@ -67,8 +66,6 @@ $ft->define(array(
 // warto¶æ poczatkowa zmiennej $start -> potrzebna przy stronnicowaniu
 $start  = isset($_GET['start']) ? (int)$_GET['start'] : 0;
 $val    = empty($val) ? '' : $val;
-
-
 
 // generowanie linkow
 if ((bool)$rewrite) {
@@ -95,8 +92,8 @@ $ft->assign(array(
 
 if (!isset($_GET['p'])) {
 
-    $start_page_type = get_config('start_page_type');
-    $start_page_id = get_config('start_page_id');
+    $start_page_type    = get_config('start_page_type');
+    $start_page_id      = get_config('start_page_id');
 
     switch ($start_page_type) {
         case 'page':    $p = 5;     break;
@@ -113,37 +110,32 @@ if (!isset($_GET['p'])) {
 
 // G³ówna prze³±cznica includowanej tre¶ci
 switch($p){
-    case '1'            : include('modules/alter_view.php');     break;
-    case '2'            : include('modules/comments_view.php');  break;
-    case '3'            : include('modules/comments_add.php');   break;
-    case '4'            : include('modules/category_view.php');  break;
-    case '5'            : include('modules/pages_view.php');     break;
-    case '6'            : include('modules/articles_view.php');  break;        
-    case 'newsletter'   : include('modules/newsletter.php');     break;
-    case 'search'       : include('modules/search.php');         break;
-    default             : include('modules/main_view.php');
+    
+    case '1'            : include(PATH_TO_MODULES . '/alter_view.php');     break;
+    case '2'            : include(PATH_TO_MODULES . '/comments_view.php');  break;
+    case '3'            : include(PATH_TO_MODULES . '/comments_add.php');   break;
+    case '4'            : include(PATH_TO_MODULES . '/category_view.php');  break;
+    case '5'            : include(PATH_TO_MODULES . '/pages_view.php');     break;
+    case '6'            : include(PATH_TO_MODULES . '/articles_view.php');  break;        
+    case 'newsletter'   : include(PATH_TO_MODULES . '/newsletter.php');     break;
+    case 'search'       : include(PATH_TO_MODULES . '/search.php');         break;
+    
+    default             : include(PATH_TO_MODULES . '/main_view.php');
 }
 
 // wyznaczamy szablon jaki ma byc parsowany, sprawdzajac
 // czy faktycznie znajduje sie on w katalogu z szablonami
-if (!isset($assigned_tpl) || !file_exists('./templates/' . $theme . '/tpl/' . $assigned_tpl . '_page.tpl')) {
+if(!isset($assigned_tpl) || !file_exists('./templates/' . $theme . '/tpl/' . $assigned_tpl . '_page.tpl')) {
   $assigned_tpl = 'main_page';
 }
-
-
 
 $ft->define_dynamic("alternate_design_row", $assigned_tpl);
 
 while($d = $read_dir->read()) {
-
     if($d[0] != '.') {
 
         // link do alternatywnego szablonu
-        if ((bool)$rewrite) {
-            $template_link = sprintf('2,%s,item.html', $d);
-        } else {
-            $template_link = 'design.php?issue=' . $d;
-        }
+        $template_link = (bool)$rewrite ? sprintf('2,%s,item.html', $d) : 'design.php?issue=' . $d;
 
         $ft->assign(array(
             'ALTERNATE_TEMPLATE'    =>$d,
@@ -154,17 +146,16 @@ while($d = $read_dir->read()) {
 }
 
 // tablica includowanych modulow
-$inc_modules = array(
+$modules = array(
     'category_list',
     'pages_list',
     'links_list'
 );
 
-foreach($inc_modules as $module) {
-    
-    // ³adowanie dodatkowych modu³ów
-    include('modules/' . $module . '.php');
+while(list($m) = each($modules)) {
+    require PATH_TO_MODULES . '/' . $modules[$m] . '.php';
 }
+
 
 $ft->parse('MAIN', $assigned_tpl);
 $ft->FastPrint();
