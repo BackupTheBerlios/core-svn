@@ -34,7 +34,7 @@
 <div class="category">
 	<b>Kategoria:</b>
 	<!-- BEGIN DYNAMIC BLOCK: cat_row -->
-	<a href="{CATEGORY_LINK}">{CATEGORY_NAME}</a>, 
+	<a href="{CATEGORY_LINK}">{CATEGORY_NAME}</a>{COMMA}
 	<!-- END DYNAMIC BLOCK: cat_row -->
 </div>
 <!-- IFDEF: RETURN -->

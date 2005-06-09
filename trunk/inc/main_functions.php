@@ -1053,6 +1053,9 @@ function list_assigned_categories($id) {
     $sql = new DB_SQL;
     $sql->query($query);
     
+    $count_cats = $sql->nf();
+    $idx = 1;
+    
     while($sql->next_record()) {
         
         $cname = replace_amp($sql->f('category_name'));
@@ -1062,10 +1065,13 @@ function list_assigned_categories($id) {
         
         $ft->assign(array(
             'CATEGORY_NAME' =>$cname, 
-            'CATEGORY_LINK' =>$category_link
+            'CATEGORY_LINK' =>$category_link, 
+            'COMMA'         =>$count_cats == $idx ? '' : ', '
         ));
         
         $ft->parse('CAT_ROW', ".cat_row");
+        
+        $idx++;
     }
     
     // CAT_ROW musi byc czyste
