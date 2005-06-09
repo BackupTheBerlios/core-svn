@@ -76,7 +76,7 @@ if ((bool)$rewrite) {
 } else {
     $rss_link       = './rss.php';
     $rssc_link      = './rsscomments.php';
-    $search_link    = 'index.php?p=search';
+    $search_link    = 'index.php?p=8';
     $cat_all_link   = 'index.php?p=all';
 }
 
@@ -108,19 +108,50 @@ if (!isset($_GET['p'])) {
     $p = $_GET['p'];
 }
 
-// G³ówna prze³±cznica includowanej tre¶ci
-switch($p){
+class loader {
     
-    case '1'            : include(PATH_TO_MODULES . '/alter_view.php');     break;
-    case '2'            : include(PATH_TO_MODULES . '/comments_view.php');  break;
-    case '3'            : include(PATH_TO_MODULES . '/comments_add.php');   break;
-    case '4'            : include(PATH_TO_MODULES . '/category_view.php');  break;
-    case '5'            : include(PATH_TO_MODULES . '/pages_view.php');     break;
-    case '6'            : include(PATH_TO_MODULES . '/articles_view.php');  break;        
-    case 'newsletter'   : include(PATH_TO_MODULES . '/newsletter.php');     break;
-    case 'search'       : include(PATH_TO_MODULES . '/search.php');         break;
+    var $mod = '';
+    var $MODULE_EXTENSION = '.php';
     
-    default             : include(PATH_TO_MODULES . '/main_view.php');
+    // konstruktor
+    function loader() {
+        
+        global $p;
+        
+        switch($p){
+            
+            case '1'    : $this->mod = 'alter_view';        break;
+            case '2'    : $this->mod = 'comments_view';     break;
+            case '3'    : $this->mod = 'comments_add';      break;
+            case '4'    : $this->mod = 'category_view';     break;
+            case '5'    : $this->mod = 'pages_view';        break;
+            case '6'    : $this->mod = 'articles_view';     break;
+            case '7'    : $this->mod = 'newsletter';        break;
+            case '8'    : $this->mod = 'search';            break;
+            
+            default     : $this->mod = 'main_view';
+        }
+        
+        $this->mod = $this->name_cleaner($this->mod);
+        
+        if($this->mod == "") {
+            $this->return_dead();
+        }
+
+		if(!@file_exists(PATH_TO_MODULES . '/' . $this->mod . $this->MODULE_EXTENSION)) {
+			$this->return_dead();
+		}
+    }
+    
+	function name_cleaner($name) {
+	    
+	    return preg_replace("/[^a-zA-Z0-9\-\_]/", "", $name);
+	}
+	
+	function return_dead() {
+	    $this->mod = 'main_view';
+	}
+
 }
 
 // wyznaczamy szablon jaki ma byc parsowany, sprawdzajac
@@ -145,6 +176,9 @@ while($d = $read_dir->read()) {
     }
 }
 
+$loader = new loader();
+require_once(PATH_TO_MODULES . '/' . $loader->mod . $loader->MODULE_EXTENSION);
+
 // tablica includowanych modulow
 $modules = array(
     'category_list',
@@ -153,9 +187,8 @@ $modules = array(
 );
 
 while(list($m) = each($modules)) {
-    require PATH_TO_MODULES . '/' . $modules[$m] . '.php';
+    require_once PATH_TO_MODULES . '/' . $modules[$m] . '.php';
 }
-
 
 $ft->parse('MAIN', $assigned_tpl);
 $ft->FastPrint();

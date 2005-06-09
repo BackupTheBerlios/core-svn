@@ -5,10 +5,10 @@ $page_string = empty($page_string) ? '' : $page_string;
 // inicjowanie zmiennej przechowuj±cej szukan± frazê
 $search_word = trim($_REQUEST['search_word']);
 
-if ((bool)$rewrite) {
+if((bool)$rewrite) {
     $search_link = sprintf('search.%s.', $search_word);
 } else {
-    $search_link = sprintf('index.php?p=search&search_word=%s&amp;start=', $search_word);
+    $search_link = sprintf('index.php?p=8&search_word=%s&amp;start=', $search_word);
 }
 
 // inicjowanie funkcji stronnicuj±cej wpisy

@@ -12,8 +12,8 @@ RewriteCond %{REQUEST_URI} !index\.php
 RewriteCond %{REQUEST_URI} !index\.search
 RewriteRule ^index\.([0-9]*) index.php?start=$1 [L]
 
-RewriteRule ^index\.search$ index.php?p=search [L]
-RewriteRule ^search\.(.*)\.(.*)$ index.php?p=search&search_word=$1&start=$2 [L]
+RewriteRule ^index\.search$ index.php?p=8 [L]
+RewriteRule ^search\.(.*)\.(.*)$ index.php?p=8&search_word=$1&start=$2 [L]
 RewriteRule ^2,(.*),item.html$ design.php?issue=$1 [L]
 
 RewriteRule ^rss$ rss.php [L]
