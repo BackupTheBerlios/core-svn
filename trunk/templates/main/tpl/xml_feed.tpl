@@ -18,7 +18,7 @@
         <!-- IFDEF: NEWS_FEED -->
         <category>
         <!-- BEGIN DYNAMIC BLOCK: cat_row -->
-        {CATEGORY_NAME} 
+        {CATEGORY_NAME}{COMMA}
         <!-- END DYNAMIC BLOCK: cat_row -->
         </category>
         <comments>http://{COMMENTS_LINK}</comments>

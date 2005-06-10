@@ -35,10 +35,10 @@ if(!isset($_COOKIE['devlog_counter'])){
 
 //konfiguracja szablonow i design switchera
 if(isset($_COOKIE['devlog_design']) && is_dir('./templates/' . $_COOKIE['devlog_design'] . '/tpl/')){
-
+    
     $theme = $_COOKIE['devlog_design'];
-} elseif (is_dir('./templates/main/tpl')) {
-
+} elseif(is_dir('./templates/main/tpl')) {
+    
     $theme = 'main';
 } else {
     printf('<div style="font-family: Arial, sans-serif; font-size: 16px; background-color: #ccc; border: 1px solid red; padding: 15px; text-align: center;">%s</div>', $i18n['index'][0]);
@@ -90,7 +90,7 @@ $ft->assign(array(
     'CAT_ALL_LINK'      =>$cat_all_link
 ));
 
-if (!isset($_GET['p'])) {
+if(!isset($_GET['p'])) {
 
     $start_page_type    = get_config('start_page_type');
     $start_page_id      = get_config('start_page_id');

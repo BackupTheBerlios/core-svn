@@ -63,8 +63,6 @@ while($db->next_record()) {
 	// zmiana formatu wy¶wietlania daty
 	$date	= coreRssDateConvert($date);
 	
-	$text = strip_tags($text, '<br><a>');
-	
     $pattern = array(
         "&",
         "<br />", 

@@ -13,6 +13,7 @@ if(!isset($_SESSION["loggedIn"])){
 $start = isset($_GET['start']) ? intval($_GET['start']) : 0;
 
 define('PATH_TO_CLASSES', 'classes');
+define('PATH_TO_MODULES', 'modules');
 
 require(PATH_TO_CLASSES. '/cls_db_mysql.php');
 require(PATH_TO_CLASSES. '/cls_upload.php');
@@ -90,26 +91,62 @@ foreach($inc_modules as $module) {
 
 // prze³±cznica ³adowanej tre¶ci					
 $p = empty($_GET['p']) ? '' : $_GET['p'];
-switch($p){
+
+class loader {
+    
+    var $mod = '';
+    var $MODULE_EXTENSION = '.php';
+    
+    // konstruktor
+    function loader() {
+        
+        global $p;
+        
+        switch($p){
+            
+            case '1'    : $this->mod = 'add_note';              break;
+            case '2'    : $this->mod = 'edit_note';             break;
+            case '3'    : $this->mod = 'add_page';              break;
+            case '4'    : $this->mod = 'edit_page';             break;
+            case '5'    : $this->mod = 'edit_comments';         break;
+            case '6'    : $this->mod = 'most_comments';         break;
+            case '7'    : $this->mod = 'add_user';              break;
+            case '8'    : $this->mod = 'add_category';          break;
+            case '9'    : $this->mod = 'edit_category';         break;
+            case '10'   : $this->mod = 'core_configuration';    break;
+            case '11'   : $this->mod = 'add_links';             break;
+            case '12'   : $this->mod = 'edit_links';            break;
+            case '13'   : $this->mod = 'edit_users';            break;
+            case '14'   : $this->mod = 'edit_templates';        break;
+            case '15'   : $this->mod = 'transfer_note';         break;
+            
+            default     : $this->mod = 'main';
+        }
+        
+        $this->mod = $this->name_cleaner($this->mod);
+        
+        if($this->mod == "") {
+            $this->return_dead();
+        }
+
+		if(!@file_exists(PATH_TO_MODULES . '/' . $this->mod . $this->MODULE_EXTENSION)) {
+			$this->return_dead();
+		}
+    }
+    
+	function name_cleaner($name) {
+	    
+	    return preg_replace("/[^a-zA-Z0-9\-\_]/", "", $name);
+	}
 	
-	case '1':  include('modules/add_note.php');            break;  // dodawanie kolejnego wpisu
-	case '2':  include('modules/edit_note.php');           break;  // edycja/usuwanie istniej±cych wpisów
-	case '3':  include('modules/add_page.php');            break;  // dodawanie kolejnej strony
-	case '4':  include('modules/edit_page.php');           break;  // edycja/usuwanie istniej±cych wpisów
-	case '5':  include('modules/edit_comments.php');       break;  // edycja/usuwanie istniej±cych komentarzy
-	case '6':  include('modules/most_comments.php');       break;  // statystycznie najczê¶ciej komentowane wpisy	
-	case '7':  include('modules/add_user.php');            break;  // dodanie nowego u¿ytkownika systemu
-	case '8':  include('modules/add_category.php');        break;  // dodanie nowej kategorii
-	case '9':  include('modules/edit_category.php');       break;  // edycja|usuwanie istniej±cych kategorii
-	case '10': include('modules/core_configuration.php');  break;  // konfiguracja core
-	case '11': include('modules/add_links.php');           break;  // dodanie nowego linku
-	case '12': include('modules/edit_links.php');          break;  // edycja/usuwanie istniej±cych linków
-	case '13': include('modules/edit_users.php');          break;  // edycja/usuwanie u¿ytkowników
-	case '14': include('modules/edit_templates.php');      break;  // edycja szablonów
-	case '15': include('modules/transfer_note.php');       break;  // transfer wpisów miêdzy kategoriami
-	
-	default:   include('modules/main.php');                break;  // domy¶lnie
+	function return_dead() {
+	    $this->mod = 'main';
+	}
+
 }
+
+$loader = new loader();
+require_once(PATH_TO_MODULES . '/' . $loader->mod . $loader->MODULE_EXTENSION);
 
 $ft->parse('MAIN_CONTENT', array("main_loader", "index"));
 
