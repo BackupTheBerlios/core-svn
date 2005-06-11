@@ -38,6 +38,7 @@ $i18n['add_note'] = array();
 $i18n['add_note'][0] = 'Zdjêcie zosta³o dodane.<br />';
 $i18n['add_note'][1] = 'Wpis zosta³ dodany.';
 $i18n['add_note'][2] = '<b>Nie masz uprawnieñ</b> pozwalaj±cych na dodanie nowego wpisu.';
+$i18n['add_note'][3] = '<b>Musisz</b> przydzieliæ wpis do przynajmniej jednej kategorii.';
 
 $i18n['add_page'] = array();
 $i18n['add_page'][0] = 'Zdjêcie zosta³o dodane.<br />';

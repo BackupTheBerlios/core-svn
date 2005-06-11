@@ -10,7 +10,7 @@ ALTER TABLE core_newsletter
     ADD token VARCHAR(32) NOT NULL;
 
 UPDATE core_config
-    SET 'config_value' = '0.4.1'
+    SET 'config_value' = '0.4.2'
     WHERE 'config_name' = 'core_version';
 
 INSERT INTO core_config VALUES

@@ -67,7 +67,7 @@
     <div>
     <!-- BEGIN DYNAMIC BLOCK: cat_row -->
     <span {PAD}class="cat_list">
-    <label for="category-{C_ID}" class="selectit"><input class="cat_input" value="{C_ID}" type="checkbox" name="assign2cat[]"  id="category-{C_ID}" />{C_NAME}</label>
+    <label for="category-{C_ID}" class="selectit"><input class="cat_input" value="{C_ID}" type="checkbox" name="assign2cat[]"  id="category-{C_ID}" {CURRENT_CAT} />{C_NAME}</label>
     </span>
     <!-- END DYNAMIC BLOCK: cat_row -->
     </div>

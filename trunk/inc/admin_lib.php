@@ -1,6 +1,6 @@
 <?php
 
-function get_addcategory_assignedcat($page_id, $level, $current_id = 0, $pageid_prefix = '') {
+function get_addcategory_assignedcat($page_id, $level) {
 	
 	global $ft;
 
@@ -33,15 +33,15 @@ function get_addcategory_assignedcat($page_id, $level, $current_id = 0, $pageid_
 		$cat_name         = $db->f("category_name");
 	
 		$ft->assign(array(
-            'C_ID'		=>$pageid_prefix . $cat_id, 
-            'PAD'       =>'style="padding-left:' . 8*$level . 'px;" ', 
-            'C_NAME'	=>$cat_name,
-            'CURRENT'   =>$cat_id == $current_id ? 'selected="selected"' : ''
+            'C_ID'          =>$cat_id, 
+            'C_NAME'        =>$cat_name,
+            'CURRENT_CAT'   =>'', 
+            'PAD'           =>'style="padding-left:' . 8*$level . 'px;" '
         ));
 
         $ft->parse('CAT_ROW', ".cat_row");
 		
-		get_addcategory_assignedcat($cat_id, $level+2, $current_id, $pageid_prefix);
+		get_addcategory_assignedcat($cat_id, $level+2);
 	}
 }
 
