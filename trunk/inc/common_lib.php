@@ -295,6 +295,16 @@ function get_root() {
 	$p = pathinfo(__file__);
 	return dirname($p['dirname']);
 }
+function get_httproot($with_slash = true) {
+
+  $path = sprintf('%s/%s', $_SERVER['HTTP_HOST'], substr(dirname($_SERVER['REQUEST_URI']), 1));
+  if ($with_slash) {
+
+    $path .= '/';
+  }
+
+  return $path;
+}
 
 
 function v_array($array, $exit = 0) { 
