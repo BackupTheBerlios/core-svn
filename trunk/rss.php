@@ -8,7 +8,8 @@ require(PATH_TO_CLASSES. "/cls_db_mysql.php"); // dodawanie pliku konfigurujaceg
 require(PATH_TO_CLASSES. '/cls_fast_template.php');
 require("administration/inc/config.php");
 
-require("inc/main_functions.php");
+require("inc/common_lib.php");
+require("inc/main_lib.php");
 
 $db     = new DB_SQL;
 $query  = sprintf("
@@ -103,10 +104,10 @@ while($db->next_record()) {
    
     $ft->assign(array(
         'DATE'          =>$date, 
-        'TITLE'         =>stripslashes($title), 
+        'TITLE'         =>$title, 
         'AUTHOR'        =>$author, 
         'PERMALINK'     =>$permanent_link, 
-        'TEXT'          =>stripslashes($text), 
+        'TEXT'          =>$text, 
         'COMMENTS_LINK' =>$comments_link
     ));
     

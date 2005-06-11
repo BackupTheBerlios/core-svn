@@ -10,8 +10,8 @@ if(!defined('CORE_INSTALLED')) {
 }
 
 require_once('inc/i18n.php');
-require_once('inc/main_functions.php');
 require_once('inc/common_lib.php');
+require_once('inc/main_lib.php');
 
 define('PATH_TO_CLASSES', get_root() . '/administration/classes');
 define('PATH_TO_MODULES', 'modules');

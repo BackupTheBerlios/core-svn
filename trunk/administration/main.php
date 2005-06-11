@@ -21,7 +21,7 @@ require(PATH_TO_CLASSES. '/cls_rss_parser.php');
 
 require_once('inc/config.php');
 require_once('../inc/common_lib.php');
-include_once('../inc/main_functions.php');
+require_once('../inc/admin_lib.php');
 require_once('../inc/i18n_administration.php');
 
 require(PATH_TO_CLASSES. '/cls_fast_template.php');
