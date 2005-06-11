@@ -55,9 +55,6 @@ $ft->define('xml_feed', 'xml_feed.tpl');
 $ft->define_dynamic('xml_row', 'xml_feed');
 $ft->define_dynamic("cat_row", "xml_feed");
 
-$i = pathinfo($_SERVER['REQUEST_URI']);
-$s = $_SERVER['HTTP_HOST'];
-
 $ft->assign(array(
     'MAINSITE_LINK' =>get_httproot(),
     'NEWS_FEED'     =>true
@@ -98,11 +95,11 @@ while($db->next_record()) {
     list_assigned_categories($id);
     
     if((bool)$rewrite) {
-        $comments_link  = $s . '/' . substr($i['dirname'], 1) . '/1,' . $id . ',2,item.html';
-        $permanent_link = $s . '/' . substr($i['dirname'], 1) . '/1,' . $id . ',1,item.html';
+        $comments_link  = get_httproot(false) . '1,' . $id . ',2,item.html';
+        $permanent_link = get_httproot(false) . '1,' . $id . ',1,item.html';
     } else {
-        $comments_link  = $s . '/' . substr($i['dirname'], 1) . '/index.php?p=2&amp;id=' . $id;
-        $permanent_link = $s . '/' . substr($i['dirname'], 1) . '/index.php?p=1&amp;id=' . $id;
+        $comments_link  = get_httproot(false) . 'index.php?p=2&amp;id=' . $id;
+        $permanent_link = get_httproot(false) . 'index.php?p=1&amp;id=' . $id;
     }
    
     $ft->assign(array(
