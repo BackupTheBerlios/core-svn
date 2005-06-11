@@ -297,8 +297,8 @@ function get_root() {
 }
 function get_httproot($with_slash = true) {
 
-  $dir = dirname($_SERVER['REQUEST_URI']);
-  $path = sprintf('%s/%s', $_SERVER['HTTP_HOST'], substr($dir, 1));
+  $dir = substr(dirname($_SERVER['REQUEST_URI']), 1);
+  $path = sprintf('%s/%s', $_SERVER['HTTP_HOST'], $dir == '/' ? '' : $dir);
   //$path = sprintf('%s/%s', $_SERVER['HTTP_HOST'], $dir);
   //print $path . '<br />';
   if ($with_slash) {
