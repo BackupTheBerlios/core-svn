@@ -7,7 +7,7 @@ switch ($action) {
 
     case "send":
 
-        include("../inc/main_functions.php");
+        include("../inc/common_lib.php");
         define('SQL_SCHEMA', 'dbschema');
 
         $err    = '';
