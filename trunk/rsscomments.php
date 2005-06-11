@@ -47,7 +47,7 @@ $i = pathinfo($_SERVER['REQUEST_URI']);
 $s = $_SERVER['HTTP_HOST'];
 
 $ft->assign(array(
-    'MAINSITE_LINK' =>$s . '/' . substr($i['dirname'], 1) . '/', 
+    'MAINSITE_LINK' =>get_httproot(),
     'NEWS_FEED'     =>false
 ));
 
