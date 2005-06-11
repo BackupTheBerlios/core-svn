@@ -55,7 +55,7 @@ $ft->define_dynamic('xml_row', 'xml_feed');
 $ft->define_dynamic("cat_row", "xml_feed");
 
 $ft->assign(array(
-    'MAINSITE_LINK' =>$_SERVER['HTTP_HOST'], 
+    'MAINSITE_LINK' =>$_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . '/', 
     'NEWS_FEED'     =>true
 ));
 
@@ -94,11 +94,11 @@ while($db->next_record()) {
     list_assigned_categories($id);
     
     if((bool)$rewrite) {
-        $comments_link  = $_SERVER['HTTP_HOST'] . '/1,' . $id . ',2,item.html';
-        $permanent_link = $_SERVER['HTTP_HOST'] . '/1,' . $id . ',1,item.html';
+        $comments_link  = $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . '/1,' . $id . ',2,item.html';
+        $permanent_link = $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . '/1,' . $id . ',1,item.html';
     } else {
-        $comments_link  = $_SERVER['HTTP_HOST'] . '/index.php?p=2&amp;id=' . $id;
-        $permanent_link = $_SERVER['HTTP_HOST'] . '/index.php?p=1&amp;id=' . $id;
+        $comments_link  = $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . '/index.php?p=2&amp;id=' . $id;
+        $permanent_link = $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . '/index.php?p=1&amp;id=' . $id;
     }
    
     $ft->assign(array(
