@@ -44,7 +44,7 @@ $ft->define('xml_feed', 'xml_feed.tpl');
 $ft->define_dynamic('xml_row', 'xml_feed');
 
 $ft->assign(array(
-    'MAINSITE_LINK' =>get_httproot(),
+    'MAINSITE_LINK' =>'http://' . get_httproot(false),
     'NEWS_FEED'     =>false
 ));
 
