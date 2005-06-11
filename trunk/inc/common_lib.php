@@ -327,4 +327,27 @@ function str_nl2br($s) {
 	return str_replace(array("\r\n", "\r", "\n"), '<br />', $s);
 }
 
+
+function set_config($name, $value) {
+
+    $db = new DB_SQL;
+
+    $query = sprintf("
+        UPDATE
+            %1\$s
+        SET
+            config_value = '%2\$s'
+        WHERE
+            config_name = '%3\$s'",
+          
+        TABLE_CONFIG,
+        $value,
+        $name
+    );
+
+    $db -> query($query);
+
+    return true;
+}
+
 ?>

@@ -376,29 +376,6 @@ function get_editcategory_cat($category_id, $level) {
 }
 
 
-function set_config($name, $value) {
-
-    $db = new DB_SQL;
-
-    $query = sprintf("
-        UPDATE
-            %1\$s
-        SET
-            config_value = '%2\$s'
-        WHERE
-            config_name = '%3\$s'",
-          
-        TABLE_CONFIG,
-        $value,
-        $name
-    );
-
-    $db -> query($query);
-
-    return true;
-}
-
-
 function parse_markers($text, $break = 0, $tab = 0, $tab_long = 4) {
     
     $pregResultArr      = array();

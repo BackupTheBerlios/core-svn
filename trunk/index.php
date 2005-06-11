@@ -9,9 +9,9 @@ if(!defined('CORE_INSTALLED')) {
     exit;
 }
 
-require_once('inc/i18n.php');
-require_once('inc/common_lib.php');
-require_once('inc/main_lib.php');
+require('inc/i18n.php');
+require('inc/common_lib.php');
+require('inc/main_lib.php');
 
 define('PATH_TO_CLASSES', get_root() . '/administration/classes');
 define('PATH_TO_MODULES', 'modules');
