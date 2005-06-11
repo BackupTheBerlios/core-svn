@@ -43,8 +43,11 @@ $ft = new FastTemplate('./templates/main/tpl/');
 $ft->define('xml_feed', 'xml_feed.tpl');
 $ft->define_dynamic('xml_row', 'xml_feed');
 
+$i = pathinfo($_SERVER['REQUEST_URI']);
+$s = $_SERVER['HTTP_HOST'];
+
 $ft->assign(array(
-    'MAINSITE_LINK' =>$_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . '/', 
+    'MAINSITE_LINK' =>$s . '/' . substr($i['dirname'], 1) . '/', 
     'NEWS_FEED'     =>false
 ));
 
@@ -80,7 +83,7 @@ while($db->next_record()) {
     
     $text   = str_replace($pattern, $replacement, $text);
 
-    $permanent_link = (bool)$rewrite ? $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . '/1,' . $id . ',1,item.html' : $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . '/index.php?p=1&amp;id=' . $id . '';
+    $permanent_link = (bool)$rewrite ? $s . '/' . substr($i['dirname'], 1) . '/1,' . $id . ',1,item.html' : $s . '/' . substr($i['dirname'], 1) . '/index.php?p=1&amp;id=' . $id . '';
    
     $ft->assign(array(
         'DATE'          =>$date, 
