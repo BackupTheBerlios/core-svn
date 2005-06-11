@@ -43,8 +43,10 @@ $ft = new FastTemplate('./templates/main/tpl/');
 $ft->define('xml_feed', 'xml_feed.tpl');
 $ft->define_dynamic('xml_row', 'xml_feed');
 
+$http_root = get_httproot();
+
 $ft->assign(array(
-    'MAINSITE_LINK' =>'http://' . get_httproot(false),
+    'MAINSITE_LINK' =>'http://' . $http_root,
     'NEWS_FEED'     =>false
 ));
 
@@ -80,7 +82,7 @@ while($db->next_record()) {
     
     $text   = str_replace($pattern, $replacement, $text);
 
-    $permanent_link = (bool)$rewrite ? get_httproot(false) . '1,' . $id . ',1,item.html' : get_httproot(false) . 'index.php?p=1&amp;id=' . $id . '';
+    $permanent_link = (bool)$rewrite ? $http_root . '1,' . $id . ',1,item.html' : $http_root . 'index.php?p=1&amp;id=' . $id . '';
    
     $ft->assign(array(
         'DATE'          =>$date, 
