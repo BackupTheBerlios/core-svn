@@ -1,7 +1,9 @@
 <?php
 
 // deklaracja zmiennej $action::form
-$action = empty($_GET['action']) ? '' : $_GET['action'];
+$action     = empty($_GET['action']) ? '' : $_GET['action'];
+$preview    = empty($_POST['preview']) ? '' : $_POST['preview'];
+$post       = empty($_POST['post']) ? '' : $_POST['post'];
 
 // definicja szablonow parsujacych wyniki bledow.
 $ft->define("error_reporting", "error_reporting.tpl");
@@ -11,174 +13,195 @@ switch ($action) {
 	
 	case "show": // wy¶wietlanie wpisu pobranego do modyfikacji
 	
-		$query = sprintf("
-            SELECT * FROM 
-                %1\$s 
-            WHERE 
-                id = '%2\$d'", 
-		
-            TABLE_PAGES, 
-            $_GET['id']
-        );
-		
-		$db->query($query);
-		$db->next_record();
-		
-        $title          = $db->f("title");
-        $text           = $db->f("text");
-        $published      = $db->f("published");
-        $image          = $db->f("image");
-        $assigned_tpl   = $db->f("assigned_tpl");
-		
-		$ft->assign(array(
-            'ID'	=>$_GET['id'],
-            'TITLE'	=>$title,
-            'TEXT'	=>br2nl($text)
-        ));
+        // podglad
+        if(!empty($preview)) {
         
-        $path = '../templates/main/tpl/';
+            $text   = parse_markers($_POST['text'], 1);
+            $title  = trim($_POST['title']);
         
-        $dir = @dir($path);
+            $ft->assign(array(
+                'TITLE'         =>$title, 
+                'TEXT'          =>br2nl($text), 
+                'PG_TEXT'       =>nl2br($text), 
+                'PAGE_PREVIEW'  =>true
+            ));
         
-        // definiowanie dynamicznej czesci szablonu
-        $ft->define('form_pageedit', "form_pageedit.tpl");
-        $ft->define_dynamic("template_row", "form_pageedit");
+        } else {
         
-        // wyswietlanie listy dostepnych szablonow
-        while($file = $dir->read()) {
-            
-            // pomijamy szablony stanowiace skladowa calej strony
-            if(eregi("_page.tpl", $file)) {
-                
-                $file = explode('_', $file);
-                $ft->assign(array(
-                    'TEMPLATE_ASSIGNED' =>$file[0], 
-                    'CURRENT_TPL'       =>$assigned_tpl == $file[0] ? 'selected="selected"' : ''
-                ));
-                
-                $ft->parse('TEMPLATE_ROW', ".template_row");
-            }
+            $ft->assign(array( 
+                'PAGE_PREVIEW'  =>false
+            ));
         }
         
-        $dir->close();
-							
-		if($published == "Y") {
-			$ft->assign('CHECKBOX_YES', 'checked="checked"');
-		} else {
-			$ft->assign('CHECKBOX_NO', 'checked="checked"');
-		}
-		
-		if(!empty($image)) {
-		    
-		    $ft->define("form_imageedit", "form_imageedit.tpl");
-		    $ft->assign(array(
-                'IMAGE'             =>$image, 
-                'OVERWRITE_PHOTO'   =>'Poprzednie zostanie nadpisane'
-		    ));
-            // parsujemy szablon informujacy o do³±czonym do wpisu zdjêciu
-			$ft->parse('IF_IMAGE_EXIST', ".form_imageedit");
-		}	
-
-		$ft->parse('ROWS',	".form_pageedit");
-		break;
-
-	case "edit": // edycja wybranego wpisu
+        // submit formularza
+        if(!empty($post)) {
+            if($permarr['writer']) {
 	
-        if($permarr['writer']) {
-	
-            $text           = $_POST['text'];
-            $title          = $_POST['title'];
-            $published      = $_POST['published'];
-            $template_name  = $_POST['template_name'];
+                $text           = $_POST['text'];
+                $title          = $_POST['title'];
+                $published      = $_POST['published'];
+                $template_name  = $_POST['template_name'];
             
-            $text = parse_markers($text, 1);
+                $text = parse_markers($text, 1);
 		
-            $query = sprintf("
-                UPDATE 
-                    %1\$s 
-                SET 
-                    title           = '%2\$s', 
-                    text            = '%3\$s', 
-                    published       = '%4\$s', 
-                    assigned_tpl    = '%5\$s' 
-                WHERE 
-                    id = '%6\$d'", 
-		
-                TABLE_PAGES, 
-                $title, 
-                $text, 
-                $published, 
-                $template_name, 
-                $_GET['id']
-            );
-		
-            $db->query($query);
-            
-            // usuwamy istniej±ce zdjêcie
-            if(isset($_POST['delete_image']) && (($_POST['delete_image']) == 1)) {
-                
                 $query = sprintf("
                     UPDATE 
                         %1\$s 
                     SET 
-                        image = '' 
+                        title           = '%2\$s', 
+                        text            = '%3\$s', 
+                        published       = '%4\$s', 
+                        assigned_tpl    = '%5\$s' 
                     WHERE 
-                        id = '%2\$d'", 
-                
+                        id = '%6\$d'", 
+		
                     TABLE_PAGES, 
+                    $title, 
+                    $text, 
+                    $published, 
+                    $template_name, 
                     $_GET['id']
                 );
-                
+		
                 $db->query($query);
-            }
             
-            // dodajemy zdjêcie do wpisu
-            if(!empty($_FILES['file']['name'])) {
+                // usuwamy istniej±ce zdjêcie
+                if(isset($_POST['delete_image']) && (($_POST['delete_image']) == 1)) {
                 
-                $up = new upload;
-                $upload_dir = "../photos";
-			
-                // upload pliku na serwer.
-                $file = $up->upload_file($upload_dir, 'file', true, true, 0, "jpg|jpeg|gif");
-                if($file == false) {
-				
-				    echo $up->error;
-                } else {
-			    
                     $query = sprintf("
                         UPDATE 
                             %1\$s 
                         SET 
-                            image = '%2\$s' 
+                            image = '' 
                         WHERE 
-                            id = '%3\$d'", 
-			    
-                        TABLE_PAGES,
-                        $file,
+                            id = '%2\$d'", 
+                
+                        TABLE_PAGES, 
                         $_GET['id']
                     );
                 
-				    $db->query($query);
+                    $db->query($query);
+                }
+            
+                // dodajemy zdjêcie do wpisu
+                if(!empty($_FILES['file']['name'])) {
+                
+                    $up = new upload;
+                    $upload_dir = "../photos";
+			
+                    // upload pliku na serwer.
+                    $file = $up->upload_file($upload_dir, 'file', true, true, 0, "jpg|jpeg|gif");
+                    if($file == false) {
+				
+				        echo $up->error;
+                    } else {
+			    
+                        $query = sprintf("
+                            UPDATE 
+                                %1\$s 
+                            SET 
+                                image = '%2\$s' 
+                            WHERE 
+                                id = '%3\$d'", 
+			    
+                            TABLE_PAGES,
+                            $file,
+                            $_GET['id']
+                        );
+                
+				        $db->query($query);
+                    }
+                }
+		
+                $ft->assign('CONFIRM', $i18n['edit_page'][0]);
+                $ft->parse('ROWS',	".result_note");
+            } else {
+            
+                $monit[] = $i18n['edit_page'][3];
+            
+                foreach ($monit as $error) {
+			    
+                    $ft->assign('ERROR_MONIT', $error);
+                    $ft->parse('ROWS', ".error_row");
+                }
+                $ft->parse('ROWS', "error_reporting");
+            }
+        // wyswietlanie noty  
+        } else {
+	
+            $query = sprintf("
+                SELECT * FROM 
+                    %1\$s 
+                WHERE 
+                    id = '%2\$d'", 
+		
+                TABLE_PAGES, 
+                $_GET['id']
+            );
+		
+            $db->query($query);
+            $db->next_record();
+		
+            $title          = $db->f("title");
+            $text           = $db->f("text");
+            $published      = $db->f("published");
+            $image          = $db->f("image");
+            $assigned_tpl   = $db->f("assigned_tpl");
+		
+            $ft->assign(array(
+                'ID'	=>$_GET['id'],
+                'TITLE'	=>!empty($preview) ? $_POST['title'] : $title,
+                'TEXT'	=>!empty($preview) ? br2nl($_POST['text']) : br2nl($text)
+            ));
+        
+            $path = '../templates/main/tpl/';
+        
+            $dir = @dir($path);
+        
+            // definiowanie dynamicznej czesci szablonu
+            $ft->define('form_pageedit', "form_pageedit.tpl");
+            $ft->define_dynamic("template_row", "form_pageedit");
+        
+            // wyswietlanie listy dostepnych szablonow
+            while($file = $dir->read()) {
+            
+                // pomijamy szablony stanowiace skladowa calej strony
+                if(eregi("_page.tpl", $file)) {
+                
+                    $file = explode('_', $file);
+                    $ft->assign(array(
+                        'TEMPLATE_ASSIGNED' =>$file[0], 
+                        'CURRENT_TPL'       =>$assigned_tpl == $file[0] ? 'selected="selected"' : ''
+                    ));
+                
+                    $ft->parse('TEMPLATE_ROW', ".template_row");
                 }
             }
+        
+            $dir->close();
+							
+            if($published == "Y") {
+                $ft->assign('CHECKBOX_YES', 'checked="checked"');
+            } else {
+                $ft->assign('CHECKBOX_NO', 'checked="checked"');
+            }
 		
-            $ft->assign('CONFIRM', $i18n['edit_page'][0]);
-            $ft->parse('ROWS',	".result_note");
-        } else {
+            if(!empty($image)) {
+		    
+                $ft->define("form_imageedit", "form_imageedit.tpl");
+                $ft->assign(array(
+                    'IMAGE'             =>$image, 
+                    'OVERWRITE_PHOTO'   =>'Poprzednie zostanie nadpisane'
+                    ));
+                // parsujemy szablon informujacy o do³±czonym do wpisu zdjêciu
+                $ft->parse('IF_IMAGE_EXIST', ".form_imageedit");
+            }
             
-            $monit[] = $i18n['edit_page'][3];
+            $ft->parse('ROWS', ".form_pageedit");
             
-            foreach ($monit as $error) {
-			    
-			    $ft->assign('ERROR_MONIT', $error);
-			    
-			    $ft->parse('ROWS',	".error_row");
-			}
-			
-			$ft->parse('ROWS', "error_reporting");
         }
-		break;
-
+        break;
+        
 	case "delete": // usuwanie wybranego wpisu
 	
         // potwierdzenie usuniecia strony

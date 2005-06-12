@@ -1,15 +1,14 @@
 <?php
 
 // deklaracja zmiennej $action::form
-$action = empty($_GET['action']) ? '' : $_GET['action'];
+$post       = empty($_POST['post']) ? '' : $_POST['post'];
+$preview    = empty($_POST['preview']) ? '' : $_POST['preview'];
 
 // definicja szablonow parsujacych wyniki bledow.
 $ft->define("error_reporting", "error_reporting.tpl");
 $ft->define_dynamic("error_row", "error_reporting");
 
-switch($action) {
-	
-	case "add":
+if(!empty($post)) {
 	
         if($permarr['writer']) {
 	
@@ -137,74 +136,91 @@ switch($action) {
                         
             $ft->parse('ROWS', "error_reporting");
         }
-		break;
-
-	default:
-		
-        $query = sprintf("
-            SELECT 
-                id, parent_id, title 
-            FROM 
-                %1\$s 
-            WHERE 
-                published = 'Y' 
-            AND 
-                parent_id = '%2\$d' 
-            ORDER BY 
-                id 
-            ASC", 
-	
-            TABLE_PAGES,
-            0
-        );
-	
-        $db->query($query);
-	
-        $ft->define("form_pageadd", "form_pageadd.tpl");
-        $ft->define_dynamic("page_row", "form_pageadd");
+} else {
+    
+    if(!empty($preview)) {
         
-        while($db->next_record()) {
+        $p_text   = parse_markers($_POST['text'], 1);
+        $p_title  = trim($_POST['title']);
+        
+        $ft->assign(array(
+            'P_TITLE'       =>$p_title, 
+            'P_TEXT'        =>br2nl($p_text), 
+            'PG_TEXT'       =>nl2br($p_text), 
+            'PAGE_PREVIEW'  =>true
+        ));
+        
+    } else {
+        
+        $ft->assign(array(
+            'P_TITLE'       =>!empty($p_title) ? $p_title : '', 
+            'P_TEXT'        =>!empty($p_text) ? $p_text : '', 
+            'PAGE_PREVIEW'  =>false
+        ));
+    }
 		
-            $page_id      = $db->f("id");
-            $parent_id    = $db->f("parent_id");
-            $title        = $db->f("title");
+    $query = sprintf("
+        SELECT 
+            id, parent_id, title 
+        FROM 
+            %1\$s 
+        WHERE 
+            published = 'Y' 
+        AND 
+            parent_id = '%2\$d' 
+        ORDER BY 
+            id 
+        ASC", 
+	
+        TABLE_PAGES,
+        0
+    );
+	
+    $db->query($query);
+    
+    $ft->define("form_pageadd", "form_pageadd.tpl");
+    $ft->define_dynamic("page_row", "form_pageadd");
+    
+    while($db->next_record()) {
+        
+        $page_id      = $db->f("id");
+        $parent_id    = $db->f("parent_id");
+        $title        = $db->f("title");
+        
+        $ft->assign(array(
+            'P_ID'		=>$page_id,
+            'P_NAME'	=>$title
+        ));
+        
+        $ft->parse('PAGE_ROW', ".page_row");
+        
+        get_addpage_cat($page_id, 2);
+    }
+        
+    $path = '../templates/main/tpl/';
+        
+    $dir = @dir($path);
+        
+    // definiowanie dynamicznej czesci szablonu
+    $ft->define_dynamic("template_row", "form_pageadd");
+        
+    // wyswietlanie listy dostepnych szablonow
+    while($file = $dir->read()) {
+        
+        // pomijamy szablony stanowiace skladowa calej strony
+        if(eregi("_page.tpl", $file)) {
+            $file = explode('_', $file);
             
             $ft->assign(array(
-                'P_ID'		=>$page_id,
-                'P_NAME'	=>$title
+                'TEMPLATE_ASSIGNED' =>$file[0]
             ));
-        
-            $ft->parse('PAGE_ROW', ".page_row");
-        
-            get_addpage_cat($page_id, 2);
-        }
-        
-        $path = '../templates/main/tpl/';
-        
-        $dir = @dir($path);
-        
-        // definiowanie dynamicznej czesci szablonu
-        $ft->define_dynamic("template_row", "form_pageadd");
-        
-        // wyswietlanie listy dostepnych szablonow
-        while($file = $dir->read()) {
-            
-            // pomijamy szablony stanowiace skladowa calej strony
-            if(eregi("_page.tpl", $file)) {
                 
-                $file = explode('_', $file);
-                $ft->assign(array(
-                    'TEMPLATE_ASSIGNED'		=>$file[0]
-                ));
-                
-                $ft->parse('TEMPLATE_ROW', ".template_row");
-            }
+            $ft->parse('TEMPLATE_ROW', ".template_row");
         }
-        
-        $dir->close();
-	
-        $ft->parse('ROWS', "form_pageadd");
-        break;
+    }
+    $dir->close();
+    
+    $ft->parse('ROWS', "form_pageadd");
 }
 
 ?>
