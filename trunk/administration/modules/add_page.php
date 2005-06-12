@@ -140,21 +140,21 @@ if(!empty($post)) {
     
     if(!empty($preview)) {
         
-        $p_text   = str_replace('\\', '', $_POST['text']);
-        $p_title  = trim(str_replace('\\', '', $_POST['title']));
+        $text   = str_replace('\\', '', $_POST['text']);
+        $title  = trim(str_replace('\\', '', $_POST['title']));
         
         $ft->assign(array(
-            'P_TITLE'       =>$p_title, 
-            'P_TEXT'        =>br2nl($p_text), 
-            'PG_TEXT'       =>nl2br(parse_markers($p_text, 1)), 
+            'P_TITLE'       =>$title, 
+            'P_TEXT'        =>br2nl($text), 
+            'PG_TEXT'       =>nl2br(parse_markers($text, 1)), 
             'PAGE_PREVIEW'  =>true
         ));
         
     } else {
         
         $ft->assign(array(
-            'P_TITLE'       =>!empty($p_title) ? $p_title : '', 
-            'P_TEXT'        =>!empty($p_text) ? $p_text : '', 
+            'P_TITLE'       =>!empty($title) ? $title : '', 
+            'P_TEXT'        =>!empty($text) ? $text : '', 
             'PAGE_PREVIEW'  =>false
         ));
     }

@@ -16,7 +16,7 @@ switch ($action) {
         // podglad
         if(!empty($preview)) {
         
-            $text   = $_POST['text'];
+            $text   = str_replace('\\', '', $_POST['text']);
             $title  = trim(str_replace('\\', '', $_POST['title']));
         
             $ft->assign(array(
