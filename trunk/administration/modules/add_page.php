@@ -140,13 +140,13 @@ if(!empty($post)) {
     
     if(!empty($preview)) {
         
-        $p_text   = parse_markers($_POST['text'], 1);
-        $p_title  = trim($_POST['title']);
+        $p_text   = str_replace('\\', '', $_POST['text']);
+        $p_title  = trim(str_replace('\\', '', $_POST['title']));
         
         $ft->assign(array(
             'P_TITLE'       =>$p_title, 
             'P_TEXT'        =>br2nl($p_text), 
-            'PG_TEXT'       =>nl2br($p_text), 
+            'PG_TEXT'       =>nl2br(parse_markers($p_text, 1)), 
             'PAGE_PREVIEW'  =>true
         ));
         

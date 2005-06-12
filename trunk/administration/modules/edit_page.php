@@ -16,13 +16,13 @@ switch ($action) {
         // podglad
         if(!empty($preview)) {
         
-            $text   = parse_markers($_POST['text'], 1);
-            $title  = trim($_POST['title']);
+            $text   = $_POST['text'];
+            $title  = trim(str_replace('\\', '', $_POST['title']));
         
             $ft->assign(array(
                 'TITLE'         =>$title, 
                 'TEXT'          =>br2nl($text), 
-                'PG_TEXT'       =>nl2br($text), 
+                'PG_TEXT'       =>nl2br(parse_markers($text, 1)), 
                 'PAGE_PREVIEW'  =>true
             ));
         
@@ -150,8 +150,8 @@ switch ($action) {
 		
             $ft->assign(array(
                 'ID'	=>$_GET['id'],
-                'TITLE'	=>!empty($preview) ? $_POST['title'] : $title,
-                'TEXT'	=>!empty($preview) ? br2nl($_POST['text']) : br2nl($text)
+                'TITLE'	=>!empty($preview) ? str_replace('\\', '', $_POST['title']) : $title,
+                'TEXT'	=>!empty($preview) ? br2nl(str_replace('\\', '', $_POST['text'])) : br2nl($text)
             ));
         
             $path = '../templates/main/tpl/';
