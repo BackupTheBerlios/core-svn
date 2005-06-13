@@ -21,7 +21,7 @@ $query = sprintf("
     AND 
         MONTH(a.date) = '%4\$d' 
     AND 
-        DAY(a.date) = '%5\$d'    
+        DAYOFMONTH(a.date) = %5\$d 
 	GROUP BY 
 		a.date 
 	DESC",
