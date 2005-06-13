@@ -27,6 +27,33 @@
 		</form>
 		<br />
 		
+		<span class="title">kalendarz</span><br />
+		<table cellpadding="3" cellspacing="0" border="0" width="155">
+            <tr>
+                <td colspan="7" class="month">{LONGMONTHS}</td>
+            </tr>
+            <tr>
+                <!-- BEGIN DYNAMIC BLOCK: shortdays_row -->
+                <th class='week'>{SHORTDAYS}</th>
+                <!-- END DYNAMIC BLOCK: shortdays_row -->
+            </tr>
+            <tr>
+                <!-- BEGIN DYNAMIC BLOCK: days_row -->
+                <!-- IFDEF: TABLE_D -->
+                <td></td>
+                <!-- ELSE -->
+                <td class='{DAYS_CLASS}'>{DAY}</td>
+                <!-- ENDIF -->
+            <!-- IFDEF: TABLE_R -->
+            </tr>
+            <tr>
+            <!-- ELSE -->
+            <!-- ENDIF -->
+                <!-- END DYNAMIC BLOCK: days_row -->
+            </tr>
+        </table>
+        <br />
+		
 		<!-- IFDEF: PAGE_NAME -->
 		<span class="title">menu</span><br />
         <ul>
@@ -117,7 +144,7 @@
 	<div class="clear"></div>
 	
 	<div class="engine">
-        Based on <a href="http://core.no1-else.com/" target="_blank">Core</a>
+        Based on <a href="http://core-cms.com/" target="_blank">Core</a>
 	</div>
     <script type="text/javascript">
     <!--

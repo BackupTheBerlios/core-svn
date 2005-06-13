@@ -37,6 +37,9 @@ $i18n['comments_view'] = array();
 $i18n['comments_view'][0] = 'W bazie danych nie ma wpisu o ¿±danym id.';
 $i18n['comments_view'][1] = 'Szukasz czego¶?';
 
+$i18n['date_view'] = array();
+$i18n['date_view'][0] = 'Nie znaleziono wpisów z zakresu daty, jaki zosta³ podany.';
+
 $i18n['main_view'] = array();
 $i18n['main_view'][0] = 'Id¼ do strony:';
 $i18n['main_view'][1] = 'W bazie danych nie ma ¿adnego wpisu. Mo¿esz siê <a href="administration/">zalogowaæ</a>.';

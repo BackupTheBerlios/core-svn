@@ -18,6 +18,7 @@ define('PATH_TO_MODULES', 'modules');
 
 require_once(PATH_TO_CLASSES. '/cls_db_mysql.php'); // dodawanie pliku konfigurujacego bibliotekê baz danych
 require_once(PATH_TO_CLASSES. '/cls_fast_template.php');
+require_once(PATH_TO_CLASSES. '/cls_calendar.php');
 
 $rewrite = get_config('mod_rewrite'); // pobieranie informacji o uzyciu mod_rewrite
 $max_photo_width = get_config('max_photo_width'); //maksymalna szerokosc fotki
@@ -128,6 +129,7 @@ class loader {
             case '6'    : $this->mod = 'articles_view';     break;
             case '7'    : $this->mod = 'newsletter';        break;
             case '8'    : $this->mod = 'search';            break;
+            case '9'    : $this->mod = 'date_view';         break;
             
             default     : $this->mod = 'main_view';
         }
@@ -189,6 +191,9 @@ $modules = array(
 while(list($m) = each($modules)) {
     require_once PATH_TO_MODULES . '/' . $modules[$m] . '.php';
 }
+
+$calendar = new calendar();
+$calendar->display_calendar();
 
 $ft->parse('MAIN', $assigned_tpl);
 $ft->FastPrint();
