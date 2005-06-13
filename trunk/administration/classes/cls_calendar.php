@@ -86,30 +86,28 @@ class calendar {
                         'DAY'       =>$this->intDay, 
                         'DAYS_CLASS'=>'day_current'
                     ));
+                }
+                
+                if(in_array($this->intDay, $date)) {
                     
-                    $this->intDay++;
-                } elseif(in_array($this->intDay, $date)) {
                     $ft->assign(array(
                         'DAY'       =>$datelink, 
-                        'DAYS_CLASS'=>'day_hit'
+                        'DAYS_CLASS'=>$this->intDay == date('d') ? 'day_current_hit' : 'day_hit'
                     ));
-                    
-                    $this->intDay++;
                 } elseif($this->intDay != date('d')) {
                     
                     $ft->assign(array(
                         'DAY'       =>$this->intDay, 
                         'DAYS_CLASS'=>'day'
                     ));
-            
-                    $this->intDay++;
                 }
+                
+                $this->intDay++;
             }
             
             $ft->assign('TABLE_R', $a%7 == 0 ? true : false);
             $ft->parse('DAYS_ROW', ".days_row");
         }
-        
     }
     
 }

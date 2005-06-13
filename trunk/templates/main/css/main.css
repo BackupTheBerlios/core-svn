@@ -347,10 +347,28 @@ li.child {
 	text-align: center;	
 }
 
+.day_current_hit {
+	background-color: #FFFFFF; 		
+	border-left: 1px solid #FFFFFF;
+	border-top: 1px solid #FFFFFF;	
+	height: 20px;
+	width: 30px;	
+	font-size: 10px;
+	color: #FF4200;
+	vertical-align: middle;
+	text-align: center;	
+}
+
 .day_hit a:link, .day_hit a:active, .day_hit a:visited,
 .week a:link,.week a:active,.week a:visited {
 	font-size: 10px;
 	color: #0076C1;
+}
+
+.day_current_hit a:link, .day_current_hit a:active, .day_current_hit a:visited {
+    font-size: 10px;
+	color: #FF4200;
+	text-decoration: underline;
 }
 
 .week {
