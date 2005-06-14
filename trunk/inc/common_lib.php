@@ -226,7 +226,7 @@ function pagination($url, $mainposts_per_page, $num_items) {
 	    $page_string .= '&nbsp;&nbsp;<a href="' . $url . ($on_page * $mainposts_per_page) . '">' . "<b>nastêpna</b> " . '</a>';
 	}
 	
-	$ret['mainposts_per_page'] = $mainposts_per_page;
+	//$ret['mainposts_per_page'] = $mainposts_per_page;
 	$ret['page_string']        = $page_string;
 	
 	return $ret;
