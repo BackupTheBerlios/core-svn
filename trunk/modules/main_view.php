@@ -52,7 +52,7 @@ $query = sprintf("
     TABLE_CATEGORY, 
     TABLE_COMMENTS,
     $start,
-    $pagination['mainposts_per_page']
+    $mainposts_per_page
 );
 
 $db->query($query);
