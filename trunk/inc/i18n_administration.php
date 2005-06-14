@@ -124,4 +124,7 @@ $i18n['edit_users'][2] = 'U¿ytkownik zosta³ usuniêty.';
 $i18n['edit_users'][3] = '<b>Nie masz uprawnieñ</b> do usuwania u¿ytkowników.';
 $i18n['edit_users'][4] = '<b>Nie masz uprawnieñ</b> do edycji u¿ytkowników lub edytujesz nie swoje dane.';
 
+$i18n['main_view'] = array();
+$i18n['main_view'][0] = 'Id¼ do strony:';
+
 ?>

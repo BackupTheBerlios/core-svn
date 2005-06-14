@@ -1,13 +1,31 @@
 <?php
 
-if ((bool)$rewrite) {
-    $pagination_link = 'index.';
-} else {
-    $pagination_link = 'index.php?p=all&amp;start=';
-}
+$pagination_link    = (bool)$rewrite ? 'index.' : 'index.php?p=all&amp;start=';
+$mainposts_per_page = get_config('mainposts_per_page');
+
+// zliczamy posty
+$query = sprintf("
+    SELECT 
+        COUNT(*) AS id 
+    FROM 
+        %1\$s 
+    WHERE 
+        published = '1' 
+    AND 
+        only_in_category = '-1' 
+    ORDER BY 
+        date", 
+	
+    TABLE_MAIN
+);
+
+$db->query($query);
+$db->next_record();
+	
+$num_items = $db->f("0");
 
 // inicjowanie funkcji stronnicuj±cej wpisy
-$pagination = main_pagination($pagination_link, '', 'mainposts_per_page', 'WHERE published = \'1\' AND only_in_category = \'-1\'', TABLE_MAIN, false);
+$pagination = pagination($pagination_link, $mainposts_per_page, $num_items);
 
 $query = sprintf("
 	SELECT 

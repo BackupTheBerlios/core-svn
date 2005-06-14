@@ -1,8 +1,5 @@
 <?php
 
-// inicjowanie funkcji stronnicuj±cej wpisy
-main_pagination('main.php?p=5&amp;start=', '', 'editposts_per_page', '', TABLE_COMMENTS, false);
-
 // deklaracja zmiennej $action::form
 $action = empty($_GET['action']) ? '' : $_GET['action'];
 
@@ -164,20 +161,27 @@ switch ($action) {
 
 	default:
 	
-		$query = sprintf("
-            SELECT * FROM 
+        $mainposts_per_page = get_config('editposts_per_page');
+
+        // zliczamy posty
+        $query = sprintf("
+            SELECT 
+                COUNT(*) AS id 
+            FROM 
                 %1\$s 
-            WHERE 
-                config_name = '%2\$s'", 
-		
-            TABLE_CONFIG, 
-            "editposts_per_page"
+            ORDER BY 
+                date", 
+	
+            TABLE_COMMENTS
         );
-		
-		$db->query($query);
-		$db->next_record();
-			
-		$editposts_per_page = $db->f("config_value");
+
+        $db->query($query);
+        $db->next_record();
+	
+        $num_items = $db->f("0");
+
+        // inicjowanie funkcji stronnicuj±cej wpisy
+        $pagination = pagination('main.php?p=5&amp;start=', $mainposts_per_page, $num_items);
 		
 		$query = sprintf("
             SELECT * FROM 
@@ -189,7 +193,7 @@ switch ($action) {
 		
             TABLE_COMMENTS, 
             $start, 
-            $editposts_per_page
+            $mainposts_per_page
         );
 		
 		$db->query($query);
@@ -220,9 +224,14 @@ switch ($action) {
 				    'TEXT'		=>$text,
 				    'DATE'		=>$date[0],
 				    'AUTHOR'	=>$author,
-				    'AUTHOR_IP'	=>$author_ip, 
-				    'STRING'    =>$page_string !== '' ? '<b>Id¼ do strony:</b> ' . $page_string : $page_string
-				));					
+				    'AUTHOR_IP'	=>$author_ip
+				));
+				
+				if(!empty($pagination['page_string'])) {
+                    $ft->assign('STRING', sprintf("<b>%s</b> %s", $i18n['main_view'][0], $pagination['page_string']));
+                } else {
+                    $ft->assign('STRING', $pagination['page_string']);
+                }
 			
 				// deklaracja zmiennej $idx1::color switcher
 				$idx1 = empty($idx1) ? '' : $idx1;

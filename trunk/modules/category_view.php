@@ -2,14 +2,55 @@
 
 if(is_numeric($id)) {
 
-    if ((bool)$rewrite) {
-        $cat_pagination_link = 'category.' . $id . '.';
-    } else {
-        $cat_pagination_link = 'index.php?p=4&id=' . $id . '&amp;start=';
-    }
+    $cat_pagination_link = (bool)$rewrite ? 'category.' . $id . '.' : 'index.php?p=4&id=' . $id . '&amp;start=';
+    
+    // zliczamy liczbe postow na strone
+    $query = sprintf("
+        SELECT 
+            category_post_perpage 
+        FROM 
+            %1\$s 
+        WHERE 
+            category_id = '%2\$d'", 
+    
+        TABLE_CATEGORY, 
+        $id
+    );
+        
+    $db->query($query);
+    $db->next_record();
+    
+    $mainposts_per_page = $db->f('category_post_perpage');
+    
+    // zliczamy liczbe rekordow
+    $query = sprintf("
+        SELECT 
+            COUNT(*) AS id 
+        FROM 
+            %1\$s a 
+        LEFT JOIN 
+            %2\$s b 
+        ON 
+            a.id = b.news_id 
+        WHERE 
+            b.category_id = %3\$d 
+        AND 
+            published = 1 
+        ORDER BY 
+            date", 
+	
+        TABLE_MAIN, 
+        TABLE_ASSIGN2CAT, 
+        $id
+    );
+    
+    $db->query($query);
+	$db->next_record();
+	
+	$num_items = $db->f("0");
 
     // inicjowanie funkcji stronnicujacej wpisy
-    main_pagination($cat_pagination_link, $id, 'mainposts_per_page', '', TABLE_MAIN, true, true);
+    $pagination = pagination($cat_pagination_link, $mainposts_per_page, $num_items);
 
     // pobieramy nazwê szablonu jaki przydzielony jest do danej kategorii
     $query = sprintf("
@@ -113,10 +154,10 @@ if(is_numeric($id)) {
                 'PERMA_LINK'        =>$perma_link
             ));
                         
-            if($page_string) {
-                $ft->assign('STRING', $i18n['category_view'][0] . $page_string);
+            if(!empty($pagination['page_string'])) {
+                $ft->assign('STRING', sprintf("<b>%s</b> %s", $i18n['main_view'][0], $pagination['page_string']));
             } else {
-                $ft->assign('STRING', $page_string);
+                $ft->assign('STRING', $pagination['page_string']);
             }
 
             get_comments_link($comments_allow, $comments, $id);

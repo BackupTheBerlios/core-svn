@@ -4,15 +4,40 @@ $page_string = empty($page_string) ? '' : $page_string;
 
 // inicjowanie zmiennej przechowuj±cej szukan± frazê
 $search_word = trim($_REQUEST['search_word']);
+$search_link = (bool)$rewrite ? sprintf('search.%s.', $search_word) : sprintf('index.php?p=8&search_word=%s&amp;start=', $search_word);
 
-if((bool)$rewrite) {
-    $search_link = sprintf('search.%s.', $search_word);
-} else {
-    $search_link = sprintf('index.php?p=8&search_word=%s&amp;start=', $search_word);
-}
+$mainposts_per_page = get_config('mainposts_per_page');
+
+// zliczamy sume postow
+$query = sprintf("
+    SELECT COUNT(*) AS 
+        id 
+    FROM 
+        %1\$s a 
+    LEFT JOIN 
+        %2\$s b 
+    ON 
+        a.id = b.news_id 
+    WHERE 
+        published = 1 
+    AND 
+        a.text LIKE '%%" . $search_word . "%%' 
+    OR 
+        a.title LIKE '%%" . $search_word . "%%' 
+    ORDER BY 
+        date", 
+	
+    TABLE_MAIN, 
+    TABLE_ASSIGN2CAT
+);
+
+$db->query($query);
+$db->next_record();
+	
+$num_items = $db->f("0");
 
 // inicjowanie funkcji stronnicuj±cej wpisy
-main_pagination($search_link, '', 'mainposts_per_page', '', TABLE_MAIN, false, false, true);
+$pagination = pagination($search_link, $mainposts_per_page, $num_items);
 
 if(!empty($search_word)) {
 	
@@ -139,9 +164,14 @@ if(!empty($search_word)) {
                 'NEWS_TEXT'			=>$search->highlight($search_word, $text),
                 'NEWS_AUTHOR'		=>$author,
                 'NEWS_ID'			=>$id,
-                'STRING'			=>$page_string, 
                 'PERMA_LINK'        =>$perma_link
             ));
+            
+            if(!empty($pagination['page_string'])) {
+                $ft->assign('STRING', sprintf("<b>%s</b> %s", $i18n['main_view'][0], $pagination['page_string']));
+            } else {
+                $ft->assign('STRING', $pagination['page_string']);
+            }
 								
 			get_comments_link($comments_allow, $comments, $id);
 			get_image_status($image, $id);
