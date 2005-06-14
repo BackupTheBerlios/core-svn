@@ -154,10 +154,10 @@ function set_config($name, $value) {
 // stronnicowanie 
 function pagination($url, $mainposts_per_page, $num_items) {
     
-    global $start;
+    global $ft, $start;
 
     $ret = array();
-	
+    $total_pages = '';
 	// Obliczanie liczby stron
 	if($mainposts_per_page > 0) {
 	    
@@ -219,14 +219,23 @@ function pagination($url, $mainposts_per_page, $num_items) {
 	}
 	
 	if($on_page > 1) {
-	    $page_string = ' <a href="' . $url . (($on_page - 2) * $mainposts_per_page) . '">' . " <b>poprzednia</b>" . '</a>&nbsp;&nbsp;' . $page_string;
+	    $ft->assign(array(
+            'MOVE_BACK'      =>true, 
+            'MOVE_BACK_LINK' =>$url.(($on_page - 2)*$mainposts_per_page)
+        ));
+	} else {
+	    $ft->assign('MOVE_BACK', false);
 	}
 	
 	if($on_page < $total_pages) {
-	    $page_string .= '&nbsp;&nbsp;<a href="' . $url . ($on_page * $mainposts_per_page) . '">' . "<b>nastêpna</b> " . '</a>';
+	    $ft->assign(array(
+            'MOVE_FORWARD'      =>true, 
+            'MOVE_FORWARD_LINK' =>$url.($on_page*$mainposts_per_page)
+        ));
+	} else {
+	    $ft->assign('MOVE_FORWARD', false);
 	}
 	
-	//$ret['mainposts_per_page'] = $mainposts_per_page;
 	$ret['page_string']        = $page_string;
 	
 	return $ret;

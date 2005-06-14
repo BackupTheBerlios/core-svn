@@ -21,7 +21,21 @@
 	</tr>
 	<!-- END DYNAMIC BLOCK: row -->
 	<tr>
-		<td id="pagination" colspan="6">{STRING}</td>
+		<td id="pagination" colspan="6">
+		<!-- IFDEF: PAGINATED -->
+		<b>Id¼ do strony</b>:
+		<!-- ELSE -->
+		<!-- ENDIF -->
+		<!-- IFDEF: MOVE_BACK -->
+		<strong><a href="{MOVE_BACK_LINK}">poprzednia</a></strong>
+		<!-- ELSE -->
+		<!-- ENDIF -->
+			{STRING}
+		<!-- IFDEF: MOVE_FORWARD -->
+		<strong><a href="{MOVE_FORWARD_LINK}">nastêpna</a></strong> 
+        <!-- ELSE -->
+        <!-- ENDIF -->
+		</td>
 	</tr>
 </table>
 <!-- END: editlist_comments.tpl -->

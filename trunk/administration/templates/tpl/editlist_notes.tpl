@@ -26,7 +26,21 @@
 	</tr>
 	<!-- END DYNAMIC BLOCK: row -->
 	<tr>
-		<td id="pagination" colspan="8">{STRING}</td>
+		<td id="pagination" colspan="8">
+		<!-- IFDEF: PAGINATED -->
+		<b>Id¼ do strony</b>:
+		<!-- ELSE -->
+		<!-- ENDIF -->
+		<!-- IFDEF: MOVE_BACK -->
+		<strong><a href="{MOVE_BACK_LINK}">poprzednia</a></strong>
+		<!-- ELSE -->
+		<!-- ENDIF -->
+			{STRING}
+		<!-- IFDEF: MOVE_FORWARD -->
+		<strong><a href="{MOVE_FORWARD_LINK}">nastêpna</a></strong> 
+        <!-- ELSE -->
+        <!-- ENDIF -->
+		</td>
 	</tr>
 	<tr>
 		<td class="addinfo" colspan="4"><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="doit('selected_note[]')">Prze³±cz zaznaczenie</a></td>

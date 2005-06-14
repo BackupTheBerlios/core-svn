@@ -91,14 +91,10 @@ if($db->num_rows() > 0) {
 	       'NEWS_AUTHOR'   =>$author,
 	       'NEWS_ID'       =>$id,
 	       'NEWS_CATEGORY' =>$c_id,
-	       'PERMA_LINK'    =>$perma_link,
+	       'PERMA_LINK'    =>$perma_link, 
+	       'PAGINATED'     =>!empty($pagination['page_string']) ? true : false, 
+	       'STRING'        =>$pagination['page_string']
 	    ));
-	    
-	    if(!empty($pagination['page_string'])) {
-	        $ft->assign('STRING', sprintf("<b>%s</b> %s", $i18n['main_view'][0], $pagination['page_string']));
-	    } else {
-	        $ft->assign('STRING', $pagination['page_string']);
-	    }
 	    
 	    get_comments_link($comments_allow, $comments, $id);
 	    get_image_status($image, $id);

@@ -474,14 +474,10 @@ switch ($action) {
                     'TITLE'     =>$title,
                     'DATE'      =>$date[0],
                     'AUTHOR'    =>$author, 
-                    'PUBLISHED' =>$published == 1 ? "Tak" : "Nie"
+                    'PUBLISHED' =>$published == 1 ? "Tak" : "Nie", 
+                    'PAGINATED' =>!empty($pagination['page_string']) ? true : false, 
+                    'STRING'    =>$pagination['page_string']
                 ));
-                
-                if(!empty($pagination['page_string'])) {
-                    $ft->assign('STRING', sprintf("<b>%s</b> %s", $i18n['main_view'][0], $pagination['page_string']));
-                } else {
-                    $ft->assign('STRING', $pagination['page_string']);
-                }
 			
 				// deklaracja zmiennej $idx1::color switcher
 				$idx1 = empty($idx1) ? '' : $idx1;

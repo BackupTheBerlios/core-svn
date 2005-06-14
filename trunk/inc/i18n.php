@@ -22,7 +22,6 @@ $i18n['alter_view'][0] = 'powrót';
 $i18n['alter_view'][1] = 'W bazie danych nie ma wpisu o ¿±danym id';
 
 $i18n['category_view'] = array();
-$i18n['category_view'][0] = '<b>Id¼ do strony:</b> ';
 $i18n['category_view'][1] = '<br />';
 $i18n['category_view'][2] = 'W bazie danych nie ma wpisów z kategorii o ¿adanym id';
 $i18n['category_view'][4] = 'Szukasz czego¶';
@@ -41,7 +40,6 @@ $i18n['date_view'] = array();
 $i18n['date_view'][0] = 'Nie znaleziono wpisów z zakresu daty, jaki zosta³ podany.';
 
 $i18n['main_view'] = array();
-$i18n['main_view'][0] = 'Id¼ do strony:';
 $i18n['main_view'][1] = 'W bazie danych nie ma ¿adnego wpisu. Mo¿esz siê <a href="administration/">zalogowaæ</a>.';
 //jest [2] wykorzystane gdzies ???
 $i18n['main_view'][2] = '&raquo; czytaj dalej';
@@ -87,10 +85,5 @@ $i18n['pages_view'][0] = 'W bazie danych nie ma wpisu o ¿±danym id';
 $i18n['search'] = array();
 $i18n['search'][0] = 'Niestety nie znaleziono ¿adnego rekordu pasuj±cego do ';
 $i18n['search'][1] = 'Nie podano frazy do wyszukania.';
-
-/*
-$i18n[''] = array();
-$i18n[''][] = '';
-*/
 
 ?>
