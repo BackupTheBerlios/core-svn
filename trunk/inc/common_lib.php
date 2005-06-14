@@ -156,8 +156,7 @@ function pagination($url, $mainposts_per_page, $num_items) {
     
     global $start;
 
-    $ret            = array();
-    $total_pages    = empty($total_pages) ? '' : $total_pages;
+    $ret = array();
 	
 	// Obliczanie liczby stron
 	if($mainposts_per_page > 0) {
