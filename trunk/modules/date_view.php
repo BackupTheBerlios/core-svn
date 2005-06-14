@@ -63,14 +63,17 @@ if($db->num_rows() > 0) {
         $text   = show_me_more($text);
 	    
 	    $ft->assign(array(
-	       'DATE'          =>$date,
-	       'NEWS_TITLE'    =>$title,
-	       'NEWS_TEXT'     =>$text,
-	       'NEWS_AUTHOR'   =>$author,
-	       'NEWS_ID'       =>$id,
-	       'NEWS_CATEGORY' =>$c_id,
-	       'PERMA_LINK'    =>$perma_link, 
-	       'STRING'        =>''
+            'DATE'          =>$date,
+            'NEWS_TITLE'    =>$title,
+            'NEWS_TEXT'     =>$text,
+            'NEWS_AUTHOR'   =>$author,
+            'NEWS_ID'       =>$id,
+            'NEWS_CATEGORY' =>$c_id,
+            'PERMA_LINK'    =>$perma_link, 
+            'STRING'        =>'', 
+            'PAGINATED'     =>false, 
+            'MOVE_BACK'     =>false, 
+            'MOVE_FORWARD'  =>false
 	    ));
 	    
 	    get_comments_link($comments_allow, $comments, $id);
@@ -88,7 +91,10 @@ if($db->num_rows() > 0) {
     // Obs³uga b³êdu, kiedy w bazie danych nie ma jeszcze ¿adnego wpisu
     $ft->assign(array(
         'QUERY_FAILED'  =>$i18n['date_view'][0],
-        'STRING'        =>""
+        'STRING'        =>'', 
+        'PAGINATED'     =>false, 
+        'MOVE_BACK'     =>false, 
+        'MOVE_FORWARD'  =>false
     ));
     
     $ft->parse('MAIN', ".query_failed");
