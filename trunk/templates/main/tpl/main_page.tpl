@@ -6,7 +6,7 @@
 
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2" />
 		<meta http-equiv="Content-language" content="pl" />
-		<meta name="generator" content="Core ``svn snapshot``" /> <!-- zostaw dla statystyk -->
+        <meta name="generator" content="Core {CORE_VERSION}" /> <!-- proszę, zostaw dla statystyk -->
 	
 		<script type="text/javascript" src="templates/main/js/functions.js"></script>
 		<script type="text/javascript" src="templates/main/js/js_quicktags/js_quicktags.js"></script>
@@ -127,8 +127,8 @@
 		<span class="title">./dev-log</span> <a href="./"><strong>index</strong></a><br />
 		
 		<div class="right">
-			<a href="javascript:text_resize('content',-1)"><img alt="Pomniejszenie tekstu" src="templates/main/images/minus.jpg" width="12" height="12" /></a>
-			<a href="javascript:text_resize('content',1)"><img alt="Powiększenie tekstu" src="templates/main/images/plus.jpg" width="12" height="12" /></a>
+            <a href="javascript:text_resize('content',-1)"><img alt="Zmniejsz tekst" src="templates/main/images/minus.jpg" width="12" height="12" /></a>
+            <a href="javascript:text_resize('content',1)"><img alt="Powiększ tekst" src="templates/main/images/plus.jpg" width="12" height="12" /></a>
 		</div>
 		
 		<div id="content">

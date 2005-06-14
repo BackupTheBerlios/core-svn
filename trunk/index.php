@@ -34,6 +34,7 @@ if(!isset($_COOKIE['devlog_counter'])){
     set_config('counter', get_config('counter') + 1);
 }
 
+
 //konfiguracja szablonow i design switchera
 if(isset($_COOKIE['devlog_design']) && is_dir('./templates/' . $_COOKIE['devlog_design'] . '/tpl/')){
     
@@ -88,7 +89,8 @@ $ft->assign(array(
     'RSS_LINK'          =>$rss_link,
     'RSSCOMMENTS_LINK'  =>$rssc_link, 
     'SEARCH_LINK'       =>$search_link,
-    'CAT_ALL_LINK'      =>$cat_all_link
+    'CAT_ALL_LINK'      =>$cat_all_link,
+    'CORE_VERSION'      =>get_config('core_version')
 ));
 
 if(!isset($_GET['p'])) {
