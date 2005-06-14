@@ -38,7 +38,10 @@ if($db->num_rows() !== 0) {
     $ft->assign(array(
         'PAGE_TITLE'    =>$title,
         'PAGE_TEXT'     =>$text,
-        'PAGE_ID'       =>$id
+        'PAGE_ID'       =>$id, 
+        'PAGINATED'     =>false, 
+        'MOVE_BACK'     =>false, 
+        'MOVE_FORWARD'  =>false
     ));
     
     // Parsowanie nazw stron rodzicielskich::parent	
@@ -131,7 +134,10 @@ if($db->num_rows() !== 0) {
 	
 	$ft->assign(array(
         'QUERY_FAILED'  =>$i18n['pages_view'][0],
-        'STRING'        =>""
+        'STRING'        =>'', 
+        'PAGINATED'     =>false, 
+        'MOVE_BACK'     =>false, 
+        'MOVE_FORWARD'  =>false
     ));
 	
 	$ft->parse('MAIN', ".query_failed");

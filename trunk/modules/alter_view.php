@@ -60,7 +60,10 @@ if($db->num_rows() > 0) {
         'NEWS_AUTHOR'   =>$author,
         'NEWS_ID'       =>$id,
         'STRING'        =>'', 
-        'PERMA_LINK'    =>$perma_link
+        'PERMA_LINK'    =>$perma_link, 
+        'PAGINATED'     =>false, 
+        'MOVE_BACK'     =>false, 
+        'MOVE_FORWARD'  =>false
     ));
 
     get_comments_link($comments_allow, $comments, $id);
@@ -75,7 +78,10 @@ if($db->num_rows() > 0) {
 
     $ft->assign(array(
         'QUERY_FAILED'  =>$i18n['alter_view'][1],
-        'STRING'        =>''
+        'STRING'        =>'', 
+        'PAGINATED'     =>false, 
+        'MOVE_BACK'     =>false, 
+        'MOVE_FORWARD'  =>false
     ));
 
     $ft->parse('MAIN','.query_failed');

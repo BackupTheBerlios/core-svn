@@ -171,7 +171,9 @@ if(is_numeric($id)) {
         $ft->assign(array(
             'QUERY_FAILED'  =>$i18n['category_view'][2],
             'STRING'        =>'', 
-            'PAGINATED'     =>false
+            'PAGINATED'     =>false, 
+            'MOVE_BACK'     =>false, 
+            'MOVE_FORWARD'  =>false
         ));
                             
         $ft->parse('MAIN', '.query_failed');
@@ -182,7 +184,9 @@ if(is_numeric($id)) {
     $ft->assign(array(
         'QUERY_FAILED'  =>$i18n['category_view'][3],
         'STRING'        =>'', 
-        'PAGINATED'     =>false
+        'PAGINATED'     =>false, 
+        'MOVE_BACK'     =>false, 
+        'MOVE_FORWARD'  =>false
     ));
                         
     $ft->parse('MAIN', '.query_failed');

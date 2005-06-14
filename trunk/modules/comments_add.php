@@ -235,4 +235,11 @@ switch ($action) {
         break;
 }
 
+$ft->assign(array(
+    'STRING'        =>'', 
+    'PAGINATED'     =>false, 
+    'MOVE_BACK'     =>false, 
+    'MOVE_FORWARD'  =>false
+));
+
 ?>

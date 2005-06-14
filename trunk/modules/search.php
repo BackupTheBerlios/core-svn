@@ -182,7 +182,10 @@ if(!empty($search_word)) {
 	
 		$ft->assign(array(
             'QUERY_FAILED'  =>sprintf('%s <span class="search">%s</span>.', $i18n['search'][0], $_POST['search_word']),
-            'STRING'        =>$page_string
+            'STRING'        =>$page_string, 
+            'PAGINATED'     =>false, 
+            'MOVE_BACK'     =>false, 
+            'MOVE_FORWARD'  =>false
         ));
 						
 		$ft->parse('MAIN',".query_failed");
@@ -191,7 +194,10 @@ if(!empty($search_word)) {
 	
 	$ft->assign(array(
         'QUERY_FAILED'  =>$i18n['search'][1],
-        'STRING'        =>''
+        'STRING'        =>'', 
+        'PAGINATED'     =>false, 
+        'MOVE_BACK'     =>false, 
+        'MOVE_FORWARD'  =>false
     ));
 						
 	$ft->parse('MAIN',".query_failed");	

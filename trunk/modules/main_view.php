@@ -112,7 +112,9 @@ if($db->num_rows() > 0) {
     $ft->assign(array(
         'QUERY_FAILED'  =>$i18n['main_view'][1],
         'STRING'        =>'', 
-        'PAGINATED'     =>false
+        'PAGINATED'     =>false, 
+        'MOVE_BACK'     =>false, 
+        'MOVE_FORWARD'  =>false
     ));
     
     $ft->parse('MAIN', ".query_failed");

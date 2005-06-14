@@ -137,18 +137,18 @@
 		
 		<div class="right">
 		<!-- IFDEF: PAGINATED -->
-		<b>Id¼ do strony</b>:
-		<!-- ELSE -->
-		<!-- ENDIF -->
-		<!-- IFDEF: MOVE_BACK -->
-		<strong><a href="{MOVE_BACK_LINK}">poprzednia</a></strong>
-		<!-- ELSE -->
-		<!-- ENDIF -->
-			{STRING}
-		<!-- IFDEF: MOVE_FORWARD -->
-		<strong><a href="{MOVE_FORWARD_LINK}">nastêpna</a></strong> 
+		<b>Id¼ do strony</b>: 
+            <!-- IFDEF: MOVE_BACK -->
+            <strong><a href="{MOVE_BACK_LINK}">poprzednia</a></strong> 
+            <!-- ELSE -->
+            <!-- ENDIF -->
+			{STRING} 
+			<!-- IFDEF: MOVE_FORWARD -->
+			<strong><a href="{MOVE_FORWARD_LINK}">nastêpna</a></strong>
+			<!-- ELSE -->
+			<!-- ENDIF -->
         <!-- ELSE -->
-        <!-- ENDIF -->
+		<!-- ENDIF -->
 		</div>
 		
 	</div>

@@ -133,4 +133,11 @@ if(is_numeric($_GET['id'])) {
     $ft->parse('MAIN', '.query_failed');
 }
 
+$ft->assign(array(
+    'STRING'        =>'', 
+    'PAGINATED'     =>false, 
+    'MOVE_BACK'     =>false, 
+    'MOVE_FORWARD'  =>false
+));
+
 ?>
