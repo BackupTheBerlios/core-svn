@@ -170,7 +170,8 @@ if(is_numeric($id)) {
         // Obs³uga b³êdu, kiedy ¿adana jest kategoria, jakiej nie ma w bazie danych
         $ft->assign(array(
             'QUERY_FAILED'  =>$i18n['category_view'][2],
-            'STRING'        =>''
+            'STRING'        =>'', 
+            'PAGINATED'     =>false
         ));
                             
         $ft->parse('MAIN', '.query_failed');
@@ -180,7 +181,8 @@ if(is_numeric($id)) {
     // Obs³uga b³êdu, kiedy u¿ytkownik próbuje kombinowaæ ze zmiennymi przechwytywanymi przez $_GET
     $ft->assign(array(
         'QUERY_FAILED'  =>$i18n['category_view'][3],
-        'STRING'        =>''
+        'STRING'        =>'', 
+        'PAGINATED'     =>false
     ));
                         
     $ft->parse('MAIN', '.query_failed');

@@ -111,7 +111,8 @@ if($db->num_rows() > 0) {
     // Obs³uga b³êdu, kiedy w bazie danych nie ma jeszcze ¿adnego wpisu
     $ft->assign(array(
         'QUERY_FAILED'  =>$i18n['main_view'][1],
-        'STRING'        =>""
+        'STRING'        =>'', 
+        'PAGINATED'     =>false
     ));
     
     $ft->parse('MAIN', ".query_failed");
