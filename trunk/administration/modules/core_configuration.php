@@ -26,8 +26,8 @@ switch ($action) {
             
             if(!is_numeric($max_photo_width)) $monit[] = $i18n['core_configuration'][4];
             
-            if(($mainposts_per_page < 3) || ($mainposts_per_page > 10)) $monit[] = $i18n['core_configuration'][1];
-            if(($editposts_per_page < 10) || ($editposts_per_page > 20)) $monit[] = $i18n['core_configuration'][3];
+            if(($mainposts_per_page < 1)) $monit[] = $i18n['core_configuration'][1];
+            if(($editposts_per_page < 1)) $monit[] = $i18n['core_configuration'][3];
             
             if(empty($monit)) {
 		    
