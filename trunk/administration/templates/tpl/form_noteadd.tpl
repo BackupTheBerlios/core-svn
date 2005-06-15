@@ -68,7 +68,7 @@
 	</tr>
 	<tr>
 		<td class="form"></td>
-		<td class="form center" colspan="2"><input type="submit" tabindex="5" name="preview" value="Podgl±d strony" />&nbsp;<input type="submit" accesskey="s" tabindex="6" name="post" value="Zapisz" /></td>
+		<td class="form center" colspan="2"><input type="submit" tabindex="5" name="preview" value="Podgl±d tre¶ci" />&nbsp;<input type="submit" accesskey="s" tabindex="6" name="post" value="Zapisz" /></td>
 	</tr>
 </table>
 </div>
