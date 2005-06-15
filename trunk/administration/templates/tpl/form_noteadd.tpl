@@ -1,12 +1,22 @@
-<form action="main.php?p=1&amp;action=add" enctype="multipart/form-data" name="post" method="post" id="formNote">
+<form action="main.php?p=1" enctype="multipart/form-data" name="post" method="post" id="formNote">
 <div id="left">
 <img src="templates/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>Aktualno¶ci - dodaj kolejny wpis</b><br /><br />
 
 <script type="text/javascript" src="./templates/js/textarea.js"></script>
 <table width="100%" align="left">
+    <!-- IFDEF: NOTE_PREVIEW -->
+    <tr>
+        <td class="form">Podgl±d:&nbsp;</td>
+        <td class="form image_exist" colspan="2">
+            <strong class="title_preview">{N_TITLE}</strong>
+            <p class="text_preview">{NT_TEXT}</p>
+        </td>
+    </tr>
+    <!-- ELSE -->
+    <!-- ENDIF -->
 	<tr>
 		<td class="form" width="100">Tytu³ wpisu:&nbsp;</td>
-		<td class="form" colspan="2"><input type="text" name="title" size="30" maxlength="255" /></td>
+		<td class="form" colspan="2"><input type="text" name="title" size="30" maxlength="255" value="{N_TITLE}" /></td>
 	</tr>
 	<tr>
 		<td class="form">Data:&nbsp;</td>
@@ -36,7 +46,7 @@
 	<tr>
 		<td class="form">Tre¶æ wpisu:&nbsp;</td>
 		<td class="form" colspan="2">
-		<textarea class="note_textarea" wrap="virtual" tabindex="3" name="text" id="canvas"></textarea>
+		<textarea class="note_textarea" wrap="virtual" tabindex="3" name="text" id="canvas">{N_TEXT}</textarea>
         <script type="text/javascript"> edCanvas = document.getElementById('canvas') </script>
 		</td>
 	</tr>
@@ -50,13 +60,15 @@
 	</tr>
 	<tr>
 		<td class="form">Komentarze:&nbsp;</td>
-		<td class="form"><input class="radio" type="radio" name="comments_allow" value="1" align="top" checked="checked" />- zezwalaj&nbsp;<input class="radio" type="radio" name="comments_allow" value="0" align="top" />- nie zezwalaj</td>
-		<td class="form"><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('formNote').submit()">dodaj wpis</a></td>
+		<td class="form" colspan="2"><input class="radio" type="radio" name="comments_allow" value="1" align="top" checked="checked" />- zezwalaj&nbsp;<input class="radio" type="radio" name="comments_allow" value="0" align="top" />- nie zezwalaj</td>
 	</tr>
 	<tr>
 		<td class="form">Publikowana:&nbsp;</td>
-		<td class="form"><input class="radio" type="radio" name="published" value="1" align="top" checked="checked" />- tak&nbsp;<input class="radio" type="radio" name="published" value="-1" align="top" />- nie</td>
-        <td class="form"><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('formNote').reset()">wyczy¶æ formularz</a></td>
+		<td class="form" colspan="2"><input class="radio" type="radio" name="published" value="1" align="top" checked="checked" />- tak&nbsp;<input class="radio" type="radio" name="published" value="-1" align="top" />- nie</td>
+	</tr>
+	<tr>
+		<td class="form"></td>
+		<td class="form center" colspan="2"><input type="submit" tabindex="5" name="preview" value="Podgl±d strony" />&nbsp;<input type="submit" accesskey="s" tabindex="6" name="post" value="Zapisz" /></td>
 	</tr>
 </table>
 </div>

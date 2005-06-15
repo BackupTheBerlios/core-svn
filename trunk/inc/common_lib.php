@@ -241,4 +241,49 @@ function pagination($url, $mainposts_per_page, $num_items) {
 	return $ret;
 }
 
+
+function highlighter($text, $code_start, $code_end) {
+        
+    $matches = array();
+    $match_count = preg_match_all('#\[php\](.*?)\[\/php\]#si', $text, $matches);
+    for ($i=0; $i<$match_count; $i++) {
+
+        $before = $matches[1][$i];
+        $after  = str_replace("<br />", "\n", trim($matches[1][$i]));
+        $str_to_match   = "[php]" . $before . "[/php]";
+        $replacement    = $code_start;
+            
+        $after  = str_replace(array('&lt;', '&gt;', '&amp;'), array('<', '>', '&'), $after);
+        $added  = FALSE;
+            
+        if(preg_match('/^<\?.*?\?>$/si', $after) <= 0) {
+            $after = "<?php $after ?>";
+            $added = TRUE;
+        }
+            
+        if(strcmp('4.2.0', phpversion()) > 0) {
+            ob_start();
+            highlight_string($after);
+            $after = ob_get_contents();
+            ob_end_clean();
+        } else {
+                $after = highlight_string($after, TRUE);
+        }
+            
+        if($added == TRUE) {
+            $after  = str_replace(array('<font color="#0000BB">&lt;?php ', '<font color="#0000BB">?&gt;</font>'), array('<font color="#0000BB">', ''), $after);
+        }
+            
+        $after  = preg_replace('/<font color="(.*?)">/si', '<span style="color: \\1;">', $after);
+        $after  = str_replace(array('</font>', '\n', '<code>', '</code>'), array('</span>', '', '', ''), $after);
+        $replacement .= $after;
+        $replacement .= $code_end;
+        $text = str_replace($str_to_match, $replacement, $text);
+    }
+        
+    $text  = str_replace(array('[php]', '[/php]'), array($code_start, $code_end), $text);
+    
+    return $text;
+}
+
 ?>

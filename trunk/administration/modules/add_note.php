@@ -1,15 +1,14 @@
 <?php
 
 // deklaracja zmiennej $action::form
-$action = empty($_GET['action']) ? '' : $_GET['action'];
+$post       = empty($_POST['post']) ? '' : $_POST['post'];
+$preview    = empty($_POST['preview']) ? '' : $_POST['preview'];
 
 // definicja szablonow parsujacych wyniki bledow.
 $ft->define("error_reporting", "error_reporting.tpl");
 $ft->define_dynamic("error_row", "error_reporting");
 
-switch ($action) {
-    
-	case "add":
+if(!empty($post)) {
 	
         if($permarr['writer']) {
             if(isset($_POST['assign2cat'])) {
@@ -132,56 +131,69 @@ switch ($action) {
                         
             $ft->parse('ROWS', "error_reporting");
         }
-		break;
 
-	default:
-	
-		$query = sprintf("
-            SELECT 
-                category_id, 
-                category_parent_id,
-                category_name 
-            FROM 
-                %1\$s 
-            WHERE 
-                category_parent_id = '%2\$d' 
-            ORDER BY 
-                category_id 
-            ASC", 
-	
-            TABLE_CATEGORY,
-            0
-        );
-	
-        $db->query($query);
-	
-        $ft->define("form_noteadd", "form_noteadd.tpl");
-        $ft->define_dynamic("cat_row", "form_noteadd");
+} else {
+    
+    if(!empty($preview)) {
+        $text   = $_POST['text'];
+        $title  = trim($_POST['title']);
         
-        while($db->next_record()) {
-		
-            $cat_id         = $db->f("category_id");
-            $cat_parent_id  = $db->f("category_parent_id");
-            $cat_name       = $db->f("category_name");
-            
-            $ft->assign(array(
-                'C_ID'		    =>$cat_id,
-                'C_NAME'        =>$cat_name, 
-                'CURRENT_CAT'   =>$cat_id == 1 ? 'checked="checked"' : '', 
-                'PAD'           =>''
-            ));
-        
-            $ft->parse('CAT_ROW', ".cat_row");
-        
-            get_addcategory_assignedcat($cat_id, 2);
-        }
-
-		$ft->assign(array(
-            'SESSION_LOGIN' =>$_SESSION['login'],
-            'DATE'			=>date('Y-m-d H:i:s')
+        $ft->assign(array(
+            'N_TITLE'       =>stripslashes($title), 
+            'N_TEXT'        =>br2nl(stripslashes($text)), 
+            'NT_TEXT'       =>nl2br(parse_markers(stripslashes($text), 1)), 
+            'NOTE_PREVIEW'  =>true
         ));
+    } else {
+        $ft->assign('NOTE_PREVIEW', false);
+    }
+	
+    $query = sprintf("
+        SELECT 
+            category_id, 
+            category_parent_id,
+            category_name 
+        FROM 
+            %1\$s 
+        WHERE 
+            category_parent_id = '%2\$d' 
+        ORDER BY 
+            category_id 
+        ASC", 
+	
+        TABLE_CATEGORY,
+        0
+    );
+	
+    $db->query($query);
+	
+    $ft->define("form_noteadd", "form_noteadd.tpl");
+    $ft->define_dynamic("cat_row", "form_noteadd");
+        
+    while($db->next_record()) {
+		
+        $cat_id         = $db->f("category_id");
+        $cat_parent_id  = $db->f("category_parent_id");
+        $cat_name       = $db->f("category_name");
+            
+        $ft->assign(array(
+            'C_ID'		    =>$cat_id,
+            'C_NAME'        =>$cat_name, 
+            'CURRENT_CAT'   =>$cat_id == 1 ? 'checked="checked"' : '', 
+            'PAD'           =>''
+        ));
+        
+        $ft->parse('CAT_ROW', ".cat_row");
+        
+        get_addcategory_assignedcat($cat_id, 2);
+    }
 
-		$ft->parse('ROWS', "form_noteadd");
+    $ft->assign(array(
+        'SESSION_LOGIN' =>$_SESSION['login'],
+        'DATE'			=>date('Y-m-d H:i:s')
+    ));
+
+    $ft->parse('ROWS', "form_noteadd");
 }
 
 ?>

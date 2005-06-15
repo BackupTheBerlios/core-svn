@@ -16,7 +16,7 @@ switch ($action) {
         // podglad
         if(!empty($preview)) {
             $ft->assign(array(
-                'PG_TEXT'       =>nl2br(parse_markers(stripslashes($text), 1)), 
+                'PG_TEXT'       =>nl2br(parse_markers(stripslashes($_POST['text']), 1)), 
                 'PAGE_PREVIEW'  =>true
             ));
         } else {
