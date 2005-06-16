@@ -59,19 +59,43 @@ function check_mail($email) {
 
 function get_config($name) {
 
-    $db = new DB_SQL;
+    global $db;
 
-    $query = sprintf("
-        SELECT
-            config_value
-        FROM
-            %1\$s
-        WHERE
-            config_name = '%2\$s'",
+    if(RDBMS == '4.1') {
+        if(!defined('STATEMENT_SET')) {
+            $query = sprintf("
+                PREPARE 
+                    get_config 
+                FROM 'SELECT 
+                    config_value 
+                FROM 
+                    %1\$s 
+                WHERE 
+                    config_name = ?'", 
+        
+                TABLE_CONFIG
+            );
+        
+            define('STATEMENT_SET', true);
+        } else {
+            $query = sprintf("SET @config_name = '%1\$s'", $name);
+            $db->query($query);
+            
+            $query = "EXECUTE get_config USING @config_name";
+        }
+    } else {
+        $query = sprintf("
+            SELECT
+                config_value
+            FROM
+                %1\$s
+            WHERE
+                config_name = '%2\$s'",
           
-        TABLE_CONFIG,
-        $name
-    );
+            TABLE_CONFIG,
+            $name
+        );
+    }
 
     $db->query($query);
     $db->next_record();
@@ -284,6 +308,16 @@ function highlighter($text, $code_start, $code_end) {
     $text  = str_replace(array('[php]', '[/php]'), array($code_start, $code_end), $text);
     
     return $text;
+}
+
+
+function get_mysql_server_version() {
+    
+    $dbs = explode('.', mysql_get_server_info());
+    if($dbs[0] == '4' && $dbs[1] == '1') {
+        
+        define('RDBMS', '4.1');
+    }
 }
 
 ?>

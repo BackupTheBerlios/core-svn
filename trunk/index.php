@@ -10,8 +10,11 @@ if(!defined('CORE_INSTALLED')) {
 }
 
 require('inc/i18n.php');
-require('inc/common_lib.php');
 require('inc/main_lib.php');
+require('inc/common_lib.php');
+
+// mysql_server_version
+get_mysql_server_version();
 
 define('PATH_TO_CLASSES', get_root() . '/administration/classes');
 define('PATH_TO_MODULES', 'modules');
@@ -20,12 +23,12 @@ require_once(PATH_TO_CLASSES. '/cls_db_mysql.php'); // dodawanie pliku konfiguru
 require_once(PATH_TO_CLASSES. '/cls_fast_template.php');
 require_once(PATH_TO_CLASSES. '/cls_calendar.php');
 
-$rewrite = get_config('mod_rewrite'); // pobieranie informacji o uzyciu mod_rewrite
-$max_photo_width = get_config('max_photo_width'); //maksymalna szerokosc fotki
-$date_format = get_config('date_format'); //format daty
-
 //inicjacja polaczenie z MySQL
 $db = new DB_Sql;
+
+$rewrite            = get_config('mod_rewrite');        // pobieranie informacji o uzyciu mod_rewrite
+$max_photo_width    = get_config('max_photo_width');    //maksymalna szerokosc fotki
+$date_format        = get_config('date_format');        //format daty
 
 //licznik
 if(!isset($_COOKIE['devlog_counter'])){

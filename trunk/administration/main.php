@@ -24,6 +24,9 @@ require_once('../inc/common_lib.php');
 require_once('../inc/admin_lib.php');
 require_once('../inc/i18n_administration.php');
 
+// mysql_server_version
+get_mysql_server_version();
+
 require(PATH_TO_CLASSES. '/cls_fast_template.php');
 require(PATH_TO_CLASSES. '/cls_permissions.php');
 
