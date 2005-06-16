@@ -75,7 +75,8 @@ function get_config($name) {
         
                 TABLE_CONFIG
             );
-        
+            $db->query($query);
+            
             define('STATEMENT_SET', true);
         } else {
             $query = sprintf("SET @config_name = '%1\$s'", $name);
