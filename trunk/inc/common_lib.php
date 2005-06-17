@@ -59,7 +59,7 @@ function check_mail($email) {
 
 function get_config($name) {
 
-    global $db;
+    $db = new DB_SQL;
 
     if(RDBMS == '4.1') {
         if(!defined('STATEMENT_SET')) {

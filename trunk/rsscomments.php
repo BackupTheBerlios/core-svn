@@ -11,6 +11,9 @@ require("administration/inc/config.php");
 require("inc/common_lib.php");
 require("inc/main_lib.php");
 
+// mysql_server_version
+get_mysql_server_version();
+
 $db     = new DB_SQL;
 $query  = sprintf("
     SELECT 
