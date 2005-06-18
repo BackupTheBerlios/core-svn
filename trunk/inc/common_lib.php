@@ -77,6 +77,12 @@ function get_config($name) {
             );
             $db->query($query);
             
+            $query = sprintf("SET @config_name = '%1\$s'", $name);
+            $db->query($query);
+            
+            $query = "EXECUTE get_config USING @config_name";
+            
+            // definicja warunku::true
             define('STATEMENT_SET', true);
         } else {
             $query = sprintf("SET @config_name = '%1\$s'", $name);

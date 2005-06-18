@@ -27,8 +27,8 @@ require_once(PATH_TO_CLASSES. '/cls_calendar.php');
 $db = new DB_Sql;
 
 $rewrite            = get_config('mod_rewrite');        // pobieranie informacji o uzyciu mod_rewrite
-$max_photo_width    = get_config('max_photo_width');    //maksymalna szerokosc fotki
-$date_format        = get_config('date_format');        //format daty
+$max_photo_width    = get_config('max_photo_width');    // maksymalna szerokosc fotki
+$date_format        = get_config('date_format');        // format daty
 
 //licznik
 if(!isset($_COOKIE['devlog_counter'])){
