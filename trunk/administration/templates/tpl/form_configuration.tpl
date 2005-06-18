@@ -19,6 +19,13 @@
 		<td><input class="short" type="text" name="max_photo_width" value="{MAX_PHOTO_WIDTH}" /></td>
 	</tr>
 	<tr>
+		<td class="form">Wy¶wietlaj kalendarz:&nbsp;</td>
+		<td class="form">
+            <input class="radio" type="radio" name="show_calendar" value="1" align="top" {CALENDAR_YES} />- tak&nbsp;
+            <input class="radio" type="radio" name="show_calendar" value="0" align="top" {CALENDAR_NO} />- nie
+        </td>
+	</tr>
+	<tr>
 		<td class="form">mod_rewrite(nadpisywanie linków):&nbsp;</td>
 		<td class="form">
             <input class="radio" type="radio" name="rewrite_allow" value="1" align="top" {REWRITE_YES} />- tak&nbsp;

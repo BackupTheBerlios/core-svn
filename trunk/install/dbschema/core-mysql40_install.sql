@@ -115,3 +115,4 @@ INSERT INTO core_config VALUES ('mod_rewrite', '0');
 INSERT INTO core_config VALUES ('date_format', 'Y-m-d H:i:s');
 INSERT INTO core_config VALUES ('core_version', '0.4.2');
 INSERT INTO core_config VALUES ('start_page_type', 'all'), ('start_page_id', '0');
+INSERT INTO core_config VALUES ('show_calendar', 1);

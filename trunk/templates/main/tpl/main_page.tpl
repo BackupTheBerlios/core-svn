@@ -27,6 +27,7 @@
 		</form>
 		<br />
 		
+		<!-- IFDEF: SHOW_CALENDAR -->
 		<span class="title">kalendarz</span><br />
 		<table cellpadding="3" cellspacing="0" border="0" width="155">
             <tr>
@@ -53,6 +54,8 @@
             </tr>
         </table>
         <br />
+        <!-- ELSE -->
+        <!-- ENDIF -->
 		
 		<!-- IFDEF: PAGE_NAME -->
 		<span class="title">menu</span><br />

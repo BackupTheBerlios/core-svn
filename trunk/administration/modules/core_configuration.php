@@ -48,6 +48,9 @@ switch ($action) {
                 // jakie jest wy¶wietlane na stronie g³ównej::db
                 set_config('max_photo_width', $_POST['max_photo_width']);
                 
+                // set {SHOW_CALENDAR} variable
+                set_config('show_calendar', $_POST['show_calendar']);
+                
                 // set {MOD_REWRITE} variable
                 set_config('mod_rewrite', $_POST['rewrite_allow']);
 
@@ -89,15 +92,10 @@ switch ($action) {
 
     default:
     
-		if((bool)get_config('mod_rewrite')) {
-
-			$ft->assign('REWRITE_YES', 'checked="checked"');
-		} else {
-			
-			$ft->assign('REWRITE_NO', 'checked="checked"');
-        }
-
-
+        $ft->assign(array(
+            (bool)get_config('mod_rewrite') ? 'REWRITE_YES' : 'REWRITE_NO'      =>'checked="checked"', 
+            (bool)get_config('show_calendar') ? 'CALENDAR_YES' : 'CALENDAR_NO'  =>'checked="checked"'
+        ));
         
         // w przypadku braku akcji wy¶wietlanie formularza
 		$ft->define('form_configuration', "form_configuration.tpl");

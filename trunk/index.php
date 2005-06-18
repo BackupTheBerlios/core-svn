@@ -26,9 +26,10 @@ require_once(PATH_TO_CLASSES. '/cls_calendar.php');
 //inicjacja polaczenie z MySQL
 $db = new DB_Sql;
 
-$rewrite            = get_config('mod_rewrite');        // pobieranie informacji o uzyciu mod_rewrite
-$max_photo_width    = get_config('max_photo_width');    // maksymalna szerokosc fotki
-$date_format        = get_config('date_format');        // format daty
+$rewrite            = get_config('mod_rewrite');
+$max_photo_width    = get_config('max_photo_width');
+$date_format        = get_config('date_format');
+$show_calendar      = get_config('show_calendar');
 
 //licznik
 if(!isset($_COOKIE['devlog_counter'])){
@@ -36,7 +37,6 @@ if(!isset($_COOKIE['devlog_counter'])){
 	@setcookie('devlog_counter', 'hit', time()+10800);
     set_config('counter', get_config('counter') + 1);
 }
-
 
 //konfiguracja szablonow i design switchera
 if(isset($_COOKIE['devlog_design']) && is_dir('./templates/' . $_COOKIE['devlog_design'] . '/tpl/')){
@@ -197,8 +197,14 @@ while(list($m) = each($modules)) {
     require_once PATH_TO_MODULES . '/' . $modules[$m] . '.php';
 }
 
-$calendar = new calendar();
-$calendar->display_calendar();
+if((bool)$show_calendar) {
+    $ft->assign('SHOW_CALENDAR', true);
+    
+    $calendar = new calendar();
+    $calendar->display_calendar();
+} else {
+    $ft->assign('SHOW_CALENDAR', false);
+}
 
 $ft->parse('MAIN', $assigned_tpl);
 $ft->FastPrint();
