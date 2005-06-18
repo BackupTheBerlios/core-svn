@@ -162,7 +162,7 @@ function show_me_more($text) {
         
             substr($text, 0, $find),
             $perma_link,
-            $i18n['main_view'][1]
+            $i18n['main_view'][2]
         );
 	}
 	
