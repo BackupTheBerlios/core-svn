@@ -1,0 +1,10 @@
+CHANGELOG
+
+Core CMS - System Zarzadzania Trescia
+Obecna wersja: 0.4.3  2005/06/18
+
+==================================
+0.4.3 Zmiany: 18 Czerwca 2005 
+
+- Wykorzystanie PREPARED STATEMENTS w przypadku MySQL >= 4.1
+- Dodano switcher w panelu administracyjnym odpowiadajacy za wl/wyl wyswietlania kalendarza.
