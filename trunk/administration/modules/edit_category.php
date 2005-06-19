@@ -435,20 +435,20 @@ switch ($action) {
                 // przydzielamy przycisk do podwy¿eszenia pozycji kategorii
                 $ft->assign(array(
                     'DOWN'  =>'',
-                    'UP'    =>'<a href="main.php?p=9&amp;action=remark&amp;move=-15&amp;id=' . $category_id . '"><img src="templates/images/up.gif" width="11" height="7" /></a>'
+                    'UP'    =>'<a href="main.php?p=9&amp;action=remark&amp;move=-15&amp;id=' . $category_id . '"><img src="templates/' . $lang . '/images/up.gif" width="11" height="7" /></a>'
                 ));
             } elseif ($category_order == $min_order) {
                 // przydzielamy przycisk do obnizenia pozycji kategorii
                 $ft->assign(array(
-                    'DOWN'  =>'<a href="main.php?p=9&amp;action=remark&amp;move=15&amp;id=' . $category_id . '"><img src="templates/images/down.gif" width="11" height="7" /></a>', 
+                    'DOWN'  =>'<a href="main.php?p=9&amp;action=remark&amp;move=15&amp;id=' . $category_id . '"><img src="templates/' . $lang . '/images/down.gif" width="11" height="7" /></a>', 
                     'UP'    =>''
                     
                 ));
             } else {
                 // przydzielamy dwa przyciski do zmiany polozenia kategorii
                 $ft->assign(array(
-                    'UP'    =>'<a href="main.php?p=9&amp;action=remark&amp;move=-15&amp;id=' . $category_id . '"><img src="templates/images/up.gif" width="11" height="7" /></a>', 
-                    'DOWN'  =>'<a href="main.php?p=9&amp;action=remark&amp;move=15&amp;id=' . $category_id . '"><img src="templates/images/down.gif" width="11" height="7" /></a>'
+                    'UP'    =>'<a href="main.php?p=9&amp;action=remark&amp;move=-15&amp;id=' . $category_id . '"><img src="templates/' . $lang . '/images/up.gif" width="11" height="7" /></a>', 
+                    'DOWN'  =>'<a href="main.php?p=9&amp;action=remark&amp;move=15&amp;id=' . $category_id . '"><img src="templates/' . $lang . '/images/down.gif" width="11" height="7" /></a>'
                 ));
             }
 				
