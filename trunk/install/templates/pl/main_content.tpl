@@ -1,7 +1,19 @@
 	<span>Uwaga:</span> Wszystkie pola musz± zostaæ wype³nione
 	<br /><br />
-	<form id="installform" action="install.php?action=send" method="post">
+	<form id="installform" action="install.php" method="post">
 	<table cellspacing="0" cellpadding="0">
+        <tr>
+			<td width="50%">
+			<label for="lang">Prze³±cz jêzyk:</label>
+			</td>
+			<td width="50%">
+			<select id="lang" name="lang" onchange="document.forms[0].submit();">
+                <!-- BEGIN DYNAMIC BLOCK: lang_row -->
+                <option value="{SELECTED_LANG}" {CURRENT}>{SELECTED_LANG}</option>
+                <!-- END DYNAMIC BLOCK: lang_row -->
+			</select>
+			</td>
+		</tr>
 		<tr>
 			<td width="50%">
 			<label for="dbname">Nazwa bazy danych:</label>
@@ -24,8 +36,9 @@
 			</td>
 			<td width="50%">
 			<select id="rdbms" name="rdbms">
-				<option value="mysql4">MySQL 4.0.x</option>
-				<option value="mysql41">MySQL 4.1.x</option>
+				<!-- BEGIN DYNAMIC BLOCK: db_row -->
+				<option value="{DATABASE_VALUE}">{DATABASE_NAME}</option>
+				<!-- END DYNAMIC BLOCK: db_row -->
 			</select>
 			</td>
 		</tr>
@@ -100,7 +113,7 @@
 		</tr>
 		<tr>
 			<td width="100%" colspan="2">
-              <div class="right"><a onclick="document.getElementById('installform').submit()" href="#">Instaluj Core</a></div>
+              <div class="right"><input type="submit" accesskey="s" tabindex="6" name="post" value="Instaluj Core" /></div>
 			</td>
 		</tr>
 	</table>	

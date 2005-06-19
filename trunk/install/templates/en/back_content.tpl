@@ -1,3 +1,3 @@
 	<div class="right">
-		<a href="javascript:history.back()">powrót</a>
+		<a href="javascript:history.back()">back</a>
 	</div>	

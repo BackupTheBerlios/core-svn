@@ -1,4 +1,4 @@
-Wyst±pi³y nastêpuj±ce b³êdy:
+Some errors occurs:
 <ul class="error">
 
     <!-- BEGIN DYNAMIC BLOCK: error_row -->
