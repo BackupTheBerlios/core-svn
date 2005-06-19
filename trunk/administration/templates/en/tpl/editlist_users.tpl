@@ -1,15 +1,15 @@
 <div id="left">
-<img src="templates/{LANG}/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>U¿ytkownicy - edycja/usuwanie</b><br /><br />
+<img src="templates/{LANG}/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>Users - edit/delete</b><br /><br />
 <!-- NAME: editlist_users.tpl -->
 <table class="list">
 	<tr>
 		<td class="mainListHeader" width="6%">Id</td>
 		<td class="mainListHeader" width="20%">Login</td>
-		<td class="mainListHeader" width="32%">Adres e-mail</td>
-		<td class="mainListHeader" width="11%">Poziom</td>
-		<td class="mainListHeader" width="11%">Aktywny</td>
-		<td class="mainListHeader" width="10%">Edycja</td>
-		<td class="mainListHeader" width="10%">Usuñ</td>
+		<td class="mainListHeader" width="32%">E-mail address</td>
+		<td class="mainListHeader" width="11%">Level</td>
+		<td class="mainListHeader" width="11%">Active</td>
+		<td class="mainListHeader" width="10%">Edit</td>
+		<td class="mainListHeader" width="10%">Delete</td>
 	</tr>
 	<!-- BEGIN DYNAMIC BLOCK: row -->
     <tr>
@@ -18,8 +18,8 @@
 		<td class="{ID_CLASS}">{EMAIL}</td>
 		<td class="{ID_CLASS} center"><b>{LEVEL_DOWN} {LEVEL} {LEVEL_UP}</b></td>
 		<td class="{ID_CLASS} center">{STATUS}</td>
-		<td class="{ID_CLASS} center"><a href="main.php?p=13&amp;action=show&amp;id={USER_ID}">Edycja</a></td>
-		<td class="{ID_CLASS} center"><a href="main.php?p=13&amp;action=delete&amp;id={USER_ID}">Usuñ</a></td>
+		<td class="{ID_CLASS} center"><a href="main.php?p=13&amp;action=show&amp;id={USER_ID}">Edit</a></td>
+		<td class="{ID_CLASS} center"><a href="main.php?p=13&amp;action=delete&amp;id={USER_ID}">Delete</a></td>
 	</tr>
 	<!-- END DYNAMIC BLOCK: row -->
 </table>

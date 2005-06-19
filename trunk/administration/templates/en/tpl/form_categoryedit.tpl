@@ -1,18 +1,18 @@
 <div id="left">
-<img src="templates/{LANG}/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>Kategorie - edycja kategorii</b><br /><br />
+<img src="templates/{LANG}/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>Category - edit category</b><br /><br />
 
 <form enctype="multipart/form-data" method="post" action="main.php?p=9&amp;action=edit&amp;id={CATEGORY_ID}" id="formCat">
 <table width="100%" align="left">
 	<tr>
-		<td class="form" width="100">Nazwa kategorii:&nbsp;</td>
+		<td class="form" width="100">Category name:&nbsp;</td>
 		<td class="form"><input type="text" name="category_name" size="30" maxlength="255" value="{CATEGORY_NAME}"/></td>
 	</tr>
 	<tr>
-		<td class="form">Opis kategorii:&nbsp;</td>
+		<td class="form">Category description:&nbsp;</td>
 		<td class="form"><textarea name="category_description" cols="60" rows="6">{CATNAME_DESC}</textarea></td>
 	</tr>
 	<tr>
-		<td class="form">Szablon :&nbsp;</td>
+		<td class="form">Template :&nbsp;</td>
 		<td class="form">
 		<select class="category_form" name="template_name">
 			
@@ -24,7 +24,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="form">Ilo¶æ postów/stronê:&nbsp;</td>
+		<td class="form">Post per page:&nbsp;</td>
 		<td class="form"><input class="perpage" type="text" name="category_post_perpage" value="{CATEGORY_PERPAGE}" /></td>
 	</tr>
 	<tr>

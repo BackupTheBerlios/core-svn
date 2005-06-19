@@ -5,7 +5,7 @@
 <table width="100%" align="left">
     <!-- IFDEF: NOTE_PREVIEW -->
     <tr>
-        <td class="form">Ppreview:&nbsp;</td>
+        <td class="form">Preview:&nbsp;</td>
         <td class="form image_exist" colspan="2">
             <strong class="title_preview">{TITLE}</strong>
             <p class="text_preview">{NT_TEXT}</p>

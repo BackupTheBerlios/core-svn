@@ -3,11 +3,11 @@
 <form enctype="multipart/form-data" method="post" action="{SUBMIT_URL}" id="formLink">
 <table width="100%" align="left">
 	<tr>
-		<td class="form" width="80" align="right">Nazwa linku:&nbsp;</td>
+		<td class="form" width="80" align="right">Link name:&nbsp;</td>
 		<td class="form" width="364" align="left" valign="top"><input type="text" name="link_name" size="30" maxlength="255" {LINK_VALUE}/></td>
 	</tr>
 	<tr>
-		<td class="form" width="80" align="right">Adres URI:&nbsp;</td>
+		<td class="form" width="80" align="right">URI address:&nbsp;</td>
 		<td class="form" width="364" align="left" valign="top"><input type="text" name="link_url" size="30" maxlength="255" {LINKURL_VALUE}/></td>
 	</tr>
 	<tr>
