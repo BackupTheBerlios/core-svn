@@ -10,7 +10,7 @@
 $i18n = array();
 
 $i18n['install'] = array();
-$i18n['install'][0] = 'Core / Instalator';
+$i18n['install'][0] = 'Core CMS / Instalator';
 
 $i18n['main_content'] = array();
 $i18n['main_content'][0] = 'Nazwa u¿ytkownika musi mieæ conajmniej 4 znaki.';

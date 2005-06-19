@@ -10,13 +10,13 @@
 $i18n = array();
 
 $i18n['install'] = array();
-$i18n['install'][0] = 'Core / Instalator';
+$i18n['install'][0] = 'Core CMS / Installer';
 
 $i18n['main_content'] = array();
-$i18n['main_content'][0] = 'Nazwa u¿ytkownika musi mieæ conajmniej 4 znaki.';
-$i18n['main_content'][1] = 'Podaj poprawny adres e-mail.';
-$i18n['main_content'][2] = 'Has³o nowego u¿ytkownika musi mieæ conajmniej 6 znaków.';
-$i18n['main_content'][3] = 'Podane has³a nowego u¿ytkownika nie zgadzaj± siê ze sob±.';
+$i18n['main_content'][0] = 'User login must have at least 4 letters.';
+$i18n['main_content'][1] = 'Please enter a correct email address.';
+$i18n['main_content'][2] = 'Password for Core admin must have at least 6 letters.';
+$i18n['main_content'][3] = 'Password1 &amp; Password2 don\'t match.';
 
 
 

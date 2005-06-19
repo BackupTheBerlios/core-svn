@@ -8,13 +8,13 @@
 <body>
 <div id="container">
 	<div id="header">
-		Core / Instalator
+		Core CMS / Installer
 	</div>
 	<div id="content">
 		{ROWS}
 	</div>	
 	<div id="footer">
-		Core - System Zarz±dzania Tre¶ci±
+		Core - Content Management System
 	</div>
 </div>
 </body>

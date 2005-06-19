@@ -7,4 +7,4 @@ Wyst±pi³y nastêpuj±ce b³êdy:
 
 </ul>
 
-<a href="javascript:history.back();">powrót</a>
+<a href="javascript:history.back();">back</a>
