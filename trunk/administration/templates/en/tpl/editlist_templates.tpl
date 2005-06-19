@@ -1,5 +1,5 @@
 <div id="left">
-<img src="templates/images/main.gif" width="14" height="14" align="top" hspace="2"><b>Szablony - edycja szablonu</b> {TEMPLATE}<br /><br />
+<img src="templates/{LANG}/images/main.gif" width="14" height="14" align="top" hspace="2"><b>Szablony - edycja szablonu</b> {TEMPLATE}<br /><br />
 <span class="warning">{WRITE_ERROR}</span><br />
 
 <script type="text/javascript" src="./templates/js/textarea.js"></script>
@@ -26,7 +26,7 @@
 	</tr>
 	<tr>
 		<td class="form" width="324" colspan="2"></td>
-		<td class="form align_right" width="110"><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('templateEdit').submit()">Zapisz szablon</a></td>
+		<td class="form align_right" width="110"><img src="templates/{LANG}/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('templateEdit').submit()">Zapisz szablon</a></td>
 	</tr>
 </table>
 </form>

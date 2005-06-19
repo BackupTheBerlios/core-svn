@@ -10,13 +10,13 @@
 $i18n = array();
 
 $i18n['index'] = array();
-$i18n['index'][0] = 'CORE - panel administracyjny';
-$i18n['index'][1] = 'Nie uzupe³niono wszystkich pól.';
-$i18n['index'][2] = 'Konto nie zosta³o jeszcze aktywowane.';
-$i18n['index'][3] = 'B³êdna nazwa u¿ytkownika, lub b³êdne has³o.';
+$i18n['index'][0] = 'CORE CMS - administration panel';
+$i18n['index'][1] = 'You must fill login &amp; password field';
+$i18n['index'][2] = 'Your account wasn\'t activated.';
+$i18n['index'][3] = 'Username or password are incorrect.';
 
 $i18n['main'] = array();
-$i18n['main'][0] = 'CORE - panel administracyjny';
+$i18n['main'][0] = 'CORE CMS - administration panel';
 
 $i18n['add_category'] = array();
 $i18n['add_category'][0] = 'Musisz podaæ nazwê kategorii.';
@@ -52,7 +52,7 @@ $i18n['add_user'][1] = 'Podaj poprawny adres e-mail.';
 $i18n['add_user'][2] = 'Has³o nowego u¿ytkownika musi mieæ conajmniej 6 znaków.';
 $i18n['add_user'][3] = 'Podane has³a nowego u¿ytkownika nie zgadzaj± siê ze sob±.';
 $i18n['add_user'][4] = 'U¿ytkownik zosta³ dodany do bazy danych.';
-$i18n['add_user'][5] = 'Dodaj u¿ytkownika';
+$i18n['add_user'][5] = 'Add user';
 $i18n['add_user'][6] = '<b>Nie masz uprawnieñ</b> pozwalaj±cych dodaæ nowego u¿ytkownika.';
 
 $i18n['core_configuration'] = array();
@@ -98,8 +98,8 @@ $i18n['edit_links'][7] = '<b>Nie masz uprawnieñ</b> do edycji linków.';
 $i18n['edit_links'][8] = 'W bazie danych nie ma ¿adnych linków';
 
 $i18n['edit_page'] = array();
-$i18n['edit_page'][0] = 'Strona zosta³a zmodyfikowana.';
-$i18n['edit_page'][1] = 'Strona zosta³a usuniêta.';
+$i18n['edit_page'][0] = 'Page was modified successfully.';
+$i18n['edit_page'][1] = 'Page was deleted successfully.';
 $i18n['edit_page'][2] = '<b>Nie masz uprawnieñ</b> do usuwania podstron serwisu.';
 $i18n['edit_page'][3] = '<b>Nie masz uprawnieñ</b> do edycji podstron serwisu.';
 
@@ -123,5 +123,22 @@ $i18n['edit_users'][1] = 'U¿ytkownik zosta³ zmodyfikowany.';
 $i18n['edit_users'][2] = 'U¿ytkownik zosta³ usuniêty.';
 $i18n['edit_users'][3] = '<b>Nie masz uprawnieñ</b> do usuwania u¿ytkowników.';
 $i18n['edit_users'][4] = '<b>Nie masz uprawnieñ</b> do edycji u¿ytkowników lub edytujesz nie swoje dane.';
+
+$i18n['subcat_menu'] = array();
+$i18n['subcat_menu'][0] = 'Add another news';
+$i18n['subcat_menu'][1] = 'Edit/Delete news';
+$i18n['subcat_menu'][2] = 'Edit/Delete comments';
+$i18n['subcat_menu'][3] = 'Most comments news';
+$i18n['subcat_menu'][4] = 'Add new page';
+$i18n['subcat_menu'][5] = 'Edit/Delete pages';
+$i18n['subcat_menu'][6] = 'Add new user';
+$i18n['subcat_menu'][7] = 'Edit/Delete users';
+$i18n['subcat_menu'][8] = 'Add new category';
+$i18n['subcat_menu'][9] = 'Edit/Delete categories';
+$i18n['subcat_menu'][10]= 'News transfer';
+$i18n['subcat_menu'][11]= 'Core CMS configuration';
+$i18n['subcat_menu'][12]= 'Add new link';
+$i18n['subcat_menu'][13]= 'Edit/Delete links';
+$i18n['subcat_menu'][14]= 'Template files editor';
 
 ?>

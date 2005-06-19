@@ -1,8 +1,7 @@
 <form action="main.php?p=1" enctype="multipart/form-data" name="post" method="post" id="formNote">
 <div id="left">
-<img src="templates/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>Aktualno¶ci - dodaj kolejny wpis</b><br /><br />
+<img src="templates/{LANG}/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>Aktualno¶ci - dodaj kolejny wpis</b><br /><br />
 
-<script type="text/javascript" src="./templates/js/textarea.js"></script>
 <table width="100%" align="left">
     <!-- IFDEF: NOTE_PREVIEW -->
     <tr>

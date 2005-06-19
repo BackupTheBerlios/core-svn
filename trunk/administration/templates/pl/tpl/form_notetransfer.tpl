@@ -1,7 +1,6 @@
 <div id="left">
-<img src="templates/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>Kategorie - transfer wpisów</b><br /><br />
+<img src="templates/{LANG}/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>Kategorie - transfer wpisów</b><br /><br />
 
-<script type="text/javascript" src="./templates/js/textarea.js"></script>
 <form action="main.php?p=15&amp;action=add" enctype="multipart/form-data" method="post" id="formTransfer">
 <table width="100%" align="left">
 	<tr>
@@ -33,7 +32,7 @@
 		</td>
 	</tr>
 	<tr>
-        <td class="form" width="364" colspan="2"><br /><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('formTransfer').submit()">transferuj wpisy</a></td>
+        <td class="form" width="364" colspan="2"><br /><img src="templates/{LANG}/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('formTransfer').submit()">transferuj wpisy</a></td>
 	</tr>
 </table>
 </form>

@@ -1,5 +1,5 @@
 <div id="left">
-<img src="templates/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>Komentarze - najczê¶ciej komentowane wpisy</b><br /><br />
+<img src="templates/{LANG}/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>Komentarze - najczê¶ciej komentowane wpisy</b><br /><br />
 <!-- NAME: editlist_mostcomments.tpl -->
 <form method="post" action="main.php?p=2&amp;action=multidelete" id="multipleSelected">
 <table class="list">
@@ -25,7 +25,7 @@
 		<td id="pagination" colspan="6">{STRING}</td>
 	</tr>
 	<tr>
-		<td class="addinfo" colspan="6"><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="doit('selected_note[]')">Prze³±cz zaznaczenie</a>&nbsp;<img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('multipleSelected').submit()">Usuñ zaznaczone wpisy</a></td>
+		<td class="addinfo" colspan="6"><img src="templates/{LANG}/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="doit('selected_note[]')">Prze³±cz zaznaczenie</a>&nbsp;<img src="templates/{LANG}/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('multipleSelected').submit()">Usuñ zaznaczone wpisy</a></td>
 	</tr>
 </table>
 <!-- END: editlist_mostcomments.tpl -->

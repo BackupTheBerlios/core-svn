@@ -1,5 +1,5 @@
 <div id="left">
-<img src="templates/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>U퓓tkownicy - dodaj nowego u퓓tkownika</b><br /><br />
+<img src="templates/{LANG}/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>U퓓tkownicy - dodaj nowego u퓓tkownika</b><br /><br />
 <form enctype="multipart/form-data" method="post" action="{SUBMIT_URL}" id="formUser">
 <table width="100%" align="left">
 	<tr>
@@ -92,7 +92,7 @@
         </td>
 	</tr>
 	<tr>
-		<td class="form" width="364" align="left" valign="top" colspan="2"><br /><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('formUser').submit()">{SUBMIT_HREF_DESC}</a></td>
+		<td class="form" width="364" align="left" valign="top" colspan="2"><br /><img src="templates/{LANG}/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('formUser').submit()">{SUBMIT_HREF_DESC}</a></td>
 	</tr>
 </table>
 </form>

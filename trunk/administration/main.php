@@ -22,13 +22,15 @@ require(PATH_TO_CLASSES. '/cls_rss_parser.php');
 require_once('inc/config.php');
 require_once('../inc/common_lib.php');
 require_once('../inc/admin_lib.php');
-require_once('../inc/i18n_administration.php');
 
 // mysql_server_version
 get_mysql_server_version();
 
-require(PATH_TO_CLASSES. '/cls_fast_template.php');
-require(PATH_TO_CLASSES. '/cls_permissions.php');
+$lang = get_config('language_set');
+
+require_once('inc/i18n_' . $lang . '_administration.php');
+require_once(PATH_TO_CLASSES. '/cls_fast_template.php');
+require_once(PATH_TO_CLASSES. '/cls_permissions.php');
 
 // egzemplarz klasy obs³uguj±cej bazê danych Core
 $db = new DB_SQL;
@@ -65,7 +67,7 @@ switch ($privileges) {
 }
 
 // inicjowanie klasy, wkazanie katalogu przechowuj±cego szablony
-$ft = new FastTemplate("./templates/tpl");
+$ft = new FastTemplate('./templates/' . $lang . '/tpl');
 
 // tablica definicji u¿ytych plików *.tpl
 $ft->define(array(
@@ -78,7 +80,9 @@ $ft->assign(array(
     'PRIVILEGE_LEVEL'   =>$privilege_level,
     'PAGE_TITLE'        =>$i18n['main'][0],
     'LOGGED_IN'         =>$_SESSION['login'],
-    'VERSION'           =>get_config('core_version')
+    'VERSION'           =>get_config('core_version'), 
+    'CSS_HREF'          =>'templates/' . $lang . '/css/style.css', 
+    'LANG'              =>$lang
 ));
 
 $inc_modules = array(

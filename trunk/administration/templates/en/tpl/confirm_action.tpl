@@ -3,7 +3,7 @@
 <table width="100%" align="left">
 	<tr>
 		<td class="form center">
-		Jeste¶ pewien, ¿e chcesz usun±æ?
+		Are You sure You want delete?
 		</td>
 	</tr>
 	<tr>

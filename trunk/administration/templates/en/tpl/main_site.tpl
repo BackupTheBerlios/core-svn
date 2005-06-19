@@ -1,16 +1,16 @@
 <div id="left">
-Witamy na stronie administracji serwisem.<br /><br />
+Welcome at administration panel.<br /><br />
 <table class="main_table">
 	<tr>
 		<td style="text-align: right;" colspan="2">
-		<span class="black">Statystycznie:</span>
+		<span class="black">Statistics:</span>
 		</td>
 	</tr>	
 	<tr>
 		<td width="75%">
-		Liczba wpisów: <br />
-		Publikowane: <br />
-		Nie publikowane: 
+		News number: <br />
+		Published: <br />
+		Not published: 
 		</td>
 		<td width="25%" style="text-align: right;">
 		{COUNT_NOTES}<br />
@@ -23,7 +23,7 @@ Witamy na stronie administracji serwisem.<br /><br />
 <table class="main_table">
 	<tr>
 		<td style="text-align: right;" colspan="2">
-		<span class="black">Core - strona g³ówna:</span>
+		<span class="black">Core CMS - main page:</span>
 		</td>
 	</tr>	
 	<tr>

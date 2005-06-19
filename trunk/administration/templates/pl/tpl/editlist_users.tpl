@@ -1,5 +1,5 @@
 <div id="left">
-<img src="templates/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>U¿ytkownicy - edycja/usuwanie</b><br /><br />
+<img src="templates/{LANG}/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>U¿ytkownicy - edycja/usuwanie</b><br /><br />
 <!-- NAME: editlist_users.tpl -->
 <table class="list">
 	<tr>

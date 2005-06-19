@@ -10,7 +10,7 @@
 $i18n = array();
 
 $i18n['index'] = array();
-$i18n['index'][0] = 'CORE - panel administracyjny';
+$i18n['index'][0] = 'CORE CMS - panel administracyjny';
 $i18n['index'][1] = 'Nie uzupe³niono wszystkich pól.';
 $i18n['index'][2] = 'Konto nie zosta³o jeszcze aktywowane.';
 $i18n['index'][3] = 'B³êdna nazwa u¿ytkownika, lub b³êdne has³o.';
@@ -123,5 +123,22 @@ $i18n['edit_users'][1] = 'U¿ytkownik zosta³ zmodyfikowany.';
 $i18n['edit_users'][2] = 'U¿ytkownik zosta³ usuniêty.';
 $i18n['edit_users'][3] = '<b>Nie masz uprawnieñ</b> do usuwania u¿ytkowników.';
 $i18n['edit_users'][4] = '<b>Nie masz uprawnieñ</b> do edycji u¿ytkowników lub edytujesz nie swoje dane.';
+
+$i18n['subcat_menu'] = array();
+$i18n['subcat_menu'][0] = 'Dodaj kolejny wpis';
+$i18n['subcat_menu'][1] = 'Edycja/Usuwanie wpisów';
+$i18n['subcat_menu'][2] = 'Edycja/Usuwanie komentarzy';
+$i18n['subcat_menu'][3] = 'Najczê¶ciej komentowane wpisy';
+$i18n['subcat_menu'][4] = 'Dodaj now± stronê';
+$i18n['subcat_menu'][5] = 'Edycja/Usuwanie stron';
+$i18n['subcat_menu'][6] = 'Dodaj nowego u¿ytkownika';
+$i18n['subcat_menu'][7] = 'Edycja/Usuwanie u¿ytkowników';
+$i18n['subcat_menu'][8] = 'Dodaj now± kategoriê';
+$i18n['subcat_menu'][9] = 'Edycja/Usuwanie kategorii';
+$i18n['subcat_menu'][10]= 'Transfer wpisów';
+$i18n['subcat_menu'][11]= 'Core CMS konfiguracja';
+$i18n['subcat_menu'][12]= 'Dodaj nowy link';
+$i18n['subcat_menu'][13]= 'Edycja/Usuwanie linków';
+$i18n['subcat_menu'][14]= 'Edycja szablonów';
 
 ?>

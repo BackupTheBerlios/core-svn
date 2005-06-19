@@ -1,7 +1,6 @@
 <div id="left">
-<img src="templates/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>Komentarze - edycja komentarzy</b><br /><br />
+<img src="templates/{LANG}/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>Komentarze - edycja komentarzy</b><br /><br />
 
-<script type="text/javascript" src="./templates/js/textarea.js"></script>
 <form enctype="multipart/form-data" method="post" name="post" action="main.php?p=5&amp;action=edit&amp;id={ID}" id="formComm">
 <table width="100%" align="left">
 	<tr>
@@ -34,7 +33,7 @@
 		<td class="form" width="364" colspan="2"><textarea class="note_textarea" name="text" id="canvas">{TEXT}</textarea></td>
 	</tr>
 	<tr>
-      <td colspan="3" class="align_right"><img src="templates/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('formComm').submit()">zmodyfikuj wpis</a></td>
+      <td colspan="3" class="align_right"><img src="templates/{LANG}/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('formComm').submit()">zmodyfikuj wpis</a></td>
 	</tr>
 </table>
 </form>

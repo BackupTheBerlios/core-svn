@@ -1,7 +1,6 @@
 <div id="left">
-<img src="templates/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>Strony serwisu - dodaj kolejny podstronê</b><br /><br />
+<img src="templates/{LANG}/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>Strony serwisu - dodaj kolejny podstronê</b><br /><br />
 
-<script type="text/javascript" src="./templates/js/textarea.js"></script>
 <form action="main.php?p=3" enctype="multipart/form-data" name="post" method="post" id="formPage">
 <table width="100%" align="left">
     <!-- IFDEF: PAGE_PREVIEW -->

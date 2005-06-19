@@ -2,8 +2,6 @@
 session_register("login");
 session_register("loggedIn");
 
-setlocale(LC_CTYPE, "pl_PL");
-
 if(isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === TRUE){
     
     header("Location: main.php");
@@ -16,15 +14,21 @@ require(PATH_TO_CLASSES. '/cls_db_mysql.php');
 require(PATH_TO_CLASSES. '/cls_phpmailer.php');
 
 require_once("inc/config.php");
-require_once('../inc/i18n_administration.php');
+require_once('../inc/common_lib.php');
 
-require(PATH_TO_CLASSES. '/cls_fast_template.php');
+// mysql_server_version
+get_mysql_server_version();
+
+$lang = get_config('language_set');
+
+require_once('inc/i18n_' . $lang . '_administration.php');
+require_once(PATH_TO_CLASSES. '/cls_fast_template.php');
 
 // warto¶æ pocz±tkowa zmiennej $start -> potrzebna przy stronnicowaniu
 $start = isset($_GET['start']) ? intval($_GET['start']) : 0;
 
 // inicjowanie klasy, wkazanie katalogu przechowuj±cego szablony
-$ft = new FastTemplate("./templates/tpl");
+$ft = new FastTemplate('./templates/' . $lang . '/tpl');
 
 $ft->define(array(
     'main'              =>"main.tpl",
@@ -35,7 +39,8 @@ $ft->define(array(
         
 $ft->assign(array(
     'TITLE'         =>$i18n['index'][0],
-    'ERROR_MSG'     =>""
+    'ERROR_MSG'     =>'', 
+    'CSS_HREF'      =>'templates/' . $lang . '/css/style.css'
 ));
 
 // deklaracja zmiennej $p

@@ -14,10 +14,10 @@ switch($p){
 	case '6':
 		
 		$menu_content = array(
-            "1"     =>"Dodaj kolejny wpis", 
-            "2"     =>"Edycja/Usuwanie wpisów", 
-            "5"     =>"Edycja/Usuwanie komentarzy", 
-            "6"     =>"Najczê¶ciej komentowane wpisy"
+            "1"     =>$i18n['subcat_menu'][0], 
+            "2"     =>$i18n['subcat_menu'][1], 
+            "5"     =>$i18n['subcat_menu'][2], 
+            "6"     =>$i18n['subcat_menu'][3]
         );
 		
 		break;
@@ -26,8 +26,8 @@ switch($p){
 	case '4':
 		
 		$menu_content = array(
-            "3"     =>"Dodaj now± stronê", 
-            "4"     =>"Edycja/Usuwanie stron"
+            "3"     =>$i18n['subcat_menu'][4], 
+            "4"     =>$i18n['subcat_menu'][5]
         );
         
 		break;
@@ -36,8 +36,8 @@ switch($p){
 	case '13':
 		
 		$menu_content = array(
-            "7"     =>"Dodaj nowego u¿ytkownika", 
-            "13"    =>"Edycja/Usuwanie u¿ytkowników"
+            "7"     =>$i18n['subcat_menu'][6], 
+            "13"    =>$i18n['subcat_menu'][7]
         );
         
 		break;
@@ -47,9 +47,9 @@ switch($p){
 	case '15':
 		
 		$menu_content = array(
-            "8"     =>"Dodaj now± kategoriê", 
-            "9"     =>"Edycja/Usuwanie kategorii", 
-            "15"    =>"Transfer wpisów"
+            "8"     =>$i18n['subcat_menu'][8], 
+            "9"     =>$i18n['subcat_menu'][9], 
+            "15"    =>$i18n['subcat_menu'][10]
         );
         
 		break;
@@ -57,7 +57,7 @@ switch($p){
 	case '10':
 		
 		$menu_content = array(
-            "10"     =>"Konfiguracja wy¶wietlanych wpisów"
+            "10"     =>$i18n['subcat_menu'][11]
         );
         
 		break;
@@ -66,8 +66,8 @@ switch($p){
 	case '12':
 		
 		$menu_content = array(
-            "11"    =>"Dodaj nowy link", 
-            "12"    =>"Edycja/Usuwanie linków"
+            "11"    =>$i18n['subcat_menu'][12], 
+            "12"    =>$i18n['subcat_menu'][13]
         );
         
 		break;
@@ -75,7 +75,7 @@ switch($p){
 	case '14':
 		
 		$menu_content = array(
-            "14"     =>"Edycja szablonów"
+            "14"     =>$i18n['subcat_menu'][14]
         );
         
 		break;

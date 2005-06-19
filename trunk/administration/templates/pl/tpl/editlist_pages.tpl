@@ -1,5 +1,5 @@
 <div id="left">
-<img src="templates/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>Zarz±dzanie stronami - edycja</b><br /><br />
+<img src="templates/{LANG}/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>Zarz±dzanie stronami - edycja</b><br /><br />
 <table class="list">
 	<tr>
 		<td class="mainListHeader" width="7%">Id</td>

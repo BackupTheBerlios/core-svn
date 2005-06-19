@@ -1,12 +1,11 @@
 <div id="left">
-<img src="templates/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>Strony serwisu - dodaj kolejny podstronê</b><br /><br />
+<img src="templates/{LANG}/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>Strony serwisu - dodaj kolejny podstronê</b><br /><br />
 
-<script type="text/javascript" src="./templates/js/textarea.js"></script>
 <form action="main.php?p=3" enctype="multipart/form-data" name="post" method="post" id="formPage">
 <table width="100%" align="left">
     <!-- IFDEF: PAGE_PREVIEW -->
     <tr>
-        <td class="form">Podgl±d:&nbsp;</td>
+        <td class="form">Preview:&nbsp;</td>
         <td class="form image_exist" colspan="2">
             <strong class="title_preview">{P_TITLE}</strong>
             <p class="text_preview">{PG_TEXT}</p>
@@ -15,7 +14,7 @@
     <!-- ELSE -->
     <!-- ENDIF -->
     <tr>
-		<td class="form" width="100">Tytu³ strony:&nbsp;</td>
+		<td class="form" width="100">Page title:&nbsp;</td>
 		<td class="form" colspan="2"><input type="text" name="title" size="30" maxlength="255" value="{P_TITLE}" /></td>
 	</tr>
 	<tr>
@@ -25,7 +24,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="form">Znaki specjalne:&nbsp;</td>
+		<td class="form">Special chars:&nbsp;</td>
 		<td class="form" colspan="2">
             <script type="text/javascript">
             <!--
@@ -35,20 +34,20 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="form">Tre¶æ strony:&nbsp;</td>
+		<td class="form">Page content:&nbsp;</td>
 		<td class="form" colspan="2">
 		<textarea class="note_textarea" name="text" id="canvas">{P_TEXT}</textarea>
 		</td>
 	</tr>
 	<tr>
-		<td class="form">Za³±cz zdjêcie:&nbsp;</td>
+		<td class="form">Attach picture:&nbsp;</td>
 		<td class="form" colspan="2"><input type="file" name="file" size="30" maxlength="255"></td>
 	</tr>
 	<tr>
-		<td class="form">Hierarchia :&nbsp;</td>
+		<td class="form">Hierarchy :&nbsp;</td>
 		<td class="form" colspan="2">
 		<select class="category_form" name="category_id">
-			<option> -- strona nadrzêdna -- </option>
+			<option> -- parent -- </option>
 			
 			<!-- BEGIN DYNAMIC BLOCK: page_row -->
 			<option value="{P_ID}">{P_NAME}</option>
@@ -58,7 +57,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="form">Szablon :&nbsp;</td>
+		<td class="form">Template :&nbsp;</td>
 		<td class="form" colspan="2">
 		<select class="category_form" name="template_name">
 			
@@ -70,12 +69,12 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="form">Publikowana:&nbsp;</td>
-		<td class="form" colspan="2"><input class="radio" type="radio" name="published" value="Y" align="top" checked="checked" />- tak&nbsp;<input style="border: 0px;" type="radio" name="published" value="N" align="top" />- nie</td>
+		<td class="form">Published:&nbsp;</td>
+		<td class="form" colspan="2"><input class="radio" type="radio" name="published" value="Y" align="top" checked="checked" />- yes&nbsp;<input style="border: 0px;" type="radio" name="published" value="N" align="top" />- no</td>
 	</tr>
 	<tr>
 		<td class="form"></td>
-		<td class="form center" colspan="2"><input type="submit" tabindex="5" name="preview" value="Podgl±d strony" />&nbsp;<input type="submit" accesskey="s" tabindex="6" name="post" value="Zapisz" /></td>
+		<td class="form center" colspan="2"><input type="submit" tabindex="5" name="preview" value="Preview" />&nbsp;<input type="submit" accesskey="s" tabindex="6" name="post" value="Save" /></td>
 	</tr>
 </table>
 </form>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 	<title>{PAGE_TITLE}</title>
-    <link rel="stylesheet" type="text/css" href="templates/css/style.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="{CSS_HREF}" media="screen" />
  	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2">
  	<script>
  	
@@ -16,7 +16,7 @@
  	    }
  	}
     </script>
-    <script src="templates/js/js_quicktags/js_quicktags.js" type="text/javascript"></script>
+    <script src="templates/{LANG}/js/js_quicktags/js_quicktags.js" type="text/javascript"></script>
 </head>
 
 <body>
