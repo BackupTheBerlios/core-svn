@@ -95,17 +95,7 @@ switch ($action) {
 		break;
 
 	default:
-	
-		// przydzielenie zmiennych::array
-		$ft->assign(array(
-            'SUBMIT_URL'		=>"main.php?p=11&amp;action=add",
-            'LINK_VALUE'		=>"",
-            'LINKURL_VALUE'		=>"value=\"http://\"",
-            'SUBMIT_HREF_DESC'	=>$i18n['add_links'][3],
-            'HEADER_DESC'		=>$i18n['add_links'][4]
-		));
 		
-		// w przypadku braku akcji wy¶wietlanie formularza
 		$ft->define('form_linkadd', "form_linkadd.tpl");
 		$ft->parse('ROWS', ".form_linkadd");
 }

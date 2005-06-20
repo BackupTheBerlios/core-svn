@@ -30,8 +30,6 @@ $i18n['add_links'] = array();
 $i18n['add_links'][0] = 'You must enter link name.';
 $i18n['add_links'][1] = 'Link url must be in correct format (www|ftp|http)://example.com';
 $i18n['add_links'][2] = 'Link was added to database.';
-$i18n['add_links'][3] = 'Add new link';
-$i18n['add_links'][4] = '<b>Links - add new link</b>';
 $i18n['add_links'][5] = '<b>You don\'t have a permission</b> to add new link.';
 
 $i18n['add_note'] = array();
@@ -87,8 +85,6 @@ $i18n['edit_category'][6] = '<b>You don\'t have a permission</b> to edit categor
 $i18n['edit_category'][7] = 'Main category has appended news. Befeor You delete it transfer news to other category.';
 
 $i18n['edit_links'] = array();
-$i18n['edit_links'][0] = 'Modify link.';
-$i18n['edit_links'][1] = '<b>Links modify link</b>';
 $i18n['edit_links'][2] = 'You must enter link name';
 $i18n['edit_links'][3] = 'Link name must be in correct format (www|ftp|http)://example.com';
 $i18n['edit_links'][4] = 'Link was modified successfully.';

@@ -30,8 +30,6 @@ $i18n['add_links'] = array();
 $i18n['add_links'][0] = 'Musisz podaæ nazwê linku.';
 $i18n['add_links'][1] = 'Link musi byæ w poprawnym formacie (www|ftp|http)://example.com';
 $i18n['add_links'][2] = 'Link zosta³ dodany do bazy danych.';
-$i18n['add_links'][3] = 'dodaj nowy link';
-$i18n['add_links'][4] = '<b>Linki - dodaj nowy link</b>';
 $i18n['add_links'][5] = '<b>Nie masz uprawnieñ</b> pozwalaj±cych na dodanie nowego linku.';
 
 $i18n['add_note'] = array();
@@ -87,8 +85,6 @@ $i18n['edit_category'][6] = '<b>Nie masz uprawnieñ</b> do edycji kategorii.';
 $i18n['edit_category'][7] = 'Kategoria g³ówna zawiera przydzielone do niej wpisy. Zanim j± usuniesz przenie¶ je do innej kategorii.';
 
 $i18n['edit_links'] = array();
-$i18n['edit_links'][0] = 'Zmodyfikuj link';
-$i18n['edit_links'][1] = '<b>Linki - modyfikacja linku</b>';
 $i18n['edit_links'][2] = 'Musisz podaæ nazwê linku';
 $i18n['edit_links'][3] = 'Link musi byæ w poprawnym formacie (www|ftp|http)://example.com';
 $i18n['edit_links'][4] = 'Link zosta³ zmodyfikowany.';

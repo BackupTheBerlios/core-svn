@@ -30,16 +30,11 @@ switch ($action) {
 		$ft->assign(array(
             'LINK_ID'			=>$link_id,
             'LINK_NAME'			=>$link_name,
-            'LINK_URL'			=>$link_url,
-            'SUBMIT_URL'		=>"main.php?p=12&amp;action=edit&amp;id=" . $link_id,
-            'LINK_VALUE'		=>"value=\"" . $link_name . "\"",
-            'LINKURL_VALUE'		=>"value=\"" . $link_url . "\"",
-            'SUBMIT_HREF_DESC'	=>$i18n['edit_links'][0],
-            'HEADER_DESC'		=>$i18n['edit_links'][1]
+            'LINK_URL'			=>$link_url
 		));
 
-		$ft->define('form_linkadd', "form_linkadd.tpl");
-		$ft->parse('ROWS',	".form_linkadd");
+		$ft->define('form_linkedit', "form_linkedit.tpl");
+		$ft->parse('ROWS',	".form_linkedit");
 		break;
 
 	case "edit":// edycja wybranego wpisu
