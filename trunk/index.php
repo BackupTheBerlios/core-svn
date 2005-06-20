@@ -18,7 +18,7 @@ get_mysql_server_version();
 define('PATH_TO_CLASSES', get_root() . '/administration/classes');
 define('PATH_TO_MODULES', 'modules');
 
-require_once(PATH_TO_CLASSES. '/cls_db_mysql.php'); // dodawanie pliku konfigurujacego bibliotekê baz danych
+require_once(PATH_TO_CLASSES. '/cls_db_mysql.php');
 require_once(PATH_TO_CLASSES. '/cls_fast_template.php');
 require_once(PATH_TO_CLASSES. '/cls_calendar.php');
 

@@ -22,10 +22,10 @@ $lang = get_config('language_set');
 
 require_once('i18n/' . $lang . '/i18n.php');
 
-if(isset($_COOKIE['devlog_design']) && is_dir('./templates/' . $_COOKIE['devlog_design'] . '/tpl/')){
+if(isset($_COOKIE['devlog_design']) && is_dir('./templates/' . $lang. '/' . $_COOKIE['devlog_design'] . '/tpl/')){
 
     $theme = $_COOKIE['devlog_design'];
-} elseif (is_dir('./templates/main/tpl')) {
+} elseif (is_dir('./templates/' . $lang . '/main/tpl')) {
 
     $theme = 'main';
 } else {
@@ -37,7 +37,7 @@ if(isset($_COOKIE['devlog_design']) && is_dir('./templates/' . $_COOKIE['devlog_
 @setcookie('devlog_design', $theme, time() + 3600 * 24 * 365);
 
 // inicjowanie klasy, wkazanie katalogu przechowuj±cego szablony
-$ft = new FastTemplate('./templates/' . $theme . '/tpl/');
+$ft = new FastTemplate('./templates/' . $lang . '/' . $theme . '/tpl/');
 $db = new DB_SQL;
 
 $ft->define('photo_main', 'photo_main.tpl');
@@ -67,7 +67,9 @@ if(!empty($image)) {
     $ft->assign(array(
         'IMAGE_NAME'    =>$image,
         'IMAGE_WIDTH'   =>$width,
-        'IMAGE_HEIGHT'  =>$height
+        'IMAGE_HEIGHT'  =>$height, 
+        'LANG'          =>$lang, 
+        'THEME'         =>$theme
     ));
 
     $ft->parse('CONTENT', 'photo_main');
