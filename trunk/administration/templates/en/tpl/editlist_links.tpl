@@ -19,7 +19,14 @@
 		<td class="{ID_CLASS}">{LINK_NAME}</td>
 		<td class="{ID_CLASS}">{LINK_URL}</td>
 		<td class="{ID_CLASS} center">
-		{UP} {DOWN}
+		<!-- IFDEF: REORDER_UP -->
+		<a href="main.php?p=12&amp;action=remark&amp;move=-15&amp;id={LINK_ID}"><img src="templates/{LANG}/images/up.gif" width="11" height="7" /></a>
+		<!-- ELSE -->
+		<!-- ENDIF -->
+		<!-- IFDEF: REORDER_DOWN -->
+		<a href="main.php?p=12&amp;action=remark&amp;move=15&amp;id={LINK_ID}"><img src="templates/{LANG}/images/down.gif" width="11" height="7" /></a>
+		<!-- ELSE -->
+		<!-- ENDIF -->
 		</td>
 		<td class="{ID_CLASS} center"><a href="main.php?p=12&amp;action=show&amp;id={LINK_ID}">Edit</a></td>
 		<td class="{ID_CLASS} center"><a href="main.php?p=12&amp;action=delete&amp;id={LINK_ID}">Delete</a></td>

@@ -163,7 +163,10 @@ function get_editpage_cat($page_id, $level) {
 	
 	global 
         $ft, 
-        $idx1;
+        $idx1, 
+        $i18n;
+        
+    $lang = get_config('language_set');
 
 	$query = sprintf("
         SELECT 
@@ -194,10 +197,10 @@ function get_editpage_cat($page_id, $level) {
 	
 		$ft->assign(array(
             'ID'        =>$page_id,
-            'TITLE'     =>str_repeat('&nbsp; ', $level) . "<img src=\"templates/images/ar.gif\" />&nbsp;" . $title, 
-            'UP'        =>'', 
-            'DOWN'      =>'', 
-            'PUBLISHED' =>$published == 'Y' ? 'Tak' : 'Nie'
+            'TITLE'     =>str_repeat('&nbsp; ', $level) . '<img src="templates/' . $lang . '/images/ar.gif" />&nbsp;' . $title, 
+            'REORDER_DOWN'  =>false, 
+            'REORDER_UP'    =>false, 
+            'PUBLISHED' =>$published == 'Y' ? $i18n['confirm'][0] : $i18n['confirm'][1]
         ));
 		
 		// deklaracja zmiennej $idx1::color switcher
@@ -318,6 +321,8 @@ function get_editcategory_cat($category_id, $level) {
 	   $idx1, 
 	   $count, 
 	   $i18n;
+	   
+	$lang = get_config('language_set');
 
 	$query = sprintf("
         SELECT 
@@ -354,10 +359,10 @@ function get_editcategory_cat($category_id, $level) {
 	
 		$ft->assign(array(
             'CATEGORY_ID'   =>$category_id,
-            'CATEGORY_NAME' =>str_repeat('&nbsp; ', $level) . "<img src=\"templates/images/ar.gif\" />&nbsp;" . $category_name,
+            'CATEGORY_NAME' =>str_repeat('&nbsp; ', $level) . '<img src="templates/' . $lang . '/images/ar.gif" />&nbsp;' . $category_name,
             'COUNT'         =>$count, 
-            'UP'            =>'', 
-            'DOWN'          =>'', 
+            'REORDER_DOWN'  =>false, 
+            'REORDER_UP'    =>false,  
             'CATEGORY_DESC' =>empty($category_description) ? $i18n['edit_category'][4] : $category_description
         ));
 		

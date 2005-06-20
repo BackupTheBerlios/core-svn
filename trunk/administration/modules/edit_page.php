@@ -398,27 +398,27 @@ switch ($action) {
 				$ft->assign(array(
 				    'ID'        =>$page_id,
                     'TITLE'     =>$title, 
-                    'PUBLISHED' =>$published == 'Y' ? 'Tak' : 'Nie'
+                    'PUBLISHED' =>$published == 'Y' ? $i18n['confirm'][0] : $i18n['confirm'][1]
                 ));
 
 				if($page_order == $max_order) {
                     // przydzielamy przycisk do podwy¿eszenia pozycji kategorii
                     $ft->assign(array(
-                        'DOWN'  =>'',
-                        'UP'    =>'<a href="main.php?p=4&amp;action=remark&amp;move=-15&amp;id=' . $page_id . '"><img src="templates/' . $lang . '/images/up.gif" width="11" height="7" /></a>'
+                        'REORDER_DOWN'  =>false, 
+                        'REORDER_UP'    =>true
                     ));
                 } elseif ($page_order == $min_order) {
                     // przydzielamy przycisk do obnizenia pozycji kategorii
                     $ft->assign(array(
-                        'DOWN'  =>'<a href="main.php?p=4&amp;action=remark&amp;move=15&amp;id=' . $page_id . '"><img src="templates/' . $lang . '/images/down.gif" width="11" height="7" /></a>', 
-                        'UP'    =>''
+                        'REORDER_DOWN'  =>true, 
+                        'REORDER_UP'    =>false
                     
                     ));
                 } else {
                     // przydzielamy dwa przyciski do zmiany polozenia kategorii
                     $ft->assign(array(
-                        'UP'    =>'<a href="main.php?p=4&amp;action=remark&amp;move=-15&amp;id=' . $page_id . '"><img src="templates/' . $lang . '/images/up.gif" width="11" height="7" /></a>', 
-                        'DOWN'  =>'<a href="main.php?p=4&amp;action=remark&amp;move=15&amp;id=' . $page_id . '"><img src="templates/' . $lang . '/images/down.gif" width="11" height="7" /></a>'
+                        'REORDER_DOWN'  =>true, 
+                        'REORDER_UP'    =>true
                     ));
                 }			
 			

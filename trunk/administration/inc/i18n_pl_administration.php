@@ -141,4 +141,8 @@ $i18n['subcat_menu'][12]= 'Dodaj nowy link';
 $i18n['subcat_menu'][13]= 'Edycja/Usuwanie linków';
 $i18n['subcat_menu'][14]= 'Edycja szablonów';
 
+$i18n['confirm'] = array();
+$i18n['confirm'][0] = 'Tak';
+$i18n['confirm'][1] = 'Nie';
+
 ?>

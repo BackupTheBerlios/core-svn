@@ -15,7 +15,14 @@
 		<td class="{ID_CLASS} center">{CATEGORY_ID}</td>
 		<td class="{ID_CLASS}">{CATEGORY_NAME}</td>
 		<td class="{ID_CLASS} center">
-		{UP} {DOWN}
+		<!-- IFDEF: REORDER_UP -->
+		<a href="main.php?p=9&amp;action=remark&amp;move=-15&amp;id={CATEGORY_ID}"><img src="templates/{LANG}/images/up.gif" width="11" height="7" /></a>
+		<!-- ELSE -->
+		<!-- ENDIF -->
+		<!-- IFDEF: REORDER_DOWN -->
+		<a href="main.php?p=9&amp;action=remark&amp;move=15&amp;id={CATEGORY_ID}"><img src="templates/{LANG}/images/down.gif" width="11" height="7" /></a>
+		<!-- ELSE -->
+		<!-- ENDIF -->
 		</td>
 		<td class="{ID_CLASS} center">{COUNT}</td>
 		<td class="{ID_CLASS} center"><a href="main.php?p=9&amp;action=show&amp;id={CATEGORY_ID}">Edycja</a></td>
