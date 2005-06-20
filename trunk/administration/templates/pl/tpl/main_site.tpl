@@ -31,7 +31,7 @@ Witamy na stronie administracji serwisem.<br /><br />
 		<!-- BEGIN DYNAMIC BLOCK: rss_row -->
         <b>{NEWS_TITLE}</b>&nbsp;{NEWS_TEXT}
         <div class="right">
-        <img alt="góra" src="templates/images/top.gif" width="11" height="11" hspace="2" align="middle" /> <a href="{PERMA_LINK}">zobacz ca³y</a>
+        <img alt="góra" src="templates/{LANG}/images/top.gif" width="11" height="11" hspace="2" align="middle" /> <a href="{PERMA_LINK}">zobacz ca³y</a>
         </div>
         <br />
         <!-- END DYNAMIC BLOCK: rss_row -->
