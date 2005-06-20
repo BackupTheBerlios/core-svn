@@ -7,18 +7,34 @@ class calendar {
     );
     
     var $Months = array(
-        'Styczeñ', 
-        'Luty', 
-        'Marzec', 
-        'Kwiecieñ', 
-        'Maj', 
-        'Czerwiec', 
-        'Lipiec', 
-        'Sierpieñ', 
-        'Wrzesieñ', 
-        'Pa¼dziernik', 
-        'Listopad', 
-        'Grudzieñ'
+        'pl'    =>array( 
+            'Styczeñ', 
+            'Luty', 
+            'Marzec', 
+            'Kwiecieñ', 
+            'Maj', 
+            'Czerwiec', 
+            'Lipiec', 
+            'Sierpieñ', 
+            'Wrzesieñ', 
+            'Pa¼dziernik', 
+            'Listopad', 
+            'Grudzieñ'
+        ), 
+        'en'    =>array( 
+            'January', 
+            'February', 
+            'March', 
+            'April', 
+            'May', 
+            'June', 
+            'July', 
+            'August', 
+            'September', 
+            'October', 
+            'November', 
+            'December'
+        )
     );
     
     var $intYear;
@@ -41,9 +57,10 @@ class calendar {
             $ft, 
             $db, 
             $rewrite, 
-            $assigned_tpl;
+            $assigned_tpl, 
+            $lang;
         
-        $ft->assign('LONGMONTHS', $this->Months[($m = date('n'))-1] . ', ' . ($y = date('Y')));
+        $ft->assign('LONGMONTHS', $this->Months[$lang][($m = date('n'))-1] . ', ' . ($y = date('Y')));
         
         $ft->define_dynamic("shortdays_row", $assigned_tpl);
         $ft->define_dynamic("days_row", $assigned_tpl);
