@@ -6,14 +6,21 @@ if(empty($_GET['id'])) {
     exit;
 }
 
-require_once('inc/i18n.php');
 require_once('inc/common_lib.php');
 
 define('PATH_TO_CLASSES', get_root() . '/administration/classes');
 
-require(PATH_TO_CLASSES . '/cls_db_mysql.php'); // dodawanie pliku konfigurujacego bibliotekê baz danych
-require(PATH_TO_CLASSES . '/cls_fast_template.php');
-require('administration/inc/config.php');
+require_once(PATH_TO_CLASSES . '/cls_db_mysql.php');
+require_once(PATH_TO_CLASSES . '/cls_fast_template.php');
+
+require_once('administration/inc/config.php');
+
+// mysql_server_version
+get_mysql_server_version();
+
+$lang = get_config('language_set');
+
+require_once('i18n/' . $lang . '/i18n.php');
 
 if(isset($_COOKIE['devlog_design']) && is_dir('./templates/' . $_COOKIE['devlog_design'] . '/tpl/')){
 

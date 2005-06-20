@@ -9,9 +9,8 @@ if(!defined('CORE_INSTALLED')) {
     exit;
 }
 
-require('inc/i18n.php');
-require('inc/main_lib.php');
-require('inc/common_lib.php');
+require_once('inc/main_lib.php');
+require_once('inc/common_lib.php');
 
 // mysql_server_version
 get_mysql_server_version();
@@ -23,22 +22,25 @@ require_once(PATH_TO_CLASSES. '/cls_db_mysql.php'); // dodawanie pliku konfiguru
 require_once(PATH_TO_CLASSES. '/cls_fast_template.php');
 require_once(PATH_TO_CLASSES. '/cls_calendar.php');
 
-//inicjacja polaczenie z MySQL
+// DB class init
 $db = new DB_Sql;
 
 $rewrite            = get_config('mod_rewrite');
 $max_photo_width    = get_config('max_photo_width');
 $date_format        = get_config('date_format');
 $show_calendar      = get_config('show_calendar');
+$lang               = get_config('language_set');
 
-//licznik
+require('i18n/' . $lang . '/i18n.php');
+
+// counter
 if(!isset($_COOKIE['devlog_counter'])){
 	
 	@setcookie('devlog_counter', 'hit', time()+10800);
     set_config('counter', get_config('counter') + 1);
 }
 
-//konfiguracja szablonow i design switchera
+// template & design switcher
 if(isset($_COOKIE['devlog_design']) && is_dir('./templates/' . $_COOKIE['devlog_design'] . '/tpl/')){
     
     $theme = $_COOKIE['devlog_design'];

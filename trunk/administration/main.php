@@ -28,7 +28,7 @@ get_mysql_server_version();
 
 $lang = get_config('language_set');
 
-require_once('inc/i18n_' . $lang . '_administration.php');
+require_once('i18n/' . $lang . '/i18n.php');
 require_once(PATH_TO_CLASSES. '/cls_fast_template.php');
 require_once(PATH_TO_CLASSES. '/cls_permissions.php');
 

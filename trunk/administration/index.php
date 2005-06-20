@@ -10,8 +10,8 @@ if(isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === TRUE){
 
 define('PATH_TO_CLASSES', 'classes');
 
-require(PATH_TO_CLASSES. '/cls_db_mysql.php');
-require(PATH_TO_CLASSES. '/cls_phpmailer.php');
+require_once(PATH_TO_CLASSES. '/cls_db_mysql.php');
+require_once(PATH_TO_CLASSES. '/cls_phpmailer.php');
 
 require_once("inc/config.php");
 require_once('../inc/common_lib.php');
@@ -21,7 +21,7 @@ get_mysql_server_version();
 
 $lang = get_config('language_set');
 
-require_once('inc/i18n_' . $lang . '_administration.php');
+require_once('i18n/' . $lang . '/i18n.php');
 require_once(PATH_TO_CLASSES. '/cls_fast_template.php');
 
 // warto¶æ pocz±tkowa zmiennej $start -> potrzebna przy stronnicowaniu

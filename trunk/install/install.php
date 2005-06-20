@@ -3,15 +3,14 @@
 define('PATH_TO_CLASSES', '../administration/classes');
 define('EXTENSION', '.php');
 
-require_once(PATH_TO_CLASSES. "/cls_db_mysql.php"); // dodawanie pliku konfigurujacego bibliotekê baz danych
+require_once(PATH_TO_CLASSES. "/cls_db_mysql.php");
 require_once(PATH_TO_CLASSES. "/cls_fast_template.php");
 require_once(PATH_TO_CLASSES. "/cls_permissions.php");
 
 $lang = !empty($_POST['lang']) ? $_POST['lang'] : 'pl';
 
-require_once('inc/i18n_' . $lang . EXTENSION);
+require_once('i18n/' . $lang . '/i18n.php');
 
-// inicjowanie klasy, wkazanie katalogu przechowuj±cego szablony
 $ft = new FastTemplate("./templates/" . $lang);
 
 $ft_path = $ft->get_root();
