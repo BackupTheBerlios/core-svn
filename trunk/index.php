@@ -41,10 +41,10 @@ if(!isset($_COOKIE['devlog_counter'])){
 }
 
 // template & design switcher
-if(isset($_COOKIE['devlog_design']) && is_dir('./templates/' . $_COOKIE['devlog_design'] . '/tpl/')){
+if(isset($_COOKIE['devlog_design']) && is_dir('./templates/' . $lang . '/' . $_COOKIE['devlog_design'] . '/tpl/')){
     
     $theme = $_COOKIE['devlog_design'];
-} elseif(is_dir('./templates/main/tpl')) {
+} elseif(is_dir('./templates/' . $lang . '/main/tpl')) {
     
     $theme = 'main';
 } else {
@@ -55,9 +55,9 @@ if(isset($_COOKIE['devlog_design']) && is_dir('./templates/' . $_COOKIE['devlog_
 @setcookie('devlog_design', $theme, time() + 3600 * 24 * 365);
 
 // inicjowanie klasy, wkazanie katalogu przechowuj±cego szablony
-$ft = new FastTemplate('./templates/' . $theme . '/tpl/');
+$ft = new FastTemplate('./templates/' . $lang . '/' . $theme . '/tpl/');
 
-$templates_dir = 'templates/';
+$templates_dir = 'templates/' . $lang . '/';
 $read_dir = @dir($templates_dir);
 
 $ft->define(array(
@@ -95,7 +95,9 @@ $ft->assign(array(
     'RSSCOMMENTS_LINK'  =>$rssc_link, 
     'SEARCH_LINK'       =>$search_link,
     'CAT_ALL_LINK'      =>$cat_all_link,
-    'CORE_VERSION'      =>get_config('core_version')
+    'CORE_VERSION'      =>get_config('core_version'), 
+    'LANG'              =>$lang, 
+    'THEME'             =>$theme
 ));
 
 if(!isset($_GET['p'])) {
@@ -165,7 +167,7 @@ class loader {
 
 // wyznaczamy szablon jaki ma byc parsowany, sprawdzajac
 // czy faktycznie znajduje sie on w katalogu z szablonami
-if(!isset($assigned_tpl) || !file_exists('./templates/' . $theme . '/tpl/' . $assigned_tpl . '_page.tpl')) {
+if(!isset($assigned_tpl) || !file_exists('./templates/' . $lang . '/' . $theme . '/tpl/' . $assigned_tpl . '_page.tpl')) {
   $assigned_tpl = 'main_page';
 }
 

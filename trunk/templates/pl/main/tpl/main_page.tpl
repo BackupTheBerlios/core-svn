@@ -8,10 +8,10 @@
 		<meta http-equiv="Content-language" content="pl" />
         <meta name="generator" content="Core {CORE_VERSION}" /> <!-- proszê, zostaw dla statystyk -->
 	
-		<script type="text/javascript" src="templates/main/js/functions.js"></script>
-		<script type="text/javascript" src="templates/main/js/js_quicktags/js_quicktags.js"></script>
+		<script type="text/javascript" src="templates/{LANG}/{THEME}/js/functions.js"></script>
+		<script type="text/javascript" src="templates/{LANG}/{THEME}/js/js_quicktags/js_quicktags.js"></script>
 
-		<link rel="stylesheet" href="templates/main/css/main.css" type="text/css" media="screen" />
+		<link rel="stylesheet" href="templates/{LANG}/{THEME}/css/main.css" type="text/css" media="screen" />
 	</head>
 <body>
 <div id="main">
@@ -130,8 +130,8 @@
 		<span class="title">./dev-log</span> <a href="./"><strong>index</strong></a><br />
 		
 		<div class="right">
-            <a href="javascript:text_resize('content',-1)"><img alt="Zmniejsz tekst" src="templates/main/images/minus.jpg" width="12" height="12" /></a>
-            <a href="javascript:text_resize('content',1)"><img alt="Powiêksz tekst" src="templates/main/images/plus.jpg" width="12" height="12" /></a>
+            <a href="javascript:text_resize('content',-1)"><img alt="Zmniejsz tekst" src="templates/{LANG}/{THEME}/images/minus.jpg" width="12" height="12" /></a>
+            <a href="javascript:text_resize('content',1)"><img alt="Powiêksz tekst" src="templates/{LANG}/{THEME}/images/plus.jpg" width="12" height="12" /></a>
 		</div>
 		
 		<div id="content">

@@ -6,7 +6,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2" />
 		<meta http-equiv="Content-language" content="pl" />
 
-		<link rel="stylesheet" href="templates/main/css/main.css" type="text/css" media="screen" />
+		<link rel="stylesheet" href="templates/{LANG}/{THEME}/css/main.css" type="text/css" media="screen" />
 	</head>
 <body>
 

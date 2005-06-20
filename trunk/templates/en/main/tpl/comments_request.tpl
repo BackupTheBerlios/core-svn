@@ -5,7 +5,6 @@ Je¶li jednak ju¿ zdecydujesz siê to zrobiæ, to muszê zaznaczyæ, ¿e Twój adres ni
 przechowywany wy³±cznie w bazie danych w celach czysto informacyjnych.<br /><br />
 <b><a class="date" href="{PERMA_LINK}">{NEWS_TITLE}</a></b> - link bezpo¶redni<br /><br />
 
-<script type="text/javascript" src="templates/main/js/comments.js"></script>
 <form method="post" action="{FORM_LINK}" name="post">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 	<tr>
