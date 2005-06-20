@@ -21,8 +21,6 @@ $i18n['main'][0] = 'CORE CMS - administration panel';
 $i18n['add_category'] = array();
 $i18n['add_category'][0] = 'You must enter category name.';
 $i18n['add_category'][1] = 'Category was added to database.';
-$i18n['add_category'][2] = 'Add new category';
-$i18n['add_category'][3] = '<b>Categories - add new category</b>';
 $i18n['add_category'][4] = '<b>You don\'t have a permission</b> to add new category.';
 $i18n['add_category'][5] = 'Posts per page on category page must be between: 3 - 99';
 
@@ -75,8 +73,6 @@ $i18n['edit_templates'][2] = '<b>You don\'t have a permission</b> to edit Core C
 $i18n['edit_templates'][3] = 'There\'s no capabilities to save changes in this template!';
 
 $i18n['edit_category'] = array();
-$i18n['edit_category'][0] = 'Modify category.';
-$i18n['edit_category'][1] = '<b>Categories - modify exist category</b>';
 $i18n['edit_category'][2] = 'Category was modified successfully.';
 $i18n['edit_category'][3] = 'Category was deleted successfully.';
 $i18n['edit_category'][4] = 'No description.';

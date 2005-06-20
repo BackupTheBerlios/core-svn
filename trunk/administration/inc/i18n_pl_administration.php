@@ -21,8 +21,6 @@ $i18n['main'][0] = 'CORE - panel administracyjny';
 $i18n['add_category'] = array();
 $i18n['add_category'][0] = 'Musisz podaæ nazwê kategorii.';
 $i18n['add_category'][1] = 'Kategoria zosta³a dodana do bazy danych.';
-$i18n['add_category'][2] = 'dodaj now± kategoriê';
-$i18n['add_category'][3] = '<b>Kategorie - dodaj now± kategoriê</b>';
 $i18n['add_category'][4] = '<b>Nie masz uprawnieñ</b> pozwalaj±cych na dodanie nowej kategorii.';
 $i18n['add_category'][5] = 'Liczba postów na stronie kategorii musi byæ w przedziale: 3 - 99';
 
@@ -75,8 +73,6 @@ $i18n['edit_templates'][2] = '<b>Nie masz uprawnieñ</b> do edycji szablonów Core
 $i18n['edit_templates'][3] = 'Brak mo¿liwo¶ci zapisu zmian w tym szablonie!';
 
 $i18n['edit_category'] = array();
-$i18n['edit_category'][0] = 'Zmodyfikuj kategoriê';
-$i18n['edit_category'][1] = '<b>Kategorie - modyfikacja istniej±cej kategorii</b>';
 $i18n['edit_category'][2] = 'Kategoria zosta³a zmodyfikowana.';
 $i18n['edit_category'][3] = 'Kategoria zosta³a usuniêta.';
 $i18n['edit_category'][4] = 'Brak opisu';

@@ -1,5 +1,7 @@
 <div id="left">
-<img src="templates/{LANG}/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>Category - edit category</b><br /><br />
+<img src="templates/{LANG}/images/main.gif" width="14" height="14" align="middle" hspace="2">
+<b>Categories - edit category</b>
+<br /><br />
 
 <form enctype="multipart/form-data" method="post" action="main.php?p=9&amp;action=edit&amp;id={CATEGORY_ID}" id="formCat">
 <table width="100%" align="left">
@@ -28,7 +30,7 @@
 		<td class="form"><input class="perpage" type="text" name="category_post_perpage" value="{CATEGORY_PERPAGE}" /></td>
 	</tr>
 	<tr>
-      <td class="form" width="364" colspan="2"><br /><img src="templates/{LANG}/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('formCat').submit()">{SUBMIT_HREF_DESC}</a></td>
+      <td class="form" width="364" colspan="2"><br /><img src="templates/{LANG}/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('formCat').submit()">Modify category</a></td>
 	</tr>
 </table>
 </form>

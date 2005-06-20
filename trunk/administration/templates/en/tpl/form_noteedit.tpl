@@ -50,7 +50,12 @@
 	<tr>
 		<td class="form">Attach picture:&nbsp;</td>
 		<td class="form"><input type="file" name="file" size="30" maxlength="255"></td>
-		<td class="form">{OVERWRITE_PHOTO}</td>
+		<td class="form">
+		<!-- IFDEF: OVERWRITE_PHOTO -->
+		Previous picture would be overwritten
+		<!-- ELSE -->
+		<!-- ENDIF -->
+		</td>
 	</tr>
 	<tr>
 		<td class="form">Only in category:&nbsp;</td>

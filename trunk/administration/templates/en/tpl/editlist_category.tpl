@@ -1,6 +1,8 @@
 <div id="left">
-<img src="templates/{LANG}/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>Category - edit/delete</b><br /><br />
-<!-- NAME: editlist_category.tpl -->
+<img src="templates/{LANG}/images/main.gif" width="14" height="14" align="middle" hspace="2">
+<b>Categories - edit/delete</b>
+<br /><br />
+
 <table class="list">
 	<tr>
 		<td class="mainListHeader" width="7%">Id</td>
@@ -33,5 +35,4 @@
 		<td id="pagination" colspan="6">{STRING}</td>
 	</tr>
 </table>
-<!-- END: editlist_category.tpl -->
 </div>

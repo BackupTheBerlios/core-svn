@@ -37,8 +37,7 @@ switch ($action) {
             'CATEGORY_NAME'		=>$cat_name,
             'CATEGORY_DESC'		=>br2nl($cat_description),
             'CATNAME_DESC'		=>$cat_description, 
-            'CATEGORY_PERPAGE'  =>$category_perpage, 
-            'SUBMIT_HREF_DESC'	=>$i18n['edit_category'][0]
+            'CATEGORY_PERPAGE'  =>$category_perpage
         ));
         
         $path = '../templates/main/tpl/';
@@ -262,7 +261,7 @@ switch ($action) {
                     $cat_parent_id  = $db->f("category_parent_id");
                     $count          = $db->f("count");
             
-                    if($cat_parent_id > 0) {
+                    if($cat_parent_id > 0 || $count == 0) {
                 
                         // zmiana parent_id kategorii dziedziczacej na ta poziom wyzsza
                         // ------------------------------------------------------------

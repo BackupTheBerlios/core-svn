@@ -134,11 +134,6 @@ switch ($action) {
         
             get_addcategory_cat($category_id, 2);
         }
-	
-		// przydzielenie zmiennych::array
-		$ft->assign(array(
-            'SUBMIT_HREF_DESC'	=>$i18n['add_category'][2]
-		));
 		
 		$path = '../templates/main/tpl/';
         
