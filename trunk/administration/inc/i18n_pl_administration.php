@@ -50,7 +50,7 @@ $i18n['add_user'][1] = 'Podaj poprawny adres e-mail.';
 $i18n['add_user'][2] = 'Has³o nowego u¿ytkownika musi mieæ conajmniej 6 znaków.';
 $i18n['add_user'][3] = 'Podane has³a nowego u¿ytkownika nie zgadzaj± siê ze sob±.';
 $i18n['add_user'][4] = 'U¿ytkownik zosta³ dodany do bazy danych.';
-$i18n['add_user'][5] = 'Dodaj u¿ytkownika';
+$i18n['add_user'][5] = 'U¿ytkownik o wybranym loginie istnieje ju¿ w bazie danych.';
 $i18n['add_user'][6] = '<b>Nie masz uprawnieñ</b> pozwalaj±cych dodaæ nowego u¿ytkownika.';
 
 $i18n['core_configuration'] = array();
@@ -123,7 +123,7 @@ $i18n['edit_users'][5] = 'Zwiêkszono poziom uprawnieñ.';
 $i18n['edit_users'][6] = 'Zmniejszono poziom uprawnieñ.';
 $i18n['edit_users'][7] = 'Nie mo¿esz zwiêkszyæ poziomu uprawnieñ powy¿ej 4.';
 $i18n['edit_users'][8] = 'Nie mo¿esz zwiêkszyæ poziomu uprawnieñ poni¿ej 1.';
-$i18n['edit_users'][9] = 'Zmodyfikuj dane u¿ytkownika';
+$i18n['edit_users'][9] = 'Podaj poprawny adres e-mail.';
 
 $i18n['subcat_menu'] = array();
 $i18n['subcat_menu'][0] = 'Dodaj kolejny wpis';

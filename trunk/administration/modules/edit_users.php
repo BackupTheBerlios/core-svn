@@ -9,7 +9,7 @@ $ft->define_dynamic("error_row", "error_reporting");
 
 switch ($action) {
 	
-	case "show": // wy¶wietlanie wpisu pobranego do modyfikacji
+	case "show":
 	
 		$query = sprintf("
             SELECT * FROM 
@@ -41,18 +41,16 @@ switch ($action) {
             'JID'               =>$db->f("jid"),
             
             'HOBBY'             =>$db->f("hobby"),
-            'ADDITIONAL_INFO'   =>$db->f("additional_info"),
-            
-            'SUBMIT_URL'		=>"main.php?p=13&amp;action=edit&amp;id=" . $_GET['id'],
-            'SUBMIT_HREF_DESC'	=>$i18n['edit_users'][9],
-            'HEADER_DESC'		=>"<b>U¿ytkownicy - modyfikacja u¿ytkownika</b>"
+            'ADDITIONAL_INFO'   =>$db->f("additional_info")
         ));
 
-		$ft->define('form_useradd', "form_useradd.tpl");
-		$ft->parse('ROWS',	".form_useradd");
+		$ft->define('form_useredit', "form_useredit.tpl");
+		$ft->parse('ROWS',	".form_useredit");
 		break;
 
 	case "edit":
+	
+        $monit = array();
 	
         $query = sprintf("
             SELECT * FROM 
@@ -92,16 +90,19 @@ switch ($action) {
             $additional_info    = $_POST['additional_info'];
         
             if(!check_mail($email)){
-			
-                $err = "Podaj poprawny adres e-mail.<br />";
+                $monit[] = $i18n['edit_users'][9];
             }
 		
-            if(!empty($err)) {
-                
-                $err .= "<br /><a href=\"javascript:history.back();\">powrót</a>";
-                
-                $ft->assign('CONFIRM', $err);
-                $ft->parse('ROWS', ".result_note");
+            if(!empty($monit)) {
+
+                foreach ($monit as $error) {
+    
+                    $ft->assign('ERROR_MONIT', $error);
+                    
+                    $ft->parse('ROWS',	".error_row");
+                }
+                        
+                $ft->parse('ROWS', "error_reporting");
             
             } else {
 		

@@ -1,8 +1,5 @@
 <?php
 
-//require_once("classes/cls_user.php");
-
-// deklaracja zmiennej $action::form
 $action = empty($_GET['action']) ? '' : $_GET['action'];
 
 // definicja szablonow parsujacych wyniki bledow.
@@ -38,7 +35,7 @@ switch ($action) {
         
             if($db->next_record() > 0) {
             
-                $monit[] = "U¿ytkownik o loginie <b>" . $_POST['login_name'] . "</b> znajduje siê ju¿ w bazie danych.<br />";
+                $monit[] = $i18n['add_user'][5];
             }
 		
             if(!empty($monit)) {
@@ -114,11 +111,6 @@ switch ($action) {
 		break;
 
 	default:
-		// w przypadku braku akcji wy¶wietlanie formularza
-		$ft->assign(array(
-			'SUBMIT_HREF_DESC'	=>$i18n['add_user'][5],
-			'SUBMIT_URL'		=>"main.php?p=7&amp;action=add"
-        ));
 			
 		$ft->define('form_useradd', "form_useradd.tpl");
 		$ft->parse('ROWS', ".form_useradd");

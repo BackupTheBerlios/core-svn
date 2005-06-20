@@ -99,7 +99,6 @@ switch ($action) {
         
         // w przypadku braku akcji wy¶wietlanie formularza
 		$ft->define('form_configuration', "form_configuration.tpl");
-		
         
         $start_page_type    = get_config('start_page_type');
         $start_page_id      = get_config('start_page_id');

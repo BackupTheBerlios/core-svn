@@ -50,7 +50,7 @@ $i18n['add_user'][1] = 'Please enter a correct e-mail address.';
 $i18n['add_user'][2] = 'New user password must have at least 6 chars.';
 $i18n['add_user'][3] = 'Entered passwords didn\'t match.';
 $i18n['add_user'][4] = 'User was added to database.';
-$i18n['add_user'][5] = 'Add user';
+$i18n['add_user'][5] = 'User with selected login exist in database. Choose difrent login name.';
 $i18n['add_user'][6] = '<b>You don\'t have a permission</b> to add new user.';
 
 $i18n['core_configuration'] = array();
@@ -123,7 +123,7 @@ $i18n['edit_users'][5] = 'Privilege level was increased.';
 $i18n['edit_users'][6] = 'Privilege level was decreased.';
 $i18n['edit_users'][7] = 'You can\'t set privilege level higher than 4.';
 $i18n['edit_users'][8] = 'You can\'t set privilege level lower than 1.';
-$i18n['edit_users'][9] = 'Modify user data';
+$i18n['edit_users'][9] = 'Please enter correct e-mail address.';
 
 $i18n['subcat_menu'] = array();
 $i18n['subcat_menu'][0] = 'Add another news';
