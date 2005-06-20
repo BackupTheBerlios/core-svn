@@ -42,7 +42,7 @@ function checkform() {
 	
 	if ( !pattern.test(email) ) {
 		
-		alert("Podaj adres e-mail");
+		alert("Please enter a correct e-mail address.");
 		document.newsletter_form.email.focus();
 		return false;
 	}

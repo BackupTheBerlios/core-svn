@@ -52,7 +52,7 @@ function checkForm() {
 	formErrors = false;
 
 	if (document.post.text.value.length < 2) {
-		formErrors = "Musisz wpisaæ wiadomo¶æ przed wys³aniem";
+		formErrors = "Write a few words first.";
 	}
 
 	if (formErrors) {

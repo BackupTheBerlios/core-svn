@@ -1,4 +1,4 @@
-Wyst±pi³y nastêpuj±ce b³êdy:
+Some errors occurs:
 <ul class="error">
 
     <!-- BEGIN DYNAMIC BLOCK: error_row -->
@@ -7,4 +7,4 @@ Wyst±pi³y nastêpuj±ce b³êdy:
 
 </ul>
 
-<a href="javascript:history.back();">powrót</a>
+<a href="javascript:history.back();">back</a>

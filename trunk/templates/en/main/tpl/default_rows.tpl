@@ -9,9 +9,9 @@
     </div>
     <!-- ELSE -->
     <div id="image">
-	   Obrazek do³±czony do wpisu jest za du¿y, aby go tu wy¶wietliæ. 
-	   <a href="javascript:foto('{PHOTO_LINK}', {WIDTH}, {HEIGHT});">Zobacz</a> go 
-	   w nowym oknie.
+	   Attached image is too big &amp; cannot be displayed here. 
+	   <a href="javascript:foto('{PHOTO_LINK}', {WIDTH}, {HEIGHT});">View</a> in 
+	   new window.
     </div>
     <!-- ENDIF -->
 <!-- ELSE -->
@@ -20,9 +20,9 @@
 <div class="right">
 <!-- IFDEF: COMMENTS_ALLOW -->
     <!-- IFDEF: COMMENTS -->
-    <a class="comments" href="{COMMENTS_LINK}">komentarze ({COMMENTS})</a>
+    <a class="comments" href="{COMMENTS_LINK}">comments ({COMMENTS})</a>
     <!-- ELSE -->
-    <a class="comments" href="{COMMENTS_LINK}">skomentuj ten post</a>
+    <a class="comments" href="{COMMENTS_LINK}">leave a word</a>
     <!-- ENDIF -->
 <!-- ELSE -->
 
@@ -32,7 +32,7 @@
 	{NEWS_AUTHOR}
 </div>
 <div class="category">
-	<b>Kategoria:</b>
+	<b>Category:</b>
 	<!-- BEGIN DYNAMIC BLOCK: cat_row -->
 	<a href="{CATEGORY_LINK}">{CATEGORY_NAME}</a>{COMMA}
 	<!-- END DYNAMIC BLOCK: cat_row -->

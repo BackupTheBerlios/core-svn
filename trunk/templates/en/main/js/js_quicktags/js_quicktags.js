@@ -20,13 +20,13 @@
 // The variable 'edCanvas' must be defined as the <textarea> element you want 
 // to be editing in. See the accompanying 'index.html' page for an example.
 
-help_ed_bold = "Tekst wzmocniony: <strong>tekst</strong>";
-help_ed_italic = "Tekst kursyw±: <em>tekst</em>";
-help_ed_under = "Tekst podkre¶lony: <u>tekst</u>";
-help_ed_link = "Odno¶nik: <a href=\"adresURI\">tekst</a>";
-help_ed_abbr = "Definicja skrótu: <abbr title=\"definicja\">skrót</abbr>";
-help_ed_quote = "Cytuj: [quote]cytowany tekst[/quote]";
-help_ed_close = "Zamknij wszystkie otwarte tagi HTMLCode";
+help_ed_bold = "Bolded text: <strong>text</strong>";
+help_ed_italic = "Italic text: <em>text</em>";
+help_ed_under = "Underline text: <u>text</u>";
+help_ed_link = "Reference: <a href=\"adresURI\">text</a>";
+help_ed_abbr = "Shortcut definition: <abbr title=\"definition\">shortcut</abbr>";
+help_ed_quote = "Quote: [quote]quoted text[/quote]";
+help_ed_close = "Close all open XHTML tags";
 
 function helpline2(help) {
 	document.post.helpbox.value = eval("help_" + help);
@@ -191,7 +191,7 @@ function edSpell(myField) {
 		}
 	}
 	if (word == '') {
-		word = prompt('Wpisz poszukiwane s³owo:', '');
+		word = prompt('Enter searched word:', '');
 	}
 	if (word != '') {
 		window.open('http://dictionary.reference.com/search?q=' + escape(word));
@@ -203,7 +203,7 @@ function edToolbar() {
 	for (i = 0; i < edButtons.length; i++) {
 		edShowButton(edButtons[i], i);
 	}
-	document.write('<input type="button" id="ed_close" class="ed_button" onclick="edCloseAllTags();" value="Domknij tagi" onmouseover="helpline2(\'ed_close\')" />');
+	document.write('<input type="button" id="ed_close" class="ed_button" onclick="edCloseAllTags();" value="Close tags" onmouseover="helpline2(\'ed_close\')" />');
 	//document.write('<input type="button" id="ed_spell" class="ed_button" onclick="edSpell(edCanvas);" value="Dict" />');
 //	edShowLinks();
 	document.write('</div>');
@@ -309,7 +309,7 @@ function edInsertLink(myField, i, defaultValue) {
 		defaultValue = 'http://';
 	}
 	if (!edCheckOpenTags(i)) {
-		var URL = prompt('Wpisz adres docelowy:' ,defaultValue);
+		var URL = prompt('Enter URL address:' ,defaultValue);
 		if (URL) {
 			edButtons[i].tagStart = '<a href="' + URL + '">';
 			edInsertTag(myField, i);
@@ -325,7 +325,7 @@ function edInsertAbbr(myField, i, defaultValue) {
 		defaultValue = '';
 	}
 	if (!edCheckOpenTags(i)) {
-		var TITLE = prompt('Wpisz opis:' ,defaultValue);
+		var TITLE = prompt('Enter description:' ,defaultValue);
 		if (TITLE) {
 			edButtons[i].tagStart = '<abbr title="' + TITLE + '">';
 			edInsertTag(myField, i);
@@ -337,11 +337,11 @@ function edInsertAbbr(myField, i, defaultValue) {
 }
 
 function edInsertImage(myField) {
-	var myValue = prompt('Wpisz adres do obrazka:', 'http://');
+	var myValue = prompt('Enter image URL:', 'http://');
 	if (myValue) {
 		myValue = '<img src="' 
 				+ myValue 
-				+ '" alt="' + prompt('Podaj opis obrazka:', '') 
+				+ '" alt="' + prompt('Enter Image description:', '') 
 				+ '" />';
 		edInsertContent(myField, myValue);
 	}
