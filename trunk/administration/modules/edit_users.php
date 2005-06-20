@@ -44,7 +44,7 @@ switch ($action) {
             'ADDITIONAL_INFO'   =>$db->f("additional_info"),
             
             'SUBMIT_URL'		=>"main.php?p=13&amp;action=edit&amp;id=" . $_GET['id'],
-            'SUBMIT_HREF_DESC'	=>"zmodyfikuj dane u¿ytkownika",
+            'SUBMIT_HREF_DESC'	=>$i18n['edit_users'][9],
             'HEADER_DESC'		=>"<b>U¿ytkownicy - modyfikacja u¿ytkownika</b>"
         ));
 
@@ -167,13 +167,13 @@ switch ($action) {
         }
 		break;
 
-	case "delete":// usuwanie wybranego wpisu
+	case "delete":
 	
         // potwierdzenie usuniecia u¿ytkownika
         $confirm = empty($_POST['confirm']) ? '' : $_POST['confirm'];
         switch ($confirm) {
             
-            case "Tak":
+            case $i18n['confirm'][0]:
             
                 $post_id = empty($_POST['post_id']) ? '' : $_POST['post_id'];
 	
@@ -232,7 +232,7 @@ switch ($action) {
                 }
             break;
 
-        case "Nie":
+        case $i18n['confirm'][1]:
         
             header("Location: main.php?p=13");
             exit;
@@ -243,7 +243,9 @@ switch ($action) {
             $ft->define('confirm_action', 'confirm_action.tpl');
             $ft->assign(array(
                 'PAGE_NUMBER'   =>$p, 
-                'POST_ID'       =>$_GET['id']
+                'POST_ID'       =>$_GET['id'], 
+                'CONFIRM_YES'   =>$i18n['confirm'][0],
+                'CONFIRM_NO'    =>$i18n['confirm'][1]
             ));
             
             $ft->parse('ROWS', ".confirm_action");
@@ -300,7 +302,7 @@ switch ($action) {
                 
                 if($p_level == 1) {
                         
-                    $ft->assign('CONFIRM', 'Nie mo¿esz zwiêkszyæ uprawnieñ poni¿ej 1.');
+                    $ft->assign('CONFIRM', $i18n['edit_users'][8]);
                 } else {
                         
                     $p_level = $p_level-1;
@@ -340,7 +342,7 @@ switch ($action) {
                     
                     $db->query($query);
                         
-                    $ft->assign('CONFIRM', 'Zmniejszono poziom uprawnieñ.');
+                    $ft->assign('CONFIRM', $i18n['edit_users'][6]);
                 }
                  
              
@@ -350,7 +352,7 @@ switch ($action) {
                 
                 if($p_level == 4) {
                         
-                    $ft->assign('CONFIRM', 'Nie mo¿esz zwiêkszyæ uprawnieñ powy¿ej 4.');
+                    $ft->assign('CONFIRM', $i18n['edit_users'][7]);
                 } else {
                     
                     $p_level = $p_level+1;
@@ -393,10 +395,9 @@ switch ($action) {
                     
                     $db->query($query);
                         
-                    $ft->assign('CONFIRM', 'Zwiêkszono poziom uprawnieñ.');
+                    $ft->assign('CONFIRM', $i18n['edit_users'][5]);
                 }
             }
-            
 		}
 	
 		$query = sprintf("
@@ -411,7 +412,6 @@ switch ($action) {
         
 		$db->query($query);
 	
-		// Pêtla wyswietlaj¹ca wszystkie wpisy + stronnicowanie ich
 		while($db->next_record()) {
 		
 			$user_id     = $db->f("id");
@@ -434,30 +434,41 @@ switch ($action) {
                 switch ($level) {
                     
                     case '1':
-                    
-                    $ft->assign(array(
-                        'LEVEL_DOWN'    =>' ',
-                        'LEVEL_UP'      =>'<a href="main.php?p=13&amp;plevel=up&amp;id=' . $user_id . '">+</a>'
-                    ));
+                        $ft->assign(array(
+                            'PRIVILEGE_DOWN'    =>false,
+                            'PRIVILEGE_UP'      =>true
+                        ));
                     break;
                     
                     case '2':
                     case '3':
-                    
-                    $ft->assign(array(
-                        'LEVEL_DOWN'    =>'&nbsp;<a href="main.php?p=13&amp;plevel=down&amp;id=' . $user_id . '">-</a>',
-                        'LEVEL_UP'      =>'<a href="main.php?p=13&amp;plevel=up&amp;id=' . $user_id . '">+</a>'
-                    ));
+                        $ft->assign(array(
+                            'PRIVILEGE_DOWN'    =>true, 
+                            'PRIVILEGE_UP'      =>true
+                        ));
                     break;
                     
                     case '4':
-                    $ft->assign(array(
-                        'LEVEL_DOWN'    =>'&nbsp;<a href="main.php?p=13&amp;plevel=down&amp;id=' . $user_id . '">-</a>',
-                        'LEVEL_UP'      =>' '
-                    ));
+                        $ft->assign(array(
+                            'PRIVILEGE_DOWN'    =>true, 
+                            'PRIVILEGE_UP'      =>false
+                        ));
+                    break;
+                    
+                    default:
+                        $ft->assign(array(
+                            'PRIVILEGE_DOWN'    =>false, 
+                            'PRIVILEGE_UP'      =>false
+                        ));
                     break;
                 }
 			    
+			} else {
+			    
+			    $ft->assign(array(
+                    'PRIVILEGE_DOWN'    =>false, 
+                    'PRIVILEGE_UP'      =>false
+                ));
 			}
 			
 			$ft->assign(array(
@@ -465,7 +476,7 @@ switch ($action) {
                 'NAME'      =>$u_login,
                 'EMAIL'     =>$email,
                 'LEVEL'     =>$level, 
-                'STATUS'    =>$status == 'Y' ? 'Tak' : 'Nie'
+                'STATUS'    =>$status == 'Y' ? $i18n['confirm'][0] : $i18n['confirm'][1]
 			));
 			
 			// deklaracja zmiennej $idx1::color switcher

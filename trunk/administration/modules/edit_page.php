@@ -11,7 +11,7 @@ $ft->define_dynamic("error_row", "error_reporting");
 
 switch ($action) {
 	
-	case "show": // wy¶wietlanie wpisu pobranego do modyfikacji
+	case "show":
 	
         // podglad
         if(!empty($preview)) {
@@ -201,7 +201,7 @@ switch ($action) {
         $confirm = empty($_POST['confirm']) ? '' : $_POST['confirm'];
         switch ($confirm) {
             
-            case "Tak":
+            case $i18n['confirm'][0]:
             
                 $post_id = empty($_POST['post_id']) ? '' : $_POST['post_id'];
 	
@@ -236,7 +236,7 @@ switch ($action) {
                 }
             break;
                         
-        case "Nie":
+        case $i18n['confirm'][1]:
         
             header("Location: main.php?p=4");
             exit;
@@ -247,7 +247,9 @@ switch ($action) {
             $ft->define('confirm_action', 'confirm_action.tpl');
             $ft->assign(array(
                 'PAGE_NUMBER'   =>$p, 
-                'POST_ID'       =>$_GET['id']
+                'POST_ID'       =>$_GET['id'], 
+                'CONFIRM_YES'   =>$i18n['confirm'][0],
+                'CONFIRM_NO'    =>$i18n['confirm'][1]
             ));
             
             $ft->parse('ROWS', ".confirm_action");
@@ -402,20 +404,20 @@ switch ($action) {
                 ));
 
 				if($page_order == $max_order) {
-                    // przydzielamy przycisk do podwy¿eszenia pozycji kategorii
+
                     $ft->assign(array(
                         'REORDER_DOWN'  =>false, 
                         'REORDER_UP'    =>true
                     ));
                 } elseif ($page_order == $min_order) {
-                    // przydzielamy przycisk do obnizenia pozycji kategorii
+
                     $ft->assign(array(
                         'REORDER_DOWN'  =>true, 
                         'REORDER_UP'    =>false
                     
                     ));
                 } else {
-                    // przydzielamy dwa przyciski do zmiany polozenia kategorii
+
                     $ft->assign(array(
                         'REORDER_DOWN'  =>true, 
                         'REORDER_UP'    =>true

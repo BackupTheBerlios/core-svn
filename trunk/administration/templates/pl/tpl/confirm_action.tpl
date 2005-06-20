@@ -9,8 +9,8 @@
 	<tr>
 		<td class="form center">
 		<input type="hidden" name="post_id" value="{POST_ID}">
-		<input type="submit" class="button confirm" name="confirm" value="Tak" />&nbsp; 
-		<input type="submit" class="button confirm" name="confirm" value="Nie" />
+		<input type="submit" class="button confirm" name="confirm" value="{CONFIRM_YES}" />&nbsp; 
+		<input type="submit" class="button confirm" name="confirm" value="{CONFIRM_NO}" />
 		</td>
 	</tr>
 </table>

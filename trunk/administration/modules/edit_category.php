@@ -227,7 +227,7 @@ switch ($action) {
         $confirm = empty($_POST['confirm']) ? '' : $_POST['confirm'];
         switch ($confirm) {
             
-            case "Tak":
+            case $i18n['confirm'][0]:
             
                 $post_id = empty($_POST['post_id']) ? '' : $_POST['post_id'];
 	
@@ -347,7 +347,7 @@ switch ($action) {
                 }
             break;
                                     
-        case "Nie":
+        case $i18n['confirm'][1]:
         
             header("Location: main.php?p=9");
             exit;
@@ -358,7 +358,9 @@ switch ($action) {
             $ft->define('confirm_action', 'confirm_action.tpl');
             $ft->assign(array(
                 'PAGE_NUMBER'   =>$p, 
-                'POST_ID'       =>$_GET['id']
+                'POST_ID'       =>$_GET['id'], 
+                'CONFIRM_YES'   =>$i18n['confirm'][0],
+                'CONFIRM_NO'    =>$i18n['confirm'][1]
             ));
             
             $ft->parse('ROWS', ".confirm_action");

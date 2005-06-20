@@ -16,7 +16,18 @@
 		<td class="{ID_CLASS} center">{USER_ID}</td>
 		<td class="{ID_CLASS}">{NAME}</td>
 		<td class="{ID_CLASS}">{EMAIL}</td>
-		<td class="{ID_CLASS} center"><b>{LEVEL_DOWN} {LEVEL} {LEVEL_UP}</b></td>
+		<td class="{ID_CLASS} center">
+		<!-- IFDEF: PRIVILEGE_DOWN -->
+		&nbsp;<a href="main.php?p=13&amp;plevel=down&amp;id={USER_ID}">-</a>
+		<!-- ELSE -->
+		<!-- ENDIF -->
+		{LEVEL}
+		<!-- IFDEF: PRIVILEGE_UP -->
+		<a href="main.php?p=13&amp;plevel=up&amp;id={USER_ID}">+</a>
+		<!-- ELSE -->
+		<!-- ENDIF -->
+		</strong>
+		</td>
 		<td class="{ID_CLASS} center">{STATUS}</td>
 		<td class="{ID_CLASS} center"><a href="main.php?p=13&amp;action=show&amp;id={USER_ID}">Edycja</a></td>
 		<td class="{ID_CLASS} center"><a href="main.php?p=13&amp;action=delete&amp;id={USER_ID}">Usuñ</a></td>

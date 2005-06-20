@@ -123,6 +123,11 @@ $i18n['edit_users'][1] = 'User was modified successfully.';
 $i18n['edit_users'][2] = 'User was deleted successfully.';
 $i18n['edit_users'][3] = '<b>You don\'t have a permission</b> to delete users.';
 $i18n['edit_users'][4] = '<b>You don\'t have a permission</b> to edit users or data which You want eidt didn\'t belongs to You.';
+$i18n['edit_users'][5] = 'Privilege level was increased.';
+$i18n['edit_users'][6] = 'Privilege level was decreased.';
+$i18n['edit_users'][7] = 'You can\'t set privilege level higher than 4.';
+$i18n['edit_users'][8] = 'You can\'t set privilege level lower than 1.';
+$i18n['edit_users'][9] = 'Modify user data';
 
 $i18n['subcat_menu'] = array();
 $i18n['subcat_menu'][0] = 'Add another news';
@@ -144,5 +149,8 @@ $i18n['subcat_menu'][14]= 'Template files editor';
 $i18n['confirm'] = array();
 $i18n['confirm'][0] = 'Yes';
 $i18n['confirm'][1] = 'No';
+$i18n['confirm'][2] = 'News was deleted successfully.';
+$i18n['confirm'][3] = 'News status was changed successfully.';
+$i18n['confirm'][4] = 'You didn\'t selected any news.';
 
 ?>

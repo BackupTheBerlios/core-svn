@@ -310,7 +310,7 @@ switch ($action) {
         $confirm = empty($_POST['confirm']) ? '' : $_POST['confirm'];
         switch ($confirm) {
             
-            case "Tak":
+            case $i18n['confirm'][0]:
             
                 $post_id = empty($_POST['post_id']) ? '' : $_POST['post_id'];
 	
@@ -345,7 +345,7 @@ switch ($action) {
                 }
             break;
             
-        case "Nie":
+        case $i18n['confirm'][1]:
         
             header("Location: main.php?p=2");
             exit;
@@ -356,7 +356,9 @@ switch ($action) {
             $ft->define('confirm_action', 'confirm_action.tpl');
             $ft->assign(array(
                 'PAGE_NUMBER'   =>$p, 
-                'POST_ID'       =>$_GET['id']
+                'POST_ID'       =>$_GET['id'], 
+                'CONFIRM_YES'   =>$i18n['confirm'][0],
+                'CONFIRM_NO'    =>$i18n['confirm'][1]
             ));
             
             $ft->parse('ROWS', ".confirm_action");
@@ -382,7 +384,7 @@ switch ($action) {
                     );
 		
                     $db->query($query);
-                    $ft->assign('CONFIRM', 'Wpisy zosta³y usuniête.');
+                    $ft->assign('CONFIRM', $i18n['confirm'][2]);
                 }
             
                 if(!empty($_POST['selected_status'])) {
@@ -400,12 +402,12 @@ switch ($action) {
                     );
 		
                     $db->query($query);
-                    $ft->assign('CONFIRM', 'Status wpisów zosta³ zmieniony.');
+                    $ft->assign('CONFIRM', $i18n['confirm'][3]);
                 }
             
             } else {
                 
-                $ft->assign('CONFIRM', 'Nie zaznaczono ¿adnych wpisów');
+                $ft->assign('CONFIRM', $i18n['confirm'][4]);
             }
             
             $ft->parse('ROWS', ".result_note");
@@ -483,7 +485,7 @@ switch ($action) {
                     'TITLE'     =>$title,
                     'DATE'      =>$date[0],
                     'AUTHOR'    =>$author, 
-                    'PUBLISHED' =>$published == 1 ? "Tak" : "Nie", 
+                    'PUBLISHED' =>$published == 1 ? $i18n['confirm'][0] : $i18n['confirm'][1], 
                     'PAGINATED' =>!empty($pagination['page_string']) ? true : false, 
                     'STRING'    =>$pagination['page_string']
                 ));

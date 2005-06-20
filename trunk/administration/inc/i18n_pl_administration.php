@@ -123,6 +123,11 @@ $i18n['edit_users'][1] = 'U¿ytkownik zosta³ zmodyfikowany.';
 $i18n['edit_users'][2] = 'U¿ytkownik zosta³ usuniêty.';
 $i18n['edit_users'][3] = '<b>Nie masz uprawnieñ</b> do usuwania u¿ytkowników.';
 $i18n['edit_users'][4] = '<b>Nie masz uprawnieñ</b> do edycji u¿ytkowników lub edytujesz nie swoje dane.';
+$i18n['edit_users'][5] = 'Zwiêkszono poziom uprawnieñ.';
+$i18n['edit_users'][6] = 'Zmniejszono poziom uprawnieñ.';
+$i18n['edit_users'][7] = 'Nie mo¿esz zwiêkszyæ poziomu uprawnieñ powy¿ej 4.';
+$i18n['edit_users'][8] = 'Nie mo¿esz zwiêkszyæ poziomu uprawnieñ poni¿ej 1.';
+$i18n['edit_users'][9] = 'Zmodyfikuj dane u¿ytkownika';
 
 $i18n['subcat_menu'] = array();
 $i18n['subcat_menu'][0] = 'Dodaj kolejny wpis';
@@ -144,5 +149,8 @@ $i18n['subcat_menu'][14]= 'Edycja szablonów';
 $i18n['confirm'] = array();
 $i18n['confirm'][0] = 'Tak';
 $i18n['confirm'][1] = 'Nie';
+$i18n['confirm'][2] = 'Wpis zosta³ usuniêty.';
+$i18n['confirm'][3] = 'Status wpisu zosta³ zmieniony.';
+$i18n['confirm'][4] = 'Nie zaznaczy³e¶ ¿adnych wpisów.';
 
 ?>
