@@ -135,7 +135,7 @@ switch ($action) {
             get_addcategory_cat($category_id, 2);
         }
 		
-		$path = '../templates/main/tpl/';
+		$path = '../templates/' . $lang . '/main/tpl/';
         
         $dir = @dir($path);
         

@@ -19,7 +19,7 @@ switch($action) {
             $template   = $_POST['template_name'];
             $text		= $_POST['text'];
         
-            $tpl = 	'../templates/main/tpl/' . $template . '.tpl';
+            $tpl = 	'../templates/' . $lang . '/main/tpl/' . $template . '.tpl';
         
             $text = str_replace('{NOTE_ROWS}', '{ROWS}', $text);
         
@@ -45,7 +45,7 @@ switch($action) {
         $ft->define('form_templateedit', "form_templateedit.tpl");
         
         $tpl 		= empty($_GET['tpl']) ? '' : $_GET['tpl'];
-        $template 	= get_root() . "/templates/main/tpl/" . $tpl . ".tpl";
+        $template 	= get_root() . '/templates/' . $lang . '/main/tpl/' . $tpl . '.tpl';
         
         if(!is_writeable($template)) {
             $ft->assign('WRITE_ERROR', $i18n['edit_templates'][3]);
@@ -85,7 +85,7 @@ switch($action) {
 
 }
 
-$templates_dir = '../templates/';
+$templates_dir = '../templates/' . $lang . '/';
 $read_dir = @dir($templates_dir);
 
 while($d = $read_dir->read()) {
@@ -104,7 +104,7 @@ while($d = $read_dir->read()) {
 }
 
 //lista szablonów
-$path   = !isset($_GET['tpl_dir']) ? "../templates/" . $template_dir . "/tpl/" : "../templates/" . $tpl_dir . "/tpl/";
+$path   = !isset($_GET['tpl_dir']) ? '../templates/' . $lang . '/' . $template_dir . '/tpl/' : '../templates/' . $lang . '/' . $tpl_dir . '/tpl/';
 $dir    = @dir($path);
 
 while($file = $dir->read()) {

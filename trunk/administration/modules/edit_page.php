@@ -147,7 +147,7 @@ switch ($action) {
                 'TEXT'	=>!empty($_POST['text']) ? stripslashes(br2nl($_POST['text'])) : br2nl($text)
             ));
         
-            $path = '../templates/main/tpl/';
+            $path = '../templates/' . $lang . '/main/tpl/';
         
             $dir = @dir($path);
         

@@ -40,7 +40,7 @@ switch ($action) {
             'CATEGORY_PERPAGE'  =>$category_perpage
         ));
         
-        $path = '../templates/main/tpl/';
+        $path = '../templates/' . $lang . '/main/tpl/';
         
         $dir = @dir($path);
         

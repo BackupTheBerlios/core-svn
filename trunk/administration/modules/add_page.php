@@ -190,7 +190,7 @@ if(!empty($post)) {
         get_addpage_cat($page_id, 2);
     }
         
-    $path = '../templates/main/tpl/';
+    $path = '../templates/' . $lang . '/main/tpl/';
         
     $dir = @dir($path);
         
