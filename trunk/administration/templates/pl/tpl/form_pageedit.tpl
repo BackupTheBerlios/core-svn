@@ -41,7 +41,12 @@
 	<tr>
 		<td class="form">Za³±cz zdjêcie:&nbsp;</td>
 		<td class="form"><input type="file" name="file" size="30" maxlength="255"></td>
-		<td class="form">{OVERWRITE_PHOTO}</td>
+		<td class="form">
+		<!-- IFDEF: OVERWRITE_PHOTO -->
+		Poprzednie zostanie nadpisane
+		<!-- ELSE -->
+		<!-- ENDIF -->
+		</td>
 	</tr>
 	<tr>
 		<td class="form">Szablon :&nbsp;</td>

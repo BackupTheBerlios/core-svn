@@ -179,14 +179,13 @@ switch ($action) {
                 $ft->assign('CHECKBOX_NO', 'checked="checked"');
             }
 		
+            $ft->assign('OVERWRITE_PHOTO', !empty($image) ? true : false);
+                
             if(!empty($image)) {
 		    
                 $ft->define("form_imageedit", "form_imageedit.tpl");
-                $ft->assign(array(
-                    'IMAGE'             =>$image, 
-                    'OVERWRITE_PHOTO'   =>'Poprzednie zostanie nadpisane'
-                    ));
-                // parsujemy szablon informujacy o do³±czonym do wpisu zdjêciu
+                $ft->assign('IMAGE', $image);
+
                 $ft->parse('IF_IMAGE_EXIST', ".form_imageedit");
             }
             
