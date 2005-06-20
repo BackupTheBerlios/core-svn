@@ -23,7 +23,7 @@
 help_ed_bold = "Bolded text: <strong>text</strong>";
 help_ed_italic = "Italic text: <em>text</em>";
 help_ed_under = "Underline text: <u>text</u>";
-help_ed_link = "Reference: <a href=\"adresURI\">text</a>";
+help_ed_link = "Reference: <a href=\"adressURI\">text</a>";
 help_ed_abbr = "Shortcut definition: <abbr title=\"definition\">shortcut</abbr>";
 help_ed_quote = "Quote: [quote]quoted text[/quote]";
 help_ed_close = "Close all open XHTML tags";

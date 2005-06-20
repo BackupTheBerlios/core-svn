@@ -156,7 +156,7 @@ function show_me_more($text) {
         $perma_link, 
         $i18n;
     
-	if($find = strpos($text, '[podziel]')) {
+	if($find = strpos($text, '[podziel]') OR $find = strpos($text, '[more]')) {
 	        
         $text = sprintf('%s<br /><a href="%s">%s</a>',
         

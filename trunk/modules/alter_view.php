@@ -37,7 +37,7 @@ if($db->num_rows() > 0) {
 
     $date           = date($date_format, $db->f("date"));
     $title          = $db->f('title');
-    $text           = str_replace('[podziel]', '', $db->f('text'));
+    $text           = str_replace(array('[podziel]', '[more]'), '', $db->f('text'));
     $author         = $db->f('author');
     $id             = $db->f('id');
     $image          = $db->f('image');

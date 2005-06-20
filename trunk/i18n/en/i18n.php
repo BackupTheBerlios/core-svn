@@ -48,28 +48,27 @@ $i18n['newsletter'] = array();
 $i18n['newsletter'][0] = 'Your e-mail address is still in database. No records added.';
 $i18n['newsletter'][1] = '
 Your e-mail address was added to database successfully. <br /><br />
-Na podany przez Ciebie adres zosta³ wys³any email potwierdzaj±cy, ¿e jeste¶ faktycznym 
-w³a¶cicielem tego konta e-mail. Zawiera on intrukcjê, która pomo¿e Ci dokoñczyæ proces 
-aktywacji Twojej subsrypcji.';
+We\'re sent You an email for address You enter above. Follow the instructions in this email.';
 $i18n['newsletter'][2] = 'Your e-mail address was added to database successfully.';
 $i18n['newsletter'][3] = 'No matches found in database for entered e-mail address.';
 $i18n['newsletter'][4] = 'Your e-mail address was deleted from database successfully.';
 $i18n['newsletter'][5] = 'Your e-mail address wasn\'t deleted from database successfully..';
 $i18n['newsletter'][6] = '
-Zg³osi³e¶ chêæ subskrypcji newslettera na http://[link_1].
+This email has been generated automatically as part
+of Your request to newsletter subscribtion at http://[link_1].
     
-Aby dokoñczyæ proces rejestracji kliknij na znajduj±cy siê poni¿ej link:
+To proceed with subscribtion registration, please access the following URL:
 http://[link_2]
 
 -- 
 Auto-generated message. Do not reply.';
 $i18n['newsletter'][7] = 'Regest for subscribtion: [link_1]';
-$i18n['newsletter'][8] = 'Weryfikacja zakoñczona pomy¶lnie. Dziêkujemy za skorzystanie z subskrypcji.';
+$i18n['newsletter'][8] = 'Verification ended successfully. Thank You.';
 $i18n['newsletter'][9] = '
-Zg³osi³e¶ chêæ zakoñczenia subskrypcji newslettera na http://[link_1].
+This email has been generated automatically as part
+of Your request to remove Your e-mail address from our database and end subscribtion at http://[link_1].
     
-Aby dokoñczyæ proces usuniêcia Twojego adresu email z naszej bazy danych 
-kliknij na znajduj±cy siê poni¿ej link:
+To proceed with subscribtion resignation, please access the following URL:
 http://[link_3]
 
 -- 
@@ -83,7 +82,7 @@ $i18n['pages_view'] = array();
 $i18n['pages_view'][0] = 'No page found at requested ID.';
 
 $i18n['search'] = array();
-$i18n['search'][0] = 'Niestety nie znaleziono ¿adnego rekordu pasuj±cego do ';
-$i18n['search'][1] = 'Nie podano frazy do wyszukania.';
+$i18n['search'][0] = 'No matches found for ';
+$i18n['search'][1] = 'Please enter a search word first.';
 
 ?>

@@ -20,19 +20,19 @@
 // The variable 'edCanvas' must be defined as the <textarea> element you want 
 // to be editing in. See the accompanying 'index.html' page for an example.
 
-help_ed_bold = "Tekst wzmocniony: <strong>tekst</strong>";
-help_ed_italic = "Tekst kursyw±: <em>tekst</em>";
-help_ed_under = "Tekst podkre¶lony: <u>tekst</u>";
-help_ed_ul = "Lista nieuporz±dkowana: <ul />";
-help_ed_ol = "Lista uporz±dkowana: <ol />";
-help_ed_li = "Element listy: <li>tekst</li>";
-help_ed_link = "Odno¶nik: <a href=\"adresURI\">tekst</a>";
-help_ed_img = "Wstaw obrazek: <img src=\"nazwa_obrazka\" alt=\"tekst obja¶niaj±cy\" />";
-help_ed_abbr = "Definicja skrótu: <abbr title=\"definicja\">skrót</abbr>";
-help_ed_more = "Podziel tekst: tekst [podziel] dalsza czê¶æ";
-help_ed_block = "Cytuj: <blockquote>cytat</blockquote>";
-help_ed_pre = "Wstaw preformatowany tekst: <pre>tekst</pre>";
-help_ed_close = "Zamknij wszystkie otwarte tagi HTMLCode";
+help_ed_bold = "Bolded text: <strong>text</strong>";
+help_ed_italic = "Italic text: <em>text</em>";
+help_ed_under = "Underline text: <u>text</u>";
+help_ed_ul = "Unsorted list: <ul />";
+help_ed_ol = "Sorted list: <ol />";
+help_ed_li = "List element: <li>text</li>";
+help_ed_link = "Reference: <a href=\"adressURI\">text</a>";
+help_ed_img = "Insert Image: <img src=\"image_name\" alt=\"description\" />";
+help_ed_abbr = "Shortcut definition: <abbr title=\"definition\">shortcut</abbr>";
+help_ed_more = "More: text [more] next part";
+help_ed_block = "Quote: [quote]quoted text[/quote]";
+help_ed_pre = "Preformatted text: <pre>text</pre>";
+help_ed_close = "Close all open XHTML tags";
 
 function helpline2(help) {
 	document.post.helpbox.value = eval("help_" + help);
@@ -116,8 +116,8 @@ edButtons[edButtons.length] = new edButton('ed_abbr'
                                           ,'</abbr>'
                                           );
 edButtons[edButtons.length] = new edButton('ed_more'
-                                          ,'podziel'
-                                          ,'[podziel]'
+                                          ,'more'
+                                          ,'[more]'
                                           ,''
                                           ,-1
                                           );
@@ -249,7 +249,7 @@ function edToolbar() {
 	for (i = 0; i < edButtons.length; i++) {
 		edShowButton(edButtons[i], i);
 	}
-	document.write('<input type="button" id="ed_close" class="ed_button" onclick="edCloseAllTags();" value="Domknij tagi" onmouseover="helpline2(\'ed_close\')" />');
+	document.write('<input type="button" id="ed_close" class="ed_button" onclick="edCloseAllTags();" value="Close Tags" onmouseover="helpline2(\'ed_close\')" />');
 	//document.write('<input type="button" id="ed_spell" class="ed_button" onclick="edSpell(edCanvas);" value="Dict" />');
 //	edShowLinks();
 	document.write('</div>');
@@ -371,7 +371,7 @@ function edInsertAbbr(myField, i, defaultValue) {
 		defaultValue = '';
 	}
 	if (!edCheckOpenTags(i)) {
-		var TITLE = prompt('Wpisz opis:' ,defaultValue);
+		var TITLE = prompt('Enter description:' ,defaultValue);
 		if (TITLE) {
 			edButtons[i].tagStart = '<abbr title="' + TITLE + '">';
 			edInsertTag(myField, i);
@@ -383,11 +383,11 @@ function edInsertAbbr(myField, i, defaultValue) {
 }
 
 function edInsertImage(myField) {
-	var myValue = prompt('Wpisz adres do obrazka:', 'http://');
+	var myValue = prompt('Enter image URL:', 'http://');
 	if (myValue) {
 		myValue = '<img src="' 
 				+ myValue 
-				+ '" alt="' + prompt('Podaj opis obrazka:', '') 
+				+ '" alt="' + prompt('Enter image description:', '') 
 				+ '" />';
 		edInsertContent(myField, myValue);
 	}

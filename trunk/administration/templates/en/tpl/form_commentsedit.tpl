@@ -15,7 +15,7 @@
 	<tr>
 		<td class="form" width="80">&nbsp;</td>
 		<td class="form" width="364" colspan="2">
-		<input type="text" name="helpbox" size="45" maxlength="100" class="helpline" value="Rada: Style mog± byæ stosowane szybko do zaznaczonego tekstu" readonly="readonly" />
+		<input type="text" name="helpbox" size="45" maxlength="100" class="helpline" value="Help: Use styles fast to selected text" readonly="readonly" />
 		</td>
 	</tr>
 	<tr>
