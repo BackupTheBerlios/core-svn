@@ -25,11 +25,8 @@ if($db->num_rows() > 0) {
         $parent_id 	= $db->f("parent_id");
         $page_name 	= $db->f("title");
         
-        if ((bool)$rewrite) {
-          $page_link  = sprintf('1,%s,5,item.html', $page_id);
-        } else {
-          $page_link  = 'index.php?p=5&amp;id=' . $page_id . '';
-        }
+        $page_link  = (bool)$rewrite ? sprintf('1,%s,5,item.html', $page_id) : 'index.php?p=5&amp;id=' . $page_id;
+
         
         $ft->assign(array(
             'PAGE_NAME' =>$page_name,
@@ -44,7 +41,7 @@ if($db->num_rows() > 0) {
         $ft->parse('PAGES_ROW', ".pages_row");
         
         // funkcja pobieraj±ca rekurencyjnie strony dziedzicz±ce::child
-        get_cat($page_id, 2);
+        !(bool)$nodes_separately ? get_cat($page_id, 2) : '';
     }
     
 } else {
