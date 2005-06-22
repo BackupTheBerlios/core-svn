@@ -58,6 +58,18 @@
           </optgroup>
       </select></td>
     </tr>
+    <tr>
+		<td class="form">Jêzyk :&nbsp;</td>
+		<td class="form" colspan="2">
+		<select class="category_form" name="language">
+			
+			<!-- BEGIN DYNAMIC BLOCK: language_row -->
+			<option value="{LANGUAGE_NAME}" {CURRENT}>{LANGUAGE_NAME}</option>
+			<!-- END DYNAMIC BLOCK: language_row -->
+
+		</select>
+		</td>
+	</tr>
 	<tr>
       <td width="364" colspan="2"><br /><img src="templates/{LANG}/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('formConfig').submit()">zapisz ustawienia</a></td>
 	</tr>

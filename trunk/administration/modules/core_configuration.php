@@ -48,6 +48,9 @@ switch ($action) {
                 // jakie jest wy¶wietlane na stronie g³ównej::db
                 set_config('max_photo_width', $_POST['max_photo_width']);
                 
+                // set {LANGUAGE_SET} variable
+                set_config('language_set', $_POST['language']);
+                
                 // set {SHOW_CALENDAR} variable
                 set_config('show_calendar', $_POST['show_calendar']);
                 
@@ -149,8 +152,6 @@ switch ($action) {
             $ft->assign('START_PAGE_PAGES', false);
         }
 
-
-
         $query = sprintf("
             SELECT 
                 category_id, 
@@ -193,6 +194,22 @@ switch ($action) {
 
         } else {
             $ft->assign('START_PAGE_CATEGORIES', false);
+        }
+        
+        $templates_dir = 'templates/';
+        $read_dir = @dir($templates_dir);
+        
+        $ft->define_dynamic('language_row', 'form_configuration');
+        
+        while($d = $read_dir->read()) {
+            if($d[0] != '.') {
+
+                $ft->assign(array(
+                    'LANGUAGE_NAME' =>$d, 
+                    'CURRENT'       =>$d == get_config('language_set') ? 'selected="selected"' : ''
+                ));
+                $ft->parse('LANGUAGE_ROW', ".language_row");
+            }
         }
 		
 		// Ustawiamy zmienne
