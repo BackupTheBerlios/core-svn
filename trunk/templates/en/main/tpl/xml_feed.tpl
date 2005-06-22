@@ -2,12 +2,17 @@
 <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/">
 
 <channel>
+    <!-- IFDEF: NEWS_FEED -->
     <title>./dev-log - RSS feed</title>
+    <!-- ELSE -->
+    <title>./dev-log - RSS comments</title>
+    <!-- ENDIF -->
     <link>{MAINSITE_LINK}</link>
     <description>./dev-log | about work</description>
     <language>pl</language>
     <copyright>Copyright (c) 2005 Core | £ukasz Skowroñ, Marcin Sztolcman</copyright>
 	
+    <!-- IFDEF: DISPLAY_XML -->
     <!-- BEGIN DYNAMIC BLOCK: xml_row -->
     <item>
         <pubDate>{DATE} GMT</pubDate>
@@ -26,6 +31,8 @@
         <!-- ENDIF -->
     </item>
     <!-- END DYNAMIC BLOCK: xml_row -->
+    <!-- ELSE -->
+    <!-- ENDIF -->
 	
 </channel>
 </rss>

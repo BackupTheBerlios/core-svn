@@ -15,6 +15,7 @@ if(!empty($post)) {
     $dbhost = $_POST['dbhost'];
     $dbuser = $_POST['dbuser'];
     $dbpass = $_POST['dbpass'];
+    $lang   = $_POST['lang'];
 
     $dbprefix     = $_POST['dbprefix'];
 
@@ -83,6 +84,7 @@ if(!empty($post)) {
         }
             
         $sql_query = str_replace('core_', $dbprefix, $sql_query);
+        $sql_query = $lang == 'en' ? str_replace('ogólna', 'default', $sql_query) : '';
 
         $sql_size = sizeof($sql_query) - 1;
         for($i = 0; $i < $sql_size; $i++) {

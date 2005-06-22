@@ -1,9 +1,8 @@
 <div>
 <!-- IFDEF: SHOW_COMMENT_FORM -->
-Przy wype³nianiu formularza pole e-mail jest ca³kowicie opcjonalne, co znaczy ¿e nie wymagam podania adresu poczty mailowej.
-Je¶li jednak ju¿ zdecydujesz siê to zrobiæ, to muszê zaznaczyæ, ¿e Twój adres nie bêdzie widoczny bezpo¶rednio przy komentarzu, a
-przechowywany wy³±cznie w bazie danych w celach czysto informacyjnych.<br /><br />
-<b><a class="date" href="{PERMA_LINK}">{NEWS_TITLE}</a></b> - link bezpo¶redni<br /><br />
+If You live an e-mail address(optional) it would be hidden(stored only in database).
+<br /><br />
+<b><a class="date" href="{PERMA_LINK}">{NEWS_TITLE}</a></b> - perma link<br /><br />
 
 <script type="text/javascript" src="templates/{LANG}/{THEME}/js/comments.js"></script>
 <form method="post" action="{FORM_LINK}" name="post">

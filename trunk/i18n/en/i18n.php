@@ -74,9 +74,9 @@ http://[link_3]
 -- 
 Auto-generated message. Do not reply.';
 $i18n['newsletter'][10] = '
-Na podany przez Ciebie adres zosta³ wys³any email potwierdzaj±cy, ¿e jeste¶ faktycznym 
-w³a¶cicielem tego konta e-mail. Zawiera on intrukcjê, która pomo¿e Ci dokoñczyæ proces 
-zakoñczenia Twojej subsrypcji.';
+We sent You an e-mail. The purpose of this email is to verify that the email address you
+provided exists and that you may read the mailsent to this address. 
+Check it and follow intructions.';
 
 $i18n['pages_view'] = array();
 $i18n['pages_view'][0] = 'No page found at requested ID.';

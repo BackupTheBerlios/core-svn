@@ -18,7 +18,7 @@
 	<div id="left">
 		<span class="title">newsletter</span>
 		<br /><br />
-		Chcesz wiedzieæ, co siê u mnie dzieje? Podaj proszê adres email.
+		You want subscription? Please enter Your e-mail.
 		<form style="margin-top:5px;" name="newsletter_form" action="#">
 			<input class="left" type="text" name="email" size="25" maxlength="255" />
 			<div class="right">
@@ -80,7 +80,7 @@
 		
 		<span class="title">search</span>
 		<br /><br />
-		Interesuj±c± Ciê frazê wpisz w pole formularza.<br />
+		Enter word You want to search<br />
 		<form style="margin-top:5px;" method="post" action="{SEARCH_LINK}" id="formSearch">
 			<input class="left" type="text" name="search_word" size="25" maxlength="255" /><br />
 			<div class="right">

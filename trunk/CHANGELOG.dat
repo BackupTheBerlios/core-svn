@@ -1,10 +1,14 @@
 CHANGELOG
 
-Core CMS - System Zarzadzania Trescia
-Obecna wersja: 0.4.3  2005/06/18
+Core CMS - Content Management System
+Current Version: 0.4.3  2005/06/22
 
 ==================================
-0.4.3 Zmiany: 18 Czerwca 2005 
+0.4.3 Changes: 22 June 2005 
 
-- Wykorzystanie PREPARED STATEMENTS w przypadku MySQL >= 4.1
-- Dodano switcher w panelu administracyjnym odpowiadajacy za wl/wyl wyswietlania kalendarza.
+- ENGLISH version. Yeah
+- Support for easy translation Core CMS to other languages
+- PREPARED STATEMENTS used if MySQL >= 4.1
+- Added calendar control switcher in admin panel - display on/off
+- incorrectly XML Feed(news|comments) parsing bug - fixed
+- incorrectly text replacing when tag [more] used - fixed
