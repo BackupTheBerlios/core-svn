@@ -1,0 +1,2 @@
+1. skoro jest szumny doctype xhtml1.0 transitional, to moze trzymajmy sie tego pod wzgledem 
+semantycznym, i wywalmy zbedne atrybuty (width, height i inne) z tpli i uzywajmy css ?
