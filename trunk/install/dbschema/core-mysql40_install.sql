@@ -103,7 +103,7 @@ CREATE TABLE core_users (
   PRIMARY KEY  (id)
 );
 
-INSERT INTO core_category VALUES ('', '', '10', 'ogólna', '', 'default', '6');
+INSERT INTO core_category VALUES ('', '', '10', 'DEFAULT_CATEGORY', '', 'default', '6');
 
 INSERT INTO core_config VALUES ('counter', '0');
 INSERT INTO core_config VALUES ('mainposts_per_page', '4');
