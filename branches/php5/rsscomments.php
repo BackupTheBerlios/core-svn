@@ -40,7 +40,7 @@ $db->query($query);
 $rewrite    = get_config('mod_rewrite');
 $lang       = get_config('language_set');
 
-$ft = new FastTemplate('./templates/' . $lang . '/main/tpl/');
+$ft = new fast_template('./templates/' . $lang . '/main/tpl/');
 
 $ft->define('xml_feed', 'xml_feed.tpl');
 $ft->define_dynamic('xml_row', 'xml_feed');

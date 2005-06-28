@@ -37,7 +37,7 @@ if(isset($_COOKIE['devlog_design']) && is_dir('./templates/' . $lang. '/' . $_CO
 @setcookie('devlog_design', $theme, time() + 3600 * 24 * 365);
 
 // inicjowanie klasy, wkazanie katalogu przechowuj±cego szablony
-$ft = new FastTemplate('./templates/' . $lang . '/' . $theme . '/tpl/');
+$ft = new fast_template('./templates/' . $lang . '/' . $theme . '/tpl/');
 $db = new DB_SQL;
 
 $ft->define('photo_main', 'photo_main.tpl');

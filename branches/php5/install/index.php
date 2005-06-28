@@ -1,4 +1,6 @@
 <?php
-  header('Location: install.php');
-  exit;
+
+header('Location: install.php');
+exit;
+
 ?>

@@ -28,7 +28,7 @@ require_once(PATH_TO_CLASSES. '/cls_fast_template.php');
 $start = isset($_GET['start']) ? intval($_GET['start']) : 0;
 
 // inicjowanie klasy, wkazanie katalogu przechowuj±cego szablony
-$ft = new FastTemplate('./templates/' . $lang . '/tpl');
+$ft = new fast_template('./templates/' . $lang . '/tpl');
 
 $ft->define(array(
     'main'              =>"main.tpl",

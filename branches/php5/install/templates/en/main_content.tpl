@@ -32,18 +32,6 @@
 		</tr>
 		<tr>
 			<td width="50%">
-			<label for="rdbms">Database version:</label>
-			</td>
-			<td width="50%">
-			<select id="rdbms" name="rdbms">
-                <!-- BEGIN DYNAMIC BLOCK: db_row -->
-				<option value="{DATABASE_VALUE}">{DATABASE_NAME}</option>
-				<!-- END DYNAMIC BLOCK: db_row -->
-			</select>
-			</td>
-		</tr>
-		<tr>
-			<td width="50%">
 			<label for="dbhost">Database host:</label>
 			</td>
 			<td width="50%">

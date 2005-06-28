@@ -45,51 +45,40 @@ if(!empty($post)) {
         $monit[] = $i18n['main_content'][3];
     }
 
-    $rdbms = empty($_POST['rdbms']) ? '' : $_POST['rdbms'];
-
-    switch ($rdbms) {
-
-        case 'mysql4':
-            $db_schema = SQL_SCHEMA . '/core-mysql40_install.sql';
-            break;
-
-        case 'mysql41':
-            $db_schema = SQL_SCHEMA . '/core-mysql41_install.sql';
-            break;
-    }
-
+    $db_schema = SQL_SCHEMA . '/core-mysql_install.sql';
+    
     if(empty($monit)) {
 
         if(isset($_POST['dbcreate'])) {
-
-            $link   = mysql_pconnect($dbhost, $dbuser, $dbpass) or die('Nie mo¿na siê po³±czyæ: ' . mysql_error());
-            $result = mysql_query("CREATE DATABASE $dbname") or die("Nie mo¿na utworzyæ bazy danych!");
-            $link   = mysql_close($link);
+            
+            $dsn = 'mysql:host=' . $dbhost;
+            
+            try {
+                $dbh = new PDO($dsn, $dbuser, $dbpass);
+            } catch (PDOException $e) {
+                echo 'Wyjatek z³apany: ' . $e->getMessage();
+            }
+            
+            $dbh->exec("CREATE DATABASE $dbname");
 
         }
-
-        define('DB_HOST', $dbhost);
-        define('DB_USER', $dbuser);
-        define('DB_PASS', $dbpass);
-        define('DB_NAME', $dbname);
-
-        $db = new DB_Sql;
-            
-        // poprawiono dla wersji php < 4.3.0
-        if(!function_exists('file_get_contents')) {
-            $sql_query = implode('', file($db_schema));
-            $sql_query = explode(';', $sql_query);
-        } else {
-            $sql_query = explode(';', file_get_contents($db_schema));
+        
+        $dsn = 'mysql:dbname=' . $dbname . ';host=' . $dbhost;
+        
+        try {
+            $dbh = new PDO($dsn, $dbuser, $dbpass);
+        } catch (PDOException $e) {
+            echo 'Wyjatek z³apany: ' . $e->getMessage();
         }
             
+        $sql_query = explode(';', file_get_contents($db_schema));
         $sql_query = str_replace('core_', $dbprefix, $sql_query);
-        $sql_query = $lang == 'en' ? str_replace('ogólna', 'default', $sql_query) : '';
+        $sql_query = $lang == 'en' ? str_replace('DEFAULT_CATEGORY', 'default', $sql_query) : str_replace('DEFAULT_CATEGORY', 'ogólna', $sql_query);
 
         $sql_size = sizeof($sql_query) - 1;
         for($i = 0; $i < $sql_size; $i++) {
 
-            $db->query($sql_query[$i]);
+            $dbh->exec($sql_query[$i]);
         }
 
         $file = '<?php'."\n";
@@ -126,7 +115,7 @@ if(!empty($post)) {
         $t2        = $dbprefix . 'category';
         $t3        = $dbprefix . 'config';
 
-        $perms = new permissions();
+        $perms = new permissions;
         // Nadajemu stosowne uprawnienia u¿ytkownikowi
         $perms->permissions["user"]                     = TRUE;
         $perms->permissions["writer"]                   = TRUE;
@@ -147,7 +136,7 @@ if(!empty($post)) {
             $lang
         );
 
-        $db->query($query);
+        $dbh->exec($query);
         
         // wstawiamy pocz±tkowego u¿ytkownika
         $query = sprintf("
@@ -163,7 +152,7 @@ if(!empty($post)) {
             $bitmask
         );
 
-        $db->query($query);
+        $dbh->exec($query);
 
         if($fp == FALSE) {
 

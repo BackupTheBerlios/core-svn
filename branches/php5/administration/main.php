@@ -67,7 +67,7 @@ switch ($privileges) {
 }
 
 // inicjowanie klasy, wkazanie katalogu przechowuj±cego szablony
-$ft = new FastTemplate('./templates/' . $lang . '/tpl');
+$ft = new fast_template('./templates/' . $lang . '/tpl');
 
 // tablica definicji u¿ytych plików *.tpl
 $ft->define(array(

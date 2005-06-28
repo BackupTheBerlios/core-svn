@@ -1,6 +1,6 @@
 <?php
 
-class FastTemplate {
+class fast_template {
     
     public $FILELIST    = array();
     public $DYNAMIC     = array();
