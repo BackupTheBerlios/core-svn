@@ -5,13 +5,13 @@ define('EXTENSION', '.php');
 define('SQL_SCHEMA', 'dbschema/');
 
 function __autoload($classname) {
-    require_once(PATH_TO_CLASSES. '/cls_' . $classname . '.php');
+    require_once(PATH_TO_CLASSES. '/cls_' . $classname . EXTENSION);
 }
 
 $lang = !empty($_POST['lang']) ? $_POST['lang'] : 'pl';
 
-require_once('i18n/' . $lang . '/i18n.php');
-require_once('../inc/common_lib.php');
+require_once('i18n/' . $lang . '/i18n' . EXTENSION);
+require_once('../inc/common_lib' . EXTENSION);
 
 $ft = new fast_template("./templates/" . $lang);
 
