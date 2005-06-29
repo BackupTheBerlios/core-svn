@@ -140,10 +140,8 @@ class install {
         $file .= "define('ADMIN_MAIL',      'core@example.com');\n\n";
 
         $file .= '?' . '>';
-
-        $fp     = @fopen('../administration/inc/config.php', 'w');
-        $result = @fputs($fp, $file, strlen($file));
-        @fclose($fp);
+        
+        $fp = file_put_contents('../administration/inc/config.php', $file);
 
         $pass   = md5($this->corepass_1);
         $t1     = $this->dbprefix . 'users';
