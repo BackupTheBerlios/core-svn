@@ -33,7 +33,7 @@ if($db->num_rows() !== 0) {
     // przydzielony do konkretnej podstrony Core
     $ft->define($assigned_tpl, $assigned_tpl . '_page.tpl');
     
-    $text = highlighter($text, '<code>', '</code>');
+    $text = preg_replace("/\[code:\"?([a-zA-Z0-9\-_\+\#\$\%]+)\"?\](.*?)\[\/code\]/sie", "highlighter('\\2', '\\1')", $text);
     
     $ft->assign(array(
         'PAGE_TITLE'    =>$title,
