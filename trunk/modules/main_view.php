@@ -81,8 +81,8 @@ if($db->num_rows() > 0) {
 	    
 	    $perma_link = (bool)$rewrite ? sprintf('1,%s,1,item.html', $id) : 'index.php?p=1&amp;id=' . $id;
         
-        $text   = highlighter($text, '<code>', '</code>');
-        $text   = show_me_more($text);
+        $text = show_me_more($text);
+        $text = preg_replace("/\[code:\"?([a-zA-Z0-9\-_\+\#\$\%]+)\"?\](.*?)\[\/code\]/sie", "highlighter('\\2', '\\1')", $text);
 	    
 	    $ft->assign(array(
 	       'DATE'          =>$date,

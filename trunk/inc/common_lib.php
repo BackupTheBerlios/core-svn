@@ -273,46 +273,42 @@ function pagination($url, $mainposts_per_page, $num_items) {
 }
 
 
-function highlighter($text, $code_start, $code_end) {
-        
-    $matches = array();
-    $match_count = preg_match_all('#\[php\](.*?)\[\/php\]#si', $text, $matches);
-    for ($i=0; $i<$match_count; $i++) {
+function highlighter($text, $geshi_lang) {
+    
+    include_once('geshi/geshi.php');
+    
+    $geshi_path = 'geshi/geshi';
+    $geshi = new geshi;
+    
+    $langs = array(
+        'actionscript', 'ada', 'apache', 'asm', 'asp', 
+        'bash', 
+        'c', 'c_mac', 'caddcl', 'cadlisp', 'cpp', 'csharp', 'css', 
+        'd', 'delphi', 'diff', 
+        'html4strict', 
+        'java', 'javascript', 
+        'lisp', 'lua', 
+        'matlab', 'mpasm', 
+        'nsis', 
+        'objc', 'oobas', 'oracle8', 
+        'pascal', 'perl', 'php', 'php-brief', 'python', 
+        'qbasic', 
+        'smarty', 'sql', 
+        'vb', 'vbnet', 'vhdl', 'visualfoxpro', 
+        'xml'
+    );
+    
+    $geshi_lang = in_array($geshi_lang, $langs) == TRUE ? $geshi_lang : 'php';
 
-        $before = $matches[1][$i];
-        $after  = str_replace("<br />", "\n", trim($matches[1][$i]));
-        $str_to_match   = "[php]" . $before . "[/php]";
-        $replacement    = $code_start;
-            
-        $after  = str_replace(array('&lt;', '&gt;', '&amp;'), array('<', '>', '&'), $after);
-        $added  = FALSE;
-            
-        if(preg_match('/^<\?.*?\?>$/si', $after) <= 0) {
-            $after = "<?php $after ?>";
-            $added = TRUE;
-        }
-            
-        if(strcmp('4.2.0', phpversion()) > 0) {
-            ob_start();
-            highlight_string($after);
-            $after = ob_get_contents();
-            ob_end_clean();
-        } else {
-                $after = highlight_string($after, TRUE);
-        }
-            
-        if($added == TRUE) {
-            $after  = str_replace(array('<font color="#0000BB">&lt;?php ', '<font color="#0000BB">?&gt;</font>'), array('<font color="#0000BB">', ''), $after);
-        }
-            
-        $after  = preg_replace('/<font color="(.*?)">/si', '<span style="color: \\1;">', $after);
-        $after  = str_replace(array('</font>', '\n', '<code>', '</code>'), array('</span>', '', '', ''), $after);
-        $replacement .= $after;
-        $replacement .= $code_end;
-        $text = str_replace($str_to_match, $replacement, $text);
-    }
+    $source_lines = explode("\n", $text);
+    foreach($source_lines as $line) {
         
-    $text  = str_replace(array('[php]', '[/php]'), array($code_start, $code_end), $text);
+        $line = stripslashes($line);
+        $line = str_replace(array('&lt;', '&gt;', '&amp;'), array('<', '>', '&'), $line);
+        $line = str_replace("<br />", "\n", trim($line));
+        $line = geshi_highlight($line, $geshi_lang, $geshi_path, TRUE);
+        $text = $line;
+    }
     
     return $text;
 }
