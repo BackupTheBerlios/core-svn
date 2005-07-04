@@ -15,9 +15,11 @@ $start = isset($_GET['start']) ? intval($_GET['start']) : 0;
 define('PATH_TO_CLASSES', 'classes');
 define('PATH_TO_MODULES', 'modules');
 
-require(PATH_TO_CLASSES. '/cls_db_mysql.php');
-require(PATH_TO_CLASSES. '/cls_upload.php');
-require(PATH_TO_CLASSES. '/cls_rss_parser.php');
+require_once(PATH_TO_CLASSES. '/cls_db_mysql.php');
+require_once(PATH_TO_CLASSES. '/cls_upload.php');
+require_once(PATH_TO_CLASSES. '/cls_rss_parser.php');
+require_once(PATH_TO_CLASSES. '/cls_links.php');
+require_once(PATH_TO_CLASSES. '/cls_errors.php');
 
 require_once('inc/config.php');
 require_once('../inc/common_lib.php');
