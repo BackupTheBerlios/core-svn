@@ -6,30 +6,28 @@ $action = empty($_GET['action']) ? '' : $_GET['action'];
 switch ($action) {
 	case "add":
 	
-		$link_name	= $_POST['link_name'];
-		$link_url	= $_POST['link_url'];
+		$link_name	= trim($_POST['link_name']);
+		$link_url	= trim($_POST['link_url']);
 
-		if(	substr($link_url, 0, 7) != 'http://' && 
-			substr($link_url, 0, 6) != 'ftp://' && 
-			substr($link_url, 0, 8) != 'https://') {
-				
+        if ( !preg_match('#^(http|ftp|https)://#i', $link_url) ) {
+
 			$link_url = 'http://' . $link_url;
 		}
-		
+
 		$monit = array();
-		
+
 		$ft->define("error_reporting", "error_reporting.tpl");
 		$ft->define_dynamic("error_row", "error_reporting");
-		
+
 		if($permarr['moderator']) {
-	
+
             // Obs³uga formularza, jesli go zatwierdzono
-            if(!eregi("^([^0-9]+){2,}$", $link_name)) {
-                
+            if (strlen($link_name) > 2) {
+
                 $monit[] = $i18n['add_links'][0];
             }
-            
-            if(!eregi("^(www|ftp|http)://([-a-z0-9]+\.)+([a-z]{2,})$", $link_url)) {
+
+            if( !eregi("^(https|ftp|http)://([-a-z0-9]+\.)+([a-z]{2,})$", $link_url) ) {
                 
                 $monit[] = $i18n['add_links'][1];
             }
