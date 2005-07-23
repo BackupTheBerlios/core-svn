@@ -41,16 +41,7 @@ if(!isset($_COOKIE['devlog_counter'])){
 }
 
 // template & design switcher
-if(isset($_COOKIE['devlog_design']) && is_dir('./templates/' . $lang . '/' . $_COOKIE['devlog_design'] . '/tpl/')){
-    
-    $theme = $_COOKIE['devlog_design'];
-} elseif(is_dir('./templates/' . $lang . '/main/tpl')) {
-    
-    $theme = 'main';
-} else {
-    printf('<div style="font-family: Arial, sans-serif; font-size: 16px; background-color: #ccc; border: 1px solid red; padding: 15px; text-align: center;">%s</div>', $i18n['index'][0]);
-    exit;
-}
+$theme = prepare_template($lang, $i18n);
 
 @setcookie('devlog_design', $theme, time() + 3600 * 24 * 365);
 

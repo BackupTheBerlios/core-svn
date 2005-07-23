@@ -316,14 +316,23 @@ function highlighter($text, $geshi_lang) {
 function get_mysql_server_version() {
     
     $dbs = explode('.', @mysql_get_server_info());
-    if($dbs[0] == '4' && $dbs[1] == '1') {
-        
-        define('RDBMS', '4.1');
-    }
-    else {
+    define('RDBMS', $dbs[0] == '4' && $dbs[1] == '1' ? '4.1' : '4.0');
+}
 
-      define('RDBMS', '4.0');
+
+// template check
+function prepare_template($lang, $i18n) {
+    
+    if(isset($_COOKIE['devlog_design']) && is_dir('./templates/' . $lang. '/' . $_COOKIE['devlog_design'] . '/tpl/')){
+        $theme = $_COOKIE['devlog_design'];
+    } elseif (is_dir('./templates/' . $lang . '/main/tpl')) {
+        $theme = 'main';
+    } else {
+        printf('<div style="font-family: Arial, sans-serif; font-size: 16px; background-color: #ccc; border: 1px solid red; padding: 15px; text-align: center;">%s</div>', $i18n['design'][0]);
+        exit;
     }
+    
+    return $theme;
 }
 
 ?>

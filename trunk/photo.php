@@ -22,17 +22,8 @@ $lang = get_config('language_set');
 
 require_once('i18n/' . $lang . '/i18n.php');
 
-if(isset($_COOKIE['devlog_design']) && is_dir('./templates/' . $lang. '/' . $_COOKIE['devlog_design'] . '/tpl/')){
-
-    $theme = $_COOKIE['devlog_design'];
-} elseif (is_dir('./templates/' . $lang . '/main/tpl')) {
-
-    $theme = 'main';
-} else {
-
-    printf('<div style="font-family: Arial, sans-serif; font-size: 16px; background-color: #ccc; border: 1px solid red; padding: 15px; text-align: center;">%s</div>', $i18n['design'][0]);
-    exit;
-}
+// template & design switcher
+$theme = prepare_template($lang, $i18n);
 
 @setcookie('devlog_design', $theme, time() + 3600 * 24 * 365);
 
