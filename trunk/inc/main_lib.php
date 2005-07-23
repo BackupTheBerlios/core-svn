@@ -53,7 +53,7 @@ function get_breadcrumb($page_id, $level) {
 }
 
 
-function get_cat($page_id, $level) {
+function get_cat($page_id, $level, $view) {
 	
 	global 
         $ft, 
@@ -78,14 +78,13 @@ function get_cat($page_id, $level) {
         $page_id
     );
 
-	$db = new DB_SQL;
-	$db->query($query);
+	$view->db->query($query);
 		
-	while($db->next_record()) {
+	while($view->db->next_record()) {
 	
-		$page_id 	= $db->f("id");
-		$parent_id 	= $db->f("parent_id");
-		$page_name 	= $db->f("title");
+		$page_id 	= $view->db->f("id");
+		$parent_id 	= $view->db->f("parent_id");
+		$page_name 	= $view->db->f("title");
 		$page_link  = (bool)$rewrite ? '1,' . $page_id . ',5,item.html' : 'index.php?p=5&amp;id=' . $page_id . '';
 	
 		$ft->assign(array(
@@ -97,7 +96,7 @@ function get_cat($page_id, $level) {
         ));
 
 		$ft->parse('PAGES_ROW', ".pages_row");
-		get_cat($page_id, $level+2);
+		get_cat($page_id, $level+2, $view);
 	}
 }
 

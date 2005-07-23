@@ -21,9 +21,12 @@ define('PATH_TO_MODULES', 'modules');
 require_once(PATH_TO_CLASSES. '/cls_db_mysql.php');
 require_once(PATH_TO_CLASSES. '/cls_fast_template.php');
 require_once(PATH_TO_CLASSES. '/cls_calendar.php');
+require_once(PATH_TO_CLASSES. '/cls_view.php');
+require_once(PATH_TO_CLASSES. '/cls_tree.php');
 
-// DB class init
-$db = new DB_Sql;
+$view   =& view::instance();
+$tree   =& new tree();
+$db     =& new DB_Sql;
 
 $rewrite            = get_config('mod_rewrite');
 $max_photo_width    = get_config('max_photo_width');

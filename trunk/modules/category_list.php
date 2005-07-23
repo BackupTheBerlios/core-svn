@@ -42,7 +42,7 @@ while($db->next_record()) {
     $ft->parse('CATEGORY_ROW', ".category_row");
 
     // funkcja pobieraj±ca rekurencyjnie strony dziedzicz±ce::child
-    get_category_cat($cat_id, 2);
+    $tree->get_category_cat($cat_id, 2);
 }
 
 ?>

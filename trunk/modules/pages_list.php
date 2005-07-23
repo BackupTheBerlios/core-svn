@@ -41,7 +41,7 @@ if($db->num_rows() > 0) {
         $ft->parse('PAGES_ROW', ".pages_row");
         
         // funkcja pobieraj±ca rekurencyjnie strony dziedzicz±ce::child
-        get_cat($page_id, 2);
+        $tree->get_cat($page_id, 2);
     }
     
 } else {

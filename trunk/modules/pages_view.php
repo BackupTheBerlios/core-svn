@@ -52,7 +52,7 @@ if($db->num_rows() !== 0) {
     $pages_id[]     = $id;
     
     // funkcja pobieraj±ca rekurencyjnie strony dziedzicz±ce::child
-    get_breadcrumb($parent_id, 2);
+    $tree->get_breadcrumb($parent_id, 2);
     
     function cmp($pages_sort, $b) {
         if ($pages_sort == $b) return 0;
