@@ -298,14 +298,13 @@ function highlighter($text, $geshi_lang) {
         'xml'
     );
     
-    $geshi_lang = in_array($geshi_lang, $langs) == TRUE ? $geshi_lang : 'php';
+    $geshi_lang = in_array($geshi_lang, $langs) ? $geshi_lang : 'php';
 
     $source_lines = explode("\n", $text);
     foreach($source_lines as $line) {
         
         $line = stripslashes($line);
-        $line = str_replace(array('&lt;', '&gt;', '&amp;'), array('<', '>', '&'), $line);
-        $line = str_replace("<br />", "\n", trim($line));
+        $line = str_replace(array('&lt;', '&gt;', '&amp;', '<br />'), array('<', '>', '&', "\n"), trim($line));
         $line = geshi_highlight($line, $geshi_lang, $geshi_path, TRUE);
         $text = $line;
     }
@@ -316,10 +315,14 @@ function highlighter($text, $geshi_lang) {
 
 function get_mysql_server_version() {
     
-    $dbs = explode('.', mysql_get_server_info());
+    $dbs = explode('.', @mysql_get_server_info());
     if($dbs[0] == '4' && $dbs[1] == '1') {
         
         define('RDBMS', '4.1');
+    }
+    else {
+
+      define('RDBMS', '4.0');
     }
 }
 
