@@ -17,22 +17,31 @@ get_mysql_server_version();
 
 define('PATH_TO_CLASSES', get_root() . '/administration/classes');
 define('PATH_TO_MODULES', 'modules');
+define('CLASS_EXTENSION', '.php');
 
-require_once(PATH_TO_CLASSES. '/cls_db_mysql.php');
-require_once(PATH_TO_CLASSES. '/cls_fast_template.php');
-require_once(PATH_TO_CLASSES. '/cls_calendar.php');
-require_once(PATH_TO_CLASSES. '/cls_view.php');
-require_once(PATH_TO_CLASSES. '/cls_tree.php');
+$required_classes = array(
+    'db_mysql', 
+    'fast_template', 
+    'calendar', 
+    'view', 
+    'tree', 
+    'db_config'
+);
 
-$view   =& view::instance();
-$tree   =& new tree();
-$db     =& new DB_Sql;
+while(list($c) = each($required_classes)) {
+    require_once PATH_TO_CLASSES . '/cls_' . $required_classes[$c] . CLASS_EXTENSION;
+}
 
-$rewrite            = get_config('mod_rewrite');
-$max_photo_width    = get_config('max_photo_width');
-$date_format        = get_config('date_format');
-$show_calendar      = get_config('show_calendar');
-$lang               = get_config('language_set');
+$view       =& view::instance();
+$tree       =& new tree;
+$db         =& new DB_Sql;
+$db_conf    =& new db_config;
+
+$rewrite            = $db_conf->get_config('mod_rewrite');
+$max_photo_width    = $db_conf->get_config('max_photo_width');
+$date_format        = $db_conf->get_config('date_format');
+$show_calendar      = $db_conf->get_config('show_calendar');
+$lang               = $db_conf->get_config('language_set');
 
 require('i18n/' . $lang . '/i18n.php');
 
@@ -40,7 +49,7 @@ require('i18n/' . $lang . '/i18n.php');
 if(!isset($_COOKIE['devlog_counter'])){
 	
 	@setcookie('devlog_counter', 'hit', time()+10800);
-    set_config('counter', get_config('counter') + 1);
+    $db_conf->set_config('counter', $db_conf->get_config('counter') + 1);
 }
 
 // template & design switcher
@@ -82,22 +91,22 @@ if ((bool)$rewrite) {
 }
 
 $ft->assign(array(
-    'TITLE'             =>get_config('title_page'),
-    'STATISTICS'        =>get_config('counter'),
+    'TITLE'             =>$db_conf->get_config('title_page'),
+    'STATISTICS'        =>$db_conf->get_config('counter'),
     'ENGINE_VERSION'    =>$i18n['index'][1], 
     'RSS_LINK'          =>$rss_link,
     'RSSCOMMENTS_LINK'  =>$rssc_link, 
     'SEARCH_LINK'       =>$search_link,
     'CAT_ALL_LINK'      =>$cat_all_link,
-    'CORE_VERSION'      =>get_config('core_version'), 
+    'CORE_VERSION'      =>$db_conf->get_config('core_version'), 
     'LANG'              =>$lang, 
     'THEME'             =>$theme
 ));
 
 if(!isset($_GET['p'])) {
 
-    $start_page_type    = get_config('start_page_type');
-    $start_page_id      = get_config('start_page_id');
+    $start_page_type    = $db_conf->get_config('start_page_type');
+    $start_page_id      = $db_conf->get_config('start_page_id');
 
     switch ($start_page_type) {
         case 'page':    $p = 5;     break;
