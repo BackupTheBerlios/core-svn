@@ -34,6 +34,7 @@ switch ($action) {
                 $title          = $_POST['title'];
                 $published      = $_POST['published'];
                 $template_name  = $_POST['template_name'];
+                $separately     = $_POST['separately'];
             
                 $text = parse_markers($text, 1);
 		
@@ -44,15 +45,17 @@ switch ($action) {
                         title           = '%2\$s', 
                         text            = '%3\$s', 
                         published       = '%4\$s', 
-                        assigned_tpl    = '%5\$s' 
+                        assigned_tpl    = '%5\$s', 
+                        node_separately = '%6\$d' 
                     WHERE 
-                        id = '%6\$d'", 
+                        id = '%7\$d'", 
 		
                     TABLE_PAGES, 
                     $title, 
                     $text, 
                     $published, 
                     $template_name, 
+                    $separately, 
                     $_GET['id']
                 );
 		
@@ -140,6 +143,7 @@ switch ($action) {
             $published      = $db->f("published");
             $image          = $db->f("image");
             $assigned_tpl   = $db->f("assigned_tpl");
+            $separately     = $db->f("node_separately");
 		
             $ft->assign(array(
                 'ID'	=>$_GET['id'],
@@ -173,11 +177,10 @@ switch ($action) {
         
             $dir->close();
 							
-            if($published == "Y") {
-                $ft->assign('CHECKBOX_YES', 'checked="checked"');
-            } else {
-                $ft->assign('CHECKBOX_NO', 'checked="checked"');
-            }
+            $ft->assign(array(
+                $published == "Y"   ? 'CHECKBOX_YES'    : 'CHECKBOX_NO'     =>'checked="checked"', 
+                $separately == '1'  ? 'SEPARATELY_YES'  : 'SEPARATELY_NO'   =>'checked="checked"'
+            ));
 		
             $ft->assign('OVERWRITE_PHOTO', !empty($image) ? true : false);
                 

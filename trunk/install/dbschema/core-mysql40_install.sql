@@ -79,7 +79,8 @@ CREATE TABLE core_pages (
   image varchar(255) NOT NULL default '',
   published enum('Y','N') NOT NULL default 'Y', 
   `assigned_tpl` VARCHAR(255) DEFAULT 'main' NOT NULL, 
-  PRIMARY KEY  (id)
+  node_separately CHAR(1) DEFAULT '0' NOT NULL, 
+  PRIMARY KEY (id)
 );
 
 

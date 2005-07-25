@@ -57,6 +57,13 @@
 		</td>
 	</tr>
 	<tr>
+		<td class="form">Childs separately:&nbsp;</td>
+		<td class="form" colspan="2">
+            <input class="radio" type="radio" name="separately" value="0" checked="checked" />- no&nbsp;
+            <input class="radio" type="radio" name="separately" value="1" />- yes (<strong>only</strong> for parent pages)
+        </td>
+	</tr>
+	<tr>
 		<td class="form">Template :&nbsp;</td>
 		<td class="form" colspan="2">
 		<select class="category_form" name="template_name">

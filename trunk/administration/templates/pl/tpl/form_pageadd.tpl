@@ -57,6 +57,13 @@
 		</td>
 	</tr>
 	<tr>
+		<td class="form">Listuj dzieci osobno:&nbsp;</td>
+		<td class="form" colspan="2">
+            <input class="radio" type="radio" name="separately" value="0" checked="checked" />- nie&nbsp;
+            <input class="radio" type="radio" name="separately" value="1" />- tak (dotyczy <strong>tylko</strong> stron nadrzêdnych)
+        </td>
+	</tr>
+	<tr>
 		<td class="form">Szablon :&nbsp;</td>
 		<td class="form" colspan="2">
 		<select class="category_form" name="template_name">

@@ -67,6 +67,17 @@
         <br />
         <!-- ELSE -->
         <!-- ENDIF -->
+        
+        <!-- IFDEF: SUBPAGE_NAME -->
+		<span class="title">submenu</span><br />
+        <ul>
+            <!-- BEGIN DYNAMIC BLOCK: subpages_row -->
+            <li>{PARENT}<a href="{SUBPAGE_LINK}">{SUBPAGE_NAME}</a></li>
+            <!-- END DYNAMIC BLOCK: subpages_row -->
+        </ul>
+        <br />
+        <!-- ELSE -->
+        <!-- ENDIF -->
 
 		<span class="title">kategorie</span><br />
 		<ul>

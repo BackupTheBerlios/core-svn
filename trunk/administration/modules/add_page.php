@@ -18,6 +18,7 @@ if(!empty($post)) {
             $published      = $_POST['published'];
             $page_id        = $_POST['category_id'];
             $template_name  = $_POST['template_name'];
+            $separately     = $_POST['separately'];
             
             $text = parse_markers($text, 1);
             
@@ -43,7 +44,7 @@ if(!empty($post)) {
                     INSERT INTO 
                         %1\$s 
                     VALUES 
-                        ('', '%2\$d', '%3\$d', '%4\$s', '%5\$s', '', '%6\$s', '%7\$s')", 
+                        ('', '%2\$d', '%3\$d', '%4\$s', '%5\$s', '', '%6\$s', '%7\$s', '%8\$d')", 
 		
                     TABLE_PAGES, 
                     $page_id, 
@@ -51,7 +52,8 @@ if(!empty($post)) {
                     $title, 
                     $text, 
                     $published, 
-                    $template_name
+                    $template_name, 
+                    $separately
                 );
             
                 $db->query($query);

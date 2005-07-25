@@ -64,6 +64,58 @@ class tree {
     
     
     /**
+     * Subpages category
+     * @param $subpage_id - page ID
+     * @param $level - indent level
+     * @return parsed subpages tree
+     */
+    function get_subpage_cat($subpage_id, $level) {
+        
+        global $ft, $rewrite;
+        
+        $query = sprintf("
+            SELECT 
+                id, 
+                parent_id, 
+                title 
+            FROM 
+                %1\$s 
+            WHERE 
+                parent_id = '%2\$d' 
+            AND 
+                published = 'Y' 
+            ORDER BY 
+                id 
+            ASC", 
+	
+            TABLE_PAGES, 
+            $subpage_id
+        );
+        
+        $this->view->db->query($query);
+        
+        while($this->view->db->next_record()) {
+            
+            $subpage_id     = $this->view->db->f("id");
+            $subparent_id   = $this->view->db->f("parent_id");
+            $subpage_name   = $this->view->db->f("title");
+            $subpage_link   = (bool)$rewrite ? '1,' . $subpage_id . ',5,item.html' : 'index.php?p=5&amp;id=' . $subpage_id . '';
+            
+            $ft->assign(array(
+                'SUBPAGE_NAME'  =>$subpage_name,
+                'SUBPAGE_ID'    =>$subpage_id,
+                'CLASS'         =>"child",
+                'PARENT'        =>str_repeat('&nbsp; ', $level), 
+                'SUBPAGE_LINK'  =>$subpage_link
+            ));
+            
+            $ft->parse('SUBPAGES_ROW', ".subpages_row");
+            $this->get_subpage_cat($subpage_id, $level+2);
+        }
+    }
+    
+    
+    /**
      * News category
      * @param $cat_id - category ID
      * @param $level - indent level
