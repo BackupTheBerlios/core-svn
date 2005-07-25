@@ -144,5 +144,8 @@ if(isset($_GET['id']) && $_GET['p'] == 5) {
         $ft->assign('SUBPAGE_NAME', '');
     }
     
+} else {
+    $ft->assign('SUBPAGE_NAME', '');
 }
+
 ?>
