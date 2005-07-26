@@ -63,8 +63,11 @@ switch ($action) {
                 set_config('start_page_type', $start_page[0]);
                 set_config('start_page_id', $start_page[1]);
                 
-                $ft->assign('CONFIRM', $i18n['core_configuration'][5]);
-                $ft->parse('ROWS', ".result_note");
+                header("Location: main.php?p=10");
+                exit;
+                
+                //$ft->assign('CONFIRM', $i18n['core_configuration'][5]);
+                //$ft->parse('ROWS', ".result_note");
             
             } else {
                 

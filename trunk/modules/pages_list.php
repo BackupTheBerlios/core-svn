@@ -52,7 +52,7 @@ if($db->num_rows() > 0) {
     $ft->assign('PAGE_NAME', '');
 }
 
-if(isset($_GET['id']) && $_GET['p'] == 5) {
+if(isset($_GET['id']) && $_GET['p'] == 5 || $start_page_type == 'page') {
     
     // all node pages
     $subpages = array();
@@ -116,7 +116,6 @@ if(isset($_GET['id']) && $_GET['p'] == 5) {
                 $subpage_name 	= $db->f("title");
         
                 $subpage_link  = (bool)$rewrite ? sprintf('1,%s,5,item.html', $subpage_id) : 'index.php?p=5&amp;id=' . $subpage_id;
-
         
                 $ft->assign(array(
                     'SUBPAGE_NAME'  =>$subpage_name,
@@ -137,13 +136,9 @@ if(isset($_GET['id']) && $_GET['p'] == 5) {
         } else {
             $ft->assign('SUBPAGE_NAME', '');
         }
-    
-        //echo $subpages[0];
-        
     } else {
         $ft->assign('SUBPAGE_NAME', '');
     }
-    
 } else {
     $ft->assign('SUBPAGE_NAME', '');
 }
