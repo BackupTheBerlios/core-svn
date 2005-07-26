@@ -321,31 +321,4 @@ function coreMakeClickable($text) {
 	return($text);
 }
 
-
-function coreRssDateConvert($date) {
-	
-	$newdate = explode(' ', $date);
-	$date_ex = explode('-', $newdate[0]);
-	
-	$months = array(
-		'01' => 'Jan',
-		'02' => 'Feb',
-		'03' => 'Mar',
-		'04' => 'Apr',
-		'05' => 'May',
-		'06' => 'Jun',
-		'07' => 'Jul',
-		'08' => 'Aug',
-		'09' => 'Sep',
-		'10' => 'Oct',
-		'11' => 'Nov',
-		'12' => 'Dec'
-	);
-	
-	$date_ex[1] = $months[$date_ex[1]];
-	$date		= $date_ex[2] . " " . $date_ex[1] . " " . $date_ex[0] . " " . $newdate[1];
-	
-	return $date;
-}
-
 ?>

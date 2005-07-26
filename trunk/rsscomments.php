@@ -18,8 +18,8 @@ get_mysql_server_version();
 
 $lang = get_config('language_set');
 
-$ft  = new FastTemplate('./templates/' . $lang . '/main/tpl/');
-$xml = new xml_feed();
+$ft  =& new FastTemplate('./templates/' . $lang . '/main/tpl/');
+$xml =& new xml_feed();
 
 $xml->parse_comments_feed();
 

@@ -20,6 +20,38 @@ class xml_feed {
         $this->http_root = get_httproot();
     }
     
+    
+    /**
+     * Convert date to valid xml format
+     * @param $date - date value
+     * @return $date - converted
+     */
+    function date_convert($date) {
+	
+        $newdate = explode(' ', $date);
+        $date_ex = explode('-', $newdate[0]);
+	
+        $months = array(
+            '01' => 'Jan',
+            '02' => 'Feb',
+            '03' => 'Mar',
+            '04' => 'Apr',
+            '05' => 'May',
+            '06' => 'Jun',
+            '07' => 'Jul',
+            '08' => 'Aug',
+            '09' => 'Sep',
+            '10' => 'Oct',
+            '11' => 'Nov',
+            '12' => 'Dec'
+        );
+        
+        $date_ex[1] = $months[$date_ex[1]];
+        $date		= $date_ex[2] . " " . $date_ex[1] . " " . $date_ex[0] . " " . $newdate[1];
+        
+        return $date;
+    }
+    
     /**
      * Parse template contains xml_news_feed
      * @return parsed template
@@ -82,7 +114,8 @@ class xml_feed {
                 $comments_allow = $this->db->f("comments_allow");
                 $comments       = $this->db->f("comments");
 	           
-                $date = coreRssDateConvert($date);
+                $date = $this->date_convert($date);
+                
                 $text = str_replace($this->pattern, $this->replacement, $text);
     
                 list_assigned_categories($id);
@@ -168,7 +201,8 @@ class xml_feed {
                 $image          = $this->db->f("image");
                 $comments_allow = $this->db->f("comments_allow");
                 $comments       = $this->db->f("comments");
-                $date           = coreRssDateConvert($date);
+                
+                $date           = $this->date_convert($date);
                 
                 $text = str_replace($this->pattern, $this->replacement, $text);
 
