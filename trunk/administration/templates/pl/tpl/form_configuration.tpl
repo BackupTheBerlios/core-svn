@@ -3,42 +3,49 @@
 <form enctype="multipart/form-data" method="post" action="main.php?p=10&amp;action=add" id="formConfig">
 <table width="100%" align="left">
 	<tr>
-		<td width="200">Liczba postów na stronê:&nbsp;</td>
-		<td><input class="short" type="text" name="mainposts_per_page" value="{MAINPOSTS_PER_PAGE}" /></td>
+		<td width="200"><label for="mainpostsPerPage">Liczba postów na stronê:</label></td>
+		<td><input class="short" type="text" name="mainposts_per_page" id="mainpostsPerPage" value="{MAINPOSTS_PER_PAGE}" /></td>
 	</tr>
 	<tr>
-		<td>Tytu³ strony:&nbsp;</td>
-		<td><input class="long" type="text" name="title_page" value="{TITLE_PAGE}" /></td>
+		<td><label for="titlePage">Tytu³ strony:</label></td>
+		<td><input class="long" type="text" name="title_page" id="titlePage" value="{TITLE_PAGE}" /></td>
 	</tr>
 	<tr>
-		<td>Liczba postów na stronê(administracja):&nbsp;</td>
-		<td><input class="short" type="text" name="editposts_per_page" value="{EDITPOSTS_PER_PAGE}" /></td>
+		<td><label for="editpostsPerPage">Liczba postów na stronê(administracja):</label></td>
+		<td><input class="short" type="text" name="editposts_per_page" id="editpostsPerPage" value="{EDITPOSTS_PER_PAGE}" /></td>
 	</tr>
 	<tr>
-		<td>Maksymalna szerko¶æ zdjêcia na stronie g³ownej (px):&nbsp;</td>
-		<td><input class="short" type="text" name="max_photo_width" value="{MAX_PHOTO_WIDTH}" /></td>
+		<td><label for="maxPhotoWidth">Maksymalna szerko¶æ zdjêcia na stronie g³ownej (px):</label></td>
+		<td><input class="short" type="text" name="max_photo_width" id="maxPhotoWidth" value="{MAX_PHOTO_WIDTH}" /></td>
 	</tr>
 	<tr>
-		<td class="form">Wy¶wietlaj kalendarz:&nbsp;</td>
-		<td class="form">
-            <input class="radio" type="radio" name="show_calendar" value="1" align="top" {CALENDAR_YES} />- tak&nbsp;
-            <input class="radio" type="radio" name="show_calendar" value="0" align="top" {CALENDAR_NO} />- nie
+		<td>Wy¶wietlaj kalendarz:</td>
+		<td>
+            <label><input class="radio" type="radio" name="show_calendar" value="1" align="top" {CALENDAR_YES} />- tak&nbsp;</label>
+            <label><input class="radio" type="radio" name="show_calendar" value="0" align="top" {CALENDAR_NO} />- nie</label>
         </td>
 	</tr>
 	<tr>
-		<td class="form">mod_rewrite(nadpisywanie linków):&nbsp;</td>
-		<td class="form">
-            <input class="radio" type="radio" name="rewrite_allow" value="1" align="top" {REWRITE_YES} />- tak&nbsp;
-            <input class="radio" type="radio" name="rewrite_allow" value="0" align="top" {REWRITE_NO} />- nie
+		<td>Przyjazne linki (wymaga modu³u <strong>mod_rewrite</strong> na serwerze):</td>
+		<td>
+            <label><input class="radio" type="radio" name="rewrite_allow" value="1" align="top" {REWRITE_YES} />- tak&nbsp;</label>
+            <label><input class="radio" type="radio" name="rewrite_allow" value="0" align="top" {REWRITE_NO} />- nie</label>
+        </td>
+	</tr>
+	<tr>
+		<td>Nowo¶ci CORE RSS na stronie g³ównej panelu:</td>
+		<td>
+            <label><input class="radio" type="radio" name="core_rss" value="1" align="top" {CORE_RSS_YES} />- tak&nbsp;</label>
+            <label><input class="radio" type="radio" name="core_rss" value="0" align="top" {CORE_RSS_NO} />- nie</label>
         </td>
 	</tr>
     <tr>
-      <td class="form">Format daty (<a href="http://php.net/date">szczegó³y</a>):&nbsp;</td>
-      <td class="form"><input class="long" type="text" name="date_format" value="{DATE_FORMAT}" /></td>
+      <td><label for="dateFormat">Format daty (<a href="http://php.net/date">szczegó³y</a>):</label></td>
+      <td><input class="long" type="text" name="date_format" id="dateFormat" value="{DATE_FORMAT}" /></td>
     </tr>
     <tr>
-      <td class="form">Strona startowa:&nbsp;</td>
-      <td class="form"><select name="start_page" id="startPage" class="category_form">
+      <td><label for="startPage">Strona startowa:</label></td>
+      <td><select name="start_page" id="startPage" class="category_form">
           <option value="all#0">wszystkie kategorie</option>
           <optgroup label="strony">
             <!-- IFDEF: START_PAGE_PAGES -->
@@ -59,9 +66,9 @@
       </select></td>
     </tr>
     <tr>
-		<td class="form">Jêzyk :&nbsp;</td>
+		<td><label for="language">Jêzyk:</label></td>
 		<td class="form" colspan="2">
-		<select class="category_form" name="language">
+		<select class="category_form" name="language" id="language">
 			
 			<!-- BEGIN DYNAMIC BLOCK: language_row -->
 			<option value="{LANGUAGE_NAME}" {CURRENT}>{LANGUAGE_NAME}</option>
@@ -71,7 +78,7 @@
 		</td>
 	</tr>
 	<tr>
-      <td width="364" colspan="2"><br /><img src="templates/{LANG}/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('formConfig').submit()">zapisz ustawienia</a></td>
+      <td width="364" colspan="2"><br /><img src="templates/{LANG}/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="E('formConfig').submit()">zapisz ustawienia</a></td>
 	</tr>
 </table>
 </form>
