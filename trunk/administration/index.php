@@ -1,20 +1,41 @@
 <?php
-session_register("login");
-session_register("loggedIn");
+/*
+ * IMPORTANT: do not change include to require!
+ *
+ */
+@include_once('inc/config.php');
+if(!defined('CORE_INSTALLED')) {
 
-if(isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === TRUE){
-    
-    header("Location: main.php");
-    break;
+    header('Location: ../install/install.php');
+    exit;
 }
 
-define('PATH_TO_CLASSES', 'classes');
+
+
+
+
+session_register('login');
+session_register('loggedIn');
+
+/*
+ * TODO:
+ * w sesji przechowywaæ login i hash has³a. przy ka¿dym wejœciu
+ * musi byæ sprawdzana poprawnoœæ. inaczej, jeœli ktoœ siê nie 
+ * bêdzie wylogowywa³ wystaczaj¹co d³ugo, mo¿e to spowodowaæ problemy z
+ * bezpieczeñstwem (wy³¹czenie/skasowanie usera nie spowoduje braku mo¿liwoœci
+ * namieszania przez niego w systemie)
+ *
+ */
+if(isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] === TRUE){
+    
+    header('Location: main.php');
+    break;
+}
 
 require_once(PATH_TO_CLASSES. '/cls_db_mysql.php');
 require_once(PATH_TO_CLASSES. '/cls_phpmailer.php');
 
-require_once("inc/config.php");
-require_once('../inc/common_lib.php');
+require_once(ROOT . 'inc/common_lib.php');
 
 // mysql_server_version
 get_mysql_server_version();
@@ -22,7 +43,7 @@ get_mysql_server_version();
 $lang = get_config('language_set');
 
 require_once('i18n/' . $lang . '/i18n.php');
-require_once(PATH_TO_CLASSES. '/cls_fast_template.php');
+require_once(PATH_TO_CLASSES . '/cls_fast_template.php');
 
 // warto¶æ pocz±tkowa zmiennej $start -> potrzebna przy stronnicowaniu
 $start = isset($_GET['start']) ? intval($_GET['start']) : 0;
@@ -31,31 +52,31 @@ $start = isset($_GET['start']) ? intval($_GET['start']) : 0;
 $ft = new FastTemplate('./templates/' . $lang . '/tpl');
 
 $ft->define(array(
-    'main'              =>"main.tpl",
-    'main_loader'       =>"main_loader.tpl",
-    'rows'              =>"rows.tpl",
-    'form_login'        =>"form_login.tpl"
+    'main'          =>'main.tpl',
+    'main_loader'   =>'main_loader.tpl',
+    'rows'          =>'rows.tpl',
+    'form_login'    =>'form_login.tpl'
 ));
         
 $ft->assign(array(
     'TITLE'         =>$i18n['index'][0],
     'ERROR_MSG'     =>'', 
-    'CSS_HREF'      =>'templates/' . $lang . '/css/style.css'
+    'LANG'          =>$lang
 ));
 
 // deklaracja zmiennej $p
 $p = empty($_GET['p']) ? '' : $_GET['p'];
 
-if($p == "log") {
+if($p == 'log') {
     
     $login       = trim($_POST['login']);
     $password    = trim(md5($_POST['password']));
     
-    if(empty($login) OR empty($password)) {
+    if(empty($login) || empty($password)) {
         
         // U¿ytkownik nie uzupe³ni³ wszystkich pól::form
         $ft->assign('ERROR_MSG', $i18n['index'][1]);
-        $ft->parse('ROWS', ".form_login");
+        $ft->parse('ROWS', '.form_login');
     } else {
         
         $db = new DB_SQL;
@@ -78,32 +99,32 @@ if($p == "log") {
     
         if($db->num_rows()) {
 
-            if($db->f("active") != "N") {
+            if($db->f('active') != 'N') {
                 
                 // Rejestrujemy zmienne sesyjne
-                $_SESSION["login"]       = $login;
-                $_SESSION["loggedIn"]    = TRUE;
+                $_SESSION['login']       = $login;
+                $_SESSION['loggedIn']    = TRUE;
         
-                header("Location: main.php");
+                header('Location: main.php');
                 break;
             } else {
                 
                 // U¿ytkownik nie zaaktywowa³ konta::db
                 $ft->assign('ERROR_MSG', $i18n['index'][2]);
-                $ft->parse('ROWS', ".form_login");
+                $ft->parse('ROWS', '.form_login');
             }
         } else {
             // Niepoprawne dane wej¶cia<->wyj¶cia::form, db
             $ft->assign('ERROR_MSG', $i18n['index'][3]);
-            $ft->parse('ROWS', ".form_login");
+            $ft->parse('ROWS', '.form_login');
         }
     }
 } else {
-    include("modules/login.php");
+    include(ROOT . 'administration/modules/login.php');
     
 }
 
-$ft->parse('MAIN', array("main_loader", "main"));
+$ft->parse('MAIN', array('main_loader', 'main'));
 $ft->FastPrint();
 exit;
 
