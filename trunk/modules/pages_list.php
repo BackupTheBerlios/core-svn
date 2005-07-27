@@ -52,7 +52,7 @@ if($db->num_rows() > 0) {
     $ft->assign('PAGE_NAME', '');
 }
 
-if(isset($_GET['id']) && $_GET['p'] == 5 || $start_page_type == 'page') {
+if(isset($_GET['id']) && $_GET['p'] == 5 || (isset($start_page_type) && $start_page_type == 'page')) {
     
     // all node pages
     $subpages = array();
