@@ -1,22 +1,21 @@
 <?php
-
-if(is_file('administration/inc/config.php')) {
-    require_once('administration/inc/config.php');
-}
+/*
+ * IMPORTANT: do not change include to require!
+ *
+ */
+@include_once('administration/inc/config.php');
 
 if(!defined('CORE_INSTALLED')) {
     header('Location: install/install.php');
     exit;
 }
 
-require_once('inc/main_lib.php');
-require_once('inc/common_lib.php');
+require_once(ROOT . 'inc/main_lib.php');
+require_once(ROOT . 'inc/common_lib.php');
 
 // mysql_server_version
 get_mysql_server_version();
 
-define('PATH_TO_CLASSES', get_root() . '/administration/classes');
-define('PATH_TO_MODULES', 'modules');
 define('CLASS_EXTENSION', '.php');
 
 $required_classes = array(
@@ -152,7 +151,7 @@ class loader {
             $this->return_dead();
         }
 
-		if(!@file_exists(PATH_TO_MODULES . '/' . $this->mod . $this->MODULE_EXTENSION)) {
+		if(!@file_exists(PATH_TO_MODULES_USER . '/' . $this->mod . $this->MODULE_EXTENSION)) {
 			$this->return_dead();
 		}
     }
@@ -191,7 +190,7 @@ while($d = $read_dir->read()) {
 }
 
 $loader = new loader();
-require_once(PATH_TO_MODULES . '/' . $loader->mod . $loader->MODULE_EXTENSION);
+require_once(PATH_TO_MODULES_USER . '/' . $loader->mod . $loader->MODULE_EXTENSION);
 
 // tablica includowanych modulow
 $modules = array(
@@ -201,7 +200,7 @@ $modules = array(
 );
 
 while(list($m) = each($modules)) {
-    require_once PATH_TO_MODULES . '/' . $modules[$m] . '.php';
+    require_once PATH_TO_MODULES_USER . '/' . $modules[$m] . '.php';
 }
 
 if((bool)$show_calendar) {
