@@ -5,7 +5,7 @@ $action = empty($_GET['action']) ? '' : $_GET['action'];
 
 switch ($action) {
     
-	case "add":
+	case 'add':
 
         $mainposts_per_page = $_POST['mainposts_per_page'];
         $editposts_per_page = $_POST['editposts_per_page'];
@@ -16,8 +16,8 @@ switch ($action) {
         $monit = array();
         
         // definicja szablonow obslugujacych bledy Core.
-        $ft->define("error_reporting", "error_reporting.tpl");
-        $ft->define_dynamic("error_row", "error_reporting");
+        $ft->define('error_reporting', 'error_reporting.tpl');
+        $ft->define_dynamic('error_row', 'error_reporting');
         
         if($permarr['admin']) {
             
@@ -57,17 +57,20 @@ switch ($action) {
                 // set {MOD_REWRITE} variable
                 set_config('mod_rewrite', $_POST['rewrite_allow']);
 
+                // set {CORE_RSS} variable
+                set_config('core_rss', $_POST['core_rss']);
+
                 // set {DATE_FORMAT} variable
                 set_config('date_format', $_POST['date_format']);
 
                 set_config('start_page_type', $start_page[0]);
                 set_config('start_page_id', $start_page[1]);
                 
-                header("Location: main.php?p=10");
+                header('Location: main.php?p=10');
                 exit;
                 
                 //$ft->assign('CONFIRM', $i18n['core_configuration'][5]);
-                //$ft->parse('ROWS', ".result_note");
+                //$ft->parse('ROWS', '.result_note');
             
             } else {
                 
@@ -75,10 +78,10 @@ switch ($action) {
     
                     $ft->assign('ERROR_MONIT', $error);
                     
-                    $ft->parse('ROWS',	".error_row");
+                    $ft->parse('ROWS',	'.error_row');
                 }
                         
-                $ft->parse('ROWS', "error_reporting");
+                $ft->parse('ROWS', 'error_reporting');
             }
         } else {
             
@@ -88,10 +91,10 @@ switch ($action) {
     
                 $ft->assign('ERROR_MONIT', $error);
                     
-                $ft->parse('ROWS',	".error_row");
+                $ft->parse('ROWS',	'.error_row');
             }
                         
-            $ft->parse('ROWS', "error_reporting");
+            $ft->parse('ROWS', 'error_reporting');
             
         }
 		break;
@@ -99,12 +102,13 @@ switch ($action) {
     default:
     
         $ft->assign(array(
-            (bool)get_config('mod_rewrite') ? 'REWRITE_YES' : 'REWRITE_NO'      =>'checked="checked"', 
-            (bool)get_config('show_calendar') ? 'CALENDAR_YES' : 'CALENDAR_NO'  =>'checked="checked"'
+            (bool)get_config('mod_rewrite')     ? 'REWRITE_YES'  : 'REWRITE_NO'   =>'checked="checked"', 
+            (bool)get_config('show_calendar')   ? 'CALENDAR_YES' : 'CALENDAR_NO'  =>'checked="checked"',
+            (bool)get_config('core_rss')        ? 'CORE_RSS_YES' : 'CORE_RSS_NO'  =>'checked="checked"'
         ));
         
         // w przypadku braku akcji wy¶wietlanie formularza
-		$ft->define('form_configuration', "form_configuration.tpl");
+		$ft->define('form_configuration', 'form_configuration.tpl');
         
         $start_page_type    = get_config('start_page_type');
         $start_page_id      = get_config('start_page_id');
@@ -119,13 +123,12 @@ switch ($action) {
             WHERE 
                 published = 'Y' 
             AND 
-                parent_id = '%2\$d' 
+                parent_id = 0
             ORDER BY 
                 id 
             ASC", 
 	
-            TABLE_PAGES,
-            0
+            TABLE_PAGES
         );
 	
         $db->query($query);
@@ -137,9 +140,9 @@ switch ($action) {
 
             while($db->next_record()) {
           
-                $page_id      = $db->f("id");
-                $parent_id    = $db->f("parent_id");
-                $title        = $db->f("title");
+                $page_id      = $db->f('id');
+                $parent_id    = $db->f('parent_id');
+                $title        = $db->f('title');
               
                 $ft->assign(array(
                     'P_ID'		    =>'page#' . $page_id,
@@ -147,7 +150,7 @@ switch ($action) {
                     'CURRENT'       =>$page_id==$selected_start_id ? 'selected="selected"' : ''
                 ));
           
-                $ft->parse('PAGE_ROW', ".page_row");
+                $ft->parse('PAGE_ROW', '.page_row');
           
                 get_addpage_cat($page_id, 2, $selected_start_id, 'page#');
             }
@@ -163,13 +166,12 @@ switch ($action) {
             FROM 
                 %1\$s 
             WHERE 
-                category_parent_id = '%2\$d' 
+                category_parent_id = 0
             ORDER BY 
                 category_id 
             ASC", 
 	
-            TABLE_CATEGORY,
-            0
+            TABLE_CATEGORY
         );
 	
         $db->query($query);
@@ -180,9 +182,9 @@ switch ($action) {
 	
             while($db->next_record()) {
 		
-                $category_id        = $db->f("category_id");
-                $category_parent_id = $db->f("category_parent_id");
-                $category_name      = $db->f("category_name");
+                $category_id        = $db->f('category_id');
+                $category_parent_id = $db->f('category_parent_id');
+                $category_name      = $db->f('category_name');
             
                 $ft->assign(array(
                     'C_ID'		    =>'cat#' . $category_id,
@@ -190,7 +192,7 @@ switch ($action) {
                     'CURRENT'       =>$category_id==$selected_start_id ? 'selected="selected"' : ''
                 ));
         
-                $ft->parse('CATEGORY_ROW', ".category_row");
+                $ft->parse('CATEGORY_ROW', '.category_row');
         
                 get_addcategory_cat($category_id, 2, $selected_start_id, 'cat#');
             }
@@ -211,7 +213,7 @@ switch ($action) {
                     'LANGUAGE_NAME' =>$d, 
                     'CURRENT'       =>$d == get_config('language_set') ? 'selected="selected"' : ''
                 ));
-                $ft->parse('LANGUAGE_ROW', ".language_row");
+                $ft->parse('LANGUAGE_ROW', '.language_row');
             }
         }
 		
@@ -224,7 +226,7 @@ switch ($action) {
             'DATE_FORMAT'           =>get_config('date_format')
         ));
 			
-		$ft->parse('ROWS', "form_configuration");
+		$ft->parse('ROWS', 'form_configuration');
 }
 
 ?>
