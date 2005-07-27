@@ -47,7 +47,7 @@
 		<td class="addinfo" colspan="4"><img src="templates/{LANG}/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="doit('selected_status[]')">Prze³±cz zaznaczenie</a></td>
 	</tr>
 	<tr>
-		<td class="addinfo" colspan="8"><img src="templates/{LANG}/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('multipleSelected').submit()"><b>Zapisz zmiany</b></a> - dotycz± wpisów do usuniêcia i/lub zmiany statusu.</td>
+		<td class="addinfo" colspan="8"><img src="templates/{LANG}/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="E('multipleSelected').submit()"><b>Zapisz zmiany</b></a> - dotycz± wpisów do usuniêcia i/lub zmiany statusu.</td>
 	</tr>
 </table>
 </form>
