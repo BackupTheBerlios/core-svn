@@ -2,24 +2,24 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 	<title>{PAGE_TITLE}</title>
-    <link rel="stylesheet" type="text/css" href="{CSS_HREF}" media="screen" />
- 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2">
- 	<script>
- 	
- 	function doit(v) {
- 	    
- 	    a=document.getElementsByName(v)
- 	    for(i=0; i<a.length; i++) {
- 	        
- 	        if (a[i].checked) {a[i].checked = ''}
- 	        else {a[i].checked = 'true' }
- 	    }
- 	}
-    </script>
-    <script src="templates/{LANG}/js/js_quicktags/js_quicktags.js" type="text/javascript"></script>
+  <link rel="stylesheet" type="text/css" href="{CSS_HREF}" media="screen" />
+ 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2" />
+ 	<script type="text/javascript">
+    function doit(v) {
+        
+        a=document.getElementsByName(v)
+        for(i=0; i<a.length; i++) {
+            
+            if (a[i].checked) {a[i].checked = ''}
+            else {a[i].checked = 'true' }
+        }
+    }
+  </script>
+  <script src="templates/{LANG}/js/common.js" type="text/javascript"></script>
+  <script src="templates/{LANG}/js/js_quicktags/js_quicktags.js" type="text/javascript"></script>
 </head>
 
-<body>
+<body onload="form_it()">
   <div id="top"><a href="/"></a></div>
 
 <div id="logged">
@@ -43,9 +43,9 @@
 Copyright 2005 - Wszystkie Prawa Zastrzeżone: <span class="black">Core Dev Team</span>
 </div>
 <script type="text/javascript">
-    <!--
-    edCanvas = document.getElementById('canvas')
-    //-->
+<!--
+edCanvas = E('canvas')
+//-->
 </script>
 </body>
 </html>
