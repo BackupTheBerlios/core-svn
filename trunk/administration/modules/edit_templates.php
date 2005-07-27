@@ -10,16 +10,24 @@ $ft->define("editlist_templates", "editlist_templates.tpl");
 $ft->define_dynamic("template_row", "editlist_templates");
 $ft->define_dynamic("template_dir", "editlist_templates");
 
+
+
+$templates_dir = ROOT . 'templates/' . $lang . '/';
+
 switch($action) {
     
     case "add":
+        $ft->assign(array(
+            'READONLY' => 'readonly="readonly"',
+            'RETURN_FALSE' => 'return false;'
+        ));
     
         if($permarr['tpl_editor']) {
     
-            $template   = $_POST['template_name'];
-            $text		= $_POST['text'];
+            $template = $_POST['template_name'];
+            $text	= $_POST['text'];
         
-            $tpl = 	'../templates/' . $lang . '/main/tpl/' . $template . '.tpl';
+            $tpl = $templates_dir . 'main/tpl/' . $template . '.tpl';
         
             $text = str_replace('{NOTE_ROWS}', '{ROWS}', $text);
         
@@ -43,9 +51,13 @@ switch($action) {
 	case "show":
 
         $ft->define('form_templateedit', "form_templateedit.tpl");
+        $ft->assign(array(
+            'READONLY' => '',
+            'RETURN_FALSE' => ''
+        ));
         
-        $tpl 		= empty($_GET['tpl']) ? '' : $_GET['tpl'];
-        $template 	= get_root() . '/templates/' . $lang . '/main/tpl/' . $tpl . '.tpl';
+        $tpl = empty($_GET['tpl']) ? '' : $_GET['tpl'];
+        $template 	= ROOT . 'templates/' . $lang . '/main/tpl/' . $tpl . '.tpl';
         
         if(!is_writeable($template)) {
             $ft->assign('WRITE_ERROR', $i18n['edit_templates'][3]);
@@ -68,7 +80,7 @@ switch($action) {
             
             $ft->assign(array(
                 'FILE_CONTENT'	=>$file_content,
-                'TEMPLATE'		=>"/ " . $tpl . ".tpl",
+                'TEMPLATE'		=>$tpl . '.tpl',
                 'TEMPLATE_NAME'	=>$tpl
             ));
         } else {
@@ -80,12 +92,16 @@ switch($action) {
             ));
         }
         break;
-
-	default:
-
+    default:
+        $ft->assign(array(
+            'READONLY' => 'readonly="readonly"',
+            'RETURN_FALSE' => 'return false;'
+        ));
 }
 
-$templates_dir = '../templates/' . $lang . '/';
+
+
+
 $read_dir = @dir($templates_dir);
 
 while($d = $read_dir->read()) {
@@ -103,38 +119,41 @@ while($d = $read_dir->read()) {
     }
 }
 
+
+
 //lista szablonów
-$path   = !isset($_GET['tpl_dir']) ? '../templates/' . $lang . '/' . $template_dir . '/tpl/' : '../templates/' . $lang . '/' . $tpl_dir . '/tpl/';
+$path   = sprintf('../templates/%s/%s/tpl/', $lang, !isset($_GET['tpl_dir']) ? $template_dir : $tpl_dir);
 $dir    = @dir($path);
 
 while($file = $dir->read()) {
     
     $ext = str_getext($file, false);
+    $filepath = $path . $file;
+    $tplname = explode('.', $file);
+    $tplname = $tplname[0];
     
-    if(!in_array($ext, array('php', 'txt', 'html')) && is_file($path . $file)) {
+    if(!in_array($ext, array('php', 'txt', 'html')) && is_file($filepath)) {
         
-        $file = explode('.', $file);
         $ft->assign(array(
-            'FILE'		=>$file[0] . "." . $file[1],
-            'FILE_PATH'	=>$file[0], 
+            'FILE'		=>$file,
+            'FILE_PATH'	=>$tplname, 
             'TPL_DIR'   =>!isset($_GET['tpl_dir']) ? $template_dir : $tpl_dir
         ));
         
         //jesli plik nie jest zapisywalny, to tpl z gwiazdka
-        if(is_writeable($path . $file)) {
+        if(is_writeable($filepath)) {
             
             $ft->assign('STAR', '');
-            $ft->parse('TEMPLATE_ROW', ".template_row");
         } else {
             
             $ft->assign('STAR', '*');
-            $ft->parse('TEMPLATE_ROW', ".template_row");
         }
+        $ft->parse('TEMPLATE_ROW', ".template_row");
     }
 }
 
-$ft->parse('ROWS', "editlist_templates");
-		
 $dir->close();
+
+$ft->parse('ROWS', "editlist_templates");
 
 ?>
