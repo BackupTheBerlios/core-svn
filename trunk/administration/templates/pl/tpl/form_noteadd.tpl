@@ -46,7 +46,7 @@
 		<td class="form">Tre¶æ wpisu:&nbsp;</td>
 		<td class="form" colspan="2">
 		<textarea class="note_textarea" wrap="virtual" tabindex="3" name="text" id="canvas">{N_TEXT}</textarea>
-        <script type="text/javascript"> edCanvas = document.getElementById('canvas') </script>
+        <script type="text/javascript"> edCanvas = E('canvas') </script>
 		</td>
 	</tr>
 	<tr>

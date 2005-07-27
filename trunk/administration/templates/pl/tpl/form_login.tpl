@@ -10,7 +10,7 @@
 	</tr>
 	<tr>
 		<td>&nbsp;</td>
-        <td><div style="margin: 2px;"><a href="#" onclick="document.getElementById('formLogin').submit()">Zaloguj siê</a></div></td>
+        <td><div style="margin: 2px;"><a href="#" onclick="E('formLogin').submit()">Zaloguj siê</a></div></td>
 	</tr>
 </table>
 </form>

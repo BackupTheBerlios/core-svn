@@ -12,7 +12,7 @@
 		<td class="form" width="364" align="left" valign="top"><input type="text" name="link_url" size="30" maxlength="255" value="{LINK_URL}" /></td>
 	</tr>
 	<tr>
-		<td class="form" width="364" align="left" valign="top" colspan="2"><br /><img src="templates/{LANG}/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('formLink').submit()">Zmodyfikuj link</a></td>
+		<td class="form" width="364" align="left" valign="top" colspan="2"><br /><img src="templates/{LANG}/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="E('formLink').submit()">Zmodyfikuj link</a></td>
 	</tr>
 </table>
 </form>
