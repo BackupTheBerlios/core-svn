@@ -1,5 +1,5 @@
 <div id="left">
-<img src="templates/{LANG}/images/main.gif" width="14" height="14" align="top" hspace="2"><b>Szablony - edycja szablonu</b> {TEMPLATE}<br /><br />
+<img src="templates/{LANG}/images/main.gif" width="14" height="14" align="top" hspace="2"><b>Szablony - edycja szablonu</b> / {TEMPLATE}<br /><br />
 <span class="warning">{WRITE_ERROR}</span><br />
 
 <script type="text/javascript" src="./templates/js/textarea.js"></script>
@@ -16,17 +16,19 @@
 	</tr>
 	<tr>
 		<td class="form" width="100%" colspan="3">
-		<textarea id="canvas" wrap="virtual" tabindex="3" name="text">{FILE_CONTENT}</textarea>
+            <textarea id="canvas" wrap="virtual" tabindex="3" name="text" {READONLY}>{FILE_CONTENT}</textarea>
 		</td>
 	</tr>
 	<tr>
 		<td class="form" width="100%" colspan="3">
-		<input type="hidden" name="template_name" size="30" maxlength="130" value="{TEMPLATE_NAME}">
+            <input type="hidden" name="template_name" size="30" maxlength="130" value="{TEMPLATE_NAME}">
 		</td>
 	</tr>
 	<tr>
 		<td class="form" width="324" colspan="2"></td>
-		<td class="form align_right" width="110"><img src="templates/{LANG}/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('templateEdit').submit()">Zapisz szablon</a></td>
+		<td class="form align_right" width="110"><img src="templates/{LANG}/images/ar.gif" width="10" height="9" />&nbsp;
+            <a href="#" onclick="{RETURN_FALSE}E('templateEdit').submit();">Zapisz szablon</a>
+        </td>
 	</tr>
 </table>
 </form>
