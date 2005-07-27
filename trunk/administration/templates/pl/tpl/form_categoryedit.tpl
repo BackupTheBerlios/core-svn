@@ -6,17 +6,17 @@
 <form enctype="multipart/form-data" method="post" action="main.php?p=9&amp;action=edit&amp;id={CATEGORY_ID}" id="formCat">
 <table width="100%" align="left">
 	<tr>
-		<td class="form" width="100">Nazwa kategorii:&nbsp;</td>
-		<td class="form"><input type="text" name="category_name" size="30" maxlength="255" value="{CATEGORY_NAME}"/></td>
+		<td class="form" width="100"><label for="categoryName">Nazwa kategorii:</label></td>
+		<td class="form"><input type="text" name="category_name" id="categoryName" size="30" maxlength="255" value="{CATEGORY_NAME}"/></td>
 	</tr>
 	<tr>
-		<td class="form">Opis kategorii:&nbsp;</td>
-		<td class="form"><textarea name="category_description" cols="60" rows="6">{CATNAME_DESC}</textarea></td>
+		<td class="form"><label for="categoryDescription">Opis kategorii:</label></td>
+		<td class="form"><textarea name="category_description" id="categoryDescription" cols="60" rows="6">{CATNAME_DESC}</textarea></td>
 	</tr>
 	<tr>
-		<td class="form">Szablon :&nbsp;</td>
+		<td class="form"><label for="templateName">Szablon :</label></td>
 		<td class="form">
-		<select class="category_form" name="template_name">
+		<select class="category_form" name="template_name" id="templateName">
 			
 			<!-- BEGIN DYNAMIC BLOCK: template_row -->
 			<option value="{TEMPLATE_ASSIGNED}" {CURRENT_TPL}>{TEMPLATE_ASSIGNED}</option>
@@ -26,11 +26,11 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="form">Ilo¶æ postów/stronê:&nbsp;</td>
-		<td class="form"><input class="perpage" type="text" name="category_post_perpage" value="{CATEGORY_PERPAGE}" /></td>
+		<td class="form"><label for="categoryPostPerpage">Ilo¶æ postów/stronê:</label></td>
+		<td class="form"><input class="perpage" type="text" name="category_post_perpage" id="categoryPostPerpage" value="{CATEGORY_PERPAGE}" /></td>
 	</tr>
 	<tr>
-      <td class="form" width="364" colspan="2"><br /><img src="templates/{LANG}/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('formCat').submit()">Zmodyfikuj kategoriê</a></td>
+      <td class="form" width="364" colspan="2"><br /><img src="templates/{LANG}/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="E('formCat').submit()">Zmodyfikuj kategoriê</a></td>
 	</tr>
 </table>
 </form>
