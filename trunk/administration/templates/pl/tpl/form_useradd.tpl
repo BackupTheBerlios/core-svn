@@ -4,27 +4,27 @@
 <form enctype="multipart/form-data" method="post" action="main.php?p=7&amp;action=add" id="formUser">
 <table width="100%" align="left">
 	<tr>
-		<td class="form" width="80" align="right">Login:&nbsp;</td>
+		<td class="form" width="80" align="right"><label for="loginName">Login:</label></td>
 		<td class="form" width="364" align="left" valign="top">
-            <input type="text" name="login_name" size="15" maxlength="15" />&nbsp;(4-15 znaków)
+            <input type="text" name="login_name" id="loginName" size="15" maxlength="32" />&nbsp;(4-32 znaków)
         </td>
 	</tr>
 	<tr>
-		<td class="form" width="80" align="right">Has³o:&nbsp;</td>
+		<td class="form" width="80" align="right"><label for="password">Has³o:</label></td>
 		<td class="form" width="364" align="left" valign="top">
-          <input type="password" name="password" size="15" />&nbsp;(&gt;6 znaków)
+          <input type="password" name="password" id="password" size="15" />&nbsp;(&gt;6 znaków)
         </td>
 	</tr>
 	<tr>
-		<td class="form" width="80" align="right">Powtórz Has³o:&nbsp;</td>
+		<td class="form" width="80" align="right"><label for="passwordRepeat">Powtórz Has³o:</label></td>
 		<td class="form" width="364" align="left" valign="top">
-            <input type="password" name="password_repeat" size="15" />
+            <input type="password" name="password_repeat" id="passwordRepeat" size="15" />
         </td>
 	</tr>
 	<tr>
-		<td class="form" width="80" align="right">Adres e-mail:&nbsp;</td>
+		<td class="form" width="80" align="right"><label for="email">Adres e-mail:</label></td>
 		<td class="form" width="364" align="left" valign="top">
-            <input type="text" name="email" size="30" maxlength="30" />
+            <input type="text" name="email" id="email" size="30" maxlength="30" />
         </td>
 	</tr>
 	<tr>
@@ -33,67 +33,67 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="form" width="80" align="right">Imiê:&nbsp;</td>
+		<td class="form" width="80" align="right"><label for="name">Imiê:</label></td>
 		<td class="form" width="364" align="left" valign="top">
-            <input class="medium" type="text" name="name" />
+            <input class="medium" type="text" name="name" id="name" />
         </td>
 	</tr>
 	<tr>
-		<td class="form" width="80" align="right">Nazwisko:&nbsp;</td>
+		<td class="form" width="80" align="right"><label for="surname">Nazwisko:</label></td>
 		<td class="form" width="364" align="left" valign="top">
-            <input class="medium" type="text" name="surname" />
+            <input class="medium" type="text" name="surname" id="surname" />
         </td>
 	</tr>
 	<tr>
-		<td class="form" width="80" align="right">Miasto:&nbsp;</td>
+		<td class="form" width="80" align="right"><label for="city">Miasto:</label></td>
 		<td class="form" width="364" align="left" valign="top">
-            <input class="medium" type="text" name="city" />
+            <input class="medium" type="text" name="city" id="city" />
         </td>
 	</tr>
 	<tr>
-		<td class="form" width="80" align="right">Kraj:&nbsp;</td>
+		<td class="form" width="80" align="right"><label for="country">Kraj:</label></td>
 		<td class="form" width="364" align="left" valign="top">
-            <input class="medium" type="text" name="country" />
+            <input class="medium" type="text" name="country" id="country" />
         </td>
 	</tr>
 	<tr>
-		<td class="form" width="80" align="right">Adres www:&nbsp;</td>
+		<td class="form" width="80" align="right"><label for="www">Adres www:</label></td>
 		<td class="form" width="364" align="left" valign="top">
-            <input class="long" type="text" name="www" />
+            <input class="long" type="text" name="www" id="www" />
         </td>
 	</tr>
 	<tr>
-		<td class="form" width="80" align="right">GG:&nbsp;</td>
+		<td class="form" width="80" align="right"><label for="gg">GG:</label></td>
 		<td class="form" width="364" align="left" valign="top">
-            <input type="text" name="gg" size="15" />
+            <input type="text" name="gg" id="gg" size="15" />
         </td>
 	</tr>
 	<tr>
-		<td class="form" width="80" align="right">Tlen Id:&nbsp;</td>
+		<td class="form" width="80" align="right"><label for="tlen">Tlen Id:</label></td>
 		<td class="form" width="364" align="left" valign="top">
-            <input type="text" name="tlen" size="15" />
+            <input type="text" name="tlen" id="tlen" size="15" />
         </td>
 	</tr>
 	<tr>
-		<td class="form" width="80" align="right">Jabber Id:&nbsp;</td>
+		<td class="form" width="80" align="right"><label for="jid">Jabber Id:</label></td>
 		<td class="form" width="364" align="left" valign="top">
-            <input type="text" name="jid" size="15" />
+            <input type="text" name="jid" id="jid" size="15" />
         </td>
 	</tr>
 	<tr>
-		<td class="form" width="80" align="right" valign="top">Hobby:&nbsp;</td>
+		<td class="form" width="80" align="right" valign="top"><label for="hobby">Hobby:</label></td>
 		<td class="form" width="364" align="left" valign="top">
-            <textarea name="hobby" cols="45" rows="5"></textarea>
+            <textarea name="hobby" id="hobby" cols="45" rows="5"></textarea>
         </td>
 	</tr>
 	<tr>
-		<td class="form" width="80" align="right" valign="top">Informacje dodatkowe:&nbsp;</td>
+		<td class="form" width="80" align="right" valign="top"><label for="additionalInfo">Informacje dodatkowe:</label></td>
 		<td class="form" width="364" align="left" valign="top">
-            <textarea name="additional_info" cols="45" rows="7"></textarea>
+            <textarea name="additional_info" id="additionalInfo" cols="45" rows="7"></textarea>
         </td>
 	</tr>
 	<tr>
-		<td class="form" width="364" align="left" valign="top" colspan="2"><br /><img src="templates/{LANG}/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('formUser').submit()">Dodaj u¿ytkownika</a></td>
+		<td class="form" width="364" align="left" valign="top" colspan="2"><br /><img src="templates/{LANG}/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="E('formUser').submit()">Dodaj u¿ytkownika</a></td>
 	</tr>
 </table>
 </form>
