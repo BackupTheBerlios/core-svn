@@ -33,7 +33,7 @@
 		<td class="form" width="364" colspan="2"><textarea class="note_textarea" name="text" id="canvas">{TEXT}</textarea></td>
 	</tr>
 	<tr>
-      <td colspan="3" class="align_right"><img src="templates/{LANG}/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('formComm').submit()">zmodyfikuj wpis</a></td>
+      <td colspan="3" class="align_right"><img src="templates/{LANG}/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="E('formComm').submit()">zmodyfikuj wpis</a></td>
 	</tr>
 </table>
 </form>
