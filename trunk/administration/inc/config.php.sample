@@ -21,4 +21,9 @@ define('CORE_INSTALLED', true);
 //mail address to person who can repair if something in Your code is broken
 define('ADMIN_MAIL', 'email@example.com');
 
+define('PATH_TO_CLASSES', sprintf('%s/classes/', dirname(dirname(__file__))));
+define('ROOT', dirname(dirname(PATH_TO_CLASSES)) . '/'  );
+define('PATH_TO_MODULES_ADM', ROOT . 'administration/modules/');
+define('PATH_TO_MODULES_USER', ROOT . 'modules/');
+
 ?>
