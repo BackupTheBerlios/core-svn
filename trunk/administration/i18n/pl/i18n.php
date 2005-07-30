@@ -25,7 +25,7 @@ $i18n['add_category'][4] = '<b>Nie masz uprawnieñ</b> pozwalaj±cych na dodanie n
 $i18n['add_category'][5] = 'Liczba postów na stronie kategorii musi byæ w przedziale: 3 - 99';
 
 $i18n['add_links'] = array();
-$i18n['add_links'][0] = 'Musisz podaæ nazwê linku.';
+$i18n['add_links'][0] = 'Nazwa odno¶nika nie mo¿e byæ krótsza ni¿ 2 znaki.';
 $i18n['add_links'][1] = 'Link musi byæ w poprawnym formacie (www|ftp|http)://example.com';
 $i18n['add_links'][2] = 'Link zosta³ dodany do bazy danych.';
 $i18n['add_links'][5] = '<b>Nie masz uprawnieñ</b> pozwalaj±cych na dodanie nowego linku.';
@@ -35,6 +35,8 @@ $i18n['add_note'][0] = 'Zdjêcie zosta³o dodane.<br />';
 $i18n['add_note'][1] = 'Wpis zosta³ dodany.';
 $i18n['add_note'][2] = '<b>Nie masz uprawnieñ</b> pozwalaj±cych na dodanie nowego wpisu.';
 $i18n['add_note'][3] = '<b>Musisz</b> przydzieliæ wpis do przynajmniej jednej kategorii.';
+$i18n['add_note'][4] = 'Pole "Tytu³ wpisu" nie mo¿e byæ puste.';
+$i18n['add_note'][5] = 'Niew³a¶ciwy format znacznika czasu.';
 
 $i18n['add_page'] = array();
 $i18n['add_page'][0] = 'Zdjêcie zosta³o dodane.<br />';
@@ -81,8 +83,8 @@ $i18n['edit_category'][6] = '<b>Nie masz uprawnieñ</b> do edycji kategorii.';
 $i18n['edit_category'][7] = 'Kategoria g³ówna zawiera przydzielone do niej wpisy. Zanim j± usuniesz przenie¶ je do innej kategorii.';
 
 $i18n['edit_links'] = array();
-$i18n['edit_links'][2] = 'Musisz podaæ nazwê linku';
-$i18n['edit_links'][3] = 'Link musi byæ w poprawnym formacie (www|ftp|http)://example.com';
+$i18n['edit_links'][2] = 'Nazwa odno¶nika nie mo¿e byæ krótsza ni¿ 2 znaki.';
+$i18n['edit_links'][3] = 'Link musi byæ w poprawnym formacie (ftp|http|https)://example.com';
 $i18n['edit_links'][4] = 'Link zosta³ zmodyfikowany.';
 $i18n['edit_links'][5] = 'Link zosta³ usuniêty.';
 $i18n['edit_links'][6] = '<b>Nie masz uprawnieñ</b> do usuwania linków.';
@@ -96,8 +98,8 @@ $i18n['edit_page'][2] = '<b>Nie masz uprawnieñ</b> do usuwania podstron serwisu.
 $i18n['edit_page'][3] = '<b>Nie masz uprawnieñ</b> do edycji podstron serwisu.';
 
 $i18n['edit_note'] = array();
-$i18n['edit_note'][0] = 'Wpis zosta³ zmodyfikowany.';
-$i18n['edit_note'][1] = 'Wpis zosta³ usuniêty.';
+$i18n['edit_note'][0] = 'Wpis(y) zosta³(y) zmodyfikowany(e).';
+$i18n['edit_note'][1] = 'Wpis(y) zosta³(y) usuniêty(e).';
 $i18n['edit_note'][2] = '<b>Nie masz uprawnieñ</b> do usuwania wpisów.';
 $i18n['edit_note'][3] = '<b>Nie masz uprawnieñ</b> do edycji wpisów, b±d¼ nie jeste¶ autorem tego wpisu.';
 $i18n['edit_note'][4] = 'W bazie danych nie ma ¿adnych wpisów';
