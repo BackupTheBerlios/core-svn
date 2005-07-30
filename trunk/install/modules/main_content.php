@@ -112,8 +112,14 @@ if(!empty($post)) {
 
         $file .= "define('CORE_INSTALLED',  true);\n\n";
 
-        $file .= '//mail address to person who can repair if something in Your code is broken' . "\n";
+        $file .= "//mail address to person who can repair if something in Your code is broken\n";
         $file .= "define('ADMIN_MAIL',      'core@example.com');\n\n";
+
+        $file .= "define('PATH_TO_CLASSES', sprintf('%s/classes/', dirname(dirname(__file__))));\n";
+        $file .= "define('ROOT', dirname(dirname(PATH_TO_CLASSES)) . '/'  );\n";
+        $file .= "define('PATH_TO_MODULES_ADM', ROOT . 'administration/modules/');\n";
+        $file .= "define('PATH_TO_MODULES_USER', ROOT . 'modules/');\n\n";
+
 
         $file .= '?' . '>';
 
