@@ -14,9 +14,13 @@ switch ($action) {
     case "edit":        $link->edit($_GET['id']);   break;
     case "remark":      $link->remark($_GET['id']); break;
     case "delete":      $link->delete();            break;
-    case "multidelete": $link->multidelete();       break;
     
-    default:            $link->list_links();
+    default:
+        if (isset($_POST['sub_delete'])) {
+            $link->multidelete();
+        } else {
+            $link->list_links();
+        }
 }
 
 ?>
