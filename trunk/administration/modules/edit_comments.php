@@ -32,17 +32,11 @@ switch ($action) {
 		$db->query($query);
 		$db->next_record();
 		
-		$date 		= $db->f("date");
-		$title 		= $db->f("title");
-		$text 		= $db->f("text");
-		$author		= $db->f("author");
-		$published	= $db->f("published");
-		
 		$ft->assign(array(
-            'AUTHOR'    =>$author,
-            'DATE'      =>$date,
+            'AUTHOR'    =>$db->f("author"),
+            'DATE'      =>$db->f("date"),
             'ID'        =>$_GET['id'],
-            'TEXT'      =>br2nl($text)
+            'TEXT'      =>br2nl($db->f("text"))
         ));
 
 		$ft->define('form_commentsedit', "form_commentsedit.tpl");
@@ -144,10 +138,8 @@ switch ($action) {
         
             header("Location: main.php?p=5");
             exit;
-            break;
             
         default:
-        
             $ft->define('confirm_action', 'confirm_action.tpl');
             $ft->assign(array(
                 'PAGE_NUMBER'   =>$p, 
@@ -157,101 +149,133 @@ switch ($action) {
             ));
             
             $ft->parse('ROWS', ".confirm_action");
-            break;
         }
     break;
 
 	default:
+        if (isset($_POST['sub_delete'])) {
+            if($permarr['moderator']) {
+
+                $query = sprintf("
+                    DELETE FROM
+                        %1\$s
+                    WHERE
+                        id IN (%2\$s)",
+
+                    TABLE_COMMENTS,
+                    implode(',', $_POST['selected_comments'])
+                );
+    
+                $db->query($query);
+        
+                $ft->assign('CONFIRM', $i18n['edit_comments'][1]);
+                $ft->parse('ROWS', ".result_note");
+            } else {
+        
+                $monit[] = $i18n['edit_comments'][4];
+
+                foreach ($monit as $error) {
+
+                    $ft->assign('ERROR_MONIT', $error);
+                
+                    $ft->parse('ROWS',	".error_row");
+                }
+                    
+            $ft->parse('ROWS', "error_reporting");
+            }
+
+        } else {
 	
-        $mainposts_per_page = get_config('editposts_per_page');
+            $mainposts_per_page = get_config('editposts_per_page');
 
-        // zliczamy posty
-        $query = sprintf("
-            SELECT 
-                COUNT(*) AS id 
-            FROM 
-                %1\$s 
-            ORDER BY 
-                date", 
-	
-            TABLE_COMMENTS
-        );
+            // zliczamy posty
+            $query = sprintf("
+                SELECT 
+                    COUNT(*) AS id 
+                FROM 
+                    %1\$s 
+                ORDER BY 
+                    date", 
+        
+                TABLE_COMMENTS
+            );
 
-        $db->query($query);
-        $db->next_record();
-	
-        $num_items = $db->f("0");
+            $db->query($query);
+            $db->next_record();
+        
+            $num_items = $db->f("0");
 
-        // inicjowanie funkcji stronnicuj±cej wpisy
-        $pagination = pagination('main.php?p=5&amp;start=', $mainposts_per_page, $num_items);
-		
-		$query = sprintf("
-            SELECT * FROM 
-                %1\$s 
-            ORDER BY 
-                date 
-            DESC LIMIT 
-                %2\$d, %3\$d", 
-		
-            TABLE_COMMENTS, 
-            $start, 
-            $mainposts_per_page
-        );
-		
-		$db->query($query);
-		
-		// Sprawdzamy, czy w bazie danych s± ju¿ jakie¶ wpisy
-		if($db->num_rows() > 0) {
-		
-			// Pêtla wyswietlaj¹ca wszystkie wpisy + stronnicowanie ich
-			while($db->next_record()) {
-		
-				$id 		= $db->f("id");
-				$text 		= $db->f("text");
-				$date 		= $db->f("date");
-				$author		= $db->f("author");
-				$author_ip	= $db->f("author_ip");
-			
-				$date = explode(' ', $date);
-			
-				if (strlen($text) > 70 ) {
-				
-					$text = substr_replace($text, '...',70);
-				} else {
-					$text = $text;
-				}
-			
-				$ft->assign(array(
-				    'ID'		=>$id,
-				    'TEXT'		=>$text,
-				    'DATE'		=>$date[0],
-				    'AUTHOR'	=>$author,
-				    'AUTHOR_IP'	=>$author_ip, 
-                    'PAGINATED' =>!empty($pagination['page_string']) ? true : false, 
-                    'STRING'    =>$pagination['page_string']
-				));
-			
-				// deklaracja zmiennej $idx1::color switcher
-				$idx1 = empty($idx1) ? '' : $idx1;
-				
-				$idx1++;
-			
-				$ft->define("editlist_comments", "editlist_comments.tpl");
-				$ft->define_dynamic("row", "editlist_comments");
-				
-				// naprzemienne kolorowanie wierszy tabeli
-				$ft->assign('ID_CLASS', $idx1%2 ? 'mainList' : 'mainListAlter');
-				
-				$ft->parse('ROW', ".row");
-			}
-		
-			$ft->parse('ROWS', "editlist_comments");;
-		} else {
-		
-			$ft->assign('CONFIRM', $i18n['edit_comments'][2]);
+            // inicjowanie funkcji stronnicuj±cej wpisy
+            $pagination = pagination('main.php?p=5&amp;start=', $mainposts_per_page, $num_items);
+            
+            $query = sprintf("
+                SELECT * FROM 
+                    %1\$s 
+                ORDER BY 
+                    date 
+                DESC LIMIT 
+                    %2\$d, %3\$d", 
+            
+                TABLE_COMMENTS, 
+                $start, 
+                $mainposts_per_page
+            );
+            
+            $db->query($query);
+            
+            // Sprawdzamy, czy w bazie danych s± ju¿ jakie¶ wpisy
+            if($db->num_rows() > 0) {
+            
+                // Pêtla wyswietlaj¹ca wszystkie wpisy + stronnicowanie ich
+                while($db->next_record()) {
+            
+                    $id 		= $db->f("id");
+                    $text 		= $db->f("text");
+                    $date 		= $db->f("date");
+                    $author		= $db->f("author");
+                    $author_ip	= $db->f("author_ip");
+                
+                    $date = explode(' ', $date);
+                
+                    if (strlen($text) > 70 ) {
+                    
+                        $text = substr_replace($text, '...',70);
+                    } else {
+                        $text = $text;
+                    }
+                
+                    $ft->assign(array(
+                        'ID'		=>$id,
+                        'TEXT'		=>$text,
+                        'DATE'		=>$date[0],
+                        'AUTHOR'	=>$author,
+                        'AUTHOR_IP'	=>$author_ip, 
+                        'PAGINATED' =>!empty($pagination['page_string']) ? true : false, 
+                        'STRING'    =>$pagination['page_string'],
+                    ));
+                
+                    // deklaracja zmiennej $idx1::color switcher
+                    $idx1 = empty($idx1) ? '' : $idx1;
+                    
+                    $idx1++;
+                
+                    $ft->define("editlist_comments", "editlist_comments.tpl");
+                    $ft->define_dynamic("row", "editlist_comments");
+                    
+                    // naprzemienne kolorowanie wierszy tabeli
+                    $ft->assign('ID_CLASS', $idx1%2 ? 'mainList' : 'mainListAlter');
+                    
+                    $ft->parse('ROW', ".row");
+                }
+            
+                $ft->parse('ROWS', "editlist_comments");;
+            } else {
+            
+                $ft->assign('CONFIRM', $i18n['edit_comments'][2]);
 
-			$ft->parse('ROWS',	".result_note");
-		}
+                $ft->parse('ROWS',	".result_note");
+            }
+        }
 }
 
 ?>
