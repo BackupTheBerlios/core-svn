@@ -93,74 +93,78 @@ switch ($action) {
 		break;
 		
 	default:
-		$query = sprintf("
-            SELECT 
-                n.id, n.title, n.date, count(DISTINCT c.id) 
-            AS 
-                comments 
-            FROM 
-                %1\$s n 
-            LEFT JOIN 
-                %2\$s c 
-            ON 
-                n.id = c.comments_id 
-            GROUP BY 
-                n.id 
-            HAVING 
-                count(c.id) > 0 
-            ORDER BY 
-                comments 
-            DESC LIMIT 
-                %3\$d", 
-		
-            TABLE_MAIN, 
-            TABLE_COMMENTS, 
-            20
-        );
-		
-		$db->query($query);
-		
-		// Sprawdzamy, czy w bazie danych s± ju¿ jakie¶ wpisy
-		if($db->num_rows() > 0) {
-		
-			// Pêtla wyswietlaj¹ca wszystkie wpisy + stronnicowanie ich
-			while($db->next_record()) {
-		
-				$id 		= $db->f("id");
-				$title 		= $db->f("title");
-				$date 		= $db->f("date");
-				$comments 	= $db->f("comments");
-			
-				$date = explode(' ', $date);
-			
-				$ft->assign(array(
-				    'ID'		=>$id,
-				    'TITLE'		=>$title,
-				    'DATE'		=>$date[0],
-				    'COMMENTS'	=>$comments
-				));				
-			
-				// deklaracja zmiennej $idx1::color switcher
-				$idx1 = empty($idx1) ? '' : $idx1;
-				
-				$idx1++;
-			
-				$ft->define("editlist_mostcomments", "editlist_mostcomments.tpl");
-				$ft->define_dynamic("row", "editlist_mostcomments");
-				
-				// naprzemienne kolorowanie wierszy tabeli
-				$ft->assign('ID_CLASS', $idx1%2 ? 'mainList' : 'mainListAlter');
-				
-				$ft->parse('ROW', ".row");
-			}
-		
-			$ft->parse('ROWS', "editlist_mostcomments");
-		} else {
-		
-			$ft->assign('CONFIRM', "W bazie danych nie ma ¿adnych wpisów");
+        //multidelete
+        if (isset($_POST['sub_delete']) && isset($_POST['selected_notes'])) {
+        } else {
+            $query = sprintf("
+                SELECT 
+                    n.id, n.title, n.date, count(DISTINCT c.id) 
+                AS 
+                    comments 
+                FROM 
+                    %1\$s n 
+                LEFT JOIN 
+                    %2\$s c 
+                ON 
+                    n.id = c.comments_id 
+                GROUP BY 
+                    n.id 
+                HAVING 
+                    count(c.id) > 0 
+                ORDER BY 
+                    comments 
+                DESC LIMIT 
+                    %3\$d", 
+            
+                TABLE_MAIN, 
+                TABLE_COMMENTS, 
+                20
+            );
+            
+            $db->query($query);
+            
+            // Sprawdzamy, czy w bazie danych s± ju¿ jakie¶ wpisy
+            if($db->num_rows() > 0) {
+            
+                // Pêtla wyswietlaj¹ca wszystkie wpisy + stronnicowanie ich
+                while($db->next_record()) {
+            
+                    $id 		= $db->f("id");
+                    $title 		= $db->f("title");
+                    $date 		= $db->f("date");
+                    $comments 	= $db->f("comments");
+                
+                    $date = explode(' ', $date);
+                
+                    $ft->assign(array(
+                        'ID'		=>$id,
+                        'TITLE'		=>$title,
+                        'DATE'		=>$date[0],
+                        'COMMENTS'	=>$comments
+                    ));				
+                
+                    // deklaracja zmiennej $idx1::color switcher
+                    $idx1 = empty($idx1) ? '' : $idx1;
+                    
+                    $idx1++;
+                
+                    $ft->define("editlist_mostcomments", "editlist_mostcomments.tpl");
+                    $ft->define_dynamic("row", "editlist_mostcomments");
+                    
+                    // naprzemienne kolorowanie wierszy tabeli
+                    $ft->assign('ID_CLASS', $idx1%2 ? 'mainList' : 'mainListAlter');
+                    
+                    $ft->parse('ROW', ".row");
+                }
+            
+                $ft->parse('ROWS', "editlist_mostcomments");
+            } else {
+            
+                $ft->assign('CONFIRM', "W bazie danych nie ma ¿adnych wpisów");
 
-			$ft->parse('ROWS',	".result_note");
-		}
+                $ft->parse('ROWS',	".result_note");
+            }
+        }
 }
 
 ?>
