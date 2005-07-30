@@ -22,6 +22,16 @@ function askChecked(q, v)
     }
     return c ? confirm(q) : false
 }
+function toggleDisable(id) {
+    e = E(id)
+    if (e) e.disabled = e.disabled ? '' : 'true'
+}
+
+function dw(s) {
+    document.write(s + '<br />')
+}
+
+
 
 window.onload = function(){
     forms = document.getElementsByTagName('form')
@@ -48,12 +58,4 @@ window.onload = function(){
     }
     
     edCanvas = E('canvas')
-}
-function toggleDisable(id) {
-    e = E(id)
-    if (e) e.disabled = e.disabled ? '' : 'true'
-}
-
-function dw(s) {
-    document.write(s + '<br />')
 }
