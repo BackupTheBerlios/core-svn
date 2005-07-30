@@ -82,6 +82,25 @@ function get_config($name) {
             
             $query = "EXECUTE get_config USING @config_name";
             
+            /*
+             * TODO:
+             * czy tutaj ta stala nie powinna nieco inaczej wygladac ?
+             * zakladam, ze powyzszy sposob, czyli korzystae z prepared
+             * statements bedziemy wykorzystywac szerzej. wiec nie moze byc
+             * jedna stala o nieznaczacej zbyt wiele nazwie, i zeby sie ja
+             * dalo wykorzystac szerzej, do wiekszej ilosci statementsow
+             *
+             * poza tym, nie mam teraz jak, ale warto by sprawdzic, jak dlugo
+             * prepared statements 'utrzymuja' sie w bazie. bo zakladam ze dluzej 
+             * niz okres zycia tej stalej ? jesli nie, to korzystanie z tego jest
+             * malo wygodne, i sensowne w tym wypadku.
+             *
+             * jesli prepared statements zyja wystarzajaca dlugo, np tyle samo
+             * co otwarte polaczenie z sql, to moze warto wrzucac w jakas tablice
+             * do sesji wartosci bool, czy dana 'przygotowana stala' zostala juz
+             * zdefiniowana. 
+             * 
+             */
             // definicja warunku::true
             define('STATEMENT_SET', true);
         } else {
@@ -114,18 +133,13 @@ function get_config($name) {
 function str_getext($file, $with_dot = true) {
 	
 	$p = pathinfo($file);
-	if ($with_dot) {
-		
-		return '.' . $p['extension'];
-	}
-	return $p['extension'];
+    return $with_dot ? '.' . $p['extension'] : $p['extension'];
 }
 
 
 function get_root() {
 	
-	$p = pathinfo(__file__);
-	return dirname($p['dirname']);
+	return ROOT;
 }
 function get_httproot($with_slash = true) {
 
