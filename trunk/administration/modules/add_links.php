@@ -22,12 +22,29 @@ switch ($action) {
 		if($permarr['moderator']) {
 
             // Obs³uga formularza, jesli go zatwierdzono
-            if (strlen($link_name) > 2) {
+            if (strlen($link_name) <= 2) {
 
                 $monit[] = $i18n['add_links'][0];
             }
 
-            if( !eregi("^(https|ftp|http)://([-a-z0-9]+\.)+([a-z]{2,})$", $link_url) ) {
+            /*
+             * TODO:
+             * czy na pewno tak ? do msie jest plugin rozszerzajacy o 
+             * linki: gg:IDGADUGADU
+             * niedlugo do jabbera prawdopodobnie wejdzie protokol xmpp:
+             * blokujesz takze mailto:
+             * teraz nie pozwalamy na takie linki - dlaczego ?
+             * nie sprawdzac niczego, poza tym czy cos w ogole jest wpisane.
+             * jesli jest, to przechodzi
+             *
+             * zostawiam dla Twoich przemyslen :)
+             *
+             * poza tym - staraj sie uzywac wyrazen regularnych preg_*,
+             * zamiast ereg*. sprobuj potestowac wydajbnosc jednych i drugich,
+             * to zrozumiesz dlaczego :)
+             *
+             */
+            if( !eregi("^(ftp|https?)://([-a-z0-9]+\.)+([a-z]{2,})$", $link_url) ) {
                 
                 $monit[] = $i18n['add_links'][1];
             }
