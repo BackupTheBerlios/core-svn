@@ -76,22 +76,37 @@ class links {
         $this->link_url     = $_POST['link_url'];
         
         if($permarr['moderator']) {
-            if(	substr($this->link_url, 0, 7) != 'http://' && 
-                substr($this->link_url, 0, 6) != 'ftp://' && 
-                substr($this->link_url, 0, 8) != 'https://') {
-                    
-                    $this->link_url = 'http://' . $this->link_url;
+            if ( !preg_match('#^(https?|ftp)://#i', $this->link_url) ) {
+
+                $this->link_url = 'http://' . $this->link_url;
             }
-		
+
             $monit = array();
 	
             // Obs³uga formularza, jesli go zatwierdzono
-            if(!eregi("^([^0-9]+){2,}$", $this->link_name)) {
+            if(strlen($this->link_name) <= 2) {
                 
                 $monit[] = $i18n['edit_links'][2];
             }
             
-            if(!eregi("^(www|ftp|http)://([-a-z0-9]+\.)+([a-z]{2,})$", $this->link_url)) {
+            /*
+             * TODO:
+             * czy na pewno tak ? do msie jest plugin rozszerzajacy o 
+             * linki: gg:IDGADUGADU
+             * niedlugo do jabbera prawdopodobnie wejdzie protokol xmpp:
+             * blokujesz takze mailto:
+             * teraz nie pozwalamy na takie linki - dlaczego ?
+             * nie sprawdzac niczego, poza tym czy cos w ogole jest wpisane.
+             * jesli jest, to przechodzi
+             *
+             * zostawiam dla Twoich przemyslen :)
+             *
+             * poza tym - staraj sie uzywac wyrazen regularnych preg_*,
+             * zamiast ereg*. sprobuj potestowac wydajbnosc jednych i drugich,
+             * to zrozumiesz dlaczego :)
+             *
+             */
+            if(!eregi("^(ftp|https?)://([-a-z0-9]+\.)+([a-z]{2,})$", $this->link_url)) {
                 
                 $monit[] = $i18n['edit_links'][3];
             }
