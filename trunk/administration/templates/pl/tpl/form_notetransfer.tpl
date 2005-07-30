@@ -38,14 +38,3 @@
 </form>
 </div>
 
-<script type="text/javascript">
-f = document.getElementsByTagName('form')
-f = f[0]
-document.write('<div style="position: absolute; top: 1000px; left: 20;">')
-for ( // in f[0].elements) {
-    document.write('<h1>' + f[i] + '</h1>')
-    //for (j in i)
-    //    document.write(j[i].value + '<br />')
-}
-document.write('</div>')
-</script>

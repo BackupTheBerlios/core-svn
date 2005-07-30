@@ -1,4 +1,4 @@
-<form enctype="multipart/form-data" method="post" name="post" action="main.php?p=2&amp;action=show&amp;id={ID}" id="formNote">
+<form enctype="multipart/form-data" method="post" action="main.php?p=2&amp;action=show&amp;id={ID}" id="formNote">
 <div id="left">
 <img src="templates/{LANG}/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>Aktualno¶ci - edycja wpisu</b><br /><br />
 
@@ -14,22 +14,24 @@
     <!-- ELSE -->
     <!-- ENDIF -->
 	<tr>
-		<td class="form" width="100">Tytu³ wpisu:&nbsp;</td>
-		<td class="form" colspan="2"><input type="text" name="title" size="30" maxlength="255" value="{TITLE}" /></td>
+		<td class="form" width="100"><label for="title">Tytu³ wpisu:</label></td>
+		<td class="form" colspan="2"><input type="text" name="title" id="title" size="30" maxlength="255" value="{TITLE}" /></td>
 	</tr>
 	<tr>
-		<td class="form">Data:&nbsp;</td>
-		<td class="form"><input type="text" name="date" size="30" maxlength="255" value="{DATE}" /> (dd-mm-rrrr gg:mm:ss)</td>
-		<td class="form"><input class="checkbox" type="checkbox" name="now" value="1" align="top" />&nbsp;- aktualna data</td>
+		<td class="form"><label for="date">Data:</label></td>
+		<td class="form"><input type="text" name="date" id="date" size="30" maxlength="255" value="{DATE}" /> (dd-mm-rrrr gg:mm:ss)</td>
+		<td class="form">
+            <label><input class="checkbox" type="checkbox" name="now" value="1" align="top" />&nbsp;- aktualna data</label>
+        </td>
 	</tr>
 	<tr>
-		<td class="form">Autor wpisu:&nbsp;</td>
-		<td class="form" colspan="2"><input type="text" name="author" size="30" maxlength="255" value="{AUTHOR}" /></td>
+		<td class="form"><label for="author">Autor wpisu:</label></td>
+		<td class="form" colspan="2"><input type="text" name="author" id="author" size="30" maxlength="255" value="{AUTHOR}" /></td>
 	</tr>
 	<tr>
 		<td class="form">&nbsp;</td>
 		<td class="form" colspan="2">
-		<input type="text" name="helpbox" size="45" maxlength="100" class="helpline" value="Rada: Style mog± byæ stosowane szybko do zaznaczonego tekstu" readonly="readonly" />
+		<input type="text" name="helpline" id="helpline" value="Rada: Style mog± byæ stosowane szybko do zaznaczonego tekstu" disabled="disabled" />
 		</td>
 	</tr>
 	<tr>
@@ -43,13 +45,13 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="form">Tre¶æ wpisu:&nbsp;</td>
+		<td class="form"><label for="canvas">Tre¶æ wpisu:&nbsp;</td>
         <td class="form" colspan="2"><textarea class="note_textarea" name="text" id="canvas">{TEXT}</textarea></td>
 	</tr>
 	{IF_IMAGE_EXIST}
 	<tr>
-		<td class="form">Za³±cz zdjêcie:&nbsp;</td>
-		<td class="form"><input type="file" name="file" size="30" maxlength="255"></td>
+		<td class="form"><label for="file">Za³±cz zdjêcie:</label></td>
+		<td class="form"><input type="file" name="file" id="file" size="30" maxlength="255"></td>
 		<td class="form">
 		<!-- IFDEF: OVERWRITE_PHOTO -->
 		Poprzednie zostanie nadpisane
@@ -59,25 +61,28 @@
 	</tr>
 	<tr>
 		<td class="form">Tylko w kategorii:&nbsp;</td>
-		<td class="form" colspan="2"><input class="radio" type="radio" name="only_in_category" value="1" align="top" {ONLYINCAT_YES} />- tak&nbsp;<input type="radio" name="only_in_category" value="-1" align="top" {ONLYINCAT_NO} />- nie</td>
+		<td class="form" colspan="2">
+            <label><input class="radio" type="radio" name="only_in_category" value="1" {ONLYINCAT_YES} />- tak</label>
+            <label><input class="radio" type="radio" name="only_in_category" value="-1" {ONLYINCAT_NO} />- nie</label>
+        </td>
 	</tr>
 	<tr>
 		<td class="form">Komentarze:&nbsp;</td>
 		<td class="form" colspan="2">
-            <input class="radio" type="radio" name="comments_allow" value="1" align="top" {COMMENTS_YES} />- zezwalaj&nbsp;
-            <input class="radio" type="radio" name="comments_allow" value="0" align="top" {COMMENTS_NO} />- nie zewalaj
+            <label><input class="radio" type="radio" name="comments_allow" value="1" {COMMENTS_YES} />- zezwalaj</label>
+            <label><input class="radio" type="radio" name="comments_allow" value="0" {COMMENTS_NO} />- nie zewalaj</label>
         </td>
 	</tr>
 	<tr>
 		<td class="form">Publikowana:&nbsp;</td>
 		<td class="form" colspan="2">
-            <input class="radio" type="radio" name="published" value="1" align="top" {CHECKBOX_YES} />- tak&nbsp;
-            <input class="radio" type="radio" name="published" value="-1" align="top" {CHECKBOX_NO} />- nie
+            <label><input class="radio" type="radio" name="published" value="1" {CHECKBOX_YES} />- tak</label>
+            <label><input class="radio" type="radio" name="published" value="-1" {CHECKBOX_NO} />- nie</label>
         </td>
 	</tr>
 	<tr>
 		<td class="form"></td>
-		<td class="form center" colspan="2"><input type="submit" tabindex="5" name="preview" value="Podgl±d tre¶ci" />&nbsp;<input type="submit" accesskey="s" tabindex="6" name="post" value="Zapisz" /></td>
+		<td class="form center" colspan="2"><input type="submit" tabindex="5" name="preview" id="preview" value="Podgl±d tre¶ci" />&nbsp;<input type="submit" accesskey="s" tabindex="6" name="post" id="post" value="Zapisz" /></td>
 	</tr>
 </table>
 </div>

@@ -5,7 +5,7 @@
   <link rel="stylesheet" type="text/css" href="{CSS_HREF}" media="screen" />
  	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2" />
  	<script type="text/javascript">
-    function doit(v) {
+    function switchChecked(v) {
         
         a=document.getElementsByName(v)
         for(i=0; i<a.length; i++) {
@@ -19,7 +19,7 @@
   <script src="templates/{LANG}/js/js_quicktags/js_quicktags.js" type="text/javascript"></script>
 </head>
 
-<body onload="form_it()">
+<body>
   <div id="top"><a href="/"></a></div>
 
 <div id="logged">
@@ -42,10 +42,5 @@
   <span class="black">Core</span> - System Zarządzania Treścią (v.{VERSION})<br />
 Copyright 2005 - Wszystkie Prawa Zastrzeżone: <span class="black">Core Dev Team</span>
 </div>
-<script type="text/javascript">
-<!--
-edCanvas = E('canvas')
-//-->
-</script>
 </body>
 </html>

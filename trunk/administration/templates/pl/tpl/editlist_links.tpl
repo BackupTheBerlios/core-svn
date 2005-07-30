@@ -1,17 +1,30 @@
 <div id="left">
-<img src="templates/{LANG}/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>Kategorie - edycja/usuwanie</b><br /><br />
+<img src="templates/{LANG}/images/main.gif"><strong>Kategorie - edycja/usuwanie</strong><br /><br />
 <!-- NAME: editlist_links.tpl -->
-<form method="post" action="main.php?p=12&amp;action=multidelete" id="multipleSelected">
+<form method="post" action="main.php?p=12&amp;action=multidelete">
 <table class="list">
+<thead>    
 	<tr>
-		<td class="mainListHeader" width="7%">Id</td>
-		<td class="mainListHeader" width="5%"></td>
-		<td class="mainListHeader" width="30%">Tytu³</td>
-		<td class="mainListHeader" width="31%">URI</td>
-		<td class="mainListHeader" width="6%"></td>
-		<td class="mainListHeader" width="10%">Edycja</td>
-		<td class="mainListHeader" width="10%">Usuñ</td>
+		<th width="7%">Id</th>
+		<th width="5%"><a
+            href="#" onclick="switchChecked('selected_links[]')"><img
+            src="templates/{LANG}/images/ar.gif" /></a>
+        </th>
+		<th width="30%">Tytu³</th>
+		<th width="31%">URI</th>
+		<th width="6%"></th>
+		<th width="10%">Edycja</th>
+		<th width="10%">Usuñ</th>
 	</tr>
+</thead>
+<tfoot>
+	<tr>
+		<td class="addinfo" colspan="6"><input
+            type="submit" name="sub_delete" value="Usuñ zaznaczone linki"
+            onclick="return askChecked('Czy na pewno chcesz usun±æ zaznaczone linki?', 'selected_links[]')" /></td>
+	</tr>
+</tfoot>
+<tbody>
 	<!-- BEGIN DYNAMIC BLOCK: row -->
     <tr>
 		<td class="{ID_CLASS} center">{LINK_ID}</td>
@@ -32,9 +45,7 @@
 		<td class="{ID_CLASS} center"><a href="main.php?p=12&amp;action=delete&amp;id={LINK_ID}">Usuñ</a></td>
 	</tr>
 	<!-- END DYNAMIC BLOCK: row -->
-	<tr>
-		<td class="addinfo" colspan="6"><img src="templates/{LANG}/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="doit('selected_links[]')">Prze³±cz zaznaczenie</a>&nbsp;<img src="templates/{LANG}/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="E('multipleSelected').submit()">Usuñ zaznaczone linki</a></td>
-	</tr>
+</tbody>
 </table>
 </form>
 <!-- END: editlist_links.tpl -->

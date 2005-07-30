@@ -3,8 +3,13 @@
 <span class="warning">{WRITE_ERROR}</span><br />
 
 <script type="text/javascript" src="./templates/js/textarea.js"></script>
-<form action="main.php?p=14&amp;action=add&amp;tpl_dir={TPL_DIR}" enctype="multipart/form-data" name="post" method="post" id="templateEdit">
+<form action="main.php?p=14&amp;action=add&amp;tpl_dir={TPL_DIR}" enctype="multipart/form-data" id="templateEdit">
 <table width="100%" align="left" id="templateEdit">
+	<tr>
+		<td class="form" width="100%" colspan="3">
+            <input type="text" name="helpline" value="Rada: Style mog¹ byæ stosowane szybko do zaznaczonego tekstu" id="helpline" disabled="disabled" />
+		</td>
+	</tr>
 	<tr>
 		<td class="form" width="100%" colspan="3">
             <script type="text/javascript">

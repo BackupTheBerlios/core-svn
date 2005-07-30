@@ -6,7 +6,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2" />
     <script src="templates/{LANG}/js/common.js" type="text/javascript"></script>
 	</head>
-<body style="margin-top: 200px; background-color: #FFF;" onload="form_it()">
+<body style="margin-top: 200px; background-color: #FFF;">
 {MAIN}
 
 </body>

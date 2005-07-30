@@ -1,32 +1,23 @@
 <div id="left">
-<img src="templates/{LANG}/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>Aktualno¶ci - edycja wpisów</b><br /><br />
+<img src="templates/{LANG}/images/main.gif"><strong>Aktualno¶ci - edycja wpisów</strong><br /><br />
 <!-- NAME: editlist_notes.tpl -->
-<form method="post" action="main.php?p=2&amp;action=multidelete" id="multipleSelected">
+<form method="post" action="main.php?p=2">
 <table class="list">
+<thead>
 	<tr>
-		<td class="mainListHeader" width="13%">Data</td>
-		<td class="mainListHeader" width="5%"></td>
-		<td class="mainListHeader" width="37%">Temat Wpisu</td>
-		<td class="mainListHeader" width="11%">Autor</td>
-		<td class="mainListHeader" width="5%"></td>
-		<td class="mainListHeader" width="11%">Aktywna</td>
-		<td class="mainListHeader" width="10%">Edycja</td>
-		<td class="mainListHeader" width="8%">Usuñ</td>
+        <th width="5%"><a href="#" onclick="switchChecked('selected_notes[]')"><img
+            src="templates/{LANG}/images/ar.gif" /></a></th>
+		<th width="13%">Data</th>
+		<th width="37%">Temat Wpisu</th>
+		<th width="11%">Autor</th>
+		<th width="11%">Aktywna</th>
+		<th width="10%">Edycja</th>
+		<th width="8%">Usuñ</th>
 	</tr>
-	<!-- BEGIN DYNAMIC BLOCK: row -->
+</thead>
+<tfoot>
 	<tr>
-		<td class="{ID_CLASS} center">{DATE}</td>
-		<td class="{ID_CLASS} center"><input class="selected_note" type="checkbox" name="selected_note[]" value="{ID}" /></td>
-		<td class="{ID_CLASS}">{TITLE}</td>
-		<td class="{ID_CLASS} center" align="center">{AUTHOR}</td>
-		<td class="{ID_CLASS} center"><input class="selected_note" type="checkbox" name="selected_status[]" value="{ID}" /></td>
-		<td class="{ID_CLASS} center" align="center">{PUBLISHED}</td>
-		<td class="{ID_CLASS} center" align="center"><a href="main.php?p=2&amp;action=show&amp;id={ID}">Edycja</a></td>
-		<td class="{ID_CLASS} center" align="center"><a href="main.php?p=2&amp;action=delete&amp;id={ID}">Usuñ</a></td>
-	</tr>
-	<!-- END DYNAMIC BLOCK: row -->
-	<tr>
-		<td id="pagination" colspan="8">
+		<td id="pagination" colspan="7">
 		<!-- IFDEF: PAGINATED -->
 		<b>Id¼ do strony</b>:
 		<!-- ELSE -->
@@ -42,13 +33,26 @@
         <!-- ENDIF -->
 		</td>
 	</tr>
+    <tr>
+        <td class="addinfo" colspan="7">
+            <input type="submit" name="sub_status" value="Prze³±cz status zaznaczonych" />
+            <input type="submit" name="sub_delete" value="Usuñ zaznaczone"  onclick="return askChecked('Czy na pewno chcesz usun±æ zaznaczone wpisy?', 'selected_notes[]')" />
+        </td>
+    </tr>
+</tfoot>
+<tbody>
+</tbody>
+	<!-- BEGIN DYNAMIC BLOCK: row -->
 	<tr>
-		<td class="addinfo" colspan="4"><img src="templates/{LANG}/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="doit('selected_note[]')">Prze³±cz zaznaczenie</a></td>
-		<td class="addinfo" colspan="4"><img src="templates/{LANG}/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="doit('selected_status[]')">Prze³±cz zaznaczenie</a></td>
+		<td class="{ID_CLASS} center"><input class="selected_note" type="checkbox" name="selected_notes[]" value="{ID}" /></td>
+		<td class="{ID_CLASS} center">{DATE}</td>
+		<td class="{ID_CLASS}">{TITLE}</td>
+		<td class="{ID_CLASS} center" align="center">{AUTHOR}</td>
+		<td class="{ID_CLASS} center" align="center">{PUBLISHED}</td>
+		<td class="{ID_CLASS} center" align="center"><a href="main.php?p=2&amp;action=show&amp;id={ID}">Edycja</a></td>
+		<td class="{ID_CLASS} center" align="center"><a href="main.php?p=2&amp;action=delete&amp;id={ID}">Usuñ</a></td>
 	</tr>
-	<tr>
-		<td class="addinfo" colspan="8"><img src="templates/{LANG}/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="E('multipleSelected').submit()"><b>Zapisz zmiany</b></a> - dotycz± wpisów do usuniêcia i/lub zmiany statusu.</td>
-	</tr>
+	<!-- END DYNAMIC BLOCK: row -->
 </table>
 </form>
 <!-- END: editlist_notes.tpl -->
