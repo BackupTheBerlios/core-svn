@@ -365,150 +365,164 @@ switch ($action) {
         }
     break;
 		
-    case "multidelete": // usuwanie wybranego wpisu
-	
-        if($permarr['moderator']) {
-            
-            if(isset($_POST['selected_note']) || isset($_POST['selected_status'])) {
-                if(!empty($_POST['selected_note'])) {
-            
-                    $query = sprintf("
-                        DELETE FROM 
-                            %1\$s 
-                        WHERE 
-                            id
-                        IN(".implode(',', $_POST['selected_note']).")", 
-		
-                        TABLE_MAIN
-                    );
-		
-                    $db->query($query);
-                    $ft->assign('CONFIRM', $i18n['confirm'][2]);
-                }
-            
-                if(!empty($_POST['selected_status'])) {
-            
+	default:
+        if (isset($_POST['selected_notes']) && is_array($_POST['selected_notes']))
+        {
+            if (isset($_POST['sub_status'])) {
+                if($permarr['moderator']) {
                     $query = sprintf("
                         UPDATE 
                             %1\$s 
                         SET 
                             published = published * -1 
                         WHERE 
-                            id 
-                        IN(".implode(',', $_POST['selected_status']).")", 
-		
-                        TABLE_MAIN
+                            id IN (%2\$s)", 
+        
+                        TABLE_MAIN,
+                        implode(',', $_POST['selected_notes'])
                     );
-		
+
                     $db->query($query);
+
                     $ft->assign('CONFIRM', $i18n['confirm'][3]);
-                }
+                    $ft->parse('ROWS', ".result_note");
+                } else {
             
+                    $monit[] = $i18n['edit_note'][2];
+
+                    foreach ($monit as $error) {
+
+                        $ft->assign('ERROR_MONIT', $error);
+                    
+                        $ft->parse('ROWS',	".error_row");
+                    }
+                        
+                    $ft->parse('ROWS', "error_reporting");
+                }
+            } elseif (isset($_POST['sub_delete'])) {
+                if($permarr['moderator']) {
+                    $query = sprintf("
+                        DELETE FROM 
+                            %1\$s 
+                        WHERE 
+                            id IN (%2\$s)",
+        
+                        TABLE_MAIN,
+                        implode(',', $_POST['selected_notes'])
+                    );
+
+                    $db->query($query);
+
+                    $ft->assign('CONFIRM', $i18n['edit_note'][1]);
+                    $ft->parse('ROWS', ".result_note");
+                } else {
+            
+                    $monit[] = $i18n['edit_note'][2];
+
+                    foreach ($monit as $error) {
+
+                        $ft->assign('ERROR_MONIT', $error);
+                    
+                        $ft->parse('ROWS',	".error_row");
+                    }
+                        
+                    $ft->parse('ROWS', "error_reporting");
+                }
+            } else {
+                $default = true;
+            }
+
+        } else {
+            $default = true;
+        }
+
+
+
+        if (isset($default) && $default) {
+	
+            $mainposts_per_page = get_config('editposts_per_page');
+
+            // zliczamy posty
+            $query = sprintf("
+                SELECT 
+                    COUNT(*) AS id 
+                FROM 
+                    %1\$s 
+                ORDER BY 
+                    date", 
+        
+                TABLE_MAIN
+            );
+
+            $db->query($query);
+            $db->next_record();
+        
+            $num_items = $db->f("0");
+
+            // inicjowanie funkcji stronnicuj±cej wpisy
+            $pagination = pagination('main.php?p=2&amp;start=', $mainposts_per_page, $num_items);
+            
+            $query = sprintf("
+                SELECT * FROM 
+                    %1\$s 
+                ORDER BY 
+                    date 
+                DESC 
+                LIMIT 
+                    %2\$d, %3\$d", 
+            
+                TABLE_MAIN, 
+                $start, 
+                $mainposts_per_page
+            );
+            
+            $db->query($query);
+            
+            // Sprawdzamy, czy w bazie danych s± ju¿ jakie¶ wpisy
+            if($db->num_rows() > 0) {
+            
+                // Pêtla wyswietlaj¹ca wszystkie wpisy + stronnicowanie ich
+                while($db->next_record()) {
+            
+                    $id 		= $db->f("id");
+                    $title 		= $db->f("title");
+                    $date 		= $db->f("date");
+                    $published	= $db->f("published");
+                    $author     = $db->f("author");
+                
+                    $date = explode(' ', $date);
+                
+                    $ft->assign(array(
+                            'ID'        =>$id,
+                            'TITLE'     =>$title,
+                            'DATE'      =>$date[0],
+                            'AUTHOR'    =>$author, 
+                            'PUBLISHED' =>$published == 1 ? $i18n['confirm'][0] : $i18n['confirm'][1], 
+                            'PAGINATED' =>!empty($pagination['page_string']) ? true : false, 
+                            'STRING'    =>$pagination['page_string']
+                        ));
+                    
+                    // deklaracja zmiennej $idx1::color switcher
+                    $idx1 = empty($idx1) ? '' : $idx1;
+                    
+                    $idx1++;
+                    
+                    $ft->define("editlist_notes", "editlist_notes.tpl");
+                    $ft->define_dynamic("row", "editlist_notes");
+                    
+                    // naprzemienne kolorowanie wierszy tabeli
+                    $ft->assign('ID_CLASS', $idx1%2 ? 'mainList' : 'mainListAlter');
+                    
+                    $ft->parse('ROW', ".row");
+                }
+                
+                $ft->parse('ROWS', "editlist_notes");
             } else {
                 
-                $ft->assign('CONFIRM', $i18n['confirm'][4]);
+                $ft->assign('CONFIRM', $i18n['edit_note'][4]);
+                $ft->parse('ROWS',	".result_note");
             }
-            
-            $ft->parse('ROWS', ".result_note");
-        } else {
-            
-            $monit[] = $i18n['edit_note'][2];
-
-            foreach ($monit as $error) {
-    
-                $ft->assign('ERROR_MONIT', $error);
-                    
-                $ft->parse('ROWS',	".error_row");
-            }
-                        
-            $ft->parse('ROWS', "error_reporting");
         }
-		break;		
-		
-	default:
-	
-        $mainposts_per_page = get_config('editposts_per_page');
-
-        // zliczamy posty
-        $query = sprintf("
-            SELECT 
-                COUNT(*) AS id 
-            FROM 
-                %1\$s 
-            ORDER BY 
-                date", 
-	
-            TABLE_MAIN
-        );
-
-        $db->query($query);
-        $db->next_record();
-	
-        $num_items = $db->f("0");
-
-        // inicjowanie funkcji stronnicuj±cej wpisy
-        $pagination = pagination('main.php?p=2&amp;start=', $mainposts_per_page, $num_items);
-		
-		$query = sprintf("
-            SELECT * FROM 
-                %1\$s 
-            ORDER BY 
-                date 
-            DESC 
-            LIMIT 
-                %2\$d, %3\$d", 
-		
-            TABLE_MAIN, 
-            $start, 
-            $mainposts_per_page
-        );
-		
-		$db->query($query);
-		
-		// Sprawdzamy, czy w bazie danych s± ju¿ jakie¶ wpisy
-		if($db->num_rows() > 0) {
-		
-			// Pêtla wyswietlaj¹ca wszystkie wpisy + stronnicowanie ich
-			while($db->next_record()) {
-		
-				$id 		= $db->f("id");
-				$title 		= $db->f("title");
-				$date 		= $db->f("date");
-				$published	= $db->f("published");
-				$author     = $db->f("author");
-			
-				$date = explode(' ', $date);
-			
-                $ft->assign(array(
-                    'ID'        =>$id,
-                    'TITLE'     =>$title,
-                    'DATE'      =>$date[0],
-                    'AUTHOR'    =>$author, 
-                    'PUBLISHED' =>$published == 1 ? $i18n['confirm'][0] : $i18n['confirm'][1], 
-                    'PAGINATED' =>!empty($pagination['page_string']) ? true : false, 
-                    'STRING'    =>$pagination['page_string']
-                ));
-			
-				// deklaracja zmiennej $idx1::color switcher
-				$idx1 = empty($idx1) ? '' : $idx1;
-				
-				$idx1++;
-				
-				$ft->define("editlist_notes", "editlist_notes.tpl");
-				$ft->define_dynamic("row", "editlist_notes");
-				
-				// naprzemienne kolorowanie wierszy tabeli
-				$ft->assign('ID_CLASS', $idx1%2 ? 'mainList' : 'mainListAlter');
-				
-				$ft->parse('ROW', ".row");
-			}
-		
-			$ft->parse('ROWS', "editlist_notes");
-		} else {
-		
-			$ft->assign('CONFIRM', $i18n['edit_note'][4]);
-			$ft->parse('ROWS',	".result_note");
-		}
 }
 
 ?>
