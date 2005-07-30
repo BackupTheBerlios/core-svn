@@ -6,6 +6,9 @@ body {
 	color: #5D5D5D;
 	font: 11px/1.3em Tahoma, Serif;
 }
+h1, h2, h3, h4, h5, h6, form {
+    margin: 0;
+}
 
 .main_table {
     border: 1px solid #D4D4D4; 
@@ -243,11 +246,9 @@ a:hover {
 	color: #6A6A6A;
 }
 
-.mainListHeader {
-	font-weight: bold;
+.list th {
 	background-color: #E6E6E6;
 	padding-top: 3px;
-	text-align: center;
 	height: 22px;
 	border-right: 2px solid #FFF;
 	border-bottom: 2px solid #FFF;
@@ -351,7 +352,7 @@ a.file span {
     height: 200px;
 }
 
-.helpline {
+#helpline {
     width:350px; 
     border: 0px; 
     padding: 0px;
@@ -408,4 +409,8 @@ fieldset label.selectit {
 
 .cat_input {
     border: 0px;
-}    
+}
+h2 {
+    font-size: 11px;
+    margin-bottom: 12px;
+}
