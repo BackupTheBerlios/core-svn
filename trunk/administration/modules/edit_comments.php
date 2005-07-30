@@ -8,7 +8,6 @@ $ft->define("error_reporting", "error_reporting.tpl");
 $ft->define_dynamic("error_row", "error_reporting");
 
 switch ($action) {
-	
 	case "show": // wy¶wietlanie wpisu pobranego do modyfikacji
 	
 		$query = sprintf("
