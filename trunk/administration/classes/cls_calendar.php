@@ -76,10 +76,13 @@ class calendar {
                 title, UNIX_TIMESTAMP(date) as date 
             FROM 
                 %1\$s 
-            WHERE MONTH(date) = '%2\$d'", 
+            WHERE 
+                MONTH(date) = '%2\$d'
+            AND YEAR(date) = '%3\$d'", 
         
             TABLE_MAIN, 
-            $this->intMonth
+            $this->intMonth, 
+            $this->intYear
         );
         
         $date = array();

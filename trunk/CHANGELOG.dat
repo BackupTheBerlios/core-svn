@@ -1,7 +1,14 @@
 CHANGELOG
 
 Core CMS - Content Management System
-Current Version: 0.4.3  2005/06/22
+Current Version: 0.4.4  2005/08/31
+
+==================================
+0.4.4 Changes: 01 August 2005 
+
+- Calendar bug fixed. If site based on Core CMS exist over the one year, news on
+  calendar was incorectly selected
+
 
 ==================================
 0.4.3 Changes: 22 June 2005 
