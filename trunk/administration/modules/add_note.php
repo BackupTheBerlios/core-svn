@@ -1,15 +1,13 @@
 <?php
 
-// definicja szablonow parsujacych wyniki bledow.
-$ft->define('error_reporting', 'error_reporting.tpl');
-$ft->define_dynamic('error_row', 'error_reporting');
+//domyslnie niech sobie bedize puste
+$ft->assign('MESSAGE', '');
+$monit = array();
 
-//ktos probuje dodac wpis...
-$parsed = false;
-if (isset($_POST['sub_commit'])) {
-    $monit = array();
-    $title = trim($_POST['title']);
-    $date = isset($_POST['now']) ? date('Y-m-d H:i:s') : $_POST['date'];
+if (isset($_POST['sub_commit'])) { //ktos probuje dodac wpis...
+    $title      = trim($_POST['title']);
+    $date       = isset($_POST['now']) ? date('Y-m-d H:i:s') : $_POST['date'];
+    $filename   = '';
     
     if(!$permarr['writer']) { //ma uprawnienia ?
         $monit[] = $i18n['add_note'][2];
@@ -23,242 +21,254 @@ if (isset($_POST['sub_commit'])) {
     if (!preg_match('#^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$#i', $date)) { //wlasciwy format czasu ?
         $monit[] = $i18n['add_note'][5];
     }
+    if(!empty($_FILES['file']['name'])) { //wgrywamy zdjecie ?
+        //jesli tak, to do katalogu tymczasowego. pozniej, jesli wsio bedzie
+        //w porzadku, przenosimy do docelowego
+        //kasowanie z tymczasowego bedzie odbywac sie automatycznie co
+        //jakis czas
+
+        $up = new upload;
+
+        // use function to upload file.
+        $filename = $up->upload_file(TMPDIR, 'file', true, true, 0, 'jpg|jpeg|gif|png');
+        if(!$filename) {
+
+            $monit[] = $up->error;
+
+            $_SESSION['addNote_fileName'] = null;
+            unset($_SESSION['addNote_fileName']);
+        } else {
+            $_SESSION['addNote_fileName'] = $filename;
+        }
+    }
     
 
-    if (!count($monit)) {
-        $text           = parse_markers($_POST['text'], 1);
-        $author 		= $_POST['author'];
-        $comments_allow = $_POST['comments_allow'];
-        $published 		= $_POST['published'];
-        $only_in_cat    = $_POST['only_in_category'];
-        $assign2cat     = $_POST['assign2cat'];
+    
+    if (!count($monit)) { //jesli nie ma bledow, to dodajemy
+        //najpierw przenosimy zdjecie (jesli jest) z katalogu tymczasowego do
+        //docelowego
+        if (isset($_SESSION['addNote_fileName']) && ($src_path = TMPDIR . $_SESSION['addNote_fileName'])) {
 
+            @rename($src_path, '../photos/' . $_SESSION['addNote_fileName']);
+            $_SESSION['addNote_fileName'] = null;
+            unset($_SESSION['addNote_fileName'], $src_path);
+        }
+
+
+
+        //dodajemy newsa
         $query = sprintf("
             INSERT INTO 
                 %1\$s 
             VALUES 
-                ('', '%2\$s','%3\$s','%4\$s','%5\$s', '', '%6\$d', '%7\$s', '%8\$s')",
+                ('', '%2\$s','%3\$s','%4\$s','%5\$s', '%6\$s', '%7\$d', '%8\$s', '%9\$s')",
 
             TABLE_MAIN,
             $date,
             $title,
-            $author,
-            $text,
-            $comments_allow,
-            $published, 
-            $only_in_cat
+            $_POST['author'],
+            parse_markers($_POST['text'], 1),
+            $filename,
+            $_POST['comments_allow'],
+            $_POST['published'], 
+            $_POST['only_in_category']
         );
 
         $db->query($query);
 
-        $query = sprintf("
-            SELECT 
-                MAX(id) as maxid 
-            FROM 
-                %1\$s",
 
-            TABLE_MAIN
-        );
-    
-        $db->query($query);
-        $db->next_record();
 
-        // Przypisanie zmiennej $id
-        $id = $db->f('0');
-
+        //przypisujemy go do wlasciwych kategorii
         $query = sprintf("
             INSERT INTO
-                %1\$s",
+                %1\$s
+            VALUES",
 
             TABLE_ASSIGN2CAT
         );
 
+        $id = mysql_insert_id($db->link_id());
         $values = array();
-        $first = true;
-        foreach ($assign2cat as $selected_cat) {
-            $query .= $first ? ' VALUES ' : ',';
+        foreach ($_POST['assign2cat'] as $selected_cat) {
+            $values[] = sprintf("
+                ('', %1\$d, %2\$d)", 
 
-            $query .= sprintf("
-                ('', '%1\$d', '%2\$d')", 
-
-                $id, 
+                $id,
                 $selected_cat
             );
-            $first = false;
         }
+        $query .= implode(',', $values);
 
         $db->query($query);
 
-        if(!empty($_FILES['file']['name'])) {
-
-            $up = new upload;
-            $upload_dir = '../photos';
-
-            // use function to upload file.
-            $file = $up->upload_file($upload_dir, 'file', true, true, 0, 'jpg|jpeg|gif');
-            if($file == false) {
-
-                echo $up->error;
-            } else {
-
-                $query = sprintf("
-                    UPDATE 
-                        %1\$s 
-                    SET 
-                        image = '%2\$s' 
-                    WHERE 
-                        id = '%3\$d'", 
-
-                    TABLE_MAIN,
-                    $file,
-                    $id
-                );
-
-                $db->query($query);
-
-                $ft->assign('CONFIRM', $i18n['add_note'][0]);
-                $ft->parse('ROWS', '.result_note');
-            }
-        }
-
-        $ft->assign('CONFIRM', $i18n['add_note'][1]);
-        $ft->parse('ROWS',	'.result_note');
-
-        $parsed = true;
-    } else {
-        /*
-         * TODO:
-         * bledy niech nie pokazuja sie na osobnej podstronie (dotyczy 
-         * calosci CORE) tylko na stronie w ktorej sie pracuje (np dodaje
-         * wpis), wraz z wypelnionymi przez usera polami.
-         * ianczej, po pokazaniu sie bledu, nie raz i nie dwa, po wcisnieciu
-         * linka 'cofnij' czyscilo formularz i od nowa trzeba wszystko
-         * ustawiac...
-         *
-         * albo np po 'podglad tresci' i probie zapisu (ale z bledem), jak
-         * klikniesz 'powrot' to wyskakuje onit o tym ze 'post'em bylo slane i
-         * czy odswiezyc...
-         *
-         * zrobie to pozniej jakos w przyszlym tygodniu w note_add i note_edit,
-         * w pozostalych - zobacze
-         *
-         */
-        foreach ($monit as $error) {
-
-            $ft->assign('ERROR_MONIT', $error);
-
-            $ft->parse('ROWS',	'.error_row');
-        }
-
-        $ft->parse('ROWS', 'error_reporting');
-
-        $parsed = true;
+        //DONE!
+        header('Location: main.php?p=1&msg=6');
+        exit;
     }
+} elseif (isset($_POST['sub_img_delete'])) { //kasujemy foto
+
+    if (isset($_SESSION['addNote_fileName'])) {
+        $path = TMPDIR . $_SESSION['addNote_fileName'];
+        @unlink($path);
+
+        $_SESSION['addNote_fileName'] = null;
+        unset($_SESSION['addNote_fileName'], $path);
+    }
+
+    $monit[] = $i18n['add_note'][7];
 }
 
 
-if (!$parsed) {
-    //wartosci domyslne dla switchy:
-    //only_in_category
-    $oic_y = '';
-    $oic_n = 'checked="checked"';
-    //comments_allow
-    $ca_y = 'checked="checked"';
-    $ca_n = '';
-    //published
-    $p_y = 'checked="checked"';
-    $p_n = '';
 
-    //podglad tresci wpisu rowniez przy bledach
-    if (isset($_POST['sub_preview']) || isset($_POST['sub_commit']))
-    {
-        $text   = stripslashes($_POST['text']);
-        $title  = trim($_POST['title']);
-
-        $ft->assign(array(
-            'N_TITLE'       =>stripslashes($title), 
-            'N_TEXT'        =>br2nl($text), 
-            'NT_TEXT'       =>nl2br(parse_markers($text, 1)), 
-            'NOTE_PREVIEW'  =>true
-        ));
-        $current_cat_id = isset($_POST['assign2cat']) ? $_POST['assign2cat'] : array();
-        
-        if ($_POST['only_in_category'] > 0) {
-            $oic_y = 'checked="checked"';
-            $oic_n = '';
-        }
-        if ($_POST['comments_allow'] <= 0) {
-            $ca_y = '';
-            $ca_n = 'checked="checked"';
-        }
-        if ($_POST['published'] < 0) {
-            $p_y = '';
-            $p_n = 'checked="checked"';
-        }
-    } else {
-        $current_cat_id = array(1);
-        $ft->assign('NOTE_PREVIEW', false);
-    }
+//jesli nie ma $date, to ja ustawiamy
+if (!isset($_POST['now']) && isset($_POST['date'])) {
+    $date = $_POST['date'];
+} else {
+    $date = date('Y-m-d H:i:s');
+}
 
 
+//ustalamy wartosci switchy:
 
-    //lista kategorii
-    $query = sprintf("
-        SELECT 
-            category_id, 
-            category_parent_id,
-            category_name 
-        FROM 
-            %1\$s 
-        WHERE 
-            category_parent_id = 0
-        ORDER BY 
-            category_id 
-        ASC", 
+//wartosci domyslne:
+//only_in_category
+$oic_y = '';
+$oic_n = 'checked="checked"';
+//comments_allow
+$ca_y = 'checked="checked"';
+$ca_n = '';
+//published
+$p_y = 'checked="checked"';
+$p_n = '';
+//date disabled
+$date_disabled = '';
+$date_now = '';
 
-        TABLE_CATEGORY
-    );
-
-    $db->query($query);
-
-    $ft->define('form_noteadd', 'form_noteadd.tpl');
-    $ft->define_dynamic('cat_row', 'form_noteadd');
-
-    while($db->next_record()) {
-
-        $cat_id         = $db->f('category_id');
-        $cat_parent_id  = $db->f('category_parent_id');
-        $cat_name       = $db->f('category_name');
-
-        $ft->assign(array(
-            'C_ID'		    =>$cat_id,
-            'C_NAME'        =>$cat_name, 
-            'CURRENT_CAT'   =>in_array($cat_id, $current_cat_id) ? 'checked="checked"' : '', 
-            'PAD'           =>''
-        ));
-
-        $ft->parse('CAT_ROW', '.cat_row');
-
-        get_addcategory_assignedcat($cat_id, 2);
-    }
+//podglad tresci wpisu rowniez przy bledach
+if (isset($_POST['sub_preview']) || isset($_POST['sub_commit']) || isset($_POST['sub_img_delete']))
+{
+    $text   = stripslashes($_POST['text']);
+    $title  = trim($_POST['title']);
 
     $ft->assign(array(
-        'ONLY_IN_CAT_Y'     => $oic_y,
-        'ONLY_IN_CAT_N'     => $oic_n,
-        'COMMENTS_ALLOW_Y'  => $ca_y,
-        'COMMENTS_ALLOW_N'  => $ca_n,
-        'PUBLISHED_Y'       => $p_y,
-        'PUBLISHED_N'       => $p_n,
-        'DATE'              => date('Y-m-d H:i:s')
+        'N_TITLE'       =>stripslashes($title), 
+        'N_TEXT'        =>br2nl($text), 
+        'NT_TEXT'       =>nl2br(parse_markers($text, 1)), 
+        'NOTE_PREVIEW'  =>true
     ));
-
-    $ft->parse('ROWS', 'form_noteadd');
+    $current_cat_id = isset($_POST['assign2cat']) ? $_POST['assign2cat'] : array();
+    
+    if ($_POST['only_in_category'] > 0) {
+        $oic_y = 'checked="checked"';
+        $oic_n = '';
+    }
+    if ($_POST['comments_allow'] <= 0) {
+        $ca_y = '';
+        $ca_n = 'checked="checked"';
+    }
+    if ($_POST['published'] < 0) {
+        $p_y = '';
+        $p_n = 'checked="checked"';
+    }
+    if (isset($_POST['now'])) {
+        $date_disabled = 'disabled="disabled"';
+        $date_now = 'checked="checked"';
+    }
+} else {
+    $current_cat_id = array(1);
+    $ft->assign('NOTE_PREVIEW', false);
 }
 
 
 
+//sprawdzamy czy byla proba uploadu zdjecia. jesli nie bylo nic
+//submitowane, tzn ze na pewno nie bylo, a zostala jakas stara
+//zmienna sesyjna i ja usuwamy
+$ft->assign('IMG_FILENAME', false); //domyslnie nie ma zadnego zdjecia
+
+if (isset($_SESSION['addNote_fileName'])) {
+    if (empty($_POST)) {
+        $_SESSION['addNote_fileName'] = null;
+        unset($_SESSION['addNote_fileName']);
+
+    //skoro w _POST cos jest, i jest takze cos w sesji dot. zdjecia,
+    //to wyswietlamy nazwe zdjecia 
+    } else {
+        $path = TMPDIR . $_SESSION['addNote_fileName'];
+        if (!is_file($path)) {
+
+            $_SESSION['addNote_fileName'] = null;
+            unset($_session['addNote_fileName']);
+        } else {
+
+            $ft->assign('IMG_FILENAME', $_SESSION['addNote_fileName']);
+        }
+    }
+}
+
+
+
+//lista kategorii
+$ft->define('form_noteadd', 'form_noteadd.tpl');
+$ft->define_dynamic('cat_row', 'form_noteadd');
+
+$query = sprintf("
+    SELECT 
+        category_id, 
+        category_parent_id,
+        category_name 
+    FROM 
+        %1\$s 
+    WHERE 
+        category_parent_id = 0
+    ORDER BY 
+        category_id 
+    ASC", 
+
+    TABLE_CATEGORY
+);
+
+$db->query($query);
+
+while($db->next_record()) {
+
+    $cat_id = $db->f('category_id');
+
+    $ft->assign(array(
+        'C_ID'		    =>$cat_id,
+        'C_NAME'        =>$db->f('category_name'), 
+        'CURRENT_CAT'   =>in_array($cat_id, $current_cat_id) ? 'checked="checked"' : '', 
+        'PAD'           =>''
+    ));
+
+    $ft->parse('CAT_ROW', '.cat_row');
+
+    get_addcategory_assignedcat($cat_id, 2);
+}
+
 $ft->assign(array(
-        'SESSION_LOGIN' =>$_SESSION['login']
+    'ONLY_IN_CAT_Y'     => $oic_y,
+    'ONLY_IN_CAT_N'     => $oic_n,
+    'COMMENTS_ALLOW_Y'  => $ca_y,
+    'COMMENTS_ALLOW_N'  => $ca_n,
+    'PUBLISHED_Y'       => $p_y,
+    'PUBLISHED_N'       => $p_n,
+    'DATE'              => $date,
+    'AUTHOR'            => isset($_POST['author']) ? str_entit($_POST['author']) : $_SESSION['login'],
+    'DATE_DISABLED'     => $date_disabled,
+    'DATE_NOW'          => $date_now
 ));
+
+
+
+//wyswietlamy jakis komunikat ?
+if (isset($_GET['msg'])) {
+    $monit[] = $i18n['add_note'][$_GET['msg']];
+}
+if (count($monit)) {
+    tpl_message($monit);
+}
+
+$ft->parse('ROWS', 'form_noteadd');
 
 ?>
