@@ -6,5 +6,3 @@ Wyst±pi³y nastêpuj±ce b³êdy:
     <!-- END DYNAMIC BLOCK: error_row -->
 
 </ul>
-
-<a href="javascript:history.back();">powrót</a>
