@@ -10,12 +10,13 @@ switch($p){
 	
 	case '1':
 	case '2':
+	case '16':
 	case '5':
 	case '6':
 		
 		$menu_content = array(
             "1"     =>$i18n['subcat_menu'][0], 
-            "2"     =>$i18n['subcat_menu'][1], 
+            "16"    =>$i18n['subcat_menu'][1], 
             "5"     =>$i18n['subcat_menu'][2], 
             "6"     =>$i18n['subcat_menu'][3]
         );
