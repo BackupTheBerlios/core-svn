@@ -1,7 +1,10 @@
 <div id="left">
-<img src="templates/{LANG}/images/main.gif"><strong>Aktualno¶ci - edycja wpisów</strong><br /><br />
+<h2><img src="templates/{LANG}/images/main.gif">Aktualno¶ci - edycja wpisów</h2>
 <!-- NAME: editlist_notes.tpl -->
-<form method="post" action="main.php?p=2">
+
+{MESSAGE}<br />
+
+<form method="post" action="main.php?p=16">
 <table class="list">
 <thead>
 	<tr>
@@ -41,18 +44,20 @@
     </tr>
 </tfoot>
 <tbody>
-</tbody>
 	<!-- BEGIN DYNAMIC BLOCK: row -->
 	<tr>
 		<td class="{ID_CLASS} center"><input class="selected_note" type="checkbox" name="selected_notes[]" value="{ID}" /></td>
 		<td class="{ID_CLASS} center">{DATE}</td>
 		<td class="{ID_CLASS}">{TITLE}</td>
-		<td class="{ID_CLASS} center" align="center">{AUTHOR}</td>
-		<td class="{ID_CLASS} center" align="center">{PUBLISHED}</td>
-		<td class="{ID_CLASS} center" align="center"><a href="main.php?p=2&amp;action=show&amp;id={ID}">Edycja</a></td>
-		<td class="{ID_CLASS} center" align="center"><a href="main.php?p=2&amp;action=delete&amp;id={ID}">Usuñ</a></td>
+		<td class="{ID_CLASS} center">{AUTHOR}</td>
+		<td class="{ID_CLASS} center">{PUBLISHED}</td>
+		<td class="{ID_CLASS} center"><a href="main.php?p=2&amp;id={ID}">Edycja</a></td>
+		<td class="{ID_CLASS} center"><a
+            href="main.php?p=16&amp;delete={ID}"
+            onclick="return confirm('Czy na pewno chcesz usun¹æ wybrany wpis?')">Usuñ</a></td>
 	</tr>
 	<!-- END DYNAMIC BLOCK: row -->
+</tbody>
 </table>
 </form>
 <!-- END: editlist_notes.tpl -->
