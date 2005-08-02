@@ -35,7 +35,7 @@ help_ed_pre = "Wstaw preformatowany tekst: <pre>tekst</pre>";
 help_ed_close = "Zamknij wszystkie otwarte tagi HTMLCode";
 
 function helpline2(help) {
-	document.post.helpbox.value = eval("help_" + help);
+    if ( (e = E('helpline')) ) e.value = eval("help_" + help);
 }
 
 var edButtons = new Array();
