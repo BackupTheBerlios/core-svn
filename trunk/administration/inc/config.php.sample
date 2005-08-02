@@ -26,4 +26,6 @@ define('ROOT', dirname(dirname(PATH_TO_CLASSES)) . '/'  );
 define('PATH_TO_MODULES_ADM', ROOT . 'administration/modules/');
 define('PATH_TO_MODULES_USER', ROOT . 'modules/');
 
+define('TMPDIR', ROOT . 'administration/_tmp/');
+
 ?>
