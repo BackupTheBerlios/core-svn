@@ -137,6 +137,16 @@ function str_getext($file, $with_dot = true) {
 }
 
 
+
+function str_entit($s) {
+
+    $p = array('<', '>', '"', "'");
+    $r = array('&lt;', '&gt;', '&quot;', '&#39;');
+    
+    return str_replace($p, $r, $s);
+}
+
+
 function get_root() {
 	
 	return ROOT;
@@ -164,8 +174,8 @@ function v_array($array, $exit = 0) {
 }
 
 
-function br2nl($text, $nl = "\r\n") {
-    return str_replace(array('<br />', '<br>', '<br/>'), $nl, $text);
+function str_br2nl($s, $nl = "\r\n") {
+    return str_replace(array('<br />', '<br>', '<br/>'), $nl, $s);
 }
 
 
