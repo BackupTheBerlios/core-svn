@@ -2,12 +2,269 @@
 
 // deklaracja zmiennej $action::form
 $action     = empty($_GET['action']) ? '' : $_GET['action'];
-$preview    = empty($_POST['preview']) ? '' : $_POST['preview'];
-$post       = empty($_POST['post']) ? '' : $_POST['post'];
+//$preview    = empty($_POST['preview']) ? '' : $_POST['preview'];
+//$post       = empty($_POST['post']) ? '' : $_POST['post'];
 
-// definicja szablonow parsujacych wyniki bledow.
-$ft->define("error_reporting", "error_reporting.tpl");
-$ft->define_dynamic("error_row", "error_reporting");
+function get_news_from_post($id_news) {
+    $data['date'] = isset($_POST['now']) ? date('Y-m-d H:i:s') : $_POST['now'];
+    $data['title']  = str_entit($_POST['title']);
+    $data['text']   = str_entit($_POST['text']);
+    $data['author'] = str_entit($_POST['author']);
+    $data['image']  = str_entit($_POST['image']);
+    $data['id']     = $id_news;
+    $data['oic']    = (@$_POST['only_in_category'] == 1);
+    $data['ca']     = (@$_POST['comments_allow'] == 1);
+    $data['p']      = (@$_POST['published'] == 1);
+
+    //pobieramy do jakich kategorii nalezy dany wpis
+    $data['cats'] = isset($_POST['assign2cat']) ? $_POST['assign2cat'] : array();
+    return $data;
+}
+
+function get_news_from_db($id_news) {
+    global $db;
+    $data = array();
+
+    $query = sprintf("
+        SELECT
+            id,
+            DATE_FORMAT(date, '%%Y-%%m-%%d %%T') AS date,
+            title,
+            author,
+            text,
+            image,
+            comments_allow,
+            published, 
+            only_in_category
+        FROM 
+            %1\$s 
+        WHERE 
+            id = '%2\$d'", 
+
+        TABLE_MAIN,
+        $_GET['id']
+    );
+
+    $db->query($query);
+    $db->next_record();
+
+    $data['date']   = $db->f('date');
+    $data['title']  = $db->f('title');
+    $data['text']   = str_br2nl($db->f('text'));
+    $data['author'] = $db->f('author');
+    $data['image']  = $db->f('image');
+    $data['id']     = $id_news;
+    $data['oic']    = ($db->f('only_in_category') == 1);
+    $data['ca']     = ($db->f('comments_allow') == 1);
+    $data['p']      = ($db->f('published') == 1);
+
+    //pobieramy do jakich kategorii nalezy dany wpis
+    $data['cats'] = array();
+    $query = sprintf("
+        SELECT
+            id,
+            news_id,
+            category_id
+        FROM
+            %1\$s
+        WHERE
+            news_id = %2\$d",
+        
+        TABLE_ASSIGN2CAT,
+        $data['id']
+    );
+    $db->query($query);
+    while ($db->next_record()) {
+        $data['cats'][] = $db->f('category_id');
+    }
+
+    /*
+    $query = sprintf("
+        SELECT 
+            category_id, 
+            category_parent_id, 
+            category_name 
+        FROM 
+            %1\$s 
+        WHERE 
+            category_parent_id = 0", 
+
+        TABLE_CATEGORY
+    );
+    $sql = new DB_SQL;
+
+    $db->query($query);
+    while($db->next_record()) {
+    
+        $c_id 	= $db->f("category_id");
+        $c_name = $db->f("category_name");
+    
+        $query = sprintf("
+            SELECT * FROM 
+                %1\$s 
+            WHERE 
+                category_id = '%2\$d' 
+            AND 
+                news_id = '%3\$d'", 
+
+            TABLE_ASSIGN2CAT, 
+            $c_id, 
+            $_GET['id']
+        );
+    
+        $sql->query($query);
+        $sql->next_record();
+    
+        $assigned = $sql->f("category_id");
+
+        $ft->assign(array(
+            'C_ID'		    =>$c_id,
+            'C_NAME'	   =>$c_name, 
+            'PAD'           =>'', 
+            'CURRENT_CAT'   =>$c_id == $assigned ? 'checked="checked"' : ''
+        ));
+    
+        $ft->define("form_noteedit", "form_noteedit.tpl");
+        $ft->define_dynamic("cat_row", "form_noteedit");
+
+        $ft->parse('CAT_ROW', ".cat_row");
+            
+        get_editnews_assignedcat($c_id, 2);
+    }*/
+    return $data;
+}
+
+function get_news($id_news) {
+    return empty($_POST) ? get_news_from_db($_GET['id']) : get_news_from_post($_GET['id']);
+}
+
+$monit = array();
+$ft->assign('NOTE_PREVIEW', false);
+if (isset($_POST['sub_commit'])) { //modyfikujemy wpis
+    $monit[] = 'wpis zapisany';
+} elseif (isset($_POST['sub_preview'])) { //podglad wpisanej tresci
+    $ft->assign( 'NOTE_PREVIEW', str_nl2br(parse_markers(stripslashes($_POST['text']), 1)) );
+} elseif (isset($_POST['sub_img_delete'])) { //usuwamy foto
+    $monit[] = 'usuniete foto';
+}
+
+
+
+$data = get_news($_GET['id']);
+
+$oic_y = 'checked="checked"';
+$oic_n = '';
+$ca_y = 'checked="checked"';
+$ca_n = '';
+$p_y = 'checked="checked"';
+$p_n = '';
+if (!$data['oic']) {
+    $oic_y = '';
+    $oic_n = 'checked="checked"';
+}
+if (!$data['ca']) {
+    $ca_y = '';
+    $ca_n = 'checked="checked"';
+}
+if (!$data['p']) {
+    $p_y = '';
+    $p_n = 'checked="checked"';
+}
+
+$ft->assign(array(
+    'AUTHOR'		        => $data['author'],
+    'DATE' 			        => $data['date'],
+    'ID'			        => $_GET['id'],
+    'TITLE'                 => $data['title'],
+    'TEXT'                  => $data['text'],
+    'ONLY_IN_CAT_YES'       => $oic_y,
+    'ONLY_IN_CAT_NO'        => $oic_n,
+    'COMMENTS_ALLOW_YES'    => $ca_y,
+    'COMMENTS_ALLOW_NO'     => $ca_n,
+    'PUBLISHED_YES'         => $p_y,
+    'PUBLISHED_NO'          => $p_n,
+    'IMG_FILENAME'          => empty($data['image']) ? false : $data['image']
+));
+unset($oic_y, $oic_n, $ca_y, $ca_n, $p_y, $p_n);
+
+
+
+//lista kategorii
+$query = sprintf("
+    SELECT 
+        category_id, 
+        category_parent_id, 
+        category_name 
+    FROM 
+        %1\$s", 
+
+    TABLE_CATEGORY
+);
+$cats = array();
+$db->query($query);
+while ($db->next_record()) {
+    $parent_id = $db->f('category_parent_id');
+    $c_name = $db->f('category_name');
+    $c_id = $db->f('category_id');
+
+    if (!array_key_exists($parent_id, $cats)) {
+        $cats[$parent_id] = array();
+    } 
+
+    $cats[$parent_id][$c_id] = $c_name;
+    
+}
+function c(&$cat, $parent, $pad = 0) {
+    if ( !($ul = array_key_exists($parent, $cat)) ) return false;
+
+    $pad_str = str_repeat("\t", $pad);
+    echo $ul ? $pad_str . "<ul>\n" : '';
+
+    foreach ($cat  as $parent_id => $c_data) {
+        if ($parent == $parent_id) {
+            foreach ($c_data as $c_id => $c_name) {
+                printf("%s<li title='id: %s'>%s\n", $pad_str . "\t", $c_id, $c_name);
+                c($cat, $c_id, $pad+1);
+                printf("%s</li>\n", $pad_str . "\t");
+            }
+        }
+    }
+    echo $ul ? $pad_str . "</ul>\n" : '';
+}
+
+//c($cats, 0);
+//v_array($cats);
+//exit;
+
+
+while($db->next_record()) {
+
+    $c_id 	= $db->f("category_id");
+    $c_name = $db->f("category_name");
+
+    $selected_cat = $sql->f("category_id");
+
+    $ft->assign(array(
+        'C_ID'		    =>$c_id,
+        'C_NAME'	   =>$c_name, 
+        'PAD'           =>'', 
+        'CURRENT_CAT'   =>$c_id == $assigned ? 'checked="checked"' : ''
+    ));
+
+    $ft->define("form_noteedit", "form_noteedit.tpl");
+    $ft->define_dynamic("cat_row", "form_noteedit");
+
+    $ft->parse('CAT_ROW', ".cat_row");
+        
+    get_editnews_assignedcat($c_id, 2);
+}
+
+$ft->parse('ROWS',	"form_noteedit");
+
+
+/*
+$ft->assign('IMG_FILENAME', false);
+
 
 switch ($action) {
 	
@@ -15,19 +272,12 @@ switch ($action) {
 	
         // podglad
         if(!empty($preview)) {
-            $ft->assign(array(
-                'NT_TEXT'       =>nl2br(parse_markers(stripslashes($_POST['text']), 1)), 
-                'NOTE_PREVIEW'  =>true
-            ));
         } else {
-            $ft->assign(array( 
-                'NOTE_PREVIEW'  =>false
-            ));
         }
         
         // submit formularza
         if(!empty($post)) {
-            
+
             $query = sprintf("
                 SELECT * FROM 
                     %1\$s 
@@ -176,194 +426,8 @@ switch ($action) {
             }
         } else {
             
-            $query = sprintf("
-                SELECT
-                    id,
-                DATE_FORMAT(date, '%%d-%%m-%%Y %%T') AS date,
-                    title,
-                    author,
-                    text,
-                    image,
-                    comments_allow,
-                    published, 
-                    only_in_category
-                FROM 
-                    %1\$s 
-                WHERE 
-                    id = '%2\$d'", 
-		
-                TABLE_MAIN,
-                $_GET['id']
-            );
-		
-            $db->query($query);
-            $db->next_record();
-		
-            $date           = $db->f('date');
-            $title 			= $db->f('title');
-            $text 			= $db->f('text');
-            $author			= $db->f('author');
-            $published		= $db->f('published');
-            $image          = $db->f('image');
-            $comments_allow = $db->f('comments_allow');
-            $only_in_cat    = $db->f('only_in_category');
-		
-            $ft->assign(array(
-                'SESSION_LOGIN'	=>$_SESSION['login'],
-                'AUTHOR'		=>$author,
-                'DATE' 			=>$date,
-                'ID'			=>$_GET['id'],
-                'TITLE'         =>!empty($_POST['title']) ? stripslashes($_POST['title']) : $title,
-                'TEXT'          =>!empty($_POST['text']) ? stripslashes(br2nl($_POST['text'])) : br2nl($text)
-            ));
-
-            if($comments_allow == 1) {
-                $ft->assign('COMMENTS_YES', 'checked="checked"');
-            } else {
-                $ft->assign('COMMENTS_NO', 'checked="checked"');
-            }
-
-            if($only_in_cat == "1") {
-                $ft->assign('ONLYINCAT_YES', 'checked="checked"');
-            } else {
-                $ft->assign('ONLYINCAT_NO', 'checked="checked"');
-            }	
-								
-            if($published == "1") {
-                $ft->assign('CHECKBOX_YES', 'checked="checked"');
-            } else {
-                $ft->assign('CHECKBOX_NO', 'checked="checked"');
-            }
-            
-            $ft->assign('OVERWRITE_PHOTO', !empty($image) ? true : false);
-                
-            if(!empty($image)) {
-		    
-                $ft->define("form_imageedit", "form_imageedit.tpl");
-                $ft->assign('IMAGE', $image);
-
-                $ft->parse('IF_IMAGE_EXIST', ".form_imageedit");
-            }
-		
-            $query = sprintf("
-                SELECT 
-                    category_id, 
-                    category_parent_id, 
-                    category_name 
-                FROM 
-                    %1\$s 
-                WHERE 
-                    category_parent_id = '%2\$d'", 
-		
-                TABLE_CATEGORY, 
-                0
-            );
-            $sql = new DB_SQL;
-		
-            $db->query($query);
-            while($db->next_record()) {
-			
-                $c_id 	= $db->f("category_id");
-                $c_name = $db->f("category_name");
-			
-                $query = sprintf("
-                    SELECT * FROM 
-                        %1\$s 
-                    WHERE 
-                        category_id = '%2\$d' 
-                    AND 
-                        news_id = '%3\$d'", 
-		
-                    TABLE_ASSIGN2CAT, 
-                    $c_id, 
-                    $_GET['id']
-                );
-            
-                $sql->query($query);
-                $sql->next_record();
-            
-                $assigned = $sql->f("category_id");
-		
-                $ft->assign(array(
-                    'C_ID'		    =>$c_id,
-                    'C_NAME'	   =>$c_name, 
-                    'PAD'           =>'', 
-                    'CURRENT_CAT'   =>$c_id == $assigned ? 'checked="checked"' : ''
-                ));
-            
-                $ft->define("form_noteedit", "form_noteedit.tpl");
-                $ft->define_dynamic("cat_row", "form_noteedit");
-
-                $ft->parse('CAT_ROW', ".cat_row");
-                    
-                get_editnews_assignedcat($c_id, 2);
-            }
-		
-            $ft->parse('ROWS',	"form_noteedit");
         }              
 		break;
-		
-	case "delete": // usuwanie wybranego wpisu
-	
-        // potwierdzenie usuniecia wpisu
-        $confirm = empty($_POST['confirm']) ? '' : $_POST['confirm'];
-        switch ($confirm) {
-            
-            case $i18n['confirm'][0]:
-            
-                $post_id = empty($_POST['post_id']) ? '' : $_POST['post_id'];
-	
-                if($permarr['moderator']) {
-	
-                    $query = sprintf("
-                        DELETE FROM 
-                            %1\$s 
-                        WHERE 
-                            id = '%2\$d'", 
-		
-                        TABLE_MAIN, 
-                        $post_id
-                    );
-		
-                    $db->query($query);
-		
-                    $ft->assign('CONFIRM', $i18n['edit_note'][1]);
-                    $ft->parse('ROWS', ".result_note");
-                } else {
-            
-                    $monit[] = $i18n['edit_note'][2];
-
-                    foreach ($monit as $error) {
-    
-                        $ft->assign('ERROR_MONIT', $error);
-                    
-                        $ft->parse('ROWS',	".error_row");
-                    }
-                        
-                    $ft->parse('ROWS', "error_reporting");
-                }
-            break;
-            
-        case $i18n['confirm'][1]:
-        
-            header("Location: main.php?p=2");
-            exit;
-            break;
-            
-        default:
-        
-            $ft->define('confirm_action', 'confirm_action.tpl');
-            $ft->assign(array(
-                'PAGE_NUMBER'   =>$p, 
-                'POST_ID'       =>$_GET['id'], 
-                'CONFIRM_YES'   =>$i18n['confirm'][0],
-                'CONFIRM_NO'    =>$i18n['confirm'][1]
-            ));
-            
-            $ft->parse('ROWS', ".confirm_action");
-            break;
-        }
-    break;
 		
 	default:
         if (isset($_POST['selected_notes']) && is_array($_POST['selected_notes']))
@@ -440,89 +504,7 @@ switch ($action) {
 
         if (isset($default) && $default) {
 	
-            $mainposts_per_page = get_config('editposts_per_page');
-
-            // zliczamy posty
-            $query = sprintf("
-                SELECT 
-                    COUNT(*) AS id 
-                FROM 
-                    %1\$s 
-                ORDER BY 
-                    date", 
-        
-                TABLE_MAIN
-            );
-
-            $db->query($query);
-            $db->next_record();
-        
-            $num_items = $db->f("0");
-
-            // inicjowanie funkcji stronnicuj±cej wpisy
-            $pagination = pagination('main.php?p=2&amp;start=', $mainposts_per_page, $num_items);
-            
-            $query = sprintf("
-                SELECT * FROM 
-                    %1\$s 
-                ORDER BY 
-                    date 
-                DESC 
-                LIMIT 
-                    %2\$d, %3\$d", 
-            
-                TABLE_MAIN, 
-                $start, 
-                $mainposts_per_page
-            );
-            
-            $db->query($query);
-            
-            // Sprawdzamy, czy w bazie danych s± ju¿ jakie¶ wpisy
-            if($db->num_rows() > 0) {
-            
-                // Pêtla wyswietlaj¹ca wszystkie wpisy + stronnicowanie ich
-                while($db->next_record()) {
-            
-                    $id 		= $db->f("id");
-                    $title 		= $db->f("title");
-                    $date 		= $db->f("date");
-                    $published	= $db->f("published");
-                    $author     = $db->f("author");
-                
-                    $date = explode(' ', $date);
-                
-                    $ft->assign(array(
-                            'ID'        =>$id,
-                            'TITLE'     =>$title,
-                            'DATE'      =>$date[0],
-                            'AUTHOR'    =>$author, 
-                            'PUBLISHED' =>$published == 1 ? $i18n['confirm'][0] : $i18n['confirm'][1], 
-                            'PAGINATED' =>!empty($pagination['page_string']) ? true : false, 
-                            'STRING'    =>$pagination['page_string']
-                        ));
-                    
-                    // deklaracja zmiennej $idx1::color switcher
-                    $idx1 = empty($idx1) ? '' : $idx1;
-                    
-                    $idx1++;
-                    
-                    $ft->define("editlist_notes", "editlist_notes.tpl");
-                    $ft->define_dynamic("row", "editlist_notes");
-                    
-                    // naprzemienne kolorowanie wierszy tabeli
-                    $ft->assign('ID_CLASS', $idx1%2 ? 'mainList' : 'mainListAlter');
-                    
-                    $ft->parse('ROW', ".row");
-                }
-                
-                $ft->parse('ROWS', "editlist_notes");
-            } else {
-                
-                $ft->assign('CONFIRM', $i18n['edit_note'][4]);
-                $ft->parse('ROWS',	".result_note");
-            }
         }
 }
-
+*/
 ?>
