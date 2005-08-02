@@ -1,6 +1,8 @@
-<form action="main.php?p=1" enctype="multipart/form-data" id="post" method="post" id="formNote">
+<form action="main.php?p=1" enctype="multipart/form-data" method="post" id="formNote">
 <div id="left">
 <h2><img src="templates/{LANG}/images/main.gif"> Aktualno¶ci - dodaj kolejny wpis</h2>
+
+{MESSAGE}
 
 <table width="100%" align="left">
     <!-- IFDEF: NOTE_PREVIEW -->
@@ -15,18 +17,18 @@
     <!-- ENDIF -->
 	<tr>
 		<td class="form" width="100"><label for="title">Tytu³ wpisu:</label></td>
-		<td class="form" colspan="2"><input type="text" name="title" id="title" size="30" maxlength="255" value="{N_TITLE}" /></td>
+		<td class="form" colspan="2"><input type="text" name="title" id="title" maxlength="255" value="{N_TITLE}" /></td>
 	</tr>
 	<tr>
 		<td class="form"><label for="date">Data:</label></td>
-		<td class="form"><input type="text" name="date" id="date" size="30" maxlength="255" value="{DATE}" /></td>
+		<td class="form"><input type="text" name="date" id="date" maxlength="255" value="{DATE}" {DATE_DISABLED} /></td>
         <td class="form">
-            <label for="now"><input class="checkbox" type="checkbox" name="now" id="now" value="1" onclick="toggleDisable('date')"/> - aktualna data</label>
+            <label for="now"><input class="checkbox" type="checkbox" name="now" id="now" value="1" onclick="toggleDisable('date')" {DATE_NOW} /> - aktualna data</label>
         </td>
 	</tr>
 	<tr>
 		<td class="form"><label for="author">Autor wpisu:</label></td>
-		<td class="form" colspan="2"><input type="text" name="author" id="author" size="30" maxlength="255" value="{SESSION_LOGIN}" /></td>
+		<td class="form" colspan="2"><input type="text" name="author" id="author" maxlength="255" value="{AUTHOR}" /></td>
 	</tr>
 	<tr>
 		<td class="form">&nbsp;</td>
@@ -37,11 +39,7 @@
 	<tr>
 		<td class="form">Znaki specjalne:&nbsp;</td>
 		<td class="form" colspan="2">
-            <script type="text/javascript">
-            <!--
-                edToolbar()
-            //-->
-            </script>
+            <script type="text/javascript"> edToolbar() </script>
 		</td>
 	</tr>
 	<tr>
@@ -51,8 +49,13 @@
 		</td>
 	</tr>
 	<tr>
+        <!-- IFDEF: IMG_FILENAME -->
+        <td class="form" colspan="2">{IMG_FILENAME}</td>
+        <td class="form"><input type="submit" name="sub_img_delete" value="Usuñ zdjêcie" /></td>
+        <!-- ELSE -->
 		<td class="form"><label for="file">Za³±cz zdjêcie:</label></td>
 		<td class="form" colspan="2"><input type="file" name="file" id="file" maxlength="255"></td>
+        <!-- ENDIF -->
 	</tr>
 	<tr>
 		<td class="form">Tylko w kategorii:</td>
@@ -87,13 +90,11 @@
 <div id="right">
 <h2>Przydziel wpis do kategorii</h2>
 <fieldset id="categorydiv">
-    <div>
+    <ul class="cat_list">
     <!-- BEGIN DYNAMIC BLOCK: cat_row -->
-    <span {PAD}class="cat_list">
-    <label for="category{C_ID}" class="selectit"><input class="cat_input" value="{C_ID}" type="checkbox" name="assign2cat[]"  id="category{C_ID}" {CURRENT_CAT} />{C_NAME}</label>
-    </span>
+    <li {PAD}><label for="category{C_ID}" class="selectit"><input class="cat_input" value="{C_ID}" type="checkbox" name="assign2cat[]" id="category{C_ID}" {CURRENT_CAT} />{C_NAME}</label></li>
     <!-- END DYNAMIC BLOCK: cat_row -->
-    </div>
+    </ul>
 </fieldset>
 </div>
 </form>
