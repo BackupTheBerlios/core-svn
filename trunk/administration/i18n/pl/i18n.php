@@ -37,6 +37,8 @@ $i18n['add_note'][2] = '<b>Nie masz uprawnieñ</b> pozwalaj±cych na dodanie noweg
 $i18n['add_note'][3] = '<b>Musisz</b> przydzieliæ wpis do przynajmniej jednej kategorii.';
 $i18n['add_note'][4] = 'Pole "Tytu³ wpisu" nie mo¿e byæ puste.';
 $i18n['add_note'][5] = 'Niew³a¶ciwy format znacznika czasu.';
+$i18n['add_note'][6] = 'Wpis zosta³ pomy¶lnie dodany.';
+$i18n['add_note'][7] = 'Zdjêcie zosta³o usuniête.';
 
 $i18n['add_page'] = array();
 $i18n['add_page'][0] = 'Zdjêcie zosta³o dodane.<br />';
@@ -99,10 +101,18 @@ $i18n['edit_page'][3] = '<b>Nie masz uprawnieñ</b> do edycji podstron serwisu.';
 
 $i18n['edit_note'] = array();
 $i18n['edit_note'][0] = 'Wpis(y) zosta³(y) zmodyfikowany(e).';
-$i18n['edit_note'][1] = 'Wpis(y) zosta³(y) usuniêty(e).';
-$i18n['edit_note'][2] = '<b>Nie masz uprawnieñ</b> do usuwania wpisów.';
-$i18n['edit_note'][3] = '<b>Nie masz uprawnieñ</b> do edycji wpisów, b±d¼ nie jeste¶ autorem tego wpisu.';
-$i18n['edit_note'][4] = 'W bazie danych nie ma ¿adnych wpisów';
+$i18n['edit_note'][1] = '<b>Nie masz uprawnieñ</b> do edycji wpisów, b±d¼ nie jeste¶ autorem tego wpisu.';
+$i18n['edit_note'][2] = 'Niew³a¶ciwy format znacznika czasu.';
+$i18n['edit_note'][3] = 'Wpis zosta³ pomy¶lnie dodany.';
+$i18n['edit_note'][4] = 'Zdjêcie zosta³o usuniête.';
+
+$i18n['list_note'] = array();
+$i18n['list_note'][0] = 'Wpis zosta³ usuniêty.';
+$i18n['list_note'][1] = 'Wybrane wpisy zosta³y usuniête.';
+$i18n['list_note'][2] = '<b>Nie masz uprawnieñ</b> do usuwania/edycji wpisów.';
+$i18n['list_note'][3] = 'W bazie danych nie ma ¿adnych wpisów.';
+$i18n['list_note'][4] = 'Status wybranych wpisów zosta³ prze³±czony.';
+
 
 $i18n['edit_comments'] = array();
 $i18n['edit_comments'][0] = 'Komentarz zosta³ zmodyfikowany.';
