@@ -126,6 +126,7 @@ $p = empty($_GET['p']) ? '' : $_GET['p'];
  * nie wystarczylby zwykly pojedynczy switch z jednym ifem ?
  * wydaje mi sie ze byloby prostsze w obsludze etc...
  * albo, napisz mi jakie sa zalety, poza zastosowaniem obiektowosci ;)
+ * ktora w przypadku php niespecjalnie jest zaleta... ;)
  *
  * a jesli jednak ma byc, to moze nieco zautomatyzowac ? dodac metode 'get'
  * ktora by sobie grzecznie sama dodawala extensiona do nazwy mmodulu, 
@@ -144,21 +145,22 @@ $p = empty($_GET['p']) ? '' : $_GET['p'];
         
         switch($p){
             
-            case '1'    : $this->mod = 'add_note';              break;
-            case '2'    : $this->mod = 'edit_note';             break;
-            case '3'    : $this->mod = 'add_page';              break;
-            case '4'    : $this->mod = 'edit_page';             break;
-            case '5'    : $this->mod = 'edit_comments';         break;
-            case '6'    : $this->mod = 'most_comments';         break;
-            case '7'    : $this->mod = 'add_user';              break;
-            case '8'    : $this->mod = 'add_category';          break;
-            case '9'    : $this->mod = 'edit_category';         break;
-            case '10'   : $this->mod = 'core_configuration';    break;
-            case '11'   : $this->mod = 'add_links';             break;
-            case '12'   : $this->mod = 'edit_links';            break;
-            case '13'   : $this->mod = 'edit_users';            break;
-            case '14'   : $this->mod = 'edit_templates';        break;
-            case '15'   : $this->mod = 'transfer_note';         break;
+            case 1    : $this->mod = 'add_note';              break;
+            case 2    : $this->mod = 'edit_note';             break;
+            case 3    : $this->mod = 'add_page';              break;
+            case 4    : $this->mod = 'edit_page';             break;
+            case 5    : $this->mod = 'edit_comments';         break;
+            case 6    : $this->mod = 'most_comments';         break;
+            case 7    : $this->mod = 'add_user';              break;
+            case 8    : $this->mod = 'add_category';          break;
+            case 9    : $this->mod = 'edit_category';         break;
+            case 10   : $this->mod = 'core_configuration';    break;
+            case 11   : $this->mod = 'add_links';             break;
+            case 12   : $this->mod = 'edit_links';            break;
+            case 13   : $this->mod = 'edit_users';            break;
+            case 14   : $this->mod = 'edit_templates';        break;
+            case 15   : $this->mod = 'transfer_note';         break;
+            case 16   : $this->mod = 'list_note';             break;
             
             default     : $this->mod = 'main';
         }
@@ -186,6 +188,7 @@ $p = empty($_GET['p']) ? '' : $_GET['p'];
 }
 
 $loader = new loader();
+require_once(ROOT . 'administration/inc/tpl_functions.php');
 require_once(PATH_TO_MODULES_ADM . $loader->mod . $loader->MODULE_EXTENSION);
 
 $ft->parse('MAIN_CONTENT', array('main_loader', 'index'));
