@@ -7,13 +7,10 @@ if(empty($_GET['id'])) {
 }
 
 require_once('inc/common_lib.php');
-
-define('PATH_TO_CLASSES', get_root() . '/administration/classes');
+require_once('administration/inc/config.php');
 
 require_once(PATH_TO_CLASSES . '/cls_db_mysql.php');
 require_once(PATH_TO_CLASSES . '/cls_fast_template.php');
-
-require_once('administration/inc/config.php');
 
 // mysql_server_version
 get_mysql_server_version();
