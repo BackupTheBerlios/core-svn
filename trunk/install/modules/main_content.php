@@ -92,13 +92,13 @@ if(!empty($post)) {
             $db->query($sql_query[$i]);
         }
 
-        $file = '<?php'."\n";
+        $file = "<" . "?php\n";
         $file .= "\n// Core CMS auto-generated config file\n\n";
-        $file .= 'define(\'DB_HOST\', \'' . $dbhost . '\');' . "\n";
-        $file .= 'define(\'DB_USER\', \'' . $dbuser . '\');' . "\n";
-        $file .= 'define(\'DB_PASS\', \'' . $dbpass . '\');' . "\n";
-        $file .= 'define(\'DB_NAME\', \'' . $dbname . '\');' . "\n";
-        $file .= 'define(\'PREFIX\', \'' . $dbprefix . '\');'."\n\n";
+        $file .= "define('DB_HOST', '" . $dbhost . "');\n";
+        $file .= "define('DB_USER', '" . $dbuser . "');\n";
+        $file .= "define('DB_PASS', '" . $dbpass . "');\n";
+        $file .= "define('DB_NAME', '" . $dbname . "');\n";
+        $file .= "define('PREFIX', '" . $dbprefix . "');\n\n";
 
         $file .= "define('TABLE_ASSIGN2CAT',    PREFIX . 'assign2cat');\n";
         $file .= "define('TABLE_MAIN',          PREFIX . 'devlog');\n";
@@ -119,6 +119,8 @@ if(!empty($post)) {
         $file .= "define('ROOT', dirname(dirname(PATH_TO_CLASSES)) . '/'  );\n";
         $file .= "define('PATH_TO_MODULES_ADM', ROOT . 'administration/modules/');\n";
         $file .= "define('PATH_TO_MODULES_USER', ROOT . 'modules/');\n\n";
+
+        $file .= "define('TMPDIR', ROOT . 'administration/_tmp/');\n\n";
 
 
         $file .= '?' . '>';
