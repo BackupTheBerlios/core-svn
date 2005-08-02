@@ -92,6 +92,18 @@ ul.error li {
     background: url(./../images/square.gif) no-repeat 0 50%;
 	padding-left: 10px;
 }
+ul.message {
+	margin: 0;
+	padding: 10px 0px 10px 20px;
+    background-color: #ccc;
+    color: blue;
+    font-weight: bold;
+}
+
+ul.message li {
+    list-style-image: url(./../images/square.gif);
+	padding-left: 0px;
+}
 
 #content {
 	padding-left: 41px;
@@ -397,7 +409,13 @@ optgroup {
 
 .cat_list {
     display: block;
+    list-style-type: none;
+    padding: 0;
 }
+.cat_list li {
+    padding: 0;
+}
+
 
 fieldset label.selectit {
 	font-size: 11px;
