@@ -23,6 +23,7 @@ define('CORE_INSTALLED', true);
 define('ADMIN_MAIL', 'email@example.com');
 
 define('PATH_TO_CLASSES', sprintf('%s/classes/', dirname(dirname(__file__))));
+define('CLASS_EXTENSION', '.php');
 define('ROOT', dirname(dirname(PATH_TO_CLASSES)) . '/'  );
 define('PATH_TO_MODULES_ADM', ROOT . 'administration/modules/');
 define('PATH_TO_MODULES_USER', ROOT . 'modules/');
