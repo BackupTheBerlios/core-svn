@@ -2,19 +2,181 @@
 
 // deklaracja zmiennej $action::form
 $action     = empty($_GET['action']) ? '' : $_GET['action'];
-//$preview    = empty($_POST['preview']) ? '' : $_POST['preview'];
-//$post       = empty($_POST['post']) ? '' : $_POST['post'];
+
+$monit = array();
+$ft->assign('NOTE_PREVIEW', false);
+if (isset($_POST['sub_commit'])) { //modyfikujemy wpis
+    $title      = trim($_POST['title']);
+    $date       = isset($_POST['now']) ? date('Y-m-d H:i:s') : $_POST['date'];
+    $filename   = null;
+
+    if(!$permarr['writer']) { //ma uprawnienia ?
+        $monit[] = $i18n['edit_note'][1];
+    }
+    if (!isset($_POST['assign2cat'])) { //zaznaczyl kategorie ?
+        $monit[] = $i18n['edit_note'][5];
+    }
+    if (empty($title)) { //niepusty tytul ?
+        $monit[] = $i18n['edit_note'][6];
+    }
+    if (!preg_match('#^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$#i', $date)) { //wlasciwy format czasu ?
+        $monit[] = $i18n['edit_note'][2];
+    }
+    if(!empty($_FILES['file']['name'])) { //wgrywamy zdjecie ?
+        //jesli tak, to do katalogu tymczasowego. pozniej, jesli wsio bedzie
+        //w porzadku, przenosimy do docelowego
+        //kasowanie z tymczasowego bedzie odbywac sie automatycznie co
+        //jakis czas
+
+        $up = new upload;
+
+        // use function to upload file.
+        $filename = $up->upload_file(TMPDIR, 'file', true, true, 0, 'jpg|jpeg|gif|png');
+        if(!$filename) {
+
+            $monit[] = $up->error;
+
+            $_SESSION['editNote_fileName'] = null;
+            unset($_SESSION['editNote_fileName']);
+        } else {
+            $_SESSION['editNote_fileName'] = $filename;
+        }
+    }
+
+
+    
+    if (!count($monit)) { //jesli nie bylo bledow, to GO ON!
+        //sprawdzamy foto
+        $query = sprintf("
+            SELECT
+                image
+            FROM
+                %1\$s
+            WHERE
+                id = %2\$d",
+
+            TABLE_MAIN,
+            $_GET['id']
+        );
+        $db->query($query);
+        $db->next_record();
+        $filename_old = $db->f('image');
+
+        $filename_new = $filename_old;
+        if (!isset($_SESSION['editNote_fileName']) || $filename_old != $_SESSION['editNote_fileName']) {
+            @unlink(ROOT . 'photos/' . $filename_old);
+            $filename_new = '';
+        }
+        if (isset($_SESSION['editNote_fileName'])) {
+            $filename_new = $_SESSION['editNote_fileName'];
+
+            @rename(TMPDIR . $filename_new, ROOT . 'photos/' . $filename_new);
+        }
+
+
+
+        //uaktualniamy newsa
+        $query = sprintf("
+            UPDATE
+                %1\$s
+            SET
+                date = '%2\$s',
+                title = '%3\$s',
+                author = '%4\$s',
+                text = '%5\$s',
+                image = '%6\$s',
+                comments_allow = %7\$d,
+                published = %8\$d,
+                only_in_category = %9\$d
+            WHERE
+                id = %10\$d",
+
+            TABLE_MAIN,
+            isset($_POST['now']) ? date('Y-m-d H:i:s') : $_POST['date'],
+            $_POST['title'],
+            $_POST['author'],
+            $_POST['text'],
+            $filename_new,
+            $_POST['comments_allow'],
+            $_POST['published'],
+            $_POST['only_in_category'],
+            $_GET['id']
+        );
+        $db->query($query);
+
+
+
+        //uaktualniamy kategorie
+        $query = sprintf("
+            DELETE FROM
+                %1\$s
+            WHERE
+                news_id = %2\$d",
+                
+            TABLE_ASSIGN2CAT,
+            $_GET['id']
+        );
+        $db->query($query);
+
+        $query = sprintf("
+            INSERT INTO
+                %1\$s
+            VALUES",
+
+            TABLE_ASSIGN2CAT
+        );
+
+        $values = array();
+        foreach ($_POST['assign2cat'] as $selected_cat) {
+            $values[] = sprintf("
+                ('', %1\$d, %2\$d)", 
+
+                $_GET['id'],
+                $selected_cat
+            );
+        }
+        $query .= implode(',', $values);
+
+        $db->query($query);
+        
+
+        header('Location: main.php?p=16&msg=5');
+        exit;
+    }
+
+    $ft->assign('NOTE_PREVIEW', str_nl2br($_POST['text']));
+} elseif (isset($_POST['sub_preview'])) { //podglad wpisanej tresci
+    $ft->assign('NOTE_PREVIEW', str_nl2br($_POST['text']));
+} elseif (isset($_POST['sub_img_delete'])) { //usuwamy foto
+    $_SESSION['editNote_fileName'] = null;
+    unset($_SESSION['editNote_fileName']);
+
+    $monit[] = $i18n['edit_note'][4];
+}
+
 
 function get_news_from_post($id_news) {
-    $data['date'] = isset($_POST['now']) ? date('Y-m-d H:i:s') : $_POST['now'];
+    $data['date']   = isset($_POST['now']) ? date('Y-m-d H:i:s') : $_POST['date'];
     $data['title']  = str_entit($_POST['title']);
     $data['text']   = str_entit($_POST['text']);
     $data['author'] = str_entit($_POST['author']);
-    $data['image']  = str_entit($_POST['image']);
     $data['id']     = $id_news;
     $data['oic']    = (@$_POST['only_in_category'] == 1);
     $data['ca']     = (@$_POST['comments_allow'] == 1);
     $data['p']      = (@$_POST['published'] == 1);
+    $data['image']  = isset($_SESSION['editNote_fileName']) ? $_SESSION['editNote_fileName'] : '';
+    $data['now']    = isset($_POST['now']);
+
+    /*
+    if (isset($_SESSION['editNote_fileNameNew'])) {
+        $data['image'] = $_SESSION['editNote_fileNameNew'];
+    } elseif (isset($_SESSION['editNote_fileNameOld'])) {
+        $data['image'] = $_SESSION['editNote_fileNameOld'];
+    } else {
+        $data['image'] = null;
+    }
+    */
+    
 
     //pobieramy do jakich kategorii nalezy dany wpis
     $data['cats'] = isset($_POST['assign2cat']) ? $_POST['assign2cat'] : array();
@@ -57,6 +219,17 @@ function get_news_from_db($id_news) {
     $data['oic']    = ($db->f('only_in_category') == 1);
     $data['ca']     = ($db->f('comments_allow') == 1);
     $data['p']      = ($db->f('published') == 1);
+    $data['now']    = false;
+
+    if ($data['image']) {
+        //$_SESSION['editNote_fileNameOld'] = null;
+        //$_SESSION['editNote_fileNameNew'] = $data['image'];
+        $_SESSION['editNote_fileName'] = $data['image'];
+    } else {
+        //$_SESSION['editNote_fileNameOld'] = null;
+        //$_SESSION['editNote_fileNameNew'] = null;
+        $_SESSION['editNote_fileName'] = null;
+    }
 
     //pobieramy do jakich kategorii nalezy dany wpis
     $data['cats'] = array();
@@ -78,74 +251,11 @@ function get_news_from_db($id_news) {
         $data['cats'][] = $db->f('category_id');
     }
 
-    /*
-    $query = sprintf("
-        SELECT 
-            category_id, 
-            category_parent_id, 
-            category_name 
-        FROM 
-            %1\$s 
-        WHERE 
-            category_parent_id = 0", 
-
-        TABLE_CATEGORY
-    );
-    $sql = new DB_SQL;
-
-    $db->query($query);
-    while($db->next_record()) {
-    
-        $c_id 	= $db->f("category_id");
-        $c_name = $db->f("category_name");
-    
-        $query = sprintf("
-            SELECT * FROM 
-                %1\$s 
-            WHERE 
-                category_id = '%2\$d' 
-            AND 
-                news_id = '%3\$d'", 
-
-            TABLE_ASSIGN2CAT, 
-            $c_id, 
-            $_GET['id']
-        );
-    
-        $sql->query($query);
-        $sql->next_record();
-    
-        $assigned = $sql->f("category_id");
-
-        $ft->assign(array(
-            'C_ID'		    =>$c_id,
-            'C_NAME'	   =>$c_name, 
-            'PAD'           =>'', 
-            'CURRENT_CAT'   =>$c_id == $assigned ? 'checked="checked"' : ''
-        ));
-    
-        $ft->define("form_noteedit", "form_noteedit.tpl");
-        $ft->define_dynamic("cat_row", "form_noteedit");
-
-        $ft->parse('CAT_ROW', ".cat_row");
-            
-        get_editnews_assignedcat($c_id, 2);
-    }*/
     return $data;
 }
 
 function get_news($id_news) {
     return empty($_POST) ? get_news_from_db($_GET['id']) : get_news_from_post($_GET['id']);
-}
-
-$monit = array();
-$ft->assign('NOTE_PREVIEW', false);
-if (isset($_POST['sub_commit'])) { //modyfikujemy wpis
-    $monit[] = 'wpis zapisany';
-} elseif (isset($_POST['sub_preview'])) { //podglad wpisanej tresci
-    $ft->assign( 'NOTE_PREVIEW', str_nl2br(parse_markers(stripslashes($_POST['text']), 1)) );
-} elseif (isset($_POST['sub_img_delete'])) { //usuwamy foto
-    $monit[] = 'usuniete foto';
 }
 
 
@@ -158,6 +268,8 @@ $ca_y = 'checked="checked"';
 $ca_n = '';
 $p_y = 'checked="checked"';
 $p_n = '';
+$date_now = '';
+$date_disabled= '';
 if (!$data['oic']) {
     $oic_y = '';
     $oic_n = 'checked="checked"';
@@ -170,7 +282,12 @@ if (!$data['p']) {
     $p_y = '';
     $p_n = 'checked="checked"';
 }
+if ($data['now']) {
+    $date_now = 'checked="checked"';
+    $date_disabled = 'disabled="disabled"';
+}
 
+$ft->define(array('form_noteedit' => 'form_noteedit.tpl'));
 $ft->assign(array(
     'AUTHOR'		        => $data['author'],
     'DATE' 			        => $data['date'],
@@ -183,328 +300,21 @@ $ft->assign(array(
     'COMMENTS_ALLOW_NO'     => $ca_n,
     'PUBLISHED_YES'         => $p_y,
     'PUBLISHED_NO'          => $p_n,
-    'IMG_FILENAME'          => empty($data['image']) ? false : $data['image']
+    'IMG_FILENAME'          => $data['image'] !== false ? $data['image'] : false,
+    'DATE_NOW'              => $date_now,
+    'DATE_DISABLED'         => $date_disabled
 ));
 unset($oic_y, $oic_n, $ca_y, $ca_n, $p_y, $p_n);
 
 
 
 //lista kategorii
-$query = sprintf("
-    SELECT 
-        category_id, 
-        category_parent_id, 
-        category_name 
-    FROM 
-        %1\$s", 
+$cats = db_get_categories();
+tpl_categories('CATEGORIES', $cats, 0, $data['cats']);
 
-    TABLE_CATEGORY
-);
-$cats = array();
-$db->query($query);
-while ($db->next_record()) {
-    $parent_id = $db->f('category_parent_id');
-    $c_name = $db->f('category_name');
-    $c_id = $db->f('category_id');
+//ewentualny message
+if (count($monit)) tpl_message($monit);
 
-    if (!array_key_exists($parent_id, $cats)) {
-        $cats[$parent_id] = array();
-    } 
+$ft->parse('ROWS', '.form_noteedit');
 
-    $cats[$parent_id][$c_id] = $c_name;
-    
-}
-function c(&$cat, $parent, $pad = 0) {
-    if ( !($ul = array_key_exists($parent, $cat)) ) return false;
-
-    $pad_str = str_repeat("\t", $pad);
-    echo $ul ? $pad_str . "<ul>\n" : '';
-
-    foreach ($cat  as $parent_id => $c_data) {
-        if ($parent == $parent_id) {
-            foreach ($c_data as $c_id => $c_name) {
-                printf("%s<li title='id: %s'>%s\n", $pad_str . "\t", $c_id, $c_name);
-                c($cat, $c_id, $pad+1);
-                printf("%s</li>\n", $pad_str . "\t");
-            }
-        }
-    }
-    echo $ul ? $pad_str . "</ul>\n" : '';
-}
-
-//c($cats, 0);
-//v_array($cats);
-//exit;
-
-
-while($db->next_record()) {
-
-    $c_id 	= $db->f("category_id");
-    $c_name = $db->f("category_name");
-
-    $selected_cat = $sql->f("category_id");
-
-    $ft->assign(array(
-        'C_ID'		    =>$c_id,
-        'C_NAME'	   =>$c_name, 
-        'PAD'           =>'', 
-        'CURRENT_CAT'   =>$c_id == $assigned ? 'checked="checked"' : ''
-    ));
-
-    $ft->define("form_noteedit", "form_noteedit.tpl");
-    $ft->define_dynamic("cat_row", "form_noteedit");
-
-    $ft->parse('CAT_ROW', ".cat_row");
-        
-    get_editnews_assignedcat($c_id, 2);
-}
-
-$ft->parse('ROWS',	"form_noteedit");
-
-
-/*
-$ft->assign('IMG_FILENAME', false);
-
-
-switch ($action) {
-	
-	case "show":// wy¶wietlanie wpisu pobranego do modyfikacji
-	
-        // podglad
-        if(!empty($preview)) {
-        } else {
-        }
-        
-        // submit formularza
-        if(!empty($post)) {
-
-            $query = sprintf("
-                SELECT * FROM 
-                    %1\$s 
-                WHERE 
-                    id = '%2\$d'", 
-		
-                TABLE_MAIN,
-                $_GET['id']
-            );
-		
-            $db->query($query);
-            $db->next_record();
-		
-            $note_author = $db->f("author");
-		
-            if($permarr['moderator'] || ($permarr['writer'] && $note_author == $_SESSION['login'])) {
-                
-                $text		= $_POST['text'];
-                $title		= $_POST['title'];
-                $author		= $_POST['author'];
-                $published	= $_POST['published'];
-            
-                $comments_allow = $_POST['comments_allow'];
-                $only_in_cat    = $_POST['only_in_category'];
-                $assign2cat     = $_POST['assign2cat'];
-
-                //sprawdzania daty
-                if (isset($_POST['now']) || !preg_match('#^([0-9][0-9])-([0-9][0-9])-([0-9][0-9][0-9][0-9]) ([0-9][0-9]:[0-9][0-9]:[0-9][0-9])$#', $_POST['date'], $matches)) {
-                    $date = date("Y-m-d H:i:s");
-                } else {
-                    $date = sprintf('%s-%s-%s %s', $matches[3], $matches[2], $matches[1], $matches[4]);
-                }
-            
-                $text = parse_markers($text, 1);
-		
-                $query = sprintf("
-                    UPDATE 
-                        %1\$s 
-                    SET 
-                        title			= '%2\$s', 
-                        author			= '%3\$s', 
-                        text			= '%4\$s', 
-                        published		= '%5\$s', 
-                        comments_allow	= '%6\$d',
-                        date            = '%7\$s', 
-                        only_in_category= '%8\$s'
-                    WHERE 
-                        id = '%9\$d'", 
-            
-                    TABLE_MAIN, 
-                    $title, 
-                    $author, 
-                    $text, 
-                    $published, 
-                    $comments_allow, 
-                    $date, 
-                    $only_in_cat, 
-                    $_GET['id']
-                );
-            
-                $db->query($query);
-            
-                $query = sprintf("
-                    DELETE FROM 
-                        %1\$s 
-                    WHERE 
-                        news_id = '%2\$d'", 
-            
-                    TABLE_ASSIGN2CAT, 
-                    $_GET['id']
-                );
-                $db->query($query);
-            
-                // wprowadzamy informacje o przynaleznych kategoriach
-                foreach ($assign2cat as $selected_cat) {
-                    $query = sprintf("
-                        INSERT INTO 
-                            %1\$s 
-                        VALUES('', '%2\$d', '%3\$d')", 
-                
-                        TABLE_ASSIGN2CAT, 
-                        $_GET['id'], 
-                        $selected_cat
-                    );
-                    $db->query($query);
-                }
-            
-                // usuwamy istniej±ce zdjêcie
-                if(isset($_POST['delete_image']) && (($_POST['delete_image']) == 1)) {
-                    $query = sprintf("
-                        UPDATE 
-                            %1\$s 
-                        SET 
-                            image = '' 
-                        WHERE 
-                            id = '%2\$d'", 
-                
-                        TABLE_MAIN, 
-                        $_GET['id']
-                    );
-                    $db->query($query);
-                }
-            
-                // dodajemy zdjêcie do wpisu
-                if(!empty($_FILES['file']['name'])) {
-                
-                    $up = new upload;
-                    $upload_dir = "../photos";
-			
-                    // upload pliku na serwer.
-                    $file = $up->upload_file($upload_dir, 'file', true, true, 0, "jpg|jpeg|gif");
-                    if($file == false) {
-				
-				        echo $up->error;
-                    } else {
-			    
-                        $query = sprintf("
-                            UPDATE 
-                                %1\$s 
-                            SET 
-                                image = '%2\$s' 
-                            WHERE 
-                                id = '%3\$d'", 
-			    
-                            TABLE_MAIN,
-                            $file,
-                            $_GET['id']
-                        );
-                
-				        $db->query($query);
-                    }
-                }
-            
-                $ft->assign('CONFIRM', $i18n['edit_note'][0]);
-                $ft->parse('ROWS',	".result_note");
-                
-            } else {
-                $monit[] = $i18n['edit_note'][3];
-
-                foreach ($monit as $error) {
-    
-                    $ft->assign('ERROR_MONIT', $error);
-                    $ft->parse('ROWS',	".error_row");
-                }
-                $ft->parse('ROWS', "error_reporting");
-            }
-        } else {
-            
-        }              
-		break;
-		
-	default:
-        if (isset($_POST['selected_notes']) && is_array($_POST['selected_notes']))
-        {
-            if (isset($_POST['sub_status'])) {
-                if($permarr['moderator']) {
-                    $query = sprintf("
-                        UPDATE 
-                            %1\$s 
-                        SET 
-                            published = published * -1 
-                        WHERE 
-                            id IN (%2\$s)", 
-        
-                        TABLE_MAIN,
-                        implode(',', $_POST['selected_notes'])
-                    );
-
-                    $db->query($query);
-
-                    $ft->assign('CONFIRM', $i18n['confirm'][3]);
-                    $ft->parse('ROWS', ".result_note");
-                } else {
-            
-                    $monit[] = $i18n['edit_note'][2];
-
-                    foreach ($monit as $error) {
-
-                        $ft->assign('ERROR_MONIT', $error);
-                    
-                        $ft->parse('ROWS',	".error_row");
-                    }
-                        
-                    $ft->parse('ROWS', "error_reporting");
-                }
-            } elseif (isset($_POST['sub_delete'])) {
-                if($permarr['moderator']) {
-                    $query = sprintf("
-                        DELETE FROM 
-                            %1\$s 
-                        WHERE 
-                            id IN (%2\$s)",
-        
-                        TABLE_MAIN,
-                        implode(',', $_POST['selected_notes'])
-                    );
-
-                    $db->query($query);
-
-                    $ft->assign('CONFIRM', $i18n['edit_note'][1]);
-                    $ft->parse('ROWS', ".result_note");
-                } else {
-            
-                    $monit[] = $i18n['edit_note'][2];
-
-                    foreach ($monit as $error) {
-
-                        $ft->assign('ERROR_MONIT', $error);
-                    
-                        $ft->parse('ROWS',	".error_row");
-                    }
-                        
-                    $ft->parse('ROWS', "error_reporting");
-                }
-            } else {
-                $default = true;
-            }
-
-        } else {
-            $default = true;
-        }
-
-
-
-        if (isset($default) && $default) {
-	
-        }
-}
-*/
 ?>
