@@ -1,4 +1,5 @@
 <?php
+
 /*
  * IMPORTANT: do not change include to require!
  *
@@ -189,6 +190,7 @@ $p = empty($_GET['p']) ? '' : $_GET['p'];
 
 $loader = new loader();
 require_once(ROOT . 'administration/inc/tpl_functions.php');
+require_once(ROOT . 'inc/common_db_lib.php');
 require_once(PATH_TO_MODULES_ADM . $loader->mod . $loader->MODULE_EXTENSION);
 
 $ft->parse('MAIN_CONTENT', array('main_loader', 'index'));
