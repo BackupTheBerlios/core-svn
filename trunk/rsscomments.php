@@ -3,13 +3,19 @@
 
 header("Content-type: application/xml");
 
-define("PATH_TO_CLASSES", "administration/classes");
-
-require_once(PATH_TO_CLASSES. "/cls_db_mysql.php");
-require_once(PATH_TO_CLASSES. '/cls_fast_template.php');
-require_once(PATH_TO_CLASSES. '/cls_xml_feed.php');
-
 require_once("administration/inc/config.php");
+
+$required_classes = array(
+    'db_mysql', 
+    'fast_template', 
+    'view', 
+    'db_config', 
+    'xml_feed'
+);
+
+while(list($c) = each($required_classes)) {
+    require_once PATH_TO_CLASSES . '/cls_' . $required_classes[$c] . CLASS_EXTENSION;
+}
 
 require_once("inc/common_lib.php");
 require_once("inc/main_lib.php");
@@ -17,10 +23,11 @@ require_once("inc/main_lib.php");
 // mysql_server_version
 get_mysql_server_version();
 
-$lang = get_config('language_set');
+$xml =& new xml_feed();
+
+$lang = $xml->db_conf->get_config('language_set');
 
 $ft  =& new FastTemplate('./templates/' . $lang . '/main/tpl/');
-$xml =& new xml_feed();
 
 $xml->parse_comments_feed();
 

@@ -3,12 +3,14 @@
 
 class xml_feed {
     
-    var $db;
     var $ft;
     var $rewrite;
     var $pattern        = array("&", "<br />", "<", ">");
     var $replacement    = array(" &amp; ", "&lt;br /&gt;", "&lt;", "&gt;");
     var $http_root;
+    
+    var $view;
+    var $db_conf;
     
     
     /**
@@ -16,9 +18,11 @@ class xml_feed {
      */
     function xml_feed() {
         
-        $this->db =& new DB_SQL;
-        $this->rewrite = get_config('mod_rewrite');
-        $this->http_root = get_httproot();
+        $this->view     =& view::instance();
+        $this->db_conf  =& new db_config;
+        
+        $this->rewrite      = $this->db_conf->get_config('mod_rewrite');
+        $this->http_root    = get_httproot();
     }
     
     
@@ -92,7 +96,7 @@ class xml_feed {
             10
         );
 
-        $this->db->query($query);
+        $this->view->db->query($query);
         
         $ft->define('xml_feed', 'xml_feed.tpl');
         $ft->define_dynamic('xml_row', 'xml_feed');
@@ -103,17 +107,17 @@ class xml_feed {
             'NEWS_FEED'     =>true
         ));
         
-        if($this->db->num_rows() > 0) {
-            while($this->db->next_record()) {
+        if($this->view->db->num_rows() > 0) {
+            while($this->view->db->next_record()) {
 	
-                $date           = $this->db->f("date");
-                $title          = $this->db->f("title");
-                $text           = $this->db->f("text");
-                $author         = $this->db->f("author");
-                $id             = $this->db->f("id");
-                $image          = $this->db->f("image");
-                $comments_allow = $this->db->f("comments_allow");
-                $comments       = $this->db->f("comments");
+                $date           = $this->view->db->f("date");
+                $title          = $this->view->db->f("title");
+                $text           = $this->view->db->f("text");
+                $author         = $this->view->db->f("author");
+                $id             = $this->view->db->f("id");
+                $image          = $this->view->db->f("image");
+                $comments_allow = $this->view->db->f("comments_allow");
+                $comments       = $this->view->db->f("comments");
 	           
                 $date = $this->date_convert($date);
                 
@@ -181,7 +185,7 @@ class xml_feed {
             10
         );
 
-        $this->db->query($query);
+        $this->view->db->query($query);
         
         $ft->define('xml_feed', 'xml_feed.tpl');
         $ft->define_dynamic('xml_row', 'xml_feed');
@@ -191,17 +195,17 @@ class xml_feed {
             'NEWS_FEED'     =>false
         ));
         
-        if($this->db->num_rows() > 0) {
-            while($this->db->next_record()) {
+        if($this->view->db->num_rows() > 0) {
+            while($this->view->db->next_record()) {
 	
-                $date           = $this->db->f("date");
-                $title          = $this->db->f("title");
-                $text           = $this->db->f("text");
-                $author         = $this->db->f("author");
-                $id             = $this->db->f("id");
-                $image          = $this->db->f("image");
-                $comments_allow = $this->db->f("comments_allow");
-                $comments       = $this->db->f("comments");
+                $date           = $this->view->db->f("date");
+                $title          = $this->view->db->f("title");
+                $text           = $this->view->db->f("text");
+                $author         = $this->view->db->f("author");
+                $id             = $this->view->db->f("id");
+                $image          = $this->view->db->f("image");
+                $comments_allow = $this->view->db->f("comments_allow");
+                $comments       = $this->view->db->f("comments");
                 
                 $date           = $this->date_convert($date);
                 
