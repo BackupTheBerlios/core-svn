@@ -1,4 +1,5 @@
 <?php
+
 $monit = array();
 
 function delete_entry($id_news) {
@@ -90,6 +91,9 @@ if (isset($_GET['delete'])) {
     }
 
 }
+
+//wyswietlamy jakis komunikat ?
+if (isset($_GET['msg']) && is_numeric($_GET['msg'])) $monit[] = $i18n['list_note'][$_GET['msg']];
 
 $mainposts_per_page = get_config('editposts_per_page');
 
