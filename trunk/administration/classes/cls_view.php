@@ -28,4 +28,7 @@ class view {
     
     // example
     // $view = &view::instance();
+
 }
+
+?>
