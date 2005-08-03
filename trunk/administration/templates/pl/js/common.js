@@ -1,32 +1,39 @@
+//shortcut
 function E(id) {
     return document.getElementById(id)
 }
+
+//przelacza wlasciwosc 'checked' wybranych pol
 function switchChecked(v) {
     
     a=document.getElementsByName(v)
-    for(i=0; i<a.length; i++) {
-        
-        if (a[i].checked) {a[i].checked = ''}
-        else {a[i].checked = 'true' }
-    }
+    for(i=0; i<a.length; i++)
+        a[i].checked = !a[i].checked
 }
+
+//sprawdza czy z pol podanych w parametrze ktores jest zaznaczone
+//jesli tak, to wyskakuje okienko 'confirm()' z pytaniem podanym w parametrze
+//zwraca wtedy wartosc jaka wybral user - true (OK) lub false (CANCEL)
+//jesli zadne z pol nie jest zaznaczone, to zwraca false
 function askChecked(q, v)
 {
     a = document.getElementsByName(v)
-    c = false
     for (i=0; i<a.length; i++) {
         if (a[i].checked) {
-            c = true
-            break
+            return confirm(q)
         }
     }
-    return c ? confirm(q) : false
-}
-function toggleDisable(id) {
-    e = E(id)
-    if (e) e.disabled = e.disabled ? '' : 'true'
+    return false
 }
 
+//przelacza wlasciwosc 'disabled' danego pola
+function toggleDisable(id) {
+    
+    e = E(id)
+    if (e) e.disabled = !e.disabled
+}
+
+//shortcut
 function dw(s) {
     document.write(s + '<br />')
 }
@@ -48,9 +55,9 @@ window.onload = function(){
                 d = ('disabled' in e) ? e.disabled : false
                 r = ('readOnly' in e) ? e.readOnly : false
                 if ( ( ( n == 'input' && ( t == 'text' || t == 'password' || t == 'checkbox' || t == 'radio') ) 
-                        || n == 'select' || n == 'textarea') && d == false && r == false){
+                        || n == 'select' || n == 'textarea') && !d && !r) {
                     e.focus()
-                    k=forms.length + 1
+                    k=forms.length + 1 //ucieczka z pierwszej petli
                     break
                 }
             }
