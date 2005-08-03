@@ -1,3 +1,5 @@
+$Id$
+
 Licencja
 
 Zasady i warunki kopiowania, rozpowszechniania i modyfikowania:
