@@ -87,14 +87,11 @@
 </table>
 </div>
 
-<div id="right">
-<h2>Przydziel wpis do kategorii</h2>
-<fieldset id="categorydiv">
-    <ul class="cat_list">
-    <!-- BEGIN DYNAMIC BLOCK: cat_row -->
-    <li {PAD}><label for="category{C_ID}" class="selectit"><input class="cat_input" value="{C_ID}" type="checkbox" name="assign2cat[]" id="category{C_ID}" {CURRENT_CAT} />{C_NAME}</label></li>
-    <!-- END DYNAMIC BLOCK: cat_row -->
-    </ul>
-</fieldset>
+<div id="categories">
+    <h2>Przydziel wpis do kategorii</h2>
+    <fieldset>
+        {CATEGORIES}
+    </fieldset>
 </div>
+
 </form>
