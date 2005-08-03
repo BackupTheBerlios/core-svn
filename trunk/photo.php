@@ -10,13 +10,24 @@ if(empty($_GET['id'])) {
 require_once('inc/common_lib.php');
 require_once('administration/inc/config.php');
 
-require_once(PATH_TO_CLASSES . '/cls_db_mysql.php');
-require_once(PATH_TO_CLASSES . '/cls_fast_template.php');
+$required_classes = array(
+    'db_mysql', 
+    'fast_template', 
+    'view', 
+    'db_config'
+);
+
+while(list($c) = each($required_classes)) {
+    require_once PATH_TO_CLASSES . '/cls_' . $required_classes[$c] . CLASS_EXTENSION;
+}
+
+$view       =& view::instance();
+$db_conf    =& new db_config;
 
 // mysql_server_version
 get_mysql_server_version();
 
-$lang = get_config('language_set');
+$lang = $db_conf->get_config('language_set');
 
 require_once('i18n/' . $lang . '/i18n.php');
 
@@ -25,12 +36,7 @@ $theme = prepare_template($lang, $i18n);
 
 @setcookie('devlog_design', $theme, time() + 3600 * 24 * 365);
 
-// inicjowanie klasy, wkazanie katalogu przechowuj±cego szablony
-$ft = new FastTemplate('./templates/' . $lang . '/' . $theme . '/tpl/');
-$db = new DB_SQL;
-
-$ft->define('photo_main', 'photo_main.tpl');
-$ft->assign('TITLE', get_config('title_page'));
+$ft =& new FastTemplate('./templates/' . $lang . '/' . $theme . '/tpl/');
 
 $query = sprintf("
     SELECT 
@@ -45,10 +51,10 @@ $query = sprintf("
     $_GET['id']
 );
 
-$db->query($query);
-$db->next_record();
+$view->db->query($query);
+$view->db->next_record();
 
-$image = $db->f('image');
+$image = $view->db->f('image');
 
 if(!empty($image)) {
     list($width, $height) = getimagesize("photos/" . $image);
@@ -60,6 +66,9 @@ if(!empty($image)) {
         'LANG'          =>$lang, 
         'THEME'         =>$theme
     ));
+    
+    $ft->define('photo_main', 'photo_main.tpl');
+    $ft->assign('TITLE', $db_conf->get_config('title_page'));
 
     $ft->parse('CONTENT', 'photo_main');
 } else {
