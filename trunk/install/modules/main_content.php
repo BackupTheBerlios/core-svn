@@ -1,4 +1,5 @@
 <?php
+// $Id$
 
 $post = !empty($_POST['post']) ? $_POST['post'] : '';
 $lang = !empty($_POST['lang']) ? $_POST['lang'] : 'pl';

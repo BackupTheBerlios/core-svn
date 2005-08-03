@@ -1,4 +1,5 @@
 <?php
+// $Id$
 
 $action = empty($_GET['action']) ? '' : $_GET['action'];
 

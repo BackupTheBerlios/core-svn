@@ -1,4 +1,5 @@
 <?php
+// $Id$
 
 $ft->define("main_site", "main_site.tpl");
 

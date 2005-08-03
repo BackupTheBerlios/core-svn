@@ -1,3 +1,5 @@
+$Id$
+
 - wiêkszo¶æ(czytaj: prawie wszystkie) szablonów definiowanych jest w pliku main(mam na my¶li 
 administracjê). Przyda³oby siê je z tego pliku wywaliæ, bo niepotrzebnie od razu zajmuj± 
 tablicê, a definiowaæ poszczególne szablony w poszczególnych modu³ach. Jak Ci siê chce i masz 

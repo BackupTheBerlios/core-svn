@@ -1,3 +1,5 @@
+-- $Id$
+
 ALTER TABLE `core_category` 
     ADD `category_order` MEDIUMINT(7) 
     DEFAULT '1' NOT NULL AFTER `category_parent_id`;

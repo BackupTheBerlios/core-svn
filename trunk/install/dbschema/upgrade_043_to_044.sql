@@ -1,3 +1,5 @@
+-- $Id$
+
 UPDATE `core_config` SET `config_value` = '0.4.4' WHERE `config_name` = 'core_version';
 
 ALTER TABLE core_pages 

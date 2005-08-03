@@ -1,4 +1,5 @@
 <?php
+// $Id$
 
 require_once('inc/i18n.php');
 require_once('inc/common_lib.php');

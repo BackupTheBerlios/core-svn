@@ -1,3 +1,5 @@
+-- $Id$
+
 ALTER TABLE 
     core_newsletter ADD id MEDIUMINT(7) 
     NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;

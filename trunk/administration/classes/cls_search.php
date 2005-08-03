@@ -1,4 +1,5 @@
 <?php
+// $Id$
 
 if(!class_exists('search')) {
     

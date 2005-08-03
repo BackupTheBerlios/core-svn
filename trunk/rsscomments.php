@@ -1,4 +1,5 @@
 <?php
+// $Id$
 
 header("Content-type: application/xml");
 

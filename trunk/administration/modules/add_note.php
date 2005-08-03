@@ -1,4 +1,5 @@
 <?php
+// $Id$
 
 //domyslnie niech sobie bedize puste
 $ft->assign('MESSAGE', '');
@@ -240,5 +241,43 @@ tpl_categories('CATEGORIES', $cats, 0, $current_cat_id);
 
 
 $ft->parse('ROWS', '.form_noteadd');
+
+/*
+//lista kategorii
+$ft->define_dynamic('cat_row', 'form_noteadd');
+
+$query = sprintf("
+    SELECT 
+        category_id, 
+        category_parent_id,
+        category_name 
+    FROM 
+        %1\$s 
+    WHERE 
+        category_parent_id = 0
+    ORDER BY 
+        category_id 
+    ASC", 
+
+    TABLE_CATEGORY
+);
+
+$db->query($query);
+
+while($db->next_record()) {
+
+    $cat_id = $db->f('category_id');
+
+    $ft->assign(array(
+        'C_ID'		    =>$cat_id,
+        'C_NAME'        =>$db->f('category_name'), 
+        'CURRENT_CAT'   =>in_array($cat_id, $current_cat_id) ? 'checked="checked"' : '', 
+        'PAD'           =>''
+    ));
+
+    $ft->parse('CAT_ROW', '.cat_row');
+
+    get_addcategory_assignedcat($cat_id, 2);
+}*/
 
 ?>

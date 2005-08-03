@@ -1,4 +1,5 @@
 <?php
+// $Id$
 
 // deklaracja zmiennej $action::form
 $post       = empty($_POST['post']) ? '' : $_POST['post'];

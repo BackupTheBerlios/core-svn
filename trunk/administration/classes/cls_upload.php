@@ -1,4 +1,5 @@
 <?php
+// $Id$
 
 // klasa uploaduj±ca pliki
 class upload {

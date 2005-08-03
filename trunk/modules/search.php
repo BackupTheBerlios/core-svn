@@ -1,4 +1,5 @@
 <?php
+// $Id$
 
 require_once(PATH_TO_CLASSES. '/cls_search.php');
 $search = new search();

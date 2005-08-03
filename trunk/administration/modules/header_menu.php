@@ -1,4 +1,5 @@
 <?php
+// $Id$
 
 switch($p = empty($_GET['p']) ? '' : $_GET['p']){
 	

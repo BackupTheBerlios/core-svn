@@ -1,4 +1,6 @@
 <?php
+// $Id$
+
 /*
  * IMPORTANT: do not change include to require!
  *

@@ -1,4 +1,5 @@
 <?php
+// $Id$
 
 define('PATH_TO_CLASSES', '../administration/classes');
 define('EXTENSION', '.php');

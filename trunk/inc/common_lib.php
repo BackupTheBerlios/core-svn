@@ -1,4 +1,5 @@
 <?php
+// $Id$
 
 // automatyczne sprawdzanie stanu magic_quotes
 // i w zaleznosci od tego wstawianie addslashes, badz nie.

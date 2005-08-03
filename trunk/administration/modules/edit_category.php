@@ -1,4 +1,5 @@
 <?php
+// $Id$
 
 // deklaracja zmiennej $action::form
 $action = empty($_GET['action']) ? '' : $_GET['action'];

@@ -1,4 +1,5 @@
 <?php
+// $Id$
 
 $m      = empty($_GET['m']) ? '' : $_GET['m'];
 $token  = empty($_GET['token']) ? '' : $_GET['token'];

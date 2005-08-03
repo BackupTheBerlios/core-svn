@@ -1,4 +1,5 @@
 <?php
+// $Id$
 
 require_once('administration/inc/config.php');
 require_once('inc/common_lib.php');

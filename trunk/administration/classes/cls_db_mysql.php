@@ -1,4 +1,5 @@
 <?php
+// $Id$
 
 class DB_Sql {
 	
@@ -408,6 +409,8 @@ class DB_Sql {
 
 	
 	function haltmsg($msg) {
+        v_array($this->Query);
+        v_array($this->Error, 1);
 	    echo '<div style="font-size: 12px; color: #000; background-color: #fff;">Some error occured.</div>';
 	    $error_msg = sprintf('
             LINK: http://%s 

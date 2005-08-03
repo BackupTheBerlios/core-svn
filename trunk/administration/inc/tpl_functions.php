@@ -1,4 +1,5 @@
 <?php
+// $Id$
 
 function tpl_message($msg, $msg_intro = '', $parse_tag = 'MESSAGE') {
     global $ft;

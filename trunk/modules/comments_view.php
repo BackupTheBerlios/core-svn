@@ -1,4 +1,5 @@
 <?php
+// $Id$
 
 if(is_numeric($_GET['id'])) {
 

@@ -1,3 +1,5 @@
+-- $Id$
+
 DROP TABLE `core_counter`;
 
 DROP TABLE `core_session`;

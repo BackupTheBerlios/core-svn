@@ -1,4 +1,5 @@
 <?php
+// $Id$
 
 class db_config {
     

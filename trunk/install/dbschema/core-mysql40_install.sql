@@ -1,3 +1,5 @@
+-- $Id$
+
 CREATE TABLE core_category (
   category_id mediumint(7) NOT NULL auto_increment,
   category_parent_id mediumint(7) NOT NULL default '0',

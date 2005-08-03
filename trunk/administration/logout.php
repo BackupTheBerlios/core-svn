@@ -1,4 +1,5 @@
 <?php
+// $Id$
 
 session_register("login");
 session_register("loggedIn");

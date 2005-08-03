@@ -1,4 +1,5 @@
 <?php
+// $Id$
 
 $date = explode('-', $_GET['date']);
 

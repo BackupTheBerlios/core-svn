@@ -1,4 +1,5 @@
 <?php
+// $Id$
 
 if(empty($_GET['id'])) {
     // jesli ktos probuje grzebac w adresie url

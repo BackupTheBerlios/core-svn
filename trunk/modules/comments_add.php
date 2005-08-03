@@ -1,4 +1,5 @@
 <?php
+// $Id$
 
 // dekalracja zmiennej $page_string
 $page_string        = empty($page_string) ? '' : $page_string;
