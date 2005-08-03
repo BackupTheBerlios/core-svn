@@ -152,7 +152,7 @@ if (isset($_POST['sub_preview']) || isset($_POST['sub_commit']) || isset($_POST[
 
     $ft->assign(array(
         'N_TITLE'       =>stripslashes($title), 
-        'N_TEXT'        =>br2nl($text), 
+        'N_TEXT'        =>str_br2nl($text), 
         'NT_TEXT'       =>nl2br(parse_markers($text, 1)), 
         'NOTE_PREVIEW'  =>true
     ));
@@ -208,44 +208,7 @@ if (isset($_SESSION['addNote_fileName'])) {
 
 
 
-//lista kategorii
 $ft->define('form_noteadd', 'form_noteadd.tpl');
-$ft->define_dynamic('cat_row', 'form_noteadd');
-
-$query = sprintf("
-    SELECT 
-        category_id, 
-        category_parent_id,
-        category_name 
-    FROM 
-        %1\$s 
-    WHERE 
-        category_parent_id = 0
-    ORDER BY 
-        category_id 
-    ASC", 
-
-    TABLE_CATEGORY
-);
-
-$db->query($query);
-
-while($db->next_record()) {
-
-    $cat_id = $db->f('category_id');
-
-    $ft->assign(array(
-        'C_ID'		    =>$cat_id,
-        'C_NAME'        =>$db->f('category_name'), 
-        'CURRENT_CAT'   =>in_array($cat_id, $current_cat_id) ? 'checked="checked"' : '', 
-        'PAD'           =>''
-    ));
-
-    $ft->parse('CAT_ROW', '.cat_row');
-
-    get_addcategory_assignedcat($cat_id, 2);
-}
-
 $ft->assign(array(
     'ONLY_IN_CAT_Y'     => $oic_y,
     'ONLY_IN_CAT_N'     => $oic_n,
@@ -258,17 +221,24 @@ $ft->assign(array(
     'DATE_DISABLED'     => $date_disabled,
     'DATE_NOW'          => $date_now
 ));
-
+unset($oic_y, $oic_n, $ca_y, $ca_n, $p_y, $p_n);
 
 
 //wyswietlamy jakis komunikat ?
-if (isset($_GET['msg'])) {
+if (isset($_GET['msg']) && is_numeric($_GET['msg'])) {
     $monit[] = $i18n['add_note'][$_GET['msg']];
 }
 if (count($monit)) {
     tpl_message($monit);
 }
 
-$ft->parse('ROWS', 'form_noteadd');
+
+//lista kategorii
+$cats = db_get_categories();
+tpl_categories('CATEGORIES', $cats, 0, $current_cat_id);
+
+
+
+$ft->parse('ROWS', '.form_noteadd');
 
 ?>
