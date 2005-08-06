@@ -258,7 +258,7 @@ function search_pagination_link($rewrite, $word) {
 // date link
 function date_link($rewrite, $month, $day) {
     
-    $date_link = (bool)$rewrite ? sprintf('<a href="date/%s-%s">%s</a>', $month, $day, $day) : sprintf('<a href="index.php?p=9&amp;date=%s-%s">%s</a>', $month, $day, $day);
+    $date_link = (bool)$rewrite ? sprintf('<a href="' .SITE_ROOT . '/date/%s-%s">%s</a>', $month, $day, $day) : sprintf('<a href="' .SITE_ROOT . '/index.php?p=9&amp;date=%s-%s">%s</a>', $month, $day, $day);
     
     return $date_link;
 }
