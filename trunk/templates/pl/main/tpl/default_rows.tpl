@@ -1,16 +1,16 @@
 <!-- BEGIN DYNAMIC BLOCK: note_row -->
-<a class="date" href="{PERMA_LINK}">{DATE}</a><br />
+<a class="date" href="{SITE_ROOT}/{PERMA_LINK}">{DATE}</a><br />
 <b>{NEWS_TITLE}</b><br /><br />
 {NEWS_TEXT}<br />
 <!-- IFDEF: IMAGE_EXIST -->
     <!-- IFDEF: IMAGE_NAME -->
     <div align="center">
-	   <img alt="./dev-log" src="photos/{IMAGE_NAME}" width="{WIDTH}" height="{HEIGHT}" style="padding: 7px;" />
+	   <img alt="./dev-log" src="{SITE_ROOT}/photos/{IMAGE_NAME}" width="{WIDTH}" height="{HEIGHT}" style="padding: 7px;" />
     </div>
     <!-- ELSE -->
     <div id="image">
 	   Obrazek do³±czony do wpisu jest za du¿y, aby go tu wy¶wietliæ. 
-	   <a href="javascript:foto('{PHOTO_LINK}', {WIDTH}, {HEIGHT});">Zobacz</a> go 
+	   <a href="javascript:foto('{SITE_ROOT}/{PHOTO_LINK}', {WIDTH}, {HEIGHT});">Zobacz</a> go 
 	   w nowym oknie.
     </div>
     <!-- ENDIF -->
@@ -20,9 +20,9 @@
 <div class="right">
 <!-- IFDEF: COMMENTS_ALLOW -->
     <!-- IFDEF: COMMENTS -->
-    <a class="comments" href="{COMMENTS_LINK}">komentarze ({COMMENTS})</a>
+    <a class="comments" href="{SITE_ROOT}/{COMMENTS_LINK}">komentarze ({COMMENTS})</a>
     <!-- ELSE -->
-    <a class="comments" href="{COMMENTS_LINK}">skomentuj ten post</a>
+    <a class="comments" href="{SITE_ROOT}/{COMMENTS_LINK}">skomentuj ten post</a>
     <!-- ENDIF -->
 <!-- ELSE -->
 
@@ -34,7 +34,7 @@
 <div class="category">
 	<b>Kategoria:</b>
 	<!-- BEGIN DYNAMIC BLOCK: cat_row -->
-	<a href="{CATEGORY_LINK}">{CATEGORY_NAME}</a>{COMMA}
+	<a href="{SITE_ROOT}/{CATEGORY_LINK}">{CATEGORY_NAME}</a>{COMMA}
 	<!-- END DYNAMIC BLOCK: cat_row -->
 </div>
 <!-- IFDEF: RETURN -->

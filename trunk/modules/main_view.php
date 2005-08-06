@@ -1,7 +1,7 @@
 <?php
 // $Id$
 
-$pagination_link    = (bool)$rewrite ? 'index.' : 'index.php?p=all&amp;start=';
+$pagination_link    = (bool)$rewrite ? 'offset/' : 'index.php?p=all&amp;start=';
 $mainposts_per_page = get_config('mainposts_per_page');
 
 // zliczamy posty

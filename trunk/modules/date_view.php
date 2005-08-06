@@ -57,11 +57,9 @@ if($db->num_rows() > 0) {
 	    $comments          = $db->f("comments");
 	    
 	    list_assigned_categories($id);
-	    
-	    $perma_link = (bool)$rewrite ? sprintf('1,%s,1,item.html', $id) : 'index.php?p=1&amp;id=' . $id;
         
         $text = preg_replace("/\[code:\"?([a-zA-Z0-9\-_\+\#\$\%]+)\"?\](.*?)\[\/code\]/sie", "highlighter('\\2', '\\1')", $text);
-        $text   = show_me_more($text);
+        $text = show_me_more($text);
 	    
 	    $ft->assign(array(
             'DATE'          =>$date,
@@ -70,7 +68,7 @@ if($db->num_rows() > 0) {
             'NEWS_AUTHOR'   =>$author,
             'NEWS_ID'       =>$id,
             'NEWS_CATEGORY' =>$c_id,
-            'PERMA_LINK'    =>$perma_link, 
+            'PERMA_LINK'    =>perma_link($rewrite, $id), 
             'STRING'        =>'', 
             'PAGINATED'     =>false, 
             'MOVE_BACK'     =>false, 

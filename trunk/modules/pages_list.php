@@ -27,12 +27,9 @@ if($db->num_rows() > 0) {
         $page_name 	= $db->f("title");
         $separately = $db->f("node_separately");
         
-        $page_link  = (bool)$rewrite ? sprintf('1,%s,5,item.html', $page_id) : 'index.php?p=5&amp;id=' . $page_id;
-
-        
         $ft->assign(array(
             'PAGE_NAME' =>$page_name,
-            'PAGE_LINK' =>$page_link,
+            'PAGE_LINK' =>page_link($rewrite, $page_id),
             'CLASS'     =>"parent",
             'PARENT'    =>''
         ));
@@ -116,11 +113,9 @@ if(isset($_GET['id']) && $_GET['p'] == 5 || (isset($start_page_type) && $start_p
                 $subparent_id 	= $db->f("parent_id");
                 $subpage_name 	= $db->f("title");
         
-                $subpage_link  = (bool)$rewrite ? sprintf('1,%s,5,item.html', $subpage_id) : 'index.php?p=5&amp;id=' . $subpage_id;
-        
                 $ft->assign(array(
                     'SUBPAGE_NAME'  =>$subpage_name,
-                    'SUBPAGE_LINK'  =>$subpage_link,
+                    'SUBPAGE_LINK'  =>page_link($rewrite, $subpage_id),
                     'CLASS'         =>"parent",
                     'PARENT'        =>''
                 ));

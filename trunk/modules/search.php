@@ -8,7 +8,6 @@ $page_string = empty($page_string) ? '' : $page_string;
 
 // inicjowanie zmiennej przechowuj±cej szukan± frazê
 $search_word = trim($_REQUEST['search_word']);
-$search_link = (bool)$rewrite ? sprintf('search.%s.', $search_word) : sprintf('index.php?p=8&search_word=%s&amp;start=', $search_word);
 
 $mainposts_per_page = get_config('mainposts_per_page');
 
@@ -41,7 +40,7 @@ $db->next_record();
 $num_items = $db->f("0");
 
 // inicjowanie funkcji stronnicuj±cej wpisy
-$pagination = pagination($search_link, $mainposts_per_page, $num_items);
+$pagination = pagination(search_pagination_link($rewrite, $search_word), $mainposts_per_page, $num_items);
 
 if(!empty($search_word)) {
 	

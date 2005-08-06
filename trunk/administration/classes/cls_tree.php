@@ -48,14 +48,13 @@ class tree {
             $page_id 	= $this->view->db->f("id");
             $parent_id 	= $this->view->db->f("parent_id");
             $page_name 	= $this->view->db->f("title");
-            $page_link  = (bool)$rewrite ? '1,' . $page_id . ',5,item.html' : 'index.php?p=5&amp;id=' . $page_id . '';
             
             $ft->assign(array(
                 'PAGE_NAME' =>$page_name,
                 'PAGE_ID'   =>$page_id,
                 'CLASS'     =>"child",
                 'PARENT'    =>str_repeat('&nbsp; ', $level), 
-                'PAGE_LINK' =>$page_link
+                'PAGE_LINK' =>page_link($rewrite, $page_id)
             ));
             
             $ft->parse('PAGES_ROW', ".pages_row");
@@ -100,14 +99,13 @@ class tree {
             $subpage_id     = $this->view->db->f("id");
             $subparent_id   = $this->view->db->f("parent_id");
             $subpage_name   = $this->view->db->f("title");
-            $subpage_link   = (bool)$rewrite ? '1,' . $subpage_id . ',5,item.html' : 'index.php?p=5&amp;id=' . $subpage_id . '';
             
             $ft->assign(array(
                 'SUBPAGE_NAME'  =>$subpage_name,
                 'SUBPAGE_ID'    =>$subpage_id,
                 'CLASS'         =>"child",
                 'PARENT'        =>str_repeat('&nbsp; ', $level), 
-                'SUBPAGE_LINK'  =>$subpage_link
+                'SUBPAGE_LINK'  =>page_link($rewrite, $subpage_id)
             ));
             
             $ft->parse('SUBPAGES_ROW', ".subpages_row");
@@ -150,14 +148,13 @@ class tree {
             $cat_id           = $this->view->db->f("category_id");
             $cat_parent_id    = $this->view->db->f("category_parent_id");
             $cat_name         = $this->view->db->f("category_name");
-            $cat_link         = (bool)$rewrite ? '1,' . $cat_id . ',4,item.html' : 'index.php?p=4&amp;id=' . $cat_id . '';
             
             $ft->assign(array(
                 'CAT_NAME'  =>$cat_name,
                 'NEWS_CAT'  =>$cat_id,
                 'CLASS'     =>"cat_child",
                 'PARENT'    =>str_repeat('&nbsp; ', $level), 
-                'CAT_LINK'  =>$cat_link
+                'CAT_LINK'  =>category_link($rewrite, $cat_id)
             ));
             
             $ft->parse('CATEGORY_ROW', ".category_row");
@@ -202,14 +199,13 @@ class tree {
             $page_id    = $this->view->db->f("id");
             $parent_id 	= $this->view->db->f("parent_id");
             $page_name 	= $this->view->db->f("title");
-            $page_link  = (bool)$rewrite ? '1,' . $page_id . ',5,item.html' : 'index.php?p=5&amp;id=' . $page_id . '';
             
             $ft->assign(array(
                 'PAGE_TITLE'    =>$page_name,
                 'PAGE_ID'       =>$page_id,
                 'CLASS'         =>"child",
                 'PARENT'        =>str_repeat('&nbsp; ', $level), 
-                'PAGE_LINK'     =>$page_link
+                'PAGE_LINK'     =>page_link($rewrite, $page_id)
             ));
         
             $pages_sort[]   = $page_name;

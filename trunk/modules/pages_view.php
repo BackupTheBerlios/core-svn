@@ -66,14 +66,9 @@ if($db->num_rows() !== 0) {
 
     // parsujemy menu na podstawie tablicy
     foreach ($pages_sort as $pid => $ptitle) {
-    
-        if ((bool)$rewrite) {
-            $page_link  = sprintf('1,%s,5,item.html', $pages_id[$pid]);
-        } else {
-            $page_link  = 'index.php?p=5&amp;id=' . $pages_id[$pid];
-        }
+        
         $ft->assign(array(
-            'PAGE_LINK'   =>$page_link, 
+            'PAGE_LINK'   =>page_link($rewrite, $pages_id[$pid]), 
             'PAGE_TITLE'  =>$ptitle
         ));
     
@@ -97,17 +92,11 @@ if($db->num_rows() !== 0) {
             
             list($width, $height) = getimagesize($img_path);
             
-            if ((bool)$rewrite) {
-                $photo_link = 'photo?p=5&amp;id=' . $id;
-            } else {
-                $photo_link = 'photo.php?p=5&amp;id=' . $id;
-            }
-            
             // wysoko¶æ, szeroko¶æ obrazka
             $ft->assign(array(
                 'WIDTH'         =>$width,
                 'HEIGHT'        =>$height,
-                'PHOTO_LINK'    =>$photo_link
+                'PHOTO_LINK'    =>page_photo_link($rewrite, $id)
             ));
             
             if($width > $max_photo_width) {

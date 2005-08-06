@@ -2,8 +2,6 @@
 // $Id$
 
 if(is_numeric($id)) {
-
-    $cat_pagination_link = (bool)$rewrite ? 'category.' . $id . '.' : 'index.php?p=4&id=' . $id . '&amp;start=';
     
     // zliczamy liczbe postow na strone
     $query = sprintf("
@@ -51,7 +49,7 @@ if(is_numeric($id)) {
 	$num_items = $db->f("0");
 
     // inicjowanie funkcji stronnicujacej wpisy
-    $pagination = pagination($cat_pagination_link, $mainposts_per_page, $num_items);
+    $pagination = pagination(category_pagination_link($rewrite, $id), $mainposts_per_page, $num_items);
 
     // pobieramy nazwê szablonu jaki przydzielony jest do danej kategorii
     $query = sprintf("

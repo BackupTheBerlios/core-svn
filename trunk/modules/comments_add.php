@@ -53,19 +53,13 @@ switch($action) {
             );
 
             $db->query($query);
-            
-            if ((bool)$rewrite) {
-                $submit_link = '1,' . $_POST['id'] . ',2,item.html';
-            } else {
-                $submit_link = 'index.php?p=2&amp;id=' . $_POST['id'] . '';
-            }
 
             // przydzielamy zmienne i parsujemy szablon
             $ft->assign(array(
                 'NEWS_ID'       =>$_POST['id'],
                 'STRING'        =>'',
                 'CONFIRMATION'  =>$i18n['comments_add'][2], 
-                'SUBMIT_LINK'   =>$submit_link
+                'SUBMIT_LINK'   =>showcomments_link($rewrite, $_POST['id'])
             ));
 
             $ft->assign('SHOW_COMMENT_FORM', false);
@@ -136,14 +130,6 @@ switch($action) {
             $title  = $db->f('title');
             $text   = $db->f('text');
             $author = $db->f('author');
-            
-            if((bool)$rewrite) {
-                $perma_link = '1,' . $id . ',1,item.html';
-                $form_link  = '1,3,item.html';
-            } else {
-                $perma_link = 'index.php?p=1&amp;id=' . $id . '';
-                $form_link  = 'index.php?p=3&amp;action=add';
-            }
 
             // przypisanie tablicy szablonów::ft
             $ft->assign(array(
@@ -154,8 +140,8 @@ switch($action) {
                 'COMMENT_AUTHOR'    =>$comment_author,
                 'QUOTE'             =>sprintf('[quote]%s[/quote]', strip_tags(str_br2nl($cite))),
                 'STRING'            =>'',
-                'PERMA_LINK'        =>$perma_link,
-                'FORM_LINK'         =>$form_link
+                'PERMA_LINK'        =>perma_link($rewrite, $id),
+                'FORM_LINK'         =>form_link($rewrite)
             ));
         } else {
 
@@ -179,14 +165,6 @@ switch($action) {
             $title  = $db->f('title');
             $text   = $db->f('text');
             $author = $db->f('author');
-            
-            if((bool)$rewrite) {
-                $perma_link = sprintf('1,%s,1,item.html', $id);
-                $form_link  = '1,3,item.html';
-            } else {
-                $perma_link = 'index.php?p=1&amp;id=' . $id;
-                $form_link  = 'index.php?p=3&amp;action=add';
-            }
 
             // przypisanie tablicy szablonów::ft
             $ft->assign(array(
@@ -197,8 +175,8 @@ switch($action) {
                 'QUOTE'             =>'',
                 'COMMENT_AUTHOR'    =>$comment_author,
                 'STRING'            =>'', 
-                'PERMA_LINK'        =>$perma_link, 
-                'FORM_LINK'         =>$form_link
+                'PERMA_LINK'        =>perma_link($rewrite, $id), 
+                'FORM_LINK'         =>form_link($rewrite)
             ));
         }
         

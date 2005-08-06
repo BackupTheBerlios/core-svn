@@ -80,13 +80,9 @@ $val    = empty($val) ? '' : $val;
 if ((bool)$rewrite) {
     $rss_link       = './rss';
     $rssc_link      = './rsscomments';
-    $search_link    = 'index.search';
-    $cat_all_link   = '1,0,all,item.html';
 } else {
     $rss_link       = './rss.php';
     $rssc_link      = './rsscomments.php';
-    $search_link    = 'index.php?p=8';
-    $cat_all_link   = 'index.php?p=all';
 }
 
 $ft->assign(array(
@@ -95,11 +91,12 @@ $ft->assign(array(
     'ENGINE_VERSION'    =>$i18n['index'][1], 
     'RSS_LINK'          =>$rss_link,
     'RSSCOMMENTS_LINK'  =>$rssc_link, 
-    'SEARCH_LINK'       =>$search_link,
-    'CAT_ALL_LINK'      =>$cat_all_link,
+    'SEARCH_LINK'       =>search_link($rewrite),
+    'CAT_ALL_LINK'      =>category_all_link($rewrite),
     'CORE_VERSION'      =>$db_conf->get_config('core_version'), 
     'LANG'              =>$lang, 
-    'THEME'             =>$theme
+    'THEME'             =>$theme,
+    'SITE_ROOT'         =>SITE_ROOT
 ));
 
 if(!isset($_GET['p'])) {
@@ -178,13 +175,11 @@ $ft->define_dynamic("alternate_design_row", $assigned_tpl);
 while($d = $read_dir->read()) {
     if($d[0] != '.') {
 
-        // link do alternatywnego szablonu
-        $template_link = (bool)$rewrite ? sprintf('2,%s,item.html', $d) : 'design.php?issue=' . $d;
-
         $ft->assign(array(
             'ALTERNATE_TEMPLATE'    =>$d,
-            'TEMPLATE_LINK'         =>$template_link
+            'TEMPLATE_LINK'         =>template_switcher_link($rewrite, $d)
         ));
+        
         $ft->parse('ALTERNATE_DESIGN_ROW', ".alternate_design_row");
     }
 }

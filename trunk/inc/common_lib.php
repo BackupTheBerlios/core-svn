@@ -232,7 +232,7 @@ function pagination($url, $mainposts_per_page, $num_items) {
 	if($total_pages > 6) {
 	    $init_page_max = ($total_pages > 3) ? 3 : $total_pages;
 	    for($i = 1; $i < $init_page_max + 1; $i++) {
-	        $page_string .= ($i == $on_page) ? '<b>' . $i . '</b>' : '<a href="' . $url . (($i - 1) * $mainposts_per_page) . '">' . $i . '</a>';
+	        $page_string .= ($i == $on_page) ? '<b>' . $i . '</b>' : '<a href="' . SITE_ROOT . '/' . $url . (($i - 1) * $mainposts_per_page) . '">' . $i . '</a>';
 	        if($i <  $init_page_max) {
 	            $page_string .= ", ";
 	        }
@@ -246,7 +246,7 @@ function pagination($url, $mainposts_per_page, $num_items) {
 	            $init_page_max = ($on_page < $total_pages - 4) ? $on_page : $total_pages - 4;
 	            
 	            for($i = $init_page_min - 1; $i < $init_page_max + 2; $i++) {
-	                $page_string .= ($i == $on_page) ? '<b>' . $i . '</b>' : '<a href="' . $url . (($i - 1) * $mainposts_per_page) . '">' . $i . '</a>';
+	                $page_string .= ($i == $on_page) ? '<b>' . $i . '</b>' : '<a href="' . SITE_ROOT . '/' . $url . (($i - 1) * $mainposts_per_page) . '">' . $i . '</a>';
 	                if($i < $init_page_max + 1) {
 	                    $page_string .= ', ';
 	                }
@@ -258,7 +258,7 @@ function pagination($url, $mainposts_per_page, $num_items) {
 	        }
 	        
 	        for($i = $total_pages - 2; $i < $total_pages + 1; $i++) {
-	            $page_string .= ($i == $on_page) ? '<b>' . $i . '</b>'  : '<a href="' . $url . (($i - 1) * $mainposts_per_page) . '">' . $i . '</a>';
+	            $page_string .= ($i == $on_page) ? '<b>' . $i . '</b>'  : '<a href="' . SITE_ROOT . '/' . $url . (($i - 1) * $mainposts_per_page) . '">' . $i . '</a>';
 	            if($i < $total_pages) {
 	                $page_string .= ", ";
 	            }
@@ -267,7 +267,7 @@ function pagination($url, $mainposts_per_page, $num_items) {
 	} else {
 	    
 	    for($i = 1; $i < $total_pages + 1; $i++) {
-	        $page_string .= ($i == $on_page) ? '<b>' . $i . '</b>' : '<a href="' . $url . (($i - 1) * $mainposts_per_page) . '">' . $i . '</a>';
+	        $page_string .= ($i == $on_page) ? '<b>' . $i . '</b>' : '<a href="' . SITE_ROOT . '/' . $url . (($i - 1) * $mainposts_per_page) . '">' . $i . '</a>';
 	        if($i <  $total_pages) {
 	            $page_string .= ', ';
 	        }
