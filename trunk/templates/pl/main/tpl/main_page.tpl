@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 	<head>
 		<title>{TITLE}</title>
-		<link rel="alternate" title="./dev-log RSS Newsfeed" href="/rss" type="application/rss+xml" />
+		<link rel="alternate" title="./dev-log RSS Newsfeed" href="{SITE_ROOT}/rss" type="application/rss+xml" />
 
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2" />
 		<meta http-equiv="Content-language" content="pl" />
@@ -92,7 +92,7 @@
 		<span class="title">wyszukaj</span>
 		<br /><br />
 		Interesującą Cię frazę wpisz w pole formularza.<br />
-		<form style="margin-top:5px;" method="post" action="{SEARCH_LINK}" id="formSearch">
+		<form style="margin-top:5px;" method="post" action="{SITE_ROOT}/{SEARCH_LINK}" id="formSearch">
 			<input class="left" type="text" name="search_word" size="25" maxlength="255" /><br />
 			<div class="right">
               <a href="#" onclick="document.getElementById('formSearch').submit()">wyszukaj</a>
