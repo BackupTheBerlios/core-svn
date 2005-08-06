@@ -94,10 +94,9 @@ if(!empty($search_word)) {
 			// usuwamy <a />
 			$text = preg_replace('/(?is)(<\/?(?:a)(?:|\s.*?)>)/', '', $text);
 			
-			$comments 	= $db->f("comments");
+			$comments = $db->f("comments");
 			
             list_assigned_categories($id);
-            $perma_link = (bool)$rewrite ? sprintf('1,%s,1,item.html', $id) : 'index.php?p=1&amp;id=' . $id;
 			
 			$text = preg_replace("/\[code:\"?([a-zA-Z0-9\-_\+\#\$\%]+)\"?\](.*?)\[\/code\]/sie", "highlighter('\\2', '\\1')", $text);
 			
@@ -107,7 +106,7 @@ if(!empty($search_word)) {
                 'NEWS_TEXT'			=>$search->highlight($search_word, $text),
                 'NEWS_AUTHOR'		=>$author,
                 'NEWS_ID'			=>$id,
-                'PERMA_LINK'        =>$perma_link, 
+                'PERMA_LINK'        =>perma_link($rewrite, $id), 
                 'PAGINATED'         =>!empty($pagination['page_string']) ? true : false, 
                 'STRING'            =>$pagination['page_string']
             ));

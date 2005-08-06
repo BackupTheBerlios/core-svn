@@ -322,4 +322,13 @@ function coreMakeClickable($text) {
 	return($text);
 }
 
+
+// news permanent link
+function perma_link($rewrite, $id) {
+    
+    $perma_link = (bool)$rewrite ? sprintf('%s', $id) : 'index.php?p=1&amp;id=' . $id;
+    
+    return $perma_link;
+}
+
 ?>

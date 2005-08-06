@@ -141,10 +141,9 @@ if(is_numeric($id)) {
             $comments       = $db->f('comments');
             
             list_assigned_categories($id);
-            $perma_link = (bool)$rewrite ? sprintf('1,%s,1,item.html', $id) : 'index.php?p=1&amp;id=' . $id;
             
             $text = preg_replace("/\[code:\"?([a-zA-Z0-9\-_\+\#\$\%]+)\"?\](.*?)\[\/code\]/sie", "highlighter('\\2', '\\1')", $text);
-            $text   = show_me_more($text);
+            $text = show_me_more($text);
             
             $ft->assign(array(
                 'DATE'              =>$date,
@@ -152,7 +151,7 @@ if(is_numeric($id)) {
                 'NEWS_TEXT'         =>$text,
                 'NEWS_AUTHOR'       =>$author,
                 'NEWS_ID'           =>$id,
-                'PERMA_LINK'        =>$perma_link, 
+                'PERMA_LINK'        =>perma_link($rewrite, $id), 
                 'PAGINATED'         =>!empty($pagination['page_string']) ? true : false, 
                 'STRING'            =>$pagination['page_string']
             ));

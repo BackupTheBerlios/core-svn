@@ -128,7 +128,7 @@ class xml_feed {
                 if((bool)$this->rewrite) {
             
                     $comments_link  = sprintf('%s1,%s,2,item.html', $this->http_root, $id);
-                    $permanent_link = sprintf('%s1,%s,1,item.html', $this->http_root, $id);
+                    $permanent_link = sprintf('%s%s', $this->http_root, $id);
                 } else {
 
                     $comments_link  = sprintf('%sindex.php?p=2&amp;id=%s', $this->http_root, $id);
