@@ -88,7 +88,6 @@ if ((bool)$rewrite) {
 $ft->assign(array(
     'TITLE'             =>$db_conf->get_config('title_page'),
     'STATISTICS'        =>$db_conf->get_config('counter'),
-    'ENGINE_VERSION'    =>$i18n['index'][1], 
     'RSS_LINK'          =>$rss_link,
     'RSSCOMMENTS_LINK'  =>$rssc_link, 
     'SEARCH_LINK'       =>search_link($rewrite),
