@@ -25,5 +25,5 @@ RewriteRule ^photo/([0-9]+)? photo.php?id=$1 [L]               # photo link
 RewriteRule ^page/photo/([0-9]+)? photo.php?p=5&id=$1 [L]      # page photo link
 
 RewriteRule ^all/? index.php?p=all [L]
-RewriteRule ^rss/? rss.php [L]
-RewriteRule ^rsscomments/? rsscomments.php [L]
+RewriteRule ^rss$ rss.php [L]
+RewriteRule ^rsscomments$ rsscomments.php [L]

@@ -175,6 +175,15 @@ function perma_link($rewrite, $id) {
 }
 
 
+// pagination link
+function pagination_link($rewrite) {
+    
+    $pagination_link = (bool)$rewrite ? 'offset/' : 'index.php?p=all&amp;start=';
+    
+    return $pagination_link;
+}
+
+
 // category link
 function category_link($rewrite, $id) {
     

@@ -1,7 +1,6 @@
 <?php
 // $Id$
 
-$pagination_link    = (bool)$rewrite ? 'offset/' : 'index.php?p=all&amp;start=';
 $mainposts_per_page = get_config('mainposts_per_page');
 
 // zliczamy posty
@@ -26,7 +25,7 @@ $db->next_record();
 $num_items = $db->f("0");
 
 // inicjowanie funkcji stronnicuj±cej wpisy
-$pagination = pagination($pagination_link, $mainposts_per_page, $num_items);
+$pagination = pagination(pagination_link($rewrite), $mainposts_per_page, $num_items);
 
 $query = sprintf("
 	SELECT 
