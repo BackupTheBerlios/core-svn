@@ -56,10 +56,10 @@ if($db->num_rows() > 0) {
 	    
 	    $comments          = $db->f("comments");
 	    
-	    list_assigned_categories($id);
+	    $news->list_assigned_categories($id);
         
         $text = preg_replace("/\[code:\"?([a-zA-Z0-9\-_\+\#\$\%]+)\"?\](.*?)\[\/code\]/sie", "highlighter('\\2', '\\1')", $text);
-        $text = show_me_more($text);
+        $text = $news->show_me_more($text);
 	    
 	    $ft->assign(array(
             'DATE'          =>$date,
@@ -75,8 +75,8 @@ if($db->num_rows() > 0) {
             'MOVE_FORWARD'  =>false
 	    ));
 	    
-	    get_comments_link($comments_allow, $comments, $id);
-	    get_image_status($image, $id);
+	    $news->get_comments_link($comments_allow, $comments, $id);
+	    $news->get_image_status($image, $id);
 	    
 	    $ft->assign('RETURN', '');
 	    $ft->parse('MAIN', ".note_row");

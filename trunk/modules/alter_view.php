@@ -49,7 +49,7 @@ if($db->num_rows() > 0) {
     
     $ft->define_dynamic("cat_row", "rows");
     
-    list_assigned_categories($id);
+    $news->list_assigned_categories($id);
 	
 	$text = preg_replace("/\[code:\"?([a-zA-Z0-9\-_\+\#\$\%]+)\"?\](.*?)\[\/code\]/sie", "highlighter('\\2', '\\1')", $text);
 
@@ -66,8 +66,8 @@ if($db->num_rows() > 0) {
         'MOVE_FORWARD'  =>false
     ));
 
-    get_comments_link($comments_allow, $comments, $id);
-    get_image_status($image, $id);
+    $news->get_comments_link($comments_allow, $comments, $id);
+    $news->get_image_status($image, $id);
     
     // definiujemy blok dynamiczny szablonu
     $ft->define_dynamic("note_row", "rows");

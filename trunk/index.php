@@ -24,7 +24,8 @@ $required_classes = array(
     'calendar', 
     'view', 
     'tree', 
-    'db_config'
+    'db_config', 
+    'news'
 );
 
 while(list($c) = each($required_classes)) {
@@ -35,6 +36,7 @@ $view       =& view::instance();
 $tree       =& new tree;
 $db         =& new DB_Sql;
 $db_conf    =& new db_config;
+$news       =& new news;
 
 $rewrite            = $db_conf->get_config('mod_rewrite');
 $max_photo_width    = $db_conf->get_config('max_photo_width');
