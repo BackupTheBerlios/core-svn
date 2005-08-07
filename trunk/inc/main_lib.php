@@ -195,7 +195,7 @@ function category_link($rewrite, $id) {
 // category pagination link
 function category_pagination_link($rewrite, $id) {
     
-    $category_pagination_link = (bool)$rewrite ? sprintf('category-offset/%s/', $id) : 'index.php?p=4&amp;id=' . $id . '&amp;start=';
+    $category_pagination_link = (bool)$rewrite ? sprintf('category/%s/', $id) : 'index.php?p=4&amp;id=' . $id . '&amp;start=';
     
     return $category_pagination_link;
 }
@@ -204,7 +204,7 @@ function category_pagination_link($rewrite, $id) {
 // comments quote link
 function comments_quote_link($rewrite, $comments_id, $id) {
     
-    $comments_quote_link = (bool)$rewrite ? sprintf('quote/%s/addcomments/%s', $id, $comments_id) : sprintf('index.php?p=3&amp;id=%s&amp;c=%s', $comments_id, $id);
+    $comments_quote_link = (bool)$rewrite ? sprintf('addcomments/%s/quote/%s/', $comments_id, $id) : sprintf('index.php?p=3&amp;id=%s&amp;c=%s', $comments_id, $id);
     
     return $comments_quote_link;
 }
@@ -240,7 +240,7 @@ function template_switcher_link($rewrite, $issue) {
 // search link
 function search_link($rewrite) {
     
-    $search_link = (bool)$rewrite ? 'searching' : 'index.php?p=8';
+    $search_link = (bool)$rewrite ? 'search' : 'index.php?p=8';
     
     return $search_link;
 }

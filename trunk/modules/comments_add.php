@@ -138,7 +138,7 @@ switch($action) {
                 'NEWS_TEXT'         =>$text, 
                 'NEWS_AUTHOR'       =>$author, 
                 'COMMENT_AUTHOR'    =>$comment_author,
-                'QUOTE'             =>sprintf('[quote]%s[/quote]', strip_tags(str_br2nl($cite))),
+                'QUOTE'             =>!empty($cite) ? sprintf('[quote]%s[/quote]', strip_tags(str_br2nl($cite))) : '',
                 'STRING'            =>'',
                 'PERMA_LINK'        =>perma_link($rewrite, $id),
                 'FORM_LINK'         =>form_link($rewrite)
