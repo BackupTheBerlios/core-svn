@@ -5,6 +5,7 @@
  * IMPORTANT: do not change include to require!
  *
  */
+
 @include_once('administration/inc/config.php');
 
 if(!defined('CORE_INSTALLED')) {
