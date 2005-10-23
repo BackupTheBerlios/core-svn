@@ -1,27 +1,29 @@
 <?php
 
-class CoreNews extends CoreBase
-{
+class CoreNews extends CoreBase {
+    
     var $news = array();
 
-    function CoreNews()
-    {
+    /*
+     * constructor
+     */
+    function CoreNews() {
+        
         CoreBase::CoreBase();
 
         global $permarr;
-        $this->permarr  = $permarr;
-
-        $this->db_config = $db_config =& new db_config;
+        $this->permarr      = $permarr;
+        $this->db_config    = $db_config =& new db_config;
     }
 
-    function news_add()
-    {
-        if ($this->is_error())
-        {
+    
+    function news_add() {
+        
+        if($this->is_error()) {
             return false;
         }
-        if (count($_POST) == 0)
-        {
+        
+        if(count($_POST) == 0) {
             $this->error_set('CoreNews::NewsAdd:: $_POST is empty.');
             return false;
         }
@@ -30,13 +32,13 @@ class CoreNews extends CoreBase
         $timestamp  = isset($_POST['now']) ? time() : null;
 
         //sprawdzamy czy ma uprawnienia do dodawania newsow
-        if(!$this->permarr['writer']) //ma uprawnienia ?
-        {
+        if(!$this->permarr['writer']) {
+            
             $this->error_set('CoreNews::NewsAdd:: ' . $this->i18n['add_note'][2]);
         }
+        
         //sprawdzamy czy format czasu jest prawid³owy
-        if (is_null($timestamp))
-        {
+        if(is_null($timestamp)) {
             $regexp = '/
                 ^
                 ([0-9]{4}) #rok (index:1)
@@ -53,12 +55,10 @@ class CoreNews extends CoreBase
                 $
                 /ix';
 
-            if (!preg_match($regexp, $_POST['date'], $date_match)) //wlasciwy format czasu ?
-            {
+            // wlasciwy format czasu ?
+            if(!preg_match($regexp, $_POST['date'], $date_match)) {
                 $this->error_set('CoreNews::NewsAdd:: ' . $this->i18n['add_note'][5]);
-            }
-            else
-            {
+            } else {
                 $timestamp = mktime(
                     (int)$date_match[4],
                     (int)$date_match[5],
@@ -70,73 +70,73 @@ class CoreNews extends CoreBase
                 );
             }
         }
-        //sprawdzamy czy news zosta³ przypisany do jakichs kategorii
-        if (!isset($_POST['assign2cat']) ||
-                !is_array($_POST['assign2cat']) ||
-                count($_POST['assign2cat']) == 0)
-        {
+        
+        // sprawdzamy czy news zosta³ przypisany do jakichs kategorii
+        if( !isset($_POST['assign2cat']) || 
+            !is_array($_POST['assign2cat']) || 
+            count($_POST['assign2cat']) == 0) {
+                
             $this->error_set('CoreNews::NewsAdd:: news must be assigned to at least one category.');
         }
 
-        if ( $this->is_error() )
-        { 
+        if($this->is_error()) { 
             return false;
         }
 
         //jesli nie ma bledow, to dodajemy
         //ukladamy wlasciwa tablice
         $news_data = array(
-            'id_cat'            => $_POST['assign2cat'],
-            'timestamp'         => $timestamp,
-            'title'             => $title,
-            'author'            => $_POST['author'],
-            'text'              => parse_markers($_POST['text'], 1),
-            'comments_allow'    => $_POST['comments_allow'],
-            'published'         => $_POST['published'],
-            'only_in_category'  => $_POST['only_in_category']
+            'id_cat'            =>$_POST['assign2cat'],
+            'timestamp'         =>$timestamp,
+            'title'             =>$title,
+            'author'            =>$_POST['author'],
+            'text'              =>parse_markers($_POST['text'], 1),
+            'comments_allow'    =>$_POST['comments_allow'],
+            'published'         =>$_POST['published'],
+            'only_in_category'  =>$_POST['only_in_category']
         );
 
         //let's do it
         $news = new News();
         $news->set_from_array($news_data);
         $test = $news->commit();
-        if (!$test) {
+        if(!$test) {
             $this->error_set($news->error_get());
             return false;
         }
 
         return true;
     }
-    function news_remove($id_list)                                   //TODO!!!
-    {
-        if (is_array($id_list))
-        {
-            while(list($k, $id) = each($id_list))
-            {
-                if (!$this->news[$id]->remove())
-                {
+    
+    
+    /**
+     * @param $id_list
+     */
+    function news_remove($id_list) { // TODO !!!
+    
+        if(is_array($id_list)) {
+            while(list($k, $id) = each($id_list)){
+                if(!$this->news[$id]->remove()) {
                     $this->error_set($this->news[$id]->error_get());
                 }
             }
-        }
-        else
-        {
-            if (!$this->news[$id_list]->remove())
-            {
+        } else {
+            if(!$this->news[$id_list]->remove()) {
                 $this->error_set($this->news[$id_list]->error_get());
             }
         }
 
         return !$this->is_error();
     }
-    function news_update()
-    {
-        if ($this->is_error())
-        {
+    
+    
+    function news_update() {
+        
+        if ($this->is_error()) {
             return false;
         }
-        if (count($_POST) == 0)
-        {
+        
+        if(count($_POST) == 0) {
             $this->error_set('CoreNews::NewsUpdate:: $_POST is empty.');
             return false;
         }
@@ -145,13 +145,12 @@ class CoreNews extends CoreBase
         $timestamp  = isset($_POST['now']) ? time() : null;
 
         //sprawdzamy czy ma uprawnienia do dodawania newsow
-        if(!$this->permarr['writer']) //ma uprawnienia ?
-        {
+        if(!$this->permarr['writer']) {
             $this->error_set('CoreNews::NewsUpdate:: ' . $this->i18n['update_note'][2]);
         }
+        
         //sprawdzamy czy format czasu jest prawid³owy
-        if (is_null($timestamp))
-        {
+        if(is_null($timestamp)){
             $regexp = '/
                 ^
                 ([0-9]{4}) #rok (index:1)
@@ -168,12 +167,10 @@ class CoreNews extends CoreBase
                 $
                 /ix';
 
-            if (!preg_match($regexp, $_POST['date'], $date_match)) //wlasciwy format czasu ?
-            {
+            // wlasciwy format czasu ?
+            if(!preg_match($regexp, $_POST['date'], $date_match)) {
                 $this->error_set('CoreNews::NewsUpdate:: ' . $this->i18n['update_note'][5]);
-            }
-            else
-            {
+            } else {
                 $timestamp = mktime(
                     (int)$date_match[4],
                     (int)$date_match[5],
@@ -185,79 +182,83 @@ class CoreNews extends CoreBase
                 );
             }
         }
+        
         //sprawdzamy czy news zosta³ przypisany do jakichs kategorii
-        if (!isset($_POST['assign2cat']) ||
-                !is_array($_POST['assign2cat']) ||
-                count($_POST['assign2cat']) == 0)
-        {
+        if( !isset($_POST['assign2cat']) || 
+            !is_array($_POST['assign2cat']) || 
+            count($_POST['assign2cat']) == 0) {
+                
             $this->error_set('CoreNews::NewsUpdate:: news must be assigned to at least one category.');
         }
 
-        if ( $this->is_error() )
-        { 
+        if($this->is_error()) { 
             return false;
         }
 
         //jesli nie ma bledow, to dodajemy
         //ukladamy wlasciwa tablice
         $news_data = array(
-            'id'                => $_POST['id'],
-            'id_cat'            => $_POST['assign2cat'],
-            'timestamp'         => $timestamp,
-            'title'             => $title,
-            'author'            => $_POST['author'],
-            'text'              => parse_markers($_POST['text'], 1),
-            'comments_allow'    => (bool)$_POST['comments_allow'],
-            'published'         => (bool)$_POST['published'],
-            'only_in_category'  => (bool)$_POST['only_in_category']
+            'id'                =>$_POST['id'],
+            'id_cat'            =>$_POST['assign2cat'],
+            'timestamp'         =>$timestamp,
+            'title'             =>$title,
+            'author'            =>$_POST['author'],
+            'text'              =>parse_markers($_POST['text'], 1),
+            'comments_allow'    =>(bool)$_POST['comments_allow'],
+            'published'         =>(bool)$_POST['published'],
+            'only_in_category'  =>(bool)$_POST['only_in_category']
         );
 
         //let's do it
         $news = new News();
         $news->set_from_array($news_data);
         $news->commit();
-        if ($news->is_error())
-        {
+        
+        if($news->is_error()) {
             $this->error_set($news->error_get());
             return false;
         }
 
         return true;
     }
-    function news_list($id_cat, $published=true, $comments_allow=null,
+    
+    
+    /**
+     * @param $id_cat
+     * @param $published
+     * @param $comments_allow
+     * @param $only_in_category
+     * @param $start
+     * @param $limit
+     * @param $order
+     */
+    function news_list($id_cat, $published = true, $comments_allow = null,
             $only_in_category=null, $start = 0, $limit = -1, $order = 'asc')
     {
         //sprawdzamy poprawnosc argumentow
-        if (
-                $start < 0 ||
-                ( $start > 0 && $limit < 0 )
-           )
-        {
+        if($start < 0 || ($start > 0 && $limit < 0)) {
             $this->error_set('CoreNews::NewsList:: incorrect values of $start and/or $limit.');
         }
-        if (!in_array($order, array('asc', 'desc')))
-        {
+        
+        if(!in_array($order, array('asc', 'desc'))) {
             $this->error_set('CoreNews::NewsList:: incorrect value of $order - none of "asc" or "desc".');
         }
-        if (!is_null($published))
-        {
+        
+        if(!is_null($published)) {
             $published = (bool)$published;
         }
-        if (!is_null($comments_allow))
-        {
+        
+        if(!is_null($comments_allow)) {
             $ca = (bool)$ca;
         }
-        if (!is_null($only_in_category))
-        {
+        
+        if(!is_null($only_in_category)) {
             $oic = (bool)$oic;
         }
 
-        if ($this->is_error())
-        {
+        if($this->is_error()) {
             return false;
         }
-
-
 
         //budowanie query
         $query = sprintf("
@@ -281,20 +282,16 @@ class CoreNews extends CoreBase
         //skracamy sprawdzanie po kolei warunkow if/elseif i wrzucamy
         //to w petle
         $keys = array('published', 'only_in_category', 'comments_allow');
-        foreach ($keys as $key)
-        {
+        foreach($keys as $key) {
+            
             $var = $$key;
-            if ($var === true)
-            {
+            if($var === true) {
                 $val = 1;
-            }
-            elseif ($var === false)
-            {
+            } elseif($var === false) {
                 $val = -1;
             }
 
-            if (!is_null($var))
-            {
+            if(!is_null($var)) {
                 $query .= sprintf("
                     %s
                         %s = %d",
@@ -309,8 +306,7 @@ class CoreNews extends CoreBase
         }
 
         //budowanie query cd: LIMIT
-        if ($limit > -1)
-        {
+        if($limit > -1) {
             $query .= sprintf("
                 LIMIT %d, %d",
 
@@ -327,16 +323,14 @@ class CoreNews extends CoreBase
         //dopiero dodajemy, w nastepnej petli iteracyjnej, liste kategorii
         //dopiero na koniec tworzymy obiekt klasy News
         $entries = array();
-        while ($this->db->next_record())
-        {
+        
+        while($this->db->next_record()) {
             $id = $this->db->f('id');
             $entries[$id] = $this->db->get_record();
         }
 
-
-
-        while (list($k,) = each($entries))
-        {
+        while(list($k,) = each($entries)) {
+            
             $id_cat = array();
             $query = sprintf("
                 SELECT
@@ -349,11 +343,13 @@ class CoreNews extends CoreBase
                 TABLE_ASSIGN2CAT,
                 $k
             );
+            
             $this->db->query($query);
-            while ($this->db->next_record())
-            {
+            
+            while($this->db->next_record()) {
                 $id_cat[] = $this->db->f('category_id');
             }
+            
             $entries[$k]['id_cat'] = $id_cat;
 
             $entries[$k]['published']           = ($entries[$k]['published']        == 1);
@@ -369,17 +365,26 @@ class CoreNews extends CoreBase
 
         return true;
     }
-    function news_get($id_news)
-    {
+    
+    
+    /**
+     * @param $id_news
+     */
+    function news_get($id_news) {
         $this->news[$id_news] =& new News($id_news);
+        
         krsort($this->news, SORT_NUMERIC);
         reset($this->news);
+        
         return true;
     }
-    function news_count($id_cat = null)
-    {
-        if (is_null($id_cat))
-        {
+    
+    
+    /**
+     * @param $id_cat
+     */
+    function news_count($id_cat = null) {
+        if(is_null($id_cat)) {
             $query = sprintf("
                 SELECT
                     COUNT(D.id) AS count
@@ -399,9 +404,7 @@ class CoreNews extends CoreBase
                TABLE_MAIN,
                TABLE_ASSIGN2CAT
             );
-        }
-        elseif (is_numeric($id_cat) && $id_cat > 0)
-        {
+        } elseif(is_numeric($id_cat) && $id_cat > 0) {
             $query = sprintf("
                 SELECT
                     COUNT(id) AS count
@@ -413,9 +416,7 @@ class CoreNews extends CoreBase
                TABLE_ASSIGN2CAT,
                $id_cat
             );
-        }
-        else
-        {
+        } else {
             $this->error_set('CoreNews::NewsCount:: incorrect category id.');
             return false;
         }
@@ -426,37 +427,44 @@ class CoreNews extends CoreBase
         return $this->db->f('count');
     }
 
-    function cmnt_add()
-    {
+    /**
+     *
+     */
+    function cmnt_add() {
         return true;
     }
-    function cmnt_remove($id_list, $type)
-    {
-        if (!in_array($type, array('news', 'comment')))
-        {
+    
+    
+    /**
+     * @param $id_list
+     * @param type
+     */
+    function cmnt_remove($id_list, $type) {
+        if(!in_array($type, array('news', 'comment'))) {
             return false;
         }
-        if (!is_array($id_list))
-        {
+        
+        if(!is_array($id_list)) {
             $id_list = array($id_list);
         }
 
-        switch ($type)
-        {
+        switch($type) {
             case 'news':
-                foreach ($id_list as $id)
-                {
+                foreach($id_list as $id) {
+                    
                     $cmnt = new Comment();
                     $cmnt->delByNewsId($id);
+                    
                     unset($cmnt);
                 }
                 break;
 
             case 'comment':
-                foreach ($id_list as $id)
-                {
+                foreach($id_list as $id) {
+                    
                     $cmnt = new Comment($id);
                     $cmnt->del($id);
+                    
                     unset($cmnt);
                 }
                 break;
@@ -464,25 +472,45 @@ class CoreNews extends CoreBase
 
         return true;
     }
-    function cmnt_update($id_cmnt)
-    {
+    
+    
+    /**
+     * @param $id_cmnt
+     */
+    function cmnt_update($id_cmnt) {
         return true;
     }
-    function cmnt_list($id_news, $start = 0, $limit = -1)
-    {
+    
+    
+    /**
+     * @param $id_news
+     * @param $start
+     * @param limit
+     */
+    function cmnt_list($id_news, $start = 0, $limit = -1) {
         return true;
     }
-    function cmnt_get()
-    {
+    
+    /**
+     *
+     */
+    function cmnt_get() {
         return true;
     }
-    function cmnt_count($id_news)
-    {
+    
+    
+    /**
+     * @param $id_news
+     */
+    function cmnt_count($id_news) {
         return false;
     }
 
-    function is_news($id_news)
-    {
+    /**
+     * @param $id_news
+     */
+    function is_news($id_news) {
+        
         $news = new News($id_news);
         return $news->is();
     }
