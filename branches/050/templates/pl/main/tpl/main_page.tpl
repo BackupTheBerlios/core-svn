@@ -2,11 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 	<head>
 		<title>{TITLE}</title>
-		<link rel="alternate" title="./dev-log RSS Newsfeed" href="/rss" type="application/rss+xml" />
+		<link rel="alternate" title="{TITLE} -  RSS Newsfeed" href="/rss" type="application/rss+xml" />
 
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2" />
 		<meta http-equiv="Content-language" content="pl" />
-        <meta name="generator" content="Core {CORE_VERSION}" /> <!-- proszę, zostaw dla statystyk -->
+		<meta name="generator" content="Core {CORE_VERSION}" /> <!-- proszę, zostaw dla statystyk -->
+		<base href="{BASE_HREF}" />
 	
 		<script type="text/javascript" src="templates/{LANG}/{THEME}/js/functions.js"></script>
 		<script type="text/javascript" src="templates/{LANG}/{THEME}/js/js_quicktags/js_quicktags.js"></script>

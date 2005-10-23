@@ -110,7 +110,8 @@ $ft->assign(array(
     'CAT_ALL_LINK'      =>$cat_all_link,
     'CORE_VERSION'      =>$db_conf->get_config('core_version'), 
     'LANG'              =>$lang, 
-    'THEME'             =>$theme
+    'THEME'             =>$theme, 
+    'BASE_HREF'         =>BASE_HREF
 ));
 
 
