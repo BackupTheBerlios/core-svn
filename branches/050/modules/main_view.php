@@ -1,4 +1,5 @@
 <?php
+
 // $Id: main_view.php 1128 2005-08-03 22:16:55Z mysz $
 
 $pagination_link    = (bool)$rewrite ? 'index.' : 'index.php?p=all&amp;start=';
@@ -15,10 +16,10 @@ $ft->define_dynamic('note_row', 'rows');
 $ft->define_dynamic('cat_row', 'rows');
 
 $CoreNews->news_list(null);
-if (count($CoreNews->news))
-{
-    foreach ($CoreNews->news AS $news)
-    {
+if(count($CoreNews->news)) {
+    
+    foreach($CoreNews->news as $news) {
+        
         $id = $news->get_id();
         list_assigned_categories($id);
 	    
@@ -28,15 +29,15 @@ if (count($CoreNews->news))
         $text = preg_replace("/\[code:\"?([a-zA-Z0-9\-_\+\#\$\%]+)\"?\](.*?)\[\/code\]/sie", "highlighter('\\2', '\\1')", $text);
 	    
 	    $ft->assign(array(
-           'DATE'          => $news->get_date(),
-           'NEWS_TITLE'    => $news->get_title(),
-	       'NEWS_TEXT'     => $text,
-           'NEWS_AUTHOR'   => $news->get_author(),
-	       'NEWS_ID'       => $id,
-	       'NEWS_CATEGORY' => '', //TODO
-	       'PERMA_LINK'    => $perma_link, 
-	       'PAGINATED'     => !empty($pagination['page_string']) ? true : false, 
-	       'STRING'        => $pagination['page_string']
+           'DATE'          =>date($date_format, $news->get_timestamp()),
+           'NEWS_TITLE'    =>$news->get_title(),
+	       'NEWS_TEXT'     =>$text,
+           'NEWS_AUTHOR'   =>$news->get_author(),
+	       'NEWS_ID'       =>$id,
+	       'NEWS_CATEGORY' =>'', //TODO
+	       'PERMA_LINK'    =>$perma_link, 
+	       'PAGINATED'     =>!empty($pagination['page_string']) ? true : false, 
+	       'STRING'        =>$pagination['page_string']
 	    ));
 	    
         get_comments_link($news->get_comments_allow(), 0, $id); //TODO
@@ -44,9 +45,8 @@ if (count($CoreNews->news))
 	    $ft->assign('RETURN', '');
 	    $ft->parse('MAIN', '.note_row');
     }
-}
-else
-{
+} else {
+    
     // Obs³uga b³êdu, kiedy w bazie danych nie ma jeszcze ¿adnego wpisu
     $ft->assign(array(
         'QUERY_FAILED'  =>$i18n['main_view'][1],
