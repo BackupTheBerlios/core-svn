@@ -1,10 +1,11 @@
 <?php
 
-class News extends CoreBase
-{
-    //deklaracje wlasciowsci
+class News extends CoreBase {
+    
+    
+    // deklaracje wlasciowsci
     var $id = null;
-    var $id_cat = array(); //lista id kategorii do ktorych przynalezy news
+    var $id_cat = array(); // lista id kategorii do ktorych przynalezy news
     var $timestamp = 0;
     var $time = null;
     var $date = null;
@@ -15,199 +16,315 @@ class News extends CoreBase
     var $published = null;
     var $only_in_category = null;
 
-    function _id_check($id = null)
-    {
-        if (is_null($id))
-        {
+    
+    /**
+     * @param $id - news id
+     */
+    function _id_check($id = null) {
+        
+        if(is_null($id)) {
             $id = $this->get_id();
         }
 
-        if (!is_numeric($id) || $id < 0)
-        {
+        if(!is_numeric($id) || $id < 0) {
             $this->error_set('News::IdCheck:: incorrect news ID.');
             return false;
         }
+        
         return true;
     }
 
-    function News($id_news = null)                                 //KONSTRUKTOR
-    {
-        CoreBase::CoreBase();   //wywolujemy konstruktora klasy bazowej
+    
+    /**
+     * @param $id_news - news id
+     */
+    function News($id_news = null) {
+        
+        // konstruktor klasy bazowej
+        CoreBase::CoreBase();
 
-        if (!is_null($id_news) && $this->_id_check($id_news))
-        {
+        if(!is_null($id_news) && $this->_id_check($id_news)) {
+            
             $this->set_id($id_news);
             $data = $this->retrieve();
+            
             $data['published']          = ($data['published']           == 1);
             $data['comments_allow']     = ($data['comments_allow']      == 1);
             $data['only_in_category']   = ($data['only_in_category']    == 1);
+            
             $this->set_from_array($data);
         }
 
         return true;
     }
 
-    function set_id($id)
-    {
-        if (!$this->_id_check($id))
-        {
+    
+    /**
+     * @param $id
+     */
+    function set_id($id) {
+        
+        if(!$this->_id_check($id)) {
             return false;
         }
 
         $this->id = (int)$id;
         return true;
     }
-    function set_id_cat($id_cat)
-    {
-        if (!is_array($id_cat))
-        {
+    
+    
+    /**
+     * @param $id_cat
+     */
+    function set_id_cat($id_cat) {
+        
+        if(!is_array($id_cat)) {
             $id_cat = (array)$id_cat;
         }
 
         $this->id_cat = $id_cat;
         return true;
     }
-    function set_timestamp($timestamp, $format = 'H:i:s Y-m-d')
-    {
+    
+    
+    /**
+     * @param $timestamp
+     * @param $format - date format
+     */
+    function set_timestamp($timestamp, $format = 'H:i:s Y-m-d') {
+        
         $this->timestamp = $timestamp;
 
         list($this->time, $this->date) = explode(' ', date($format, $timestamp));
         return true;
     }
-    function set_title($title)
-    {
+    
+    
+    /**
+     * @param $title - news title
+     */
+    function set_title($title) {
+        
         $this->title = trim($title);
         return true;
     }
-    function set_author($author)
-    {
+    
+    
+    /**
+     * @param $author - news author
+     */
+    function set_author($author) {
         $this->author = trim($author);
         return true;
     }
-    function set_text($text)
-    {
+    
+    
+    /**
+     * @param $text - news text
+     */
+    function set_text($text) {
         $this->text = trim($text);
         return true;
     }
-    function set_comments_allow($data)
-    {
+    
+    
+    /**
+     * @param $data - define news comments status
+     * @return boolean
+     */
+    function set_comments_allow($data) {
         $this->comments_allow = (bool)$data;
         return true;
     }
-    function set_published($data)
-    {
+    
+    
+    /**
+     * @param $data - define news published status
+     * @return boolean
+     */
+    function set_published($data) {
         $this->published = (bool)$data;
         return true;
     }
-    function set_only_in_category($data)
-    {
+    
+    
+    /**
+     * @param $data - define news category status
+     * @return boolean
+     */
+    function set_only_in_category($data) {
         $this->only_in_category = (bool)$data;
         return true;
     }
 
-    function set_from_array($array)
-    {
-        if (!is_array($array))
-        {
+    /**
+     * @param $array
+     */
+    function set_from_array($array) {
+        
+        if (!is_array($array)) {
             $this->error_set('News::SetFromArray:: incorrect input data (not an array).');
             return false;
         }
 
         $bad_prop = array();
-        foreach ($array as $prop => $value)
-        {
+        foreach($array as $prop => $value) {
+            
             $test = $this->set_prop($prop, $value);
-            if (!$test)
-            {
+            
+            if(!$test) {
                 $bad_prop[] = $prop;
             }
         }
 
-        if ((bool)count($bad_prop))
-        {
+        if((bool)count($bad_prop)) {
             return $bad_prop;
         }
 
         return true;
     }
-    function set_prop($prop, $val)
-    {
-        if (!method_exists($this, sprintf('set_%s', $prop)))
-        {
+    
+    
+    /**
+     * @param $prop
+     * @param $val
+     */
+    function set_prop($prop, $val) {
+        
+        if(!method_exists($this, sprintf('set_%s', $prop))) {
             return false;
         }
 
         $method = 'set_' . $prop;
         $this->$method($val);
+        
         return true;
     }
 
-    function get_id()
-    {
+    
+    /**
+     * @return $id
+     */
+    function get_id() {
         return $this->id;
     }
-    function get_id_cat()
-    {
+    
+    
+    /**
+     * @return $id_cat
+     */
+    function get_id_cat() {
         return $this->id_cat;
     }
-    function get_timestamp()
-    {
+    
+    
+    /**
+     * @return $timestamp
+     */
+    function get_timestamp() {
         return $this->timestamp;
     }
-    function get_time()
-    {
+    
+    
+    /**
+     * @return $time
+     */
+    function get_time() {
         return $this->time;
     }
-    function get_date()
-    {
+    
+    
+    /**
+     * @return $date
+     */
+    function get_date() {
         return $this->date;
     }
-    function get_title()
-    {
+    
+    
+    /**
+     * @return $title
+     */
+    function get_title() {
         return $this->title;
     }
-    function get_author()
-    {
+    
+    
+    /**
+     * @return $author
+     */
+    function get_author() {
         return $this->author;
     }
-    function get_text()
-    {
+    
+    
+    /**
+     * @return $text
+     */
+    function get_text() {
         return $this->text;
     }
-    function get_comments_allow()
-    {
+    
+    
+    /**
+     * @return $comments_allow
+     */
+    function get_comments_allow() {
         return $this->comments_allow;
     }
-    function get_published()
-    {
+    
+    
+    /**
+     * @return $published
+     */
+    function get_published() {
         return $this->published;
     }
-    function get_only_in_category()
-    {
+    
+    
+    /**
+     * @return $only_in_category
+     */
+    function get_only_in_category() {
         return $this->only_in_category;
     }
 
-    function switch_published()
-    {
+    
+    /**
+     *
+     */
+    function switch_published() {
         $this->set_published(!$this->get_published());
         return true;
     }
-    function switch_comments_allow()
-    {
+    
+    
+    /**
+     *
+     */
+    function switch_comments_allow() {
         $this->set_comments_allow(!$this->get_comments_allow());
         return true;
     }
-    function switch_only_in_category()
-    {
+    
+    
+    /**
+     *
+     */
+    function switch_only_in_category() {
         $this->set_only_in_category(!$this->get_only_in_category());
         return true;
     }
     
-    function retrieve()
-    {
+    
+    /**
+     *
+     */
+    function retrieve() {
+        
         $this->_id_check();
-        if ($this->is_error())
-        {
+        
+        if($this->is_error()) {
             return false;
         }
 
@@ -231,16 +348,19 @@ class News extends CoreBase
             TABLE_MAIN,
             $this->get_id()
         );
+        
         $this->db->query($query);
-        if (!$this->db->next_record())
-        {
+        
+        if(!$this->db->next_record()) {
             $this->error_set(sprintf('News::Retrieve:: nonexistent news ID \'%s\'.', $this->get_id()));
             return false;
         }
+        
         $entry = $this->db->get_record();
 
-        //kategorie
+        // kategorie
         $id_cat = array();
+        
         $query = sprintf("
             SELECT
                 category_id
@@ -252,11 +372,13 @@ class News extends CoreBase
             TABLE_ASSIGN2CAT,
             $this->get_id()
         );
+        
         $this->db->query($query);
-        while ($this->db->next_record())
-        {
+        
+        while($this->db->next_record()) {
             $id_cat[] = $this->db->f('category_id');
         }
+        
         $entry['id_cat'] = $id_cat;
 
         $entry['published']         = ($entry['published']          == 1);
@@ -265,54 +387,56 @@ class News extends CoreBase
 
         return $entry;
     }
-    function commit()
-    {
-        //poczatkowe sprawdzanie poprawnosci danych
-        if ($this->is_error())
-        {
+    
+    
+    /**
+     *
+     */
+    function commit() {
+        
+        // poczatkowe sprawdzanie poprawnosci danych
+        if($this->is_error()) {
             return false;
         }
+        
         $id = $this->get_id();
-        if (!is_null($id))
-        {
+        
+        if(!is_null($id)) {
             $this->_id_check();
         }
-        
 
-        //kontynuujemy sprawdzanie poprawnosci danych
+        // kontynuujemy sprawdzanie poprawnosci danych
         $title      = $this->get_title();
         $timestamp  = $this->get_timestamp();
         $id_cat     = $this->get_id_cat();
-        if (strlen($title) == 0)
-        {
+        
+        if(strlen($title) == 0) {
             $this->error_set('News::Commit:: `Title` cannot be empty.');
         }
-        if ($timestamp <= 0)
-        {
+        
+        if($timestamp <= 0) {
             $this->error_set('News::Commit:: incorrect timestamp.');
         }
-        if (!is_array($id_cat) || count($id_cat) == 0)
-        {
+        
+        if(!is_array($id_cat) || count($id_cat) == 0) {
             $this->error_set('News::Commit:: assign news to some category.');
         }
-        if ($this->is_error()) return false;
+        
+        if($this->is_error()) return false;
         
 
 
-        //konstruujemy zapytanie sql
-        //typ zpaytania
-        if (is_null($id))
-        {
+        // konstruujemy zapytanie sql
+        // typ zpaytania
+        if(is_null($id)) {
             $query = "
                 INSERT INTO";
-        }
-        else
-        {
+        } else {
             $query = "
                 UPDATE";
         }
 
-        //tabela
+        // tabela
         $query .= sprintf("
                     %s
                 SET",
@@ -320,7 +444,7 @@ class News extends CoreBase
             TABLE_MAIN
         );
 
-        //dane
+        // dane
         $query .= sprintf("
             date = FROM_UNIXTIME(%d),
             title = '%s',
@@ -338,9 +462,9 @@ class News extends CoreBase
             $this->get_published() ? 1 : -1,
             $this->get_only_in_category() ? 1 : -1
         );
-        //jesli trzeba (UPDATE), to klauzula WHERE
-        if (!is_null($id))
-        {
+        
+        // jesli trzeba (UPDATE), to klauzula WHERE
+        if(!is_null($id)) {
             $query .= sprintf("
                 WHERE
                     id = %d",
@@ -349,31 +473,35 @@ class News extends CoreBase
             );
         }
 
-        //v_array($query, 1);
+        // v_array($query, 1);
         $this->db->query($query);
 
-        if (is_null($id))
-        {
+        if(is_null($id)) {
             $this->set_id(mysql_insert_id($this->db->link_id()));
         }
 
-        //przypisujemy do wlasciwych kategorii
+        // przypisujemy do wlasciwych kategorii
         $this->_assign2cat();
 
         return true;
     }
-    function remove()
-    {
+    
+    
+    /**
+     * removes a note
+     */
+    function remove() {
+        
         $this->_id_check();
-        if ($this->is_error())
-        {
+        
+        if($this->is_error()) {
             return false;
         }
 
-        //usuwamy przypisania do kategorii
+        // usuwamy przypisania do kategorii
         if (!$this->_remove_from_cat()) return false;
 
-        //usuwamy sam wpis
+        // usuwamy sam wpis
         $query = sprintf("
             DELETE FROM
                 %s
@@ -383,19 +511,24 @@ class News extends CoreBase
             TABLE_MAIN,
             $this->get_id()
         );
+        
         $this->db->query($query);
 
         return true;
     }
 
-    function is($id_news = null)
-    {
-        if (!is_null($id_news))
-        {
+    
+    /**
+     * @param id_news
+     * @return boolean
+     */
+    function is($id_news = null) {
+        
+        if(!is_null($id_news)) {
             $id_news = $this->get_id();
         }
-        if (!$this->_id_check($id_news))
-        {
+        
+        if(!$this->_id_check($id_news)) {
             return false;
         }
 
@@ -410,35 +543,39 @@ class News extends CoreBase
             TABLE_MAIN,
             $id_news
         );
+        
         $this->db->query($query);
         $this->db->next_record();
         
         return (bool)$this->db->f('count');
     }
 
-    function _assign2cat()
-    {
-        if (!$this->_id_check())
-        {
+    
+    /**
+     *
+     */
+    function _assign2cat() {
+        
+        if(!$this->_id_check()) {
             return false;
         }
+        
         $id_cat = $this->get_id_cat();
         $id     = $this->get_id();
 
-        if (!count($id_cat))
-        {
+        if(!count($id_cat)) {
             $this->error_set('News::_Assign2Cat:: isn\'t assigned to any category.');
         }
-        if ($this->is_error())
-        {
+        
+        if($this->is_error()) {
             return false;
         }
 
-        //na wszelki wypadek czyscimy przypisania newsa do kategorii
+        // na wszelki wypadek czyscimy przypisania newsa do kategorii
         $this->_remove_from_cat();
 
-        //przypisujemy newsa do wlasciwych kategorii
-        //konstruujemy query
+        // przypisujemy newsa do wlasciwych kategorii
+        // konstruujemy query
         $query = sprintf("
             INSERT INTO
                 %1\$s
@@ -448,7 +585,8 @@ class News extends CoreBase
         );
 
         $values = array();
-        foreach ($id_cat as $selected_cat) {
+        
+        foreach($id_cat as $selected_cat) {
             $values[] = sprintf("
                 ('', %1\$d, %2\$d)", 
 
@@ -462,11 +600,16 @@ class News extends CoreBase
 
         return true;
     }
-    function _remove_from_cat()
-    {
+    
+    
+    /**
+     *
+     */
+    function _remove_from_cat() {
+        
         $this->_id_check();
-        if ($this->is_error())
-        {
+        
+        if($this->is_error()) {
             return false;
         }
 
