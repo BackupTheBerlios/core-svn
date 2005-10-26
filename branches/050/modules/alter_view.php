@@ -16,7 +16,6 @@ if(count($CoreNews->news)) {
     $ft->define_dynamic('cat_row', 'rows');
     
     list_assigned_categories($_GET['id']);
-    $perma_link = (bool)$rewrite ? sprintf('1,%s,1,item.html', $id) : 'index.php?p=1&amp;id=' . $id;
 	
     $ft->assign(array(
         'DATE'          =>date($date_format, $news->get_timestamp()),
@@ -25,7 +24,7 @@ if(count($CoreNews->news)) {
         'NEWS_AUTHOR'   =>$news->get_author(),
         'NEWS_ID'       =>$_GET['id'],
         'STRING'        =>'', 
-        'PERMA_LINK'    =>$perma_link, 
+        'PERMA_LINK'    =>$CoreRewrite->permanent_news($id, $rewrite), 
         'PAGINATED'     =>false, 
         'MOVE_BACK'     =>false, 
         'MOVE_FORWARD'  =>false

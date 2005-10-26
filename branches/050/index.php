@@ -29,19 +29,20 @@ $required_classes = array(
     'db_config.php',
     'corebase.php',
     'news.php',
-    'corenews.php'
+    'corenews.php', 
+    'corerewrite.php'
 );
 
 while(list($c) = each($required_classes)) {
     require_once pathjoin(PATH_TO_CLASSES, 'cls_' . $required_classes[$c]);
 }
 
-
-
 $view       =& view::instance();
 $tree       =& new tree;
 $db         =& new DB_Sql;
 $db_conf    =& new db_config;
+
+$CoreRewrite    = new CoreRewrite();
 
 $rewrite            = $db_conf->get_config('mod_rewrite');
 $max_photo_width    = $db_conf->get_config('max_photo_width');
@@ -80,24 +81,17 @@ $ft->define(array(
 ));
     
 
-
 // warto¶æ poczatkowa zmiennej $start -> potrzebna przy stronnicowaniu
 $start  = isset($_GET['start']) ? (int)$_GET['start'] : 0;
 $val    = empty($val) ? '' : $val;
-
-
 
 // generowanie linkow
 if ((bool)$rewrite) {
     $rss_link       = './rss';
     $rssc_link      = './rsscomments';
-    $search_link    = 'index.search';
-    $cat_all_link   = '1,0,all,item.html';
 } else {
     $rss_link       = './rss.php';
     $rssc_link      = './rsscomments.php';
-    $search_link    = 'index.php?p=8';
-    $cat_all_link   = 'index.php?p=all';
 }
 
 $ft->assign(array(
@@ -106,15 +100,13 @@ $ft->assign(array(
     'ENGINE_VERSION'    =>$i18n['index'][1], 
     'RSS_LINK'          =>$rss_link,
     'RSSCOMMENTS_LINK'  =>$rssc_link, 
-    'SEARCH_LINK'       =>$search_link,
-    'CAT_ALL_LINK'      =>$cat_all_link,
+    'SEARCH_LINK'       =>$CoreRewrite->search($rewrite),
+    'CAT_ALL_LINK'      =>$CoreRewrite->category_all($rewrite),
     'CORE_VERSION'      =>$db_conf->get_config('core_version'), 
     'LANG'              =>$lang, 
     'THEME'             =>$theme, 
     'BASE_HREF'         =>BASE_HREF
 ));
-
-
 
 if(!isset($_GET['p'])) {
 
@@ -131,8 +123,8 @@ if(!isset($_GET['p'])) {
     $CoreId = $start_page_id;
 } else {
 
-    $CoreId             = isset($_GET['id']) ? $_GET['id'] : '';
-    $CorePage           = $_GET['p'];
+    $CoreId     = isset($_GET['id']) ? $_GET['id'] : '';
+    $CorePage   = $_GET['p'];
 }
 
 
@@ -148,20 +140,15 @@ $CoreModulesMap = array(
     8 => 'search.php',
     9 => 'date_view.php'
 );
-if (array_key_exists($CorePage, $CoreModulesMap))
-{
-    require_once pathjoin(PATH_TO_MODULES_USER, $CoreModulesMap[$CorePage]);
-}
-else
-{
-    require_once pathjoin(PATH_TO_MODULES_USER, 'main_view.php');
-}
+
+require_once pathjoin(
+    PATH_TO_MODULES_USER, 
+        array_key_exists($CorePage, $CoreModulesMap) ? $CoreModulesMap[$CorePage] : 'main_view.php');
     
 // wyznaczamy szablon jaki ma byc parsowany, sprawdzajac
 // czy faktycznie znajduje sie on w katalogu z szablonami
-if(!isset($assigned_tpl) || !file_exists(pathjoin(ROOT, 'templates', $lang,
-        $theme, 'tpl', $assigned_tpl . '_page.tpl'))) {
-  $assigned_tpl = 'main_page';
+if(!isset($assigned_tpl) || !file_exists(pathjoin(ROOT, 'templates', $lang, $theme, 'tpl', $assigned_tpl . '_page.tpl'))) {
+    $assigned_tpl = 'main_page';
 }
 
 $ft->define_dynamic('alternate_design_row', $assigned_tpl);
@@ -169,13 +156,9 @@ $ft->define_dynamic('alternate_design_row', $assigned_tpl);
 while($d = $read_dir->read()) {
     if($d[0] != '.') {
 
-        // link do alternatywnego szablonu
-        $template_link = (bool)$rewrite ? sprintf('2,%s,item.html', $d) :
-                'design.php?issue=' . $d;
-
         $ft->assign(array(
             'ALTERNATE_TEMPLATE'    =>$d,
-            'TEMPLATE_LINK'         =>$template_link
+            'TEMPLATE_LINK'         =>$CoreRewrite->template_switch($d, $rewrite)
         ));
         $ft->parse('ALTERNATE_DESIGN_ROW', '.alternate_design_row');
     }
@@ -193,12 +176,18 @@ while(list($m) = each($modules)) {
 }
 
 if((bool)$show_calendar) {
-    $ft->assign('SHOW_CALENDAR', true);
+    $ft->assign(array(
+        'LINKED'        =>false, 
+        'SHOW_CALENDAR' =>true
+    ));
     
     $calendar = new calendar();
     $calendar->display_calendar();
 } else {
-    $ft->assign('SHOW_CALENDAR', false);
+    $ft->assign(array(
+        'LINKED'        =>false, 
+        'SHOW_CALENDAR' =>false
+    ));
 }
 
 $ft->parse('MAIN', $assigned_tpl);

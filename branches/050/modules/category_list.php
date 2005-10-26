@@ -25,15 +25,9 @@ while($db->next_record()) {
     $cat_parent_id  = $db->f("category_parent_id");
     $cat_name       = $db->f("category_name");
 
-    if ((bool)$rewrite) {
-       $cat_link = '1,' . $cat_id . ',4,item.html';
-    } else {
-       $cat_link = 'index.php?p=4&amp;id=' . $cat_id . '';
-    }
-
     $ft->assign(array(
         'CAT_NAME'  =>replace_amp($cat_name),
-        'CAT_LINK'  =>$cat_link, 
+        'CAT_LINK'  =>$CoreRewrite->category_news($cat_id, $rewrite), 
         'CLASS'     =>"cat_parent", 
         'PARENT'    =>''
     ));

@@ -59,7 +59,8 @@ class calendar {
             $db, 
             $rewrite, 
             $assigned_tpl, 
-            $lang;
+            $lang, 
+            $CoreRewrite;
         
         $ft->assign('LONGMONTHS', $this->Months[$lang][($m = date('n'))-1] . ', ' . ($y = date('Y')));
         
@@ -98,12 +99,11 @@ class calendar {
             
             $ft->assign('TABLE_D', $a < $this->intFirstDay ? true : false);
             
-            $datelink = (bool)$rewrite ? '<a href="1,'. $this->intMonth . '-' . $this->intDay . ',9,date.html">'.$this->intDay.'</a>' : '<a href="index.php?p=9&amp;date='. $this->intMonth . '-' . $this->intDay . '">'.$this->intDay.'</a>';
-            
             if($a >= $this->intFirstDay) {
                 if($this->intDay == date('d')) {
                     
                     $ft->assign(array(
+                        'LINKED'    =>false, 
                         'DAY'       =>$this->intDay, 
                         'DAYS_CLASS'=>'day_current'
                     ));
@@ -112,12 +112,15 @@ class calendar {
                 if(in_array($this->intDay, $date)) {
                     
                     $ft->assign(array(
-                        'DAY'       =>$datelink, 
+                        'LINKED'    =>true, 
+                        'DAY_LINKED'=>$CoreRewrite->current_date($rewrite, $this->intMonth, $this->intDay),
+                        'DAY'       =>$this->intDay, 
                         'DAYS_CLASS'=>$this->intDay == date('d') ? 'day_current_hit' : 'day_hit'
                     ));
                 } elseif($this->intDay != date('d')) {
                     
                     $ft->assign(array(
+                        'LINKED'    =>false, 
                         'DAY'       =>$this->intDay, 
                         'DAYS_CLASS'=>'day'
                     ));

@@ -85,12 +85,6 @@ if(is_numeric($_GET['id'])) {
                 $text            = coreMakeClickable($text);
 
                 $text = str_replace(array('[quote]', '[/quote]'), array('<div class="quote">', '</div>'), $text);
-                
-                if ((bool)$rewrite) {
-                    $quote_link = sprintf('1,%s,3,%s,1,quote.html', $comments_id, $id);
-                } else {
-                    $quote_link = sprintf('index.php?p=3&amp;id=%s&amp;c=%s', $comments_id, $id);
-                }
 
                 $ft->assign(array(
                     'DATE'              =>$date,
@@ -100,7 +94,7 @@ if(is_numeric($_GET['id'])) {
                     'AUTHOR_EMAIL'      =>$email,
                     'STRING'            =>$page_string,
                     'ID'                =>$id, 
-                    'QUOTE_LINK'        =>$quote_link
+                    'QUOTE_LINK'        =>$CoreRewrite->comments_quote($id, $comments_id, $rewrite)
                 ));
                 
                 $ft->define("comments_view", "comments_view.tpl");

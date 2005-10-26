@@ -8,8 +8,6 @@ $page_string = empty($page_string) ? '' : $page_string;
 
 // inicjowanie zmiennej przechowuj±cej szukan± frazê
 $search_word = trim($_REQUEST['search_word']);
-$search_link = (bool)$rewrite ? sprintf('search.%s.', $search_word) : sprintf('index.php?p=8&search_word=%s&amp;start=', $search_word);
-
 $mainposts_per_page = get_config('mainposts_per_page');
 
 // zliczamy sume postow
@@ -41,7 +39,7 @@ $db->next_record();
 $num_items = $db->f("0");
 
 // inicjowanie funkcji stronnicuj±cej wpisy
-$pagination = pagination($search_link, $mainposts_per_page, $num_items);
+$pagination = pagination($CoreRewrite->search_pagination($search_word, $rewrite), $mainposts_per_page, $num_items);
 
 if(!empty($search_word)) {
 	
@@ -49,14 +47,14 @@ if(!empty($search_word)) {
         SELECT 
             a.*,
             UNIX_TIMESTAMP(a.date) AS date,
-            c.comments_id,
+            c.id_news,
             count(c.id) AS comments 
         FROM 
             %1\$s a 
         LEFT JOIN 
             %3\$s c 
         ON 
-            a.id = c.comments_id
+            a.id = c.id_news
         WHERE 
             published = 1 
         AND 
@@ -93,13 +91,11 @@ if(!empty($search_word)) {
 			
 			// usuwamy <a />
 			$text = preg_replace('/(?is)(<\/?(?:a)(?:|\s.*?)>)/', '', $text);
+			$text = preg_replace("/\[code:\"?([a-zA-Z0-9\-_\+\#\$\%]+)\"?\](.*?)\[\/code\]/sie", "highlighter('\\2', '\\1')", $text);
 			
 			$comments 	= $db->f("comments");
 			
             list_assigned_categories($id);
-            $perma_link = (bool)$rewrite ? sprintf('1,%s,1,item.html', $id) : 'index.php?p=1&amp;id=' . $id;
-			
-			$text = preg_replace("/\[code:\"?([a-zA-Z0-9\-_\+\#\$\%]+)\"?\](.*?)\[\/code\]/sie", "highlighter('\\2', '\\1')", $text);
 			
 			$ft->assign(array(
                 'DATE'				=>$date,
@@ -107,7 +103,7 @@ if(!empty($search_word)) {
                 'NEWS_TEXT'			=>$search->highlight($search_word, $text),
                 'NEWS_AUTHOR'		=>$author,
                 'NEWS_ID'			=>$id,
-                'PERMA_LINK'        =>$perma_link, 
+                'PERMA_LINK'        =>$CoreRewrite->permanent_news($id, $rewrite), 
                 'PAGINATED'         =>!empty($pagination['page_string']) ? true : false, 
                 'STRING'            =>$pagination['page_string']
             ));

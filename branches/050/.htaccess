@@ -4,22 +4,23 @@ Options FollowSymLinks
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
-    RewriteRule ^1,(.*),(.*),item.html$ index.php?p=$2&id=$1 [L]
-    RewriteRule ^1,(.*),(.*),date.html$ index.php?p=$2&date=$1 [L]
-    RewriteRule ^1,(.*),3,(.*),1,quote.html$ index.php?p=3&id=$1&c=$2 [L]
+    RewriteRule ^([0-9]+)/? index.php?p=1&id=$1 [L]                # permanent link
 
-    RewriteRule ^category\.(.*)\.(.*)$ index.php?p=4&id=$1&start=$2 [L]
-    RewriteRule ^1,(.*),item.html$ index.php?p=$1&action=add [L]
+    RewriteRule ^date/([0-9-]+)/? index.php?p=9&date=$1 [L]        # date link
+    RewriteRule ^comments/([0-9]+)/? index.php?p=2&id=$1 [L]       # show comments
 
-    RewriteCond %{REQUEST_URI} !index\.php
-    RewriteCond %{REQUEST_URI} !index\.search
-    RewriteRule ^index\.([0-9]*) index.php?p=all&start=$1 [L]
+    RewriteRule ^offset/([0-9]+)/? index.php?p=all&start=$1 [L]    # pagination
+    RewriteRule ^switch/([a-zA-Z0-9]+)/? design.php?issue=$1 [L]   # design switcher
 
-    RewriteRule ^index\.search$ index.php?p=8 [L]
-    RewriteRule ^search\.(.*)\.(.*)$ index.php?p=8&search_word=$1&start=$2 [L]
-    RewriteRule ^2,(.*),item.html$ design.php?issue=$1 [L]
+    RewriteRule ^category/([0-9]+)/?([0-9]+)?/?$ index.php?p=4&id=$1&start=$2 [NE,L]                   # category + pagination
+    RewriteRule ^search/?([a-zA-Z0-9]+)?/?([0-9]+)?/?$ index.php?p=8&search_word=$1&start=$2 [NE,L]    # search + pagination
+    RewriteRule ^addcomments/?([0-9]+)/?([a-zA-Z0-9]+)?/?([0-9]+)?/?$ index.php?p=3&id=$1&c=$3 [NE,L]  # add comments + quote
 
-    RewriteRule ^rss$ rss.php [L]
-    RewriteRule ^rsscomments$ rsscomments.php [L]
-    RewriteRule ^photo$ photo.php [L]
+    RewriteRule ^add/([0-9]+)/? index.php?p=$1&action=add [L]      # form add link
+    RewriteRule ^node/([0-9]+)/? index.php?p=5&id=$1 [L]           # page link
+    RewriteRule ^photo/([0-9]+)? photo.php?id=$1 [L]               # photo link
+    RewriteRule ^page/photo/([0-9]+)? photo.php?p=5&id=$1 [L]      # page photo link
+
+    RewriteRule ^all/? index.php?p=all [L]
+    RewriteRule ^rss?([a-z]+)?/?$ rss$1.php [L]
 </IfModule>

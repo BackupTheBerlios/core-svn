@@ -2,14 +2,13 @@
 
 // $Id: main_view.php 1128 2005-08-03 22:16:55Z mysz $
 
-$pagination_link    = (bool)$rewrite ? 'index.' : 'index.php?p=all&amp;start=';
 $mainposts_per_page = get_config('mainposts_per_page');
 
-$CoreNews = new CoreNews();
-$num_items = $CoreNews->news_count();
+$CoreNews   = new CoreNews();
+$num_items  = $CoreNews->news_count();
 
 // inicjowanie funkcji stronnicuj±cej wpisy
-$pagination = pagination($pagination_link, $mainposts_per_page, $num_items);
+$pagination = pagination($CoreRewrite->pagination($rewrite), $mainposts_per_page, $num_items);
 
 // definiujemy blok dynamiczny szablonu
 $ft->define_dynamic('note_row', 'rows');
@@ -22,8 +21,6 @@ if(count($CoreNews->news)) {
         
         $id = $news->get_id();
         list_assigned_categories($id);
-	    
-	    $perma_link = (bool)$rewrite ? sprintf('1,%s,1,item.html', $id) : 'index.php?p=1&amp;id=' . $id;
         
         $text = show_me_more($news->get_text());
         $text = preg_replace("/\[code:\"?([a-zA-Z0-9\-_\+\#\$\%]+)\"?\](.*?)\[\/code\]/sie", "highlighter('\\2', '\\1')", $text);
@@ -35,7 +32,7 @@ if(count($CoreNews->news)) {
            'NEWS_AUTHOR'   =>$news->get_author(),
 	       'NEWS_ID'       =>$id,
 	       'NEWS_CATEGORY' =>'', //TODO
-	       'PERMA_LINK'    =>$perma_link, 
+	       'PERMA_LINK'    =>$CoreRewrite->permanent_news($id, $rewrite), 
 	       'PAGINATED'     =>!empty($pagination['page_string']) ? true : false, 
 	       'STRING'        =>$pagination['page_string']
 	    ));

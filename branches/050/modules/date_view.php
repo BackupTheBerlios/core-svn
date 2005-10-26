@@ -7,14 +7,14 @@ $query = sprintf("
 	SELECT 
         a.*,
         UNIX_TIMESTAMP(a.date) AS date,
-		c.comments_id,
+		c.id_news,
 		count(c.id) AS comments 
 	FROM 
 		%1\$s a 
 	LEFT JOIN 
 		%3\$s c 
 	ON 
-		a.id = c.comments_id
+		a.id = c.id_news
 	WHERE 
 		published = 1 
     AND 

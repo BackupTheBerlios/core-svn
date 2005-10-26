@@ -44,7 +44,11 @@
                 <!-- IFDEF: TABLE_D -->
                 <td></td>
                 <!-- ELSE -->
-                <td class='{DAYS_CLASS}'>{DAY}</td>
+                    <!-- IFDEF: LINKED -->
+                    <td class='{DAYS_CLASS}'><a href="{DAY_LINKED}">{DAY}</a></td>
+                    <!-- ELSE -->
+                    <td class='{DAYS_CLASS}'>{DAY}</td>
+                    <!-- ENDIF -->
                 <!-- ENDIF -->
             <!-- IFDEF: TABLE_R -->
             </tr>

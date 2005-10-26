@@ -2,8 +2,6 @@
 // $Id: category_view.php 1128 2005-08-03 22:16:55Z mysz $
 
 if(is_numeric($_GET['id'])) {
-
-    $cat_pagination_link = (bool)$rewrite ? 'category.' . $_GET['id'] . '.' : 'index.php?p=4&id=' . $_GET['id'] . '&amp;start=';
     
     // zliczamy liczbe postow na strone
     $query = sprintf("
@@ -51,7 +49,7 @@ if(is_numeric($_GET['id'])) {
 	$num_items = $db->f("0");
 
     // inicjowanie funkcji stronnicujacej wpisy
-    $pagination = pagination($cat_pagination_link, $mainposts_per_page, $num_items);
+    $pagination = pagination($CoreRewrite->category_pagination($_GET['id'], $rewrite), $mainposts_per_page, $num_items);
 
     // pobieramy nazwê szablonu jaki przydzielony jest do danej kategorii
     $query = sprintf("
@@ -141,10 +139,9 @@ if(is_numeric($_GET['id'])) {
             $comments       = $db->f('comments');
             
             list_assigned_categories($id);
-            $perma_link = (bool)$rewrite ? sprintf('1,%s,1,item.html', $id) : 'index.php?p=1&amp;id=' . $id;
             
             $text = preg_replace("/\[code:\"?([a-zA-Z0-9\-_\+\#\$\%]+)\"?\](.*?)\[\/code\]/sie", "highlighter('\\2', '\\1')", $text);
-            $text   = show_me_more($text);
+            $text = show_me_more($text);
             
             $ft->assign(array(
                 'DATE'              =>$date,
@@ -152,7 +149,7 @@ if(is_numeric($_GET['id'])) {
                 'NEWS_TEXT'         =>$text,
                 'NEWS_AUTHOR'       =>$author,
                 'NEWS_ID'           =>$id,
-                'PERMA_LINK'        =>$perma_link, 
+                'PERMA_LINK'        =>$CoreRewrite->permanent_news($id, $rewrite), 
                 'PAGINATED'         =>!empty($pagination['page_string']) ? true : false, 
                 'STRING'            =>$pagination['page_string']
             ));

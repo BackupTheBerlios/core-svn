@@ -203,7 +203,7 @@ function pagination($url, $mainposts_per_page, $num_items) {
 	    $ft->assign('MOVE_FORWARD', false);
 	}
 	
-	$ret['page_string']        = $page_string;
+	$ret['page_string'] = $page_string;
 	
 	return $ret;
 }

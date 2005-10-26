@@ -175,7 +175,8 @@ function get_comments_link($comments_allow, $comments, $id) {
     
     global 
         $ft, 
-        $rewrite;
+        $rewrite, 
+        $CoreRewrite;
     
     if(($comments_allow) == 0 ) {
         $ft->assign(array(
@@ -184,16 +185,14 @@ function get_comments_link($comments_allow, $comments, $id) {
         ));
     } else {
         if($comments == 0) {
-            $comments_link = (bool)$rewrite ? '1,' . $id . ',3,item.html' : 'index.php?p=3&amp;id=' . $id . '';
             $ft->assign(array(
-                'COMMENTS_LINK' =>$comments_link, 
+                'COMMENTS_LINK' =>$CoreRewrite->addcomments($id, $rewrite), 
                 'COMMENTS_ALLOW'=>true, 
                 'COMMENTS'      =>''
             ));
 	    } else {
-            $comments_link = (bool)$rewrite ? '1,' . $id . ',2,item.html' : 'index.php?p=2&amp;id=' . $id . '';
             $ft->assign(array(
-                'COMMENTS_LINK' =>$comments_link, 
+                'COMMENTS_LINK' =>$CoreRewrite->showcomments($id, $rewrite), 
                 'COMMENTS_ALLOW'=>true, 
                 'COMMENTS'      =>$comments
             ));
@@ -260,7 +259,8 @@ function list_assigned_categories($id) {
     
     global 
         $ft, 
-        $rewrite;
+        $rewrite, 
+        $CoreRewrite;
     
     $query = sprintf("
         SELECT 
@@ -290,11 +290,9 @@ function list_assigned_categories($id) {
         $cname = replace_amp($sql->f('category_name'));
         $cid   = $sql->f('category_id');
         
-        $category_link  = (bool)$rewrite ? sprintf('1,%s,4,item.html', $cid) : 'index.php?p=4&amp;id=' . $cid;
-        
         $ft->assign(array(
             'CATEGORY_NAME' =>$cname, 
-            'CATEGORY_LINK' =>$category_link, 
+            'CATEGORY_LINK' =>$CoreRewrite->category_news($cid, $rewrite), 
             'COMMA'         =>$count_cats == $idx ? '' : ', '
         ));
         
