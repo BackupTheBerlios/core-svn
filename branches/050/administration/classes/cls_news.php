@@ -588,7 +588,7 @@ class News extends CoreBase {
         
         foreach($id_cat as $selected_cat) {
             $values[] = sprintf("
-                ('', %1\$d, %2\$d)", 
+                (null, %1\$d, %2\$d)", 
 
                 $id,
                 $selected_cat
