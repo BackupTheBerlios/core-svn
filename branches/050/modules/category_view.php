@@ -79,12 +79,12 @@ if(is_numeric($_GET['id'])) {
             c.id_news, 
             count(c.id) AS comments 
         FROM 
-            %1\$s a,
-            %2\$s b 
+            (%1\$s a,
+            %2\$s b) 
         LEFT JOIN 
             %3\$s c 
         ON 
-            a.id = c.id_news 
+            (a.id = c.id_news) 
         LEFT JOIN 
             %4\$s d 
         ON 
