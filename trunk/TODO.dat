@@ -1,38 +1,44 @@
 $Id$
 
 0.5.0:
--      - kazda strona/kategoria etc ma miec swoj wlasny ID w tagu body (dla css)
 - MySZ - zarzadzanie pikczerami, dodanwanie ich do newsow etc
+- MySZ - galerie do newsow (beda wyswietlane osobno, nie w tresci newsa, za to np pod nim).
+- MySZ - poprawienie str_nl2br(). <br /> nie moze byc dodawany w _kazdym_ wystapieniu \n, ale tylko tam gdzie to potrzebne: nie moze go byc pomiedzy po </li>, w tagach <script> czy <style> etc (trzeba podejrzec jak to jest w WP)
+- MySZ - 
+
 - lark - przepisanie komentarzy na obiekty, doprowadzenie ich do stanu uzywalnosci
--      - uporzadkowanie kodu, ulozenie , wyczyszczenie etc
 - lark - przejscie w 100% na UTF-8
 - lark - przy logowaniu - checkbox zeby zapisywal w cookim haslo i login :)
 - lark - bezpieczenstwo - przy logowaniu do panelu, ma byc w jakims cookim zapisywany login i haslo usera, a pozneij za kazdym razem ma byc sprawdzana ta wartosc z baza. obecny sposob jest _niebezpieczny_
 - lark - zmienic, istniejace w niektorych miejscach 'podglad', na 'zapisz i kontynuuj'. Ma to dzialac tak jak w WP: klikniecie tego dodaje do bazy artykul/strone (o ile juz w bazie nie jest zapisane) lub po prostu zapisuje zmiany.
--      - umieszczenie niektorych tagow (jak np search) w uniwersalnych miejscach, tak zeby dalo sie je przenosic miedzy roznymi czesciami strony. dotyczy to na pewno searcha, menu strony etc
 - lark - mozliwosc 'rozbijania' menu. chodzi o to, zeby dalo sie umiescic (dla stron) dzieci danych podstron w innym miejscu, a dla kategorii wpisow - umieszczenie podkategorii w innym miejscu.
--      - poprawienie str_nl2br(). <br /> nie moze byc dodawany w _kazdym_ wystapieniu \n, ale tylko tam gdzie to potrzebne: nie moze go byc pomiedzy po </li>, w tagach <script> czy <style> etc (trzeba podejrzec jak to jest w WP)
--      - mozliwosc wlaczenia/wylaczenia zmiany \n na <br />
 - lark - w panelu jest pole na 'opis kategorii' przy tworzeniu nowej kategorii etc - trzeba umozliwic wyciagniecie tego opisu na strone glowna/podstrone/whatever
--      - umozliwic (switch) wylistowanie tworcow strony - bez tego nie ma sensu wpisywanie takeij ilosci danych przy dodawaniu userow (plugin?)
--      - system pluginów
-- MySZ - galerie do newsow (beda wyswietlane osobno, nie w tresci newsa, za to np pod nim).
 - lark - [podziel] w jednym jezyku, to tylko tag, nie czesc informacyjna
 - lark - [podziel] wg: http://www.core-cms.com/board/viewtopic.php?t=80
 - lark - wyrzucenie : aktualno¶ci -> najczesciej komentowane (vide: statystyki bloga w 'pozniej')
 - lark - logowanie: submit jako button, link jest cholernie niepraktyczny i wkurwiajacy ;)
+- lark - 
+
+-      - umozliwic (switch) wylistowanie tworcow strony - bez tego nie ma sensu wpisywanie takeij ilosci danych przy dodawaniu userow (plugin?)
+-      - system pluginów
+-      - mozliwosc wlaczenia/wylaczenia zmiany \n na <br />
+-      - umieszczenie niektorych tagow (jak np search) w uniwersalnych miejscach, tak zeby dalo sie je przenosic miedzy roznymi czesciami strony. dotyczy to na pewno searcha, menu strony etc
+-      - uporzadkowanie kodu, ulozenie , wyczyszczenie etc
 -      - wylapanie bledow typu: get_mysql_server_version() i bledy z dostepem do bazy przez nieuprzywilejowanych userow
+-      - kazda strona/kategoria etc ma miec swoj wlasny ID w tagu body (dla css)
 -      - 
 
 
 
 pozniej:
--      - przepisanie pozosta³ych czê¶ci kodu na styl obiektowy
 - lark - wsparcie dla pgsql
--      - wysylanie stron gzipnietych (switch w panelu)
--      - mozliwosc dodania do bazy konkretnych katalogow, i oznaczenia ich jako 'listuj zawartosc'. po takim oznaczeniu user ma mozliwosc dodania tresci do dwoch pol w adminie, tresc jednego z nich pojawi sie powyzej listingu tresci oznaczonego katalogu, a druga - ponizej listingu
 - lark - mozliwosc przesuwania (gora/dol) wszystkich kategorii, nie tylko rodzicow. oczywiscie w obrebie swojego rodzica
 - lark - statystyki bloga do rozbudowy (w panelu): najczesciej wyswietlany news, stropna, najczesciej komentowane etc (plugin?)
+- lark - 
+
+-      - wysylanie stron gzipnietych (switch w panelu)
+-      - mozliwosc dodania do bazy konkretnych katalogow, i oznaczenia ich jako 'listuj zawartosc'. po takim oznaczeniu user ma mozliwosc dodania tresci do dwoch pol w adminie, tresc jednego z nich pojawi sie powyzej listingu tresci oznaczonego katalogu, a druga - ponizej listingu (plugin?)
 -      - statystyki odwiedzalnosci (plugin?)
 -      - strony: mozliwosc wyrzucenia ich z listy stron (strona jest aktywna, i mozna ja zobaczyc, ale nie listuja sie w drzewku. cos a'la 'tylko w kategorii' dla wpisow
+-      - przepisanie pozosta³ych czê¶ci kodu na styl obiektowy
 -      - 
