@@ -5,10 +5,10 @@ $Id$
 - MySZ - zarzadzanie pikczerami, dodanwanie ich do newsow etc
 - lark - przepisanie komentarzy na obiekty, doprowadzenie ich do stanu uzywalnosci
 -      - uporzadkowanie kodu, ulozenie , wyczyszczenie etc
--      - przejscie w 100% na UTF-8
--      - przy logowaniu - checkbox zeby zapisywal w cookim haslo i login :)
--      - bezpieczenstwo - przy logowaniu do panelu, ma byc w jakims cookim zapisywany login i haslo usera, a pozneij za kazdym razem ma byc sprawdzana ta wartosc z baza. obecny sposob jest _niebezpieczny_
--      - zmienic, istniejace w niektorych miejscach 'podglad', na 'zapisz i kontynuuj'. Ma to dzialac tak jak w WP: klikniecie tego dodaje do bazy artykul/strone (o ile juz w bazie nie jest zapisane) lub po prostu zapisuje zmiany.
+- lark - przejscie w 100% na UTF-8
+- lark - przy logowaniu - checkbox zeby zapisywal w cookim haslo i login :)
+- lark - bezpieczenstwo - przy logowaniu do panelu, ma byc w jakims cookim zapisywany login i haslo usera, a pozneij za kazdym razem ma byc sprawdzana ta wartosc z baza. obecny sposob jest _niebezpieczny_
+- lark - zmienic, istniejace w niektorych miejscach 'podglad', na 'zapisz i kontynuuj'. Ma to dzialac tak jak w WP: klikniecie tego dodaje do bazy artykul/strone (o ile juz w bazie nie jest zapisane) lub po prostu zapisuje zmiany.
 -      - 
 
 
@@ -18,6 +18,6 @@ pozniej:
 -      - wsparcie dla pgsql
 -      - wysylanie stron gzipnietych (switch w panelu)
 -      - mozliwosc dodania do bazy konkretnych katalogow, i oznaczenia ich jako 'listuj zawartosc'. po takim oznaczeniu user ma mozliwosc dodania tresci do dwoch pol w adminie, tresc jednego z nich pojawi sie powyzej listingu tresci oznaczonego katalogu, a druga - ponizej listingu
--      - mozliwosc przesuwania (gora/dol) wszystkich kategorii, nie tylko rodzicow. oczywiscie w obrebie swojego rodzica
+- lark - mozliwosc przesuwania (gora/dol) wszystkich kategorii, nie tylko rodzicow. oczywiscie w obrebie swojego rodzica
 -      - w adminie - przy tworzeniu wpisu / strony, musi byc przycisk 'zapisz i kontynuuj edycje'. po wcisnieciu zapisz i kontynuuj, na dole wyswietlana jest zapisana tresc. po wejsciu w edycje jakiegos posta tez takpowinno byc. tak jak jest w wp - bardzo wygodnbe :)
 -      - 
