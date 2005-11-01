@@ -1,21 +1,23 @@
 $Id$
 
-- wiêkszo¶æ(czytaj: prawie wszystkie) szablonów definiowanych jest w pliku main(mam na my¶li 
-administracjê). Przyda³oby siê je z tego pliku wywaliæ, bo niepotrzebnie od razu zajmuj± 
-tablicê, a definiowaæ poszczególne szablony w poszczególnych modu³ach. Jak Ci siê chce i masz 
-czas to mo¿esz to zrobiæ, jak nie to ja siê tym zajmê ;-)
+0.5.0
+-      - kazda strona/kategoria etc ma miec swoj wlasny ID w tagu body (dla css)
+- MySZ - zarzadzanie pikczerami, dodanwanie ich do newsow etc
+- lark - przepisanie komentarzy na obiekty, doprowadzenie ich do stanu uzywalnosci
+-      - uporzadkowanie kodu, ulozenie , wyczyszczenie etc
+-      - przejscie w 100% na UTF-8
+-      - przy logowaniu - checkbox zeby zapisywal w cookim haslo i login :)
+-      - bezpieczenstwo - przy logowaniu do panelu, ma byc w jakims cookim zapisywany login i haslo usera, a pozneij za kazdym razem ma byc sprawdzana ta wartosc z baza. obecny sposob jest _niebezpieczny_
+-      - zmienic, istniejace w niektorych miejscach 'podglad', na 'zapisz i kontynuuj'. Ma to dzialac tak jak w WP: klikniecie tego dodaje do bazy artykul/strone (o ile juz w bazie nie jest zapisane) lub po prostu zapisuje zmiany.
+-      - 
 
-@na razie zostawiam to Tobie - enotime
 
-- jakie¶ zarz±dzanie zuploadowanymi plikami siê by zda³o. Nie wiem póki co, jak mia³oby
-to wygl±daæ, w ka¿dym razie przyda³oby siê.
 
-@tu mam pomysla, ale to dluga historia i nie mam sily tego opisywac ;) w razie jakby sie mialo zaczac to robic, to wtedy pogadamy
-
-- mozliwosc dodania do bazy konkretnych katalogow, i oznaczenia ich jako 'listuj zawartosc'. po takim oznaczeniu user ma mozliwosc dodania tresci do dwoch pol w adminie, tresc jednego z nich pojawi sie powyzej listingu tresci oznaczonego katalogu, a druga - ponizej listingu
-
-- mozliwosc przesuwania (gora/dol) wszystkich kategorii, nie tylko rodzicow. oczywiscie w obrebie swojego rodzica
-
-- przy logowaniu - checkbox zeby zapisywal w cookim haslo i login :)
-
-- w adminie - przy tworzeniu wpisu / strony, musi byc przycisk 'zapisz i kontynuuj edycje'. po wcisnieciu zapisz i kontynuuj, na dole wyswietlana jest zapisana tresc. po wejsciu w edycje jakiegos posta tez takpowinno byc. tak jak jest w wp - bardzo wygodnbe :)
+pozniej:
+-      - przepisanie pozosta³ych czê¶ci kodu na styl obiektowy
+-      - wsparcie dla pgsql
+-      - wysylanie stron gzipnietych (switch w panelu)
+-      - mozliwosc dodania do bazy konkretnych katalogow, i oznaczenia ich jako 'listuj zawartosc'. po takim oznaczeniu user ma mozliwosc dodania tresci do dwoch pol w adminie, tresc jednego z nich pojawi sie powyzej listingu tresci oznaczonego katalogu, a druga - ponizej listingu
+-      - mozliwosc przesuwania (gora/dol) wszystkich kategorii, nie tylko rodzicow. oczywiscie w obrebie swojego rodzica
+-      - w adminie - przy tworzeniu wpisu / strony, musi byc przycisk 'zapisz i kontynuuj edycje'. po wcisnieciu zapisz i kontynuuj, na dole wyswietlana jest zapisana tresc. po wejsciu w edycje jakiegos posta tez takpowinno byc. tak jak jest w wp - bardzo wygodnbe :)
+-      - 
