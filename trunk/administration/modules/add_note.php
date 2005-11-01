@@ -1,122 +1,19 @@
 <?php
 // $Id$
 
-//domyslnie niech sobie bedize puste
+//domyslnie niech sobie bedzie puste
 $ft->assign('MESSAGE', '');
 $monit = array();
 
+$CoreNews = new CoreNews;
+
 if (isset($_POST['sub_commit'])) { //ktos probuje dodac wpis...
-    $title      = trim($_POST['title']);
-    $date       = isset($_POST['now']) ? date('Y-m-d H:i:s') : $_POST['date'];
-    $filename   = '';
-    
-    if(!$permarr['writer']) { //ma uprawnienia ?
-        $monit[] = $i18n['add_note'][2];
-    }
-    if (!isset($_POST['assign2cat'])) { //zaznaczyl kategorie ?
-        $monit[] = $i18n['add_note'][3];
-    }
-    if (empty($title)) { //niepusty tytul ?
-        $monit[] = $i18n['add_note'][4];
-    }
-    if (!preg_match('#^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$#i', $date)) { //wlasciwy format czasu ?
-        $monit[] = $i18n['add_note'][5];
-    }
-    if(!empty($_FILES['file']['name'])) { //wgrywamy zdjecie ?
-        //jesli tak, to do katalogu tymczasowego. pozniej, jesli wsio bedzie
-        //w porzadku, przenosimy do docelowego
-        //kasowanie z tymczasowego bedzie odbywac sie automatycznie co
-        //jakis czas
-
-        $up = new upload;
-
-        // use function to upload file.
-        $filename = $up->upload_file(TMPDIR, 'file', true, true, 0, 'jpg|jpeg|gif|png');
-        if(!$filename) {
-
-            $monit[] = $up->error;
-
-            $_SESSION['addNote_fileName'] = null;
-            unset($_SESSION['addNote_fileName']);
-        } else {
-            $_SESSION['addNote_fileName'] = $filename;
-        }
-    }
-    
-
-    
-    if (!count($monit)) { //jesli nie ma bledow, to dodajemy
-        //najpierw przenosimy zdjecie (jesli jest) z katalogu tymczasowego do
-        //docelowego
-        if (isset($_SESSION['addNote_fileName']) && ($src_path = TMPDIR . $_SESSION['addNote_fileName'])) {
-
-            @rename($src_path, '../photos/' . $_SESSION['addNote_fileName']);
-            $_SESSION['addNote_fileName'] = null;
-            unset($_SESSION['addNote_fileName'], $src_path);
-        }
-
-
-
-        //dodajemy newsa
-        $query = sprintf("
-            INSERT INTO 
-                %1\$s 
-            VALUES 
-                ('', '%2\$s','%3\$s','%4\$s','%5\$s', '%6\$s', '%7\$d', '%8\$s', '%9\$s')",
-
-            TABLE_MAIN,
-            $date,
-            $title,
-            $_POST['author'],
-            parse_markers($_POST['text'], 1),
-            $filename,
-            $_POST['comments_allow'],
-            $_POST['published'], 
-            $_POST['only_in_category']
-        );
-
-        $db->query($query);
-
-
-
-        //przypisujemy go do wlasciwych kategorii
-        $query = sprintf("
-            INSERT INTO
-                %1\$s
-            VALUES",
-
-            TABLE_ASSIGN2CAT
-        );
-
-        $id = mysql_insert_id($db->link_id());
-        $values = array();
-        foreach ($_POST['assign2cat'] as $selected_cat) {
-            $values[] = sprintf("
-                ('', %1\$d, %2\$d)", 
-
-                $id,
-                $selected_cat
-            );
-        }
-        $query .= implode(',', $values);
-
-        $db->query($query);
-
-        //DONE!
+    if (!$CoreNews->news_add()) {
+        $monit = $CoreNews->error_get();
+    } else {
         header('Location: main.php?p=1&msg=6');
         exit;
     }
-} elseif (isset($_POST['sub_img_delete'])) { //kasujemy foto
-
-    if (isset($_SESSION['addNote_fileName'])) {
-        $path = TMPDIR . $_SESSION['addNote_fileName'];
-        @unlink($path);
-
-        $_SESSION['addNote_fileName'] = null;
-        unset($_SESSION['addNote_fileName'], $path);
-    }
-
-    $monit[] = $i18n['add_note'][7];
 }
 
 
@@ -146,7 +43,7 @@ $date_disabled = '';
 $date_now = '';
 
 //podglad tresci wpisu rowniez przy bledach
-if (isset($_POST['sub_preview']) || isset($_POST['sub_commit']) || isset($_POST['sub_img_delete']))
+if (isset($_POST['sub_preview']) || isset($_POST['sub_commit']))
 {
     $text   = stripslashes($_POST['text']);
     $title  = trim($_POST['title']);
@@ -178,33 +75,6 @@ if (isset($_POST['sub_preview']) || isset($_POST['sub_commit']) || isset($_POST[
 } else {
     $current_cat_id = array(1);
     $ft->assign('NOTE_PREVIEW', false);
-}
-
-
-
-//sprawdzamy czy byla proba uploadu zdjecia. jesli nie bylo nic
-//submitowane, tzn ze na pewno nie bylo, a zostala jakas stara
-//zmienna sesyjna i ja usuwamy
-$ft->assign('IMG_FILENAME', false); //domyslnie nie ma zadnego zdjecia
-
-if (isset($_SESSION['addNote_fileName'])) {
-    if (empty($_POST)) {
-        $_SESSION['addNote_fileName'] = null;
-        unset($_SESSION['addNote_fileName']);
-
-    //skoro w _POST cos jest, i jest takze cos w sesji dot. zdjecia,
-    //to wyswietlamy nazwe zdjecia 
-    } else {
-        $path = TMPDIR . $_SESSION['addNote_fileName'];
-        if (!is_file($path)) {
-
-            $_SESSION['addNote_fileName'] = null;
-            unset($_session['addNote_fileName']);
-        } else {
-
-            $ft->assign('IMG_FILENAME', $_SESSION['addNote_fileName']);
-        }
-    }
 }
 
 
@@ -241,43 +111,5 @@ tpl_categories('CATEGORIES', $cats, 0, $current_cat_id);
 
 
 $ft->parse('ROWS', '.form_noteadd');
-
-/*
-//lista kategorii
-$ft->define_dynamic('cat_row', 'form_noteadd');
-
-$query = sprintf("
-    SELECT 
-        category_id, 
-        category_parent_id,
-        category_name 
-    FROM 
-        %1\$s 
-    WHERE 
-        category_parent_id = 0
-    ORDER BY 
-        category_id 
-    ASC", 
-
-    TABLE_CATEGORY
-);
-
-$db->query($query);
-
-while($db->next_record()) {
-
-    $cat_id = $db->f('category_id');
-
-    $ft->assign(array(
-        'C_ID'		    =>$cat_id,
-        'C_NAME'        =>$db->f('category_name'), 
-        'CURRENT_CAT'   =>in_array($cat_id, $current_cat_id) ? 'checked="checked"' : '', 
-        'PAD'           =>''
-    ));
-
-    $ft->parse('CAT_ROW', '.cat_row');
-
-    get_addcategory_assignedcat($cat_id, 2);
-}*/
 
 ?>

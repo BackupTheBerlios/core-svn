@@ -1,4 +1,4 @@
-<form enctype="multipart/form-data" method="post" action="main.php?p=2&amp;id={ID}">
+<form enctype="multipart/form-data" method="post" action="main.php?p=2">
 <div id="left">
 <h2><img src="templates/{LANG}/images/main.gif">Aktualno¶ci - edycja wpisu</h2>
 
@@ -47,20 +47,10 @@
         <td class="form" colspan="2"><textarea class="note_textarea" name="text" id="canvas">{TEXT}</textarea></td>
 	</tr>
 	<tr>
-        <!-- IFDEF: IMG_FILENAME -->
-        <td class="form" colspan="2">{IMG_FILENAME}</td>
-        <td class="form"><input type="submit" name="sub_img_delete" value="Usuñ zdjêcie" /></td>
-        <!-- ELSE -->
-		<td class="form"><label for="file">Za³±cz zdjêcie:</label></td>
-		<td class="form" colspan="2"><input type="file" name="file" id="file" maxlength="255"></td>
-        <!-- ENDIF -->
-		</td>
-	</tr>
-	<tr>
 		<td class="form">Tylko w kategorii:</td>
 		<td class="form" colspan="2">
             <label for="oicY"><input class="radio" type="radio" name="only_in_category" id="oicY" value="1" {ONLY_IN_CAT_YES} />- tak</label>
-            <label for="oicN"><input class="radio" type="radio" name="only_in_category" id="oicN" value="-1" {ONLY_IN_CAT_NO} />- nie</label>
+            <label for="oicN"><input class="radio" type="radio" name="only_in_category" id="oicN" value="0" {ONLY_IN_CAT_NO} />- nie</label>
         </td>
 	</tr>
 	<tr>
@@ -74,12 +64,13 @@
 		<td class="form">Publikowana:</td>
 		<td class="form" colspan="2">
             <label for="pY"><input class="radio" type="radio" name="published" id="pY" value="1" {PUBLISHED_YES} />- tak</label>
-            <label for="pN"><input class="radio" type="radio" name="published" id="pN" value="-1" {PUBLISHED_NO} />- nie</label>
+            <label for="pN"><input class="radio" type="radio" name="published" id="pN" value="0" {PUBLISHED_NO} />- nie</label>
         </td>
 	</tr>
 	<tr>
 		<td class="form"></td>
 		<td class="form center" colspan="2">
+            <input type="hidden" name="id" value="{ID}" />
             <input type="submit" name="sub_preview" value="Podgl±d tre¶ci" tabindex="5" />
             <input type="submit" name="sub_commit" value="Zapisz" accesskey="s" tabindex="6" />
         </td>

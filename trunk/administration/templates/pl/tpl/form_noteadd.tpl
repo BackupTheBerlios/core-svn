@@ -17,23 +17,31 @@
     <!-- ENDIF -->
 	<tr>
 		<td class="form" width="100"><label for="title">Tytu³ wpisu:</label></td>
-		<td class="form" colspan="2"><input type="text" name="title" id="title" maxlength="255" value="{N_TITLE}" /></td>
+		<td class="form" colspan="2"><input
+            type="text" name="title" id="title" maxlength="255"
+            value="{N_TITLE}" /></td>
 	</tr>
 	<tr>
 		<td class="form"><label for="date">Data:</label></td>
-		<td class="form"><input type="text" name="date" id="date" maxlength="255" value="{DATE}" {DATE_DISABLED} /></td>
-        <td class="form">
-            <label for="now"><input class="checkbox" type="checkbox" name="now" id="now" value="1" onclick="toggleDisable('date')" {DATE_NOW} /> - aktualna data</label>
+		<td class="form"><input
+            type="text" name="date" id="date" maxlength="255"
+            value="{DATE}" {DATE_DISABLED} /></td>
+        <td class="form"><label for="now"><input
+            class="checkbox" type="checkbox" name="now" id="now" value="1"
+            onclick="toggleDisable('date')" {DATE_NOW} /> - aktualna data</label>
         </td>
 	</tr>
 	<tr>
 		<td class="form"><label for="author">Autor wpisu:</label></td>
-		<td class="form" colspan="2"><input type="text" name="author" id="author" maxlength="255" value="{AUTHOR}" /></td>
+		<td class="form" colspan="2"><input
+            type="text" name="author" id="author" maxlength="255"
+            value="{AUTHOR}" /></td>
 	</tr>
 	<tr>
 		<td class="form">&nbsp;</td>
-		<td class="form" colspan="2">
-		<input type="text" name="helpline" id="helpline" value="Rada: Style mog± byæ stosowane szybko do zaznaczonego tekstu" disabled="disabled" />
+		<td class="form" colspan="2"><input
+            type="text" name="helpline" id="helpline"
+            value="Rada: Style mog± byæ stosowane szybko do zaznaczonego tekstu" disabled="disabled" />
 		</td>
 	</tr>
 	<tr>
@@ -49,32 +57,35 @@
 		</td>
 	</tr>
 	<tr>
-        <!-- IFDEF: IMG_FILENAME -->
-        <td class="form" colspan="2">{IMG_FILENAME}</td>
-        <td class="form"><input type="submit" name="sub_img_delete" value="Usuñ zdjêcie" /></td>
-        <!-- ELSE -->
-		<td class="form"><label for="file">Za³±cz zdjêcie:</label></td>
-		<td class="form" colspan="2"><input type="file" name="file" id="file" maxlength="255"></td>
-        <!-- ENDIF -->
-	</tr>
-	<tr>
 		<td class="form">Tylko w kategorii:</td>
 		<td class="form" colspan="2">
-            <label for="oicY"><input class="radio" type="radio" name="only_in_category" id="oicY" value="1" {ONLY_IN_CAT_Y} /> - tak</label>
-            <label for="oicN"><input class="radio" type="radio" name="only_in_category" id="oicN" value="-1" {ONLY_IN_CAT_N} /> - nie</label></td>
+            <label for="oicY"><input
+                class="radio" type="radio" name="only_in_category" id="oicY"
+                value="1" {ONLY_IN_CAT_Y} /> - tak</label>
+            <label for="oicN"><input
+                class="radio" type="radio" name="only_in_category" id="oicN"
+                value="0" {ONLY_IN_CAT_N} /> - nie</label></td>
 	</tr>
 	<tr>
 		<td class="form">Komentarze:</td>
 		<td class="form" colspan="2">
-            <label for="caY"><input class="radio" type="radio" name="comments_allow" id="caY" value="1" {COMMENTS_ALLOW_Y} /> - zezwalaj</label>
-            <label for="caN"><input class="radio" type="radio" name="comments_allow" id="caN" value="0"  {COMMENTS_ALLOW_N} /> - nie zezwalaj</label>
+            <label for="caY"><input 
+                class="radio" type="radio" name="comments_allow" id="caY"
+                value="1" {COMMENTS_ALLOW_Y} /> - zezwalaj</label>
+            <label for="caN"><input 
+                class="radio" type="radio" name="comments_allow" id="caN"
+                value="0"  {COMMENTS_ALLOW_N} /> - nie zezwalaj</label>
         </td>
 	</tr>
 	<tr>
 		<td class="form">Publikowana:</td>
 		<td class="form" colspan="2">
-            <label for="pY"><input class="radio" type="radio" name="published" id="pY" value="1" {PUBLISHED_Y} />- tak</label>
-            <label for="pN"><input class="radio" type="radio" name="published" id="pN" value="-1" {PUBLISHED_N} />- nie</label>
+            <label for="pY"><input
+                class="radio" type="radio" name="published" id="pY"
+                value="1" {PUBLISHED_Y} />- tak</label>
+            <label for="pN"><input
+                class="radio" type="radio" name="published" id="pN"
+                value="0" {PUBLISHED_N} />- nie</label>
         </td>
 	</tr>
 	<tr>

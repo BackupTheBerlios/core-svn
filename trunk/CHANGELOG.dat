@@ -6,13 +6,10 @@ Core CMS - Content Management System
 Current Version: 0.4.4  2005/08/31
 
 ==================================
-0.4.4 Changes: 07 August 2005 
+0.4.4 Changes: 01 August 2005 
 
-- calendar bug fixed. If site based on Core CMS exist over the one year, news on
+- Calendar bug fixed. If site based on Core CMS exist over the one year, news on
   calendar was incorectly selected
-- pages childs could be listed in separately submenu
-- mod_rewrite rebuild. SEO optimalization
-- support for GeSHi added
 
 
 ==================================

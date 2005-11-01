@@ -1,109 +1,47 @@
 <?php
+
 // $Id$
 
 $mainposts_per_page = get_config('mainposts_per_page');
 
-// zliczamy posty
-$query = sprintf("
-    SELECT 
-        COUNT(*) AS id 
-    FROM 
-        %1\$s 
-    WHERE 
-        published = '1' 
-    AND 
-        only_in_category = '-1' 
-    ORDER BY 
-        date", 
-	
-    TABLE_MAIN
-);
-
-$db->query($query);
-$db->next_record();
-	
-$num_items = $db->f("0");
+$CoreNews   = new CoreNews();
+$num_items  = $CoreNews->news_count();
 
 // inicjowanie funkcji stronnicuj±cej wpisy
-$pagination = pagination(pagination_link($rewrite), $mainposts_per_page, $num_items);
-
-$query = sprintf("
-	SELECT 
-        a.*,
-        UNIX_TIMESTAMP(a.date) AS date,
-		c.comments_id,
-		count(c.id) AS comments 
-	FROM 
-		%1\$s a 
-	LEFT JOIN 
-		%3\$s c 
-	ON 
-		a.id = c.comments_id
-	WHERE 
-		published = 1 
-    AND 
-        only_in_category = -1 
-	GROUP BY 
-		a.date 
-	DESC 
-	LIMIT %4\$d, %5\$d",
-    
-    TABLE_MAIN, 
-    TABLE_CATEGORY, 
-    TABLE_COMMENTS,
-    $start,
-    $mainposts_per_page
-);
-
-$db->query($query);
+$pagination = pagination($CoreRewrite->pagination($rewrite), $mainposts_per_page, $num_items);
 
 // definiujemy blok dynamiczny szablonu
-$ft->define_dynamic("note_row", "rows");
-$ft->define_dynamic("cat_row", "rows");
+$ft->define_dynamic('note_row', 'rows');
+$ft->define_dynamic('cat_row', 'rows');
 
-// Sprawdzamy, czy w bazie danych s± ju¿ jakie¶ wpisy
-if($db->num_rows() > 0) {
-
-	while($db->next_record()) {
-	    
-	    $date              = date($date_format, $db->f("date"));
-	    $title             = $db->f("title");
-	    $text              = $db->f("text");
-	    $author            = $db->f("author");
-	    $id                = $db->f("id");
-	    $c_id              = $db->f("c_id");
-	    $image             = $db->f("image");
-	    $comments_allow    = $db->f("comments_allow");
-	    
-	    $comments          = $db->f("comments");
-	    
-	    $news->list_assigned_categories($id);
+$CoreNews->news_list(null);
+if(count($CoreNews->news)) {
+    
+    foreach($CoreNews->news as $news) {
         
-        $text = $news->show_me_more($text);
+        $id = $news->get_id();
+        list_assigned_categories($id);
+        
+        $text = show_me_more($news->get_text());
         $text = preg_replace("/\[code:\"?([a-zA-Z0-9\-_\+\#\$\%]+)\"?\](.*?)\[\/code\]/sie", "highlighter('\\2', '\\1')", $text);
 	    
 	    $ft->assign(array(
-	       'DATE'          =>$date,
-	       'NEWS_TITLE'    =>$title,
+           'DATE'          =>date($date_format, $news->get_timestamp()),
+           'NEWS_TITLE'    =>$news->get_title(),
 	       'NEWS_TEXT'     =>$text,
-	       'NEWS_AUTHOR'   =>$author,
+           'NEWS_AUTHOR'   =>$news->get_author(),
 	       'NEWS_ID'       =>$id,
-	       'NEWS_CATEGORY' =>$c_id,
-	       'PERMA_LINK'    =>perma_link($rewrite, $id), 
+	       'NEWS_CATEGORY' =>'', //TODO
+	       'PERMA_LINK'    =>$CoreRewrite->permanent_news($id, $rewrite), 
 	       'PAGINATED'     =>!empty($pagination['page_string']) ? true : false, 
 	       'STRING'        =>$pagination['page_string']
 	    ));
 	    
-	    $news->get_comments_link($comments_allow, $comments, $id);
-	    $news->get_image_status($image, $id);
+        get_comments_link($news->get_comments_allow(), 0, $id); //TODO
 	    
 	    $ft->assign('RETURN', '');
-	    $ft->parse('MAIN', ".note_row");
-	    
-	}
-	
-	// Parsowanie elementów poza DYNAMIC BLOCK :: fixed
-    $ft->parse('MAIN', "rows");
+	    $ft->parse('MAIN', '.note_row');
+    }
 } else {
     
     // Obs³uga b³êdu, kiedy w bazie danych nie ma jeszcze ¿adnego wpisu
@@ -115,7 +53,7 @@ if($db->num_rows() > 0) {
         'MOVE_FORWARD'  =>false
     ));
     
-    $ft->parse('MAIN', ".query_failed");
+    $ft->parse('MAIN', '.query_failed');
 }
 
 ?>

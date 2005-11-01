@@ -27,7 +27,7 @@ while($db->next_record()) {
 
     $ft->assign(array(
         'CAT_NAME'  =>replace_amp($cat_name),
-        'CAT_LINK'  =>category_link($rewrite, $cat_id), 
+        'CAT_LINK'  =>$CoreRewrite->category_news($cat_id, $rewrite), 
         'CLASS'     =>"cat_parent", 
         'PARENT'    =>''
     ));

@@ -8,7 +8,6 @@ $page_string = empty($page_string) ? '' : $page_string;
 
 // inicjowanie zmiennej przechowuj±cej szukan± frazê
 $search_word = trim($_REQUEST['search_word']);
-
 $mainposts_per_page = get_config('mainposts_per_page');
 
 // zliczamy sume postow
@@ -40,7 +39,7 @@ $db->next_record();
 $num_items = $db->f("0");
 
 // inicjowanie funkcji stronnicuj±cej wpisy
-$pagination = pagination(search_pagination_link($rewrite, $search_word), $mainposts_per_page, $num_items);
+$pagination = pagination($CoreRewrite->search_pagination($search_word, $rewrite), $mainposts_per_page, $num_items);
 
 if(!empty($search_word)) {
 	
@@ -48,14 +47,14 @@ if(!empty($search_word)) {
         SELECT 
             a.*,
             UNIX_TIMESTAMP(a.date) AS date,
-            c.comments_id,
+            c.id_news,
             count(c.id) AS comments 
         FROM 
             %1\$s a 
         LEFT JOIN 
             %3\$s c 
         ON 
-            a.id = c.comments_id
+            a.id = c.id_news
         WHERE 
             published = 1 
         AND 
@@ -92,12 +91,11 @@ if(!empty($search_word)) {
 			
 			// usuwamy <a />
 			$text = preg_replace('/(?is)(<\/?(?:a)(?:|\s.*?)>)/', '', $text);
-			
-			$comments = $db->f("comments");
-			
-            $news->list_assigned_categories($id);
-			
 			$text = preg_replace("/\[code:\"?([a-zA-Z0-9\-_\+\#\$\%]+)\"?\](.*?)\[\/code\]/sie", "highlighter('\\2', '\\1')", $text);
+			
+			$comments 	= $db->f("comments");
+			
+            list_assigned_categories($id);
 			
 			$ft->assign(array(
                 'DATE'				=>$date,
@@ -105,13 +103,13 @@ if(!empty($search_word)) {
                 'NEWS_TEXT'			=>$search->highlight($search_word, $text),
                 'NEWS_AUTHOR'		=>$author,
                 'NEWS_ID'			=>$id,
-                'PERMA_LINK'        =>perma_link($rewrite, $id), 
+                'PERMA_LINK'        =>$CoreRewrite->permanent_news($id, $rewrite), 
                 'PAGINATED'         =>!empty($pagination['page_string']) ? true : false, 
                 'STRING'            =>$pagination['page_string']
             ));
 								
-			$news->get_comments_link($comments_allow, $comments, $id);
-			$news->get_image_status($image, $id);
+			get_comments_link($comments_allow, $comments, $id);
+			get_image_status($image, $id);
             
 			// definiujemy blok dynamiczny szablonu
 			$ft->define_dynamic("note_row", "rows");

@@ -1,7 +1,7 @@
 <?php
 // $Id$
 
-if(is_numeric($id)) {
+if(is_numeric($_GET['id'])) {
     
     // zliczamy liczbe postow na strone
     $query = sprintf("
@@ -13,7 +13,7 @@ if(is_numeric($id)) {
             category_id = '%2\$d'", 
     
         TABLE_CATEGORY, 
-        $id
+        $_GET['id']
     );
         
     $db->query($query);
@@ -40,7 +40,7 @@ if(is_numeric($id)) {
 	
         TABLE_MAIN, 
         TABLE_ASSIGN2CAT, 
-        $id
+        $_GET['id']
     );
     
     $db->query($query);
@@ -49,7 +49,7 @@ if(is_numeric($id)) {
 	$num_items = $db->f("0");
 
     // inicjowanie funkcji stronnicujacej wpisy
-    $pagination = pagination(category_pagination_link($rewrite, $id), $mainposts_per_page, $num_items);
+    $pagination = pagination($CoreRewrite->category_pagination($_GET['id'], $rewrite), $mainposts_per_page, $num_items);
 
     // pobieramy nazwê szablonu jaki przydzielony jest do danej kategorii
     $query = sprintf("
@@ -62,7 +62,7 @@ if(is_numeric($id)) {
         LIMIT 1", 
 
         TABLE_CATEGORY, 
-        $id
+        $_GET['id']
     );
 
     $db->query($query);
@@ -76,15 +76,15 @@ if(is_numeric($id)) {
             a.*, 
             UNIX_TIMESTAMP(a.date) AS date, 
             b.*, 
-            c.comments_id, 
+            c.id_news, 
             count(c.id) AS comments 
         FROM 
-            %1\$s a,
-            %2\$s b 
+            (%1\$s a,
+            %2\$s b) 
         LEFT JOIN 
             %3\$s c 
         ON 
-            a.id = c.comments_id 
+            (a.id = c.id_news) 
         LEFT JOIN 
             %4\$s d 
         ON 
@@ -106,7 +106,7 @@ if(is_numeric($id)) {
         TABLE_CATEGORY,
         TABLE_COMMENTS, 
         TABLE_ASSIGN2CAT, 
-        $id, 
+        $_GET['id'], 
         $start, 
         $mainposts_per_page
     );
@@ -138,10 +138,10 @@ if(is_numeric($id)) {
 
             $comments       = $db->f('comments');
             
-            $news->list_assigned_categories($id);
+            list_assigned_categories($id);
             
             $text = preg_replace("/\[code:\"?([a-zA-Z0-9\-_\+\#\$\%]+)\"?\](.*?)\[\/code\]/sie", "highlighter('\\2', '\\1')", $text);
-            $text = $news->show_me_more($text);
+            $text = show_me_more($text);
             
             $ft->assign(array(
                 'DATE'              =>$date,
@@ -149,13 +149,13 @@ if(is_numeric($id)) {
                 'NEWS_TEXT'         =>$text,
                 'NEWS_AUTHOR'       =>$author,
                 'NEWS_ID'           =>$id,
-                'PERMA_LINK'        =>perma_link($rewrite, $id), 
+                'PERMA_LINK'        =>$CoreRewrite->permanent_news($id, $rewrite), 
                 'PAGINATED'         =>!empty($pagination['page_string']) ? true : false, 
                 'STRING'            =>$pagination['page_string']
             ));
 
-            $news->get_comments_link($comments_allow, $comments, $id);
-            $news->get_image_status($image, $id);
+            get_comments_link($comments_allow, $comments, $id);
+            get_image_status($image, $id);
             
             $ft->assign('RETURN', '');
             $ft->parse('MAIN', ".note_row");

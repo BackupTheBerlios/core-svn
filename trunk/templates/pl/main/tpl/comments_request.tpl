@@ -3,10 +3,10 @@
 Przy wype³nianiu formularza pole e-mail jest ca³kowicie opcjonalne, co znaczy ¿e nie wymagam podania adresu poczty mailowej.
 Je¶li jednak ju¿ zdecydujesz siê to zrobiæ, to muszê zaznaczyæ, ¿e Twój adres nie bêdzie widoczny bezpo¶rednio przy komentarzu, a
 przechowywany wy³±cznie w bazie danych w celach czysto informacyjnych.<br /><br />
-<b><a class="date" href="{SITE_ROOT}/{PERMA_LINK}">{NEWS_TITLE}</a></b> - link bezpo¶redni<br /><br />
+<b><a class="date" href="{PERMA_LINK}">{NEWS_TITLE}</a></b> - link bezpo¶redni<br /><br />
 
-<script type="text/javascript" src="{SITE_ROOT}/templates/{LANG}/{THEME}/js/comments.js"></script>
-<form method="post" action="{SITE_ROOT}/{FORM_LINK}" name="post">
+<script type="text/javascript" src="templates/{LANG}/{THEME}/js/comments.js"></script>
+<form method="post" action="{FORM_LINK}" name="post">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 	<tr>
 		<td width="20%" height="25" valign="top">Autor:</td>
@@ -60,7 +60,7 @@ przechowywany wy³±cznie w bazie danych w celach czysto informacyjnych.<br /><br 
 <!-- ELSE -->
 <div class="center">
 {CONFIRMATION}<br />
-<a href="{SITE_ROOT}/{SUBMIT_LINK}">Wróæ do komentarzy...
+<a href="{SUBMIT_LINK}">Wróæ do komentarzy...
 </div>
 <!-- ENDIF -->
 </div>

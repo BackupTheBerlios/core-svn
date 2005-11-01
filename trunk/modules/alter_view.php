@@ -1,79 +1,44 @@
 <?php
+
 // $Id$
 
-$query = sprintf("
-    SELECT
-        a.*, 
-        UNIX_TIMESTAMP(a.date) AS date, 
-        c.comments_id,
-        count(c.id)
-    AS
-       comments
-    FROM
-        %1\$s a 
-    LEFT JOIN 
-        %3\$s c 
-    ON 
-        a.id = c.comments_id
-    WHERE
-        a.id = '%4\$d'
-    AND
-        published = '1'
-    GROUP BY
-        a.date
-    DESC
-    LIMIT 1",
+$CoreNews = new CoreNews();
+$CoreNews->news_get($_GET['id']);
 
-    TABLE_MAIN,
-    TABLE_CATEGORY,
-    TABLE_COMMENTS,
-    $_GET['id']
-);
+if(count($CoreNews->news)) {
 
-$db->query($query);
-
-if($db->num_rows() > 0) {
-
-    $db->next_record();
-
-    $date           = date($date_format, $db->f("date"));
-    $title          = $db->f('title');
-    $text           = str_replace(array('[podziel]', '[more]'), '', $db->f('text'));
-    $author         = $db->f('author');
-    $id             = $db->f('id');
-    $image          = $db->f('image');
-    $comments_allow = $db->f('comments_allow');
-
-    // Przypisanie zmiennej $comments
-    $comments       = $db->f('comments');
+    $news   =& end($CoreNews->news);
     
-    $ft->define_dynamic("cat_row", "rows");
+    $id     = $news->get_id();
+    $text   = str_replace(array('[podziel]', '[more]'), '', $news->get_text());
+    $text   = preg_replace("/\[code:\"?([a-zA-Z0-9\-_\+\#\$\%]+)\"?\](.*?)\[\/code\]/sie", "highlighter('\\2', '\\1')", $text);
+
+    $ft->define_dynamic('cat_row', 'rows');
     
-    $news->list_assigned_categories($id);
+    list_assigned_categories($_GET['id']);
 	
-	$text = preg_replace("/\[code:\"?([a-zA-Z0-9\-_\+\#\$\%]+)\"?\](.*?)\[\/code\]/sie", "highlighter('\\2', '\\1')", $text);
-
     $ft->assign(array(
-        'DATE'          =>$date,
-        'NEWS_TITLE'    =>$title,
+        'DATE'          =>date($date_format, $news->get_timestamp()),
+        'NEWS_TITLE'    =>$news->get_title(),
         'NEWS_TEXT'     =>$text,
-        'NEWS_AUTHOR'   =>$author,
-        'NEWS_ID'       =>$id,
+        'NEWS_AUTHOR'   =>$news->get_author(),
+        'NEWS_ID'       =>$_GET['id'],
         'STRING'        =>'', 
-        'PERMA_LINK'    =>perma_link($rewrite, $id), 
+        'PERMA_LINK'    =>$CoreRewrite->permanent_news($id, $rewrite), 
         'PAGINATED'     =>false, 
         'MOVE_BACK'     =>false, 
         'MOVE_FORWARD'  =>false
     ));
 
-    $news->get_comments_link($comments_allow, $comments, $id);
-    $news->get_image_status($image, $id);
+    $comments = 0;
+    get_comments_link($news->get_comments_allow(), $comments, $_GET['id']);
     
     // definiujemy blok dynamiczny szablonu
-    $ft->define_dynamic("note_row", "rows");
+    $ft->define_dynamic('note_row', 'rows');
     
     $ft->assign('RETURN', $i18n['alter_view'][0]);
     $ft->parse('MAIN','.note_row');
+    
 } else {
 
     $ft->assign(array(

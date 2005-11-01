@@ -2,16 +2,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 	<head>
 		<title>{TITLE}</title>
-		<link rel="alternate" title="./dev-log RSS Newsfeed" href="{SITE_ROOT}/rss" type="application/rss+xml" />
+		<link rel="alternate" title="{TITLE} -  RSS Newsfeed" href="/rss" type="application/rss+xml" />
 
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2" />
 		<meta http-equiv="Content-language" content="pl" />
-        <meta name="generator" content="Core {CORE_VERSION}" /> <!-- proszę, zostaw dla statystyk -->
+		<meta name="generator" content="Core {CORE_VERSION}" /> <!-- proszę, zostaw dla statystyk -->
+		<base href="{BASE_HREF}" />
 	
-		<script type="text/javascript" src="{SITE_ROOT}/templates/{LANG}/{THEME}/js/functions.js"></script>
-		<script type="text/javascript" src="{SITE_ROOT}/templates/{LANG}/{THEME}/js/js_quicktags/js_quicktags.js"></script>
+		<script type="text/javascript" src="templates/{LANG}/{THEME}/js/functions.js"></script>
+		<script type="text/javascript" src="templates/{LANG}/{THEME}/js/js_quicktags/js_quicktags.js"></script>
 
-		<link rel="stylesheet" href="{SITE_ROOT}/templates/{LANG}/{THEME}/css/main.css" type="text/css" media="screen" />
+		<link rel="stylesheet" href="templates/{LANG}/{THEME}/css/main.css" type="text/css" media="screen" />
 	</head>
 <body>
 <div id="main">
@@ -43,7 +44,11 @@
                 <!-- IFDEF: TABLE_D -->
                 <td></td>
                 <!-- ELSE -->
-                <td class='{DAYS_CLASS}'>{DAY}</td>
+                    <!-- IFDEF: LINKED -->
+                    <td class='{DAYS_CLASS}'><a href="{DAY_LINKED}">{DAY}</a></td>
+                    <!-- ELSE -->
+                    <td class='{DAYS_CLASS}'>{DAY}</td>
+                    <!-- ENDIF -->
                 <!-- ENDIF -->
             <!-- IFDEF: TABLE_R -->
             </tr>
@@ -61,7 +66,7 @@
 		<span class="title">menu</span><br />
         <ul>
             <!-- BEGIN DYNAMIC BLOCK: pages_row -->
-            <li class="{CLASS}">{PARENT}<a href="{SITE_ROOT}/{PAGE_LINK}">{PAGE_NAME}</a></li>
+            <li class="{CLASS}">{PARENT}<a href="{PAGE_LINK}">{PAGE_NAME}</a></li>
             <!-- END DYNAMIC BLOCK: pages_row -->
         </ul>
         <br />
@@ -72,7 +77,7 @@
 		<span class="title">submenu</span><br />
         <ul>
             <!-- BEGIN DYNAMIC BLOCK: subpages_row -->
-            <li>{PARENT}<a href="{SITE_ROOT}/{SUBPAGE_LINK}">{SUBPAGE_NAME}</a></li>
+            <li>{PARENT}<a href="{SUBPAGE_LINK}">{SUBPAGE_NAME}</a></li>
             <!-- END DYNAMIC BLOCK: subpages_row -->
         </ul>
         <br />
@@ -82,9 +87,9 @@
 		<span class="title">kategorie</span><br />
 		<ul>
             <!-- BEGIN DYNAMIC BLOCK: category_row -->
-            <li class="{CLASS}">{PARENT}<a href="{SITE_ROOT}/{CAT_LINK}">{CAT_NAME}</a></li>
+            <li class="{CLASS}">{PARENT}<a href="{CAT_LINK}">{CAT_NAME}</a></li>
             <!-- END DYNAMIC BLOCK: category_row -->
-            <li><br /><a href="{SITE_ROOT}/{CAT_ALL_LINK}">wszystkie</a></li>
+            <li><br /><a href="{CAT_ALL_LINK}">wszystkie</a></li>
 		</ul> 
 		
 		<br />
@@ -92,7 +97,7 @@
 		<span class="title">wyszukaj</span>
 		<br /><br />
 		Interesującą Cię frazę wpisz w pole formularza.<br />
-		<form style="margin-top:5px;" method="post" action="{SITE_ROOT}/{SEARCH_LINK}" id="formSearch">
+		<form style="margin-top:5px;" method="post" action="{SEARCH_LINK}" id="formSearch">
 			<input class="left" type="text" name="search_word" size="25" maxlength="255" /><br />
 			<div class="right">
               <a href="#" onclick="document.getElementById('formSearch').submit()">wyszukaj</a>
@@ -103,8 +108,8 @@
 		<span class="title">feed</span>
 		<br />
 		<ul>
-			<li><a href="{SITE_ROOT}/{RSS_LINK}">rss</a></li>
-			<li><a href="{SITE_ROOT}/{RSSCOMMENTS_LINK}">rss komentarze</a></li>
+			<li><a href="{RSS_LINK}">rss</a></li>
+			<li><a href="{RSSCOMMENTS_LINK}">rss komentarze</a></li>
 		</ul>
 		<br />
 		
@@ -122,7 +127,7 @@
         <span class="title">alternatywnie</span><br />
         <ul>
             <!-- BEGIN DYNAMIC BLOCK: alternate_design_row -->
-            <li><a href="{SITE_ROOT}/{TEMPLATE_LINK}">{ALTERNATE_TEMPLATE}</a></li>
+            <li><a href="{TEMPLATE_LINK}">{ALTERNATE_TEMPLATE}</a></li>
             <!-- END DYNAMIC BLOCK: alternate_design_row -->
         </ul>
         <br />
@@ -138,11 +143,11 @@
 		<br /><span class="counter">Wizyty: {STATISTICS}</span><br />
 	</div>
 	<div id="right">
-		<span class="title">./dev-log</span> <a href="{SITE_ROOT}/"><strong>index</strong></a><br />
+		<span class="title">./dev-log</span> <a href="./"><strong>index</strong></a><br />
 		
 		<div class="right">
-            <a href="javascript:text_resize('content',-1)"><img alt="Zmniejsz tekst" src="{SITE_ROOT}/templates/{LANG}/{THEME}/images/minus.jpg" width="12" height="12" /></a>
-            <a href="javascript:text_resize('content',1)"><img alt="Powiększ tekst" src="{SITE_ROOT}/templates/{LANG}/{THEME}/images/plus.jpg" width="12" height="12" /></a>
+            <a href="javascript:text_resize('content',-1)"><img alt="Zmniejsz tekst" src="templates/{LANG}/{THEME}/images/minus.jpg" width="12" height="12" /></a>
+            <a href="javascript:text_resize('content',1)"><img alt="Powiększ tekst" src="templates/{LANG}/{THEME}/images/plus.jpg" width="12" height="12" /></a>
 		</div>
 		
 		<div id="content">
@@ -153,12 +158,12 @@
 		<!-- IFDEF: PAGINATED -->
 		<b>Idź do strony</b>: 
             <!-- IFDEF: MOVE_BACK -->
-            <strong><a href="{SITE_ROOT}/{MOVE_BACK_LINK}">poprzednia</a></strong> 
+            <strong><a href="{MOVE_BACK_LINK}">poprzednia</a></strong> 
             <!-- ELSE -->
             <!-- ENDIF -->
 			{STRING} 
 			<!-- IFDEF: MOVE_FORWARD -->
-			<strong><a href="{SITE_ROOT}/{MOVE_FORWARD_LINK}">następna</a></strong>
+			<strong><a href="{MOVE_FORWARD_LINK}">następna</a></strong>
 			<!-- ELSE -->
 			<!-- ENDIF -->
         <!-- ELSE -->

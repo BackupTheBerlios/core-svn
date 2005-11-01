@@ -57,27 +57,20 @@ $view->db->next_record();
 $image = $view->db->f('image');
 
 if(!empty($image)) {
-    
-    $img_path = get_root() . '/photos/' . $image;
-    
-    if(is_file($img_path)) {
-        
-        list($width, $height) = getimagesize($img_path);
+    list($width, $height) = getimagesize("photos/" . $image);
 
-        $ft->assign(array(
-            'IMAGE_NAME'    =>$image,
-            'IMAGE_WIDTH'   =>$width,
-            'IMAGE_HEIGHT'  =>$height, 
-            'LANG'          =>$lang, 
-            'THEME'         =>$theme, 
-            'SITE_ROOT'     =>SITE_ROOT
-        ));
+    $ft->assign(array(
+        'IMAGE_NAME'    =>$image,
+        'IMAGE_WIDTH'   =>$width,
+        'IMAGE_HEIGHT'  =>$height, 
+        'LANG'          =>$lang, 
+        'THEME'         =>$theme
+    ));
     
-        $ft->define('photo_main', 'photo_main.tpl');
-        $ft->assign('TITLE', $db_conf->get_config('title_page'));
+    $ft->define('photo_main', 'photo_main.tpl');
+    $ft->assign('TITLE', $db_conf->get_config('title_page'));
 
-        $ft->parse('CONTENT', 'photo_main');
-    }
+    $ft->parse('CONTENT', 'photo_main');
 } else {
     // jesli ktos probuje grzebac w adresie url
     header("Location: index.php");

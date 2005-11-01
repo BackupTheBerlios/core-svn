@@ -14,6 +14,17 @@ if(!defined('CORE_INSTALLED')) {
 
 
 
+//czyscimy katalog tymczasowy
+$dh = dir(TMPDIR);
+while (($obj = $dh->read()) !== false) {
+    $path = TMPDIR . $obj;
+    if (is_file($path) &&
+            !in_array($obj, array('.', '..')) &&
+            fileatime($path) < (time() - 3600*24) ) {
+        @unlink($path);
+    }
+}
+
 
 
 session_register('login');

@@ -2,10 +2,10 @@
 <!-- IFDEF: SHOW_COMMENT_FORM -->
 If You live an e-mail address(optional) it would be hidden(stored only in database).
 <br /><br />
-<b><a class="date" href="{SITE_ROOT}/{PERMA_LINK}">{NEWS_TITLE}</a></b> - perma link<br /><br />
+<b><a class="date" href="{PERMA_LINK}">{NEWS_TITLE}</a></b> - perma link<br /><br />
 
-<script type="text/javascript" src="{SITE_ROOT}/templates/{LANG}/{THEME}/js/comments.js"></script>
-<form method="post" action="{SITE_ROOT}/{FORM_LINK}" name="post">
+<script type="text/javascript" src="templates/{LANG}/{THEME}/js/comments.js"></script>
+<form method="post" action="{FORM_LINK}" name="post">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 	<tr>
 		<td width="20%" height="25" valign="top">Author:</td>
@@ -59,7 +59,7 @@ If You live an e-mail address(optional) it would be hidden(stored only in databa
 <!-- ELSE -->
 <div class="center">
 {CONFIRMATION}<br />
-<a href="{SITE_ROOT}/{SUBMIT_LINK}">Back to comments
+<a href="{SUBMIT_LINK}">Back to comments
 </div>
 <!-- ENDIF -->
 </div>

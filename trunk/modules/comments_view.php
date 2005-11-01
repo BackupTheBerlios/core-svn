@@ -26,14 +26,25 @@ if(is_numeric($_GET['id'])) {
             $id             = $db->f('id');
             $title          = $db->f('title');
             $comments_id    = $db->f('id');
+            
+            if (isset($rewrite) && $rewrite == 1)
+            {
+              
+              $perma_link = sprintf('1,%s,1,item.html', $id);
+              $submit_link = sprintf('1,%s,3,item.html', $id);
+            } else {
+
+              $perma_link = 'index.php?p=1&amp;id=' . $id;
+              $submit_link = 'index.php?p=3&amp;id=' . $id;
+            }
 
             $ft->assign(array(
                 'NEWS_TITLE'    =>$title,
                 'NEWS_ID'       =>$id,
                 'COMMENTS_ID'   =>$id,
                 'STRING'        =>$page_string, 
-                'PERMA_LINK'    =>perma_link($rewrite, $id), 
-                'SUBMIT_LINK'   =>addcomments_link($rewrite, $id)
+                'PERMA_LINK'    =>$perma_link, 
+                'SUBMIT_LINK'   =>$submit_link
             ));
 
             $query = sprintf("
@@ -71,7 +82,8 @@ if(is_numeric($_GET['id'])) {
 
                 // przeszukanie text w poszukiwaniu ci±gów http, mail, ftp
                 // zamiana ich na format linków
-                $text = coreMakeClickable($text);
+                $text            = coreMakeClickable($text);
+
                 $text = str_replace(array('[quote]', '[/quote]'), array('<div class="quote">', '</div>'), $text);
 
                 $ft->assign(array(
@@ -82,7 +94,7 @@ if(is_numeric($_GET['id'])) {
                     'AUTHOR_EMAIL'      =>$email,
                     'STRING'            =>$page_string,
                     'ID'                =>$id, 
-                    'QUOTE_LINK'        =>comments_quote_link($rewrite, $comments_id, $id)
+                    'QUOTE_LINK'        =>$CoreRewrite->comments_quote($id, $comments_id, $rewrite)
                 ));
                 
                 $ft->define("comments_view", "comments_view.tpl");

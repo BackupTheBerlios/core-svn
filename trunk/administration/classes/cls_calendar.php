@@ -59,7 +59,8 @@ class calendar {
             $db, 
             $rewrite, 
             $assigned_tpl, 
-            $lang;
+            $lang, 
+            $CoreRewrite;
         
         $ft->assign('LONGMONTHS', $this->Months[$lang][($m = date('n'))-1] . ', ' . ($y = date('Y')));
         
@@ -102,6 +103,7 @@ class calendar {
                 if($this->intDay == date('d')) {
                     
                     $ft->assign(array(
+                        'LINKED'    =>false, 
                         'DAY'       =>$this->intDay, 
                         'DAYS_CLASS'=>'day_current'
                     ));
@@ -110,12 +112,15 @@ class calendar {
                 if(in_array($this->intDay, $date)) {
                     
                     $ft->assign(array(
-                        'DAY'       =>date_link($rewrite, $this->intMonth, $this->intDay), 
+                        'LINKED'    =>true, 
+                        'DAY_LINKED'=>$CoreRewrite->current_date($rewrite, $this->intMonth, $this->intDay),
+                        'DAY'       =>$this->intDay, 
                         'DAYS_CLASS'=>$this->intDay == date('d') ? 'day_current_hit' : 'day_hit'
                     ));
                 } elseif($this->intDay != date('d')) {
                     
                     $ft->assign(array(
+                        'LINKED'    =>false, 
                         'DAY'       =>$this->intDay, 
                         'DAYS_CLASS'=>'day'
                     ));

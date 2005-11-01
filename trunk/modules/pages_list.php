@@ -29,7 +29,7 @@ if($db->num_rows() > 0) {
         
         $ft->assign(array(
             'PAGE_NAME' =>$page_name,
-            'PAGE_LINK' =>page_link($rewrite, $page_id),
+            'PAGE_LINK' =>$CoreRewrite->permanent_page($page_id, $rewrite),
             'CLASS'     =>"parent",
             'PARENT'    =>''
         ));
@@ -115,7 +115,7 @@ if(isset($_GET['id']) && $_GET['p'] == 5 || (isset($start_page_type) && $start_p
         
                 $ft->assign(array(
                     'SUBPAGE_NAME'  =>$subpage_name,
-                    'SUBPAGE_LINK'  =>page_link($rewrite, $subpage_id),
+                    'SUBPAGE_LINK'  =>$CoreRewrite->permanent_page($subpage_id, $rewrite),
                     'CLASS'         =>"parent",
                     'PARENT'        =>''
                 ));

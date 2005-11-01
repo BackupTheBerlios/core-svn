@@ -6,13 +6,13 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 		<meta http-equiv="Content-language" content="pl" />
 
-		<link rel="stylesheet" href="{SITE_ROOT}/templates/{LANG}/{THEME}/css/main.css" type="text/css" media="screen" />
+		<link rel="stylesheet" href="templates/{LANG}/{THEME}/css/main.css" type="text/css" media="screen" />
 	</head>
 <body>
 
 <body>
 <div>
-	<a href="#" onclick="javascript:window.close();"><img src="{SITE_ROOT}/photos/{IMAGE_NAME}" width="{IMAGE_WIDTH}" height="{IMAGE_HEIGHT}"></a>
+	<a href="#" onclick="javascript:window.close();"><img src="photos/{IMAGE_NAME}" width="{IMAGE_WIDTH}" height="{IMAGE_HEIGHT}"></a>
 </div>
 </body>
 </html>

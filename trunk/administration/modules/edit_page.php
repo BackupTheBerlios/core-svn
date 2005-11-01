@@ -149,7 +149,7 @@ switch ($action) {
             $ft->assign(array(
                 'ID'	=>$_GET['id'],
                 'TITLE'	=>!empty($_POST['title']) ? stripslashes($_POST['title']) : $title,
-                'TEXT'	=>!empty($_POST['text']) ? stripslashes(br2nl($_POST['text'])) : br2nl($text)
+                'TEXT'	=>!empty($_POST['text']) ? stripslashes(str_br2nl($_POST['text'])) : str_br2nl($text)
             ));
         
             $path = '../templates/' . $lang . '/main/tpl/';

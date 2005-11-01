@@ -27,8 +27,7 @@ $xml =& new xml_feed();
 
 $lang = $xml->db_conf->get_config('language_set');
 
-$ft =& new FastTemplate('./templates/' . $lang . '/main/tpl/');
-$ft->assign('SITE_ROOT', SITE_ROOT);
+$ft  =& new FastTemplate('./templates/' . $lang . '/main/tpl/');
 
 $xml->parse_comments_feed();
 

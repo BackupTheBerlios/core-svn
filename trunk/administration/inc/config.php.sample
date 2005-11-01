@@ -22,8 +22,6 @@ define('CORE_INSTALLED', true);
 //mail address to person who can repair if something in Your code is broken
 define('ADMIN_MAIL', 'email@example.com');
 
-define('SITE_ROOT', 'http://81.190.160.132/devlog'); // without slash
-
 define('PATH_TO_CLASSES', sprintf('%s/classes/', dirname(dirname(__file__))));
 define('CLASS_EXTENSION', '.php');
 define('ROOT', dirname(dirname(PATH_TO_CLASSES)) . '/'  );

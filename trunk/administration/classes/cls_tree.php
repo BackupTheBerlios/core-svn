@@ -20,7 +20,10 @@ class tree {
      */
     function get_cat($page_id, $level) {
         
-        global $ft, $rewrite;
+        global 
+            $ft, 
+            $rewrite, 
+            $CoreRewrite;
         
         $query = sprintf("
             SELECT 
@@ -54,7 +57,7 @@ class tree {
                 'PAGE_ID'   =>$page_id,
                 'CLASS'     =>"child",
                 'PARENT'    =>str_repeat('&nbsp; ', $level), 
-                'PAGE_LINK' =>page_link($rewrite, $page_id)
+                'PAGE_LINK' =>$CoreRewrite->permanent_page($page_id, $rewrite)
             ));
             
             $ft->parse('PAGES_ROW', ".pages_row");
@@ -71,7 +74,10 @@ class tree {
      */
     function get_subpage_cat($subpage_id, $level) {
         
-        global $ft, $rewrite;
+        global 
+            $ft, 
+            $rewrite, 
+            $CoreRewrite;
         
         $query = sprintf("
             SELECT 
@@ -105,7 +111,7 @@ class tree {
                 'SUBPAGE_ID'    =>$subpage_id,
                 'CLASS'         =>"child",
                 'PARENT'        =>str_repeat('&nbsp; ', $level), 
-                'SUBPAGE_LINK'  =>page_link($rewrite, $subpage_id)
+                'SUBPAGE_LINK'  =>$CoreRewrite->permanent_page($subpage_id, $rewrite)
             ));
             
             $ft->parse('SUBPAGES_ROW', ".subpages_row");
@@ -122,7 +128,10 @@ class tree {
      */
     function get_category_cat($cat_id, $level) {
         
-        global $ft, $rewrite;
+        global 
+            $ft, 
+            $rewrite, 
+            $CoreRewrite;
         
         $query = sprintf("
             SELECT 
@@ -154,7 +163,7 @@ class tree {
                 'NEWS_CAT'  =>$cat_id,
                 'CLASS'     =>"cat_child",
                 'PARENT'    =>str_repeat('&nbsp; ', $level), 
-                'CAT_LINK'  =>category_link($rewrite, $cat_id)
+                'CAT_LINK'  =>$CoreRewrite->category_news($cat_id, $rewrite)
             ));
             
             $ft->parse('CATEGORY_ROW', ".category_row");
@@ -171,7 +180,12 @@ class tree {
      */
     function get_breadcrumb($page_id, $level) {
         
-        global $ft, $rewrite, $pages_sort, $pages_id;
+        global 
+            $ft, 
+            $rewrite, 
+            $pages_sort, 
+            $pages_id, 
+            $CoreRewrite;
         
         $query = sprintf("
             SELECT 
@@ -205,7 +219,7 @@ class tree {
                 'PAGE_ID'       =>$page_id,
                 'CLASS'         =>"child",
                 'PARENT'        =>str_repeat('&nbsp; ', $level), 
-                'PAGE_LINK'     =>page_link($rewrite, $page_id)
+                'PAGE_LINK'     =>$CoreRewrite->permanent_page($page_id, $rewrite)
             ));
         
             $pages_sort[]   = $page_name;

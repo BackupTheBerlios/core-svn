@@ -124,14 +124,24 @@ class xml_feed {
                 $text = str_replace($this->pattern, $this->replacement, $text);
     
                 list_assigned_categories($id);
+    
+                if((bool)$this->rewrite) {
+            
+                    $comments_link  = sprintf('%s1,%s,2,item.html', $this->http_root, $id);
+                    $permanent_link = sprintf('%s1,%s,1,item.html', $this->http_root, $id);
+                } else {
+
+                    $comments_link  = sprintf('%sindex.php?p=2&amp;id=%s', $this->http_root, $id);
+                    $permanent_link = sprintf('%sindex.php?p=1&amp;id=%s', $this->http_root, $id);
+                }
    
                 $ft->assign(array(
                     'DATE'          =>$date, 
                     'TITLE'         =>$title, 
                     'AUTHOR'        =>$author, 
-                    'PERMALINK'     =>perma_link($this->rewrite, $id), 
+                    'PERMALINK'     =>$permanent_link, 
                     'TEXT'          =>$text, 
-                    'COMMENTS_LINK' =>showcomments_link($this->rewrite, $id), 
+                    'COMMENTS_LINK' =>$comments_link, 
                     'DISPLAY_XML'   =>true
                 ));
     
@@ -200,12 +210,14 @@ class xml_feed {
                 $date           = $this->date_convert($date);
                 
                 $text = str_replace($this->pattern, $this->replacement, $text);
+
+                $permanent_link = (bool)$this->rewrite ? $this->http_root . '1,' . $id . ',1,item.html' : $this->http_root . 'index.php?p=1&amp;id=' . $id . '';
                 
                 $ft->assign(array(
                     'DATE'          =>$date, 
                     'TITLE'         =>$title, 
                     'AUTHOR'        =>$author, 
-                    'PERMALINK'     =>perma_link($this->rewrite, $id), 
+                    'PERMALINK'     =>$permanent_link, 
                     'TEXT'          =>$text, 
                     'DISPLAY_XML'   =>true
                 ));

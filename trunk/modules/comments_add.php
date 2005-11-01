@@ -1,54 +1,76 @@
 <?php
 // $Id$
 
-$comment_author = empty($_COOKIE['devlog_comment_user']) ? '' : $_COOKIE['devlog_comment_user'];
-$action         = empty($_GET['action']) ? '' : $_GET['action'];
+// dekalracja zmiennej $page_string
+$page_string        = empty($page_string) ? '' : $page_string;
+$comment_author     = empty($_COOKIE['devlog_comment_user']) ? '' : $_COOKIE['devlog_comment_user'];
 
-switch($action) {
+// deklaracja zmiennej $action::form
+$action = empty($_GET['action']) ? '' : $_GET['action'];
+
+switch ($action) {
 
     case 'add':
 
         $monit = array();
 
+        // Obs³uga formularza, jesli go zatwierdzono
         if(!eregi('^([^0-9]+){2,}$', $_POST['author'])) {
             
             $monit[] = $i18n['comments_add'][0];
         }
 
-        // E-mail check
+        // Sprawdzenie poprawnosci adresu e-mail
         if(!empty($_POST['email']) && !check_mail($_POST['email'])) {
             
             $monit[] = $i18n['comments_add'][1];
         }
 
-        // No errors - insert comment
+        // Je¿eli dane spe³niaja wszystkie kryteria dodanie nowego komentarza
         if(empty($monit)) {
 
             $text = str_nl2br($_POST['text']);
+
+            // [b] i [/b] dla tekstu pogrubionego.
+            $text = preg_replace('/\[b\]([^\"]+)\[\/b\]/','<b>\\1</b>', $text);
+
+            // [i] i [/i] dla tekstu pochylonego.
+            $text = preg_replace('/\[i\]([^\"]+)\[\/i\]/','<i>\\1</i>', $text);
+
+            // [u] i [/u] dla tekstu podkre¶lonego.
+            $text = preg_replace('/\[u\]([^\"]+)\[\/u\]/','<u>\\1</u>', $text);
+
+            // [abbr] i [/abbr] dla akronimów.
+            $text = preg_replace('/\[abbr=([^\"]+)\]([^\"]+)\[\/abbr\]/','<abbr title="\\1">\\2</abbr>', $text);
             
-            $text = preg_replace('/\[b\]([^\"]+)\[\/b\]/','<b>\\1</b>', $text); // [b] / [/b]
-            $text = preg_replace('/\[i\]([^\"]+)\[\/i\]/','<i>\\1</i>', $text); // [i] / [/i]
-            $text = preg_replace('/\[u\]([^\"]+)\[\/u\]/','<u>\\1</u>', $text); // [u] / [/u]
-            
-            $text = preg_replace('/\[abbr=([^\"]+)\]([^\"]+)\[\/abbr\]/','<abbr title="\\1">\\2</abbr>', $text); // [abbr] / [/abbr]
-            $text = preg_replace('/\[link\]([^\"]+)\[\/link\]/','<a href="\\1" target="_blank">\\1</a>', $text); // [link] / [/link]
-            $text = preg_replace('/\[link=([^\"]+)\]([^\"]+)\[\/link\]/','<a href="\\1" target="_blank">\\2</a>', $text); // [link=] / [/link]
+            // [link] i [/link] dla odsy³aczy.
+            $text = preg_replace('/\[link\]([^\"]+)\[\/link\]/','<a href="\\1" target="_blank">\\1</a>', $text);
 
-            $text = str_replace(array('[quote]', '[/quote]'), array('<div class="quote">', '</div>'), $text); 
+            // [link=] i [/link] dla odsy³aczy.
+            $text = preg_replace('/\[link=([^\"]+)\]([^\"]+)\[\/link\]/','<a href="\\1" target="_blank">\\2</a>', $text);
 
-            @setcookie('devlog_comment_user', $_POST['author'], time()+3600*8760);
+            $text = str_replace(array('[quote]', '[/quote]'), array('<div class="quote">', '</div>'), $text);
 
+            $id         = $_POST['id'];
+            $id_news    = $_POST['comments_id'];
+            $author     = $_POST['author'];
+            $email      = $_POST['email'];
+            $author_ip  = $_SERVER['REMOTE_ADDR'];
+
+            @setcookie('devlog_comment_user', $author, time()+3600*8760);
+
+            // egzemplarz klasy ³aduj±cej komentarz do bazy danych
             $query = sprintf("
                 INSERT INTO
                     %s
                 VALUES
-                    ('',NOW(),'%d','%s','%s','%s','%s')",
+                    ('', NOW(), '%d', '%s', '%s', '%s', '%s')",
 
                 TABLE_COMMENTS,
-                $_POST['comments_id'],
-                $_POST['author'],
-                $_SERVER['REMOTE_ADDR'],
-                $_POST['email'],
+                $id_news,
+                $author,
+                $author_ip,
+                $email,
                 $text
             );
 
@@ -57,15 +79,15 @@ switch($action) {
             // przydzielamy zmienne i parsujemy szablon
             $ft->assign(array(
                 'NEWS_ID'       =>$_POST['id'],
-                'STRING'        =>'',
+                'STRING'        =>$page_string,
                 'CONFIRMATION'  =>$i18n['comments_add'][2], 
-                'SUBMIT_LINK'   =>showcomments_link($rewrite, $_POST['id'])
+                'SUBMIT_LINK'   =>$CoreRewrite->showcomments($_POST['id'], $rewrite)
             ));
 
             $ft->assign('SHOW_COMMENT_FORM', false);
             $ft->define('comments_request', 'comments_request.tpl');
             
-            // template parse::ft
+            // parsowanie szablonu::ft
             $ft->parse('MAIN','.comments_request');
         } else {
             
@@ -84,10 +106,10 @@ switch($action) {
 
     default:
 
-        // Comment quoted::request
+        // Je¶li wpis jest cytowany::request
         if(isset($_GET['c'])) {
 
-            // Quoted text::db
+            // Pobieramy tekst cytowanego wpisu::db
             $query = sprintf("
                 SELECT
                     text
@@ -104,6 +126,7 @@ switch($action) {
             $db->query($query);
             $db->next_record();
 
+            // przypisanie zmiennych
             $cite   = $db->f('text');
             $author = $db->f('author');
 
@@ -126,6 +149,7 @@ switch($action) {
             $db->query($query);
             $db->next_record();
 
+            // przypisanie zmiennych
             $id     = $db->f('id');
             $title  = $db->f('title');
             $text   = $db->f('text');
@@ -138,10 +162,10 @@ switch($action) {
                 'NEWS_TEXT'         =>$text, 
                 'NEWS_AUTHOR'       =>$author, 
                 'COMMENT_AUTHOR'    =>$comment_author,
-                'QUOTE'             =>!empty($cite) ? sprintf('[quote]%s[/quote]', strip_tags(str_br2nl($cite))) : '',
-                'STRING'            =>'',
-                'PERMA_LINK'        =>perma_link($rewrite, $id),
-                'FORM_LINK'         =>form_link($rewrite)
+                'QUOTE'             =>sprintf('[quote]%s[/quote]', strip_tags(str_br2nl($cite))),
+                'STRING'            =>$page_string,
+                'PERMA_LINK'        =>$CoreRewrite->permanent_news($id, $rewrite), 
+                'FORM_LINK'         =>$CoreRewrite->addcomments_form($rewrite)
             ));
         } else {
 
@@ -161,6 +185,7 @@ switch($action) {
             $db->query($query);
             $db->next_record();
 
+            // przypisanie zmiennych
             $id     = $db->f('id');
             $title  = $db->f('title');
             $text   = $db->f('text');
@@ -174,9 +199,9 @@ switch($action) {
                 'NEWS_AUTHOR'       =>$author, 
                 'QUOTE'             =>'',
                 'COMMENT_AUTHOR'    =>$comment_author,
-                'STRING'            =>'', 
-                'PERMA_LINK'        =>perma_link($rewrite, $id), 
-                'FORM_LINK'         =>form_link($rewrite)
+                'STRING'            =>$page_string, 
+                'PERMA_LINK'        =>$CoreRewrite->permanent_news($id, $rewrite), 
+                'FORM_LINK'         =>$CoreRewrite->addcomments_form($rewrite)
             ));
         }
         

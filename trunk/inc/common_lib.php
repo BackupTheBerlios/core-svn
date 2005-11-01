@@ -17,7 +17,7 @@ if(!get_magic_quotes_gpc()) {
         }
         @reset($_GET);
     }
-    
+
     if(is_array($_POST)) {
         while(list($k, $v) = each($_POST)) {
             if(is_array($_POST[$k])) {
@@ -31,7 +31,7 @@ if(!get_magic_quotes_gpc()) {
         }
         @reset($_POST);
     }
-    
+
     if(is_array($_COOKIE)) {
         while(list($k, $v) = each($_COOKIE)) {
             if(is_array($_COOKIE[$k])) {
@@ -58,82 +58,15 @@ function check_mail($email) {
 }
 
 
-function get_config($name) {
-
-    $db = new DB_SQL;
-
-    if(RDBMS == '4.1') {
-        if(!defined('STATEMENT_SET')) {
-            $query = sprintf("
-                PREPARE 
-                    get_config 
-                FROM 'SELECT 
-                    config_value 
-                FROM 
-                    %1\$s 
-                WHERE 
-                    config_name = ?'", 
-        
-                TABLE_CONFIG
-            );
-            $db->query($query);
-            
-            $query = sprintf("SET @config_name = '%1\$s'", $name);
-            $db->query($query);
-            
-            $query = "EXECUTE get_config USING @config_name";
-            
-            /*
-             * TODO:
-             * czy tutaj ta stala nie powinna nieco inaczej wygladac ?
-             * zakladam, ze powyzszy sposob, czyli korzystae z prepared
-             * statements bedziemy wykorzystywac szerzej. wiec nie moze byc
-             * jedna stala o nieznaczacej zbyt wiele nazwie, i zeby sie ja
-             * dalo wykorzystac szerzej, do wiekszej ilosci statementsow
-             *
-             * poza tym, nie mam teraz jak, ale warto by sprawdzic, jak dlugo
-             * prepared statements 'utrzymuja' sie w bazie. bo zakladam ze dluzej 
-             * niz okres zycia tej stalej ? jesli nie, to korzystanie z tego jest
-             * malo wygodne, i sensowne w tym wypadku.
-             *
-             * jesli prepared statements zyja wystarzajaca dlugo, np tyle samo
-             * co otwarte polaczenie z sql, to moze warto wrzucac w jakas tablice
-             * do sesji wartosci bool, czy dana 'przygotowana stala' zostala juz
-             * zdefiniowana. 
-             * 
-             */
-            // definicja warunku::true
-            define('STATEMENT_SET', true);
-        } else {
-            $query = sprintf("SET @config_name = '%1\$s'", $name);
-            $db->query($query);
-            
-            $query = "EXECUTE get_config USING @config_name";
-        }
-    } else {
-        $query = sprintf("
-            SELECT
-                config_value
-            FROM
-                %1\$s
-            WHERE
-                config_name = '%2\$s'",
-          
-            TABLE_CONFIG,
-            $name
-        );
-    }
-
-    $db->query($query);
-    $db->next_record();
-
-    return $db->f('config_value');
-}
 
 
 function str_getext($file, $with_dot = true) {
 	
 	$p = pathinfo($file);
+    if (!isset($p['extension']))
+    {
+        return '';
+    }
     return $with_dot ? '.' . $p['extension'] : $p['extension'];
 }
 
@@ -143,7 +76,7 @@ function str_entit($s) {
 
     $p = array('<', '>', '"', "'");
     $r = array('&lt;', '&gt;', '&quot;', '&#39;');
-    
+
     return str_replace($p, $r, $s);
 }
 
@@ -185,31 +118,9 @@ function str_nl2br($s) {
 }
 
 
-function set_config($name, $value) {
-
-    $db = new DB_SQL;
-
-    $query = sprintf("
-        UPDATE
-            %1\$s
-        SET
-            config_value = '%2\$s'
-        WHERE
-            config_name = '%3\$s'",
-          
-        TABLE_CONFIG,
-        $value,
-        $name
-    );
-
-    $db -> query($query);
-
-    return true;
-}
-
 // stronnicowanie 
 function pagination($url, $mainposts_per_page, $num_items) {
-    
+
     global $ft, $start;
 
     $ret = array();
@@ -232,7 +143,7 @@ function pagination($url, $mainposts_per_page, $num_items) {
 	if($total_pages > 6) {
 	    $init_page_max = ($total_pages > 3) ? 3 : $total_pages;
 	    for($i = 1; $i < $init_page_max + 1; $i++) {
-	        $page_string .= ($i == $on_page) ? '<b>' . $i . '</b>' : '<a href="' . SITE_ROOT . '/' . $url . (($i - 1) * $mainposts_per_page) . '">' . $i . '</a>';
+	        $page_string .= ($i == $on_page) ? '<b>' . $i . '</b>' : '<a href="' . $url . (($i - 1) * $mainposts_per_page) . '">' . $i . '</a>';
 	        if($i <  $init_page_max) {
 	            $page_string .= ", ";
 	        }
@@ -246,7 +157,7 @@ function pagination($url, $mainposts_per_page, $num_items) {
 	            $init_page_max = ($on_page < $total_pages - 4) ? $on_page : $total_pages - 4;
 	            
 	            for($i = $init_page_min - 1; $i < $init_page_max + 2; $i++) {
-	                $page_string .= ($i == $on_page) ? '<b>' . $i . '</b>' : '<a href="' . SITE_ROOT . '/' . $url . (($i - 1) * $mainposts_per_page) . '">' . $i . '</a>';
+	                $page_string .= ($i == $on_page) ? '<b>' . $i . '</b>' : '<a href="' . $url . (($i - 1) * $mainposts_per_page) . '">' . $i . '</a>';
 	                if($i < $init_page_max + 1) {
 	                    $page_string .= ', ';
 	                }
@@ -258,7 +169,7 @@ function pagination($url, $mainposts_per_page, $num_items) {
 	        }
 	        
 	        for($i = $total_pages - 2; $i < $total_pages + 1; $i++) {
-	            $page_string .= ($i == $on_page) ? '<b>' . $i . '</b>'  : '<a href="' . SITE_ROOT . '/' . $url . (($i - 1) * $mainposts_per_page) . '">' . $i . '</a>';
+	            $page_string .= ($i == $on_page) ? '<b>' . $i . '</b>'  : '<a href="' . $url . (($i - 1) * $mainposts_per_page) . '">' . $i . '</a>';
 	            if($i < $total_pages) {
 	                $page_string .= ", ";
 	            }
@@ -267,7 +178,7 @@ function pagination($url, $mainposts_per_page, $num_items) {
 	} else {
 	    
 	    for($i = 1; $i < $total_pages + 1; $i++) {
-	        $page_string .= ($i == $on_page) ? '<b>' . $i . '</b>' : '<a href="' . SITE_ROOT . '/' . $url . (($i - 1) * $mainposts_per_page) . '">' . $i . '</a>';
+	        $page_string .= ($i == $on_page) ? '<b>' . $i . '</b>' : '<a href="' . $url . (($i - 1) * $mainposts_per_page) . '">' . $i . '</a>';
 	        if($i <  $total_pages) {
 	            $page_string .= ', ';
 	        }
@@ -292,19 +203,19 @@ function pagination($url, $mainposts_per_page, $num_items) {
 	    $ft->assign('MOVE_FORWARD', false);
 	}
 	
-	$ret['page_string']        = $page_string;
+	$ret['page_string'] = $page_string;
 	
 	return $ret;
 }
 
 
 function highlighter($text, $geshi_lang) {
-    
+
     include_once('geshi/geshi.php');
-    
+
     $geshi_path = 'geshi/geshi';
     $geshi = new geshi;
-    
+
     $langs = array(
         'actionscript', 'ada', 'apache', 'asm', 'asp', 
         'bash', 
@@ -322,24 +233,24 @@ function highlighter($text, $geshi_lang) {
         'vb', 'vbnet', 'vhdl', 'visualfoxpro', 
         'xml'
     );
-    
+
     $geshi_lang = in_array($geshi_lang, $langs) ? $geshi_lang : 'php';
 
     $source_lines = explode("\n", $text);
     foreach($source_lines as $line) {
-        
+
         $line = stripslashes($line);
         $line = str_replace(array('&lt;', '&gt;', '&amp;', '<br />'), array('<', '>', '&', "\n"), trim($line));
         $line = geshi_highlight($line, $geshi_lang, $geshi_path, TRUE);
         $text = $line;
     }
-    
+
     return $text;
 }
 
 
 function get_mysql_server_version() {
-    
+
     $dbs = explode('.', @mysql_get_server_info());
     define('RDBMS', $dbs[0] == '4' && $dbs[1] == '1' ? '4.1' : '4.0');
 }
@@ -347,7 +258,7 @@ function get_mysql_server_version() {
 
 // template check
 function prepare_template($lang, $i18n) {
-    
+
     if(isset($_COOKIE['devlog_design']) && is_dir('./templates/' . $lang. '/' . $_COOKIE['devlog_design'] . '/tpl/')){
         $theme = $_COOKIE['devlog_design'];
     } elseif (is_dir('./templates/' . $lang . '/main/tpl')) {
@@ -356,8 +267,206 @@ function prepare_template($lang, $i18n) {
         printf('<div style="font-family: Arial, sans-serif; font-size: 16px; background-color: #ccc; border: 1px solid red; padding: 15px; text-align: center;">%s</div>', $i18n['design'][0]);
         exit;
     }
-    
+
     return $theme;
+}
+
+
+function random() {
+
+    list($usec, $sec) = explode(' ', microtime());
+    $seed = (float) $sec + ((float) $usec * 100000);
+    mt_srand($seed);
+
+    return md5(mt_rand());
+}
+
+function get_config($name) {
+
+    $db = new DB_SQL;
+
+    if (!defined('RDBMS'))
+    {
+        define('RDBMS', '4.0');
+    }
+
+    if(RDBMS == '4.1') {
+        if(!defined('STATEMENT_SET')) {
+            $query = sprintf("
+                PREPARE 
+                    get_config 
+                FROM 'SELECT 
+                    config_value 
+                FROM 
+                    %1\$s 
+                WHERE 
+                    config_name = ?'", 
+
+                TABLE_CONFIG
+            );
+            $db->query($query);
+
+            $query = sprintf("SET @config_name = '%1\$s'", $name);
+            $db->query($query);
+
+            $query = "EXECUTE get_config USING @config_name";
+
+            /*
+             * TODO:
+             * czy tutaj ta stala nie powinna nieco inaczej wygladac ?
+             * zakladam, ze powyzszy sposob, czyli korzystae z prepared
+             * statements bedziemy wykorzystywac szerzej. wiec nie moze byc
+             * jedna stala o nieznaczacej zbyt wiele nazwie, i zeby sie ja
+             * dalo wykorzystac szerzej, do wiekszej ilosci statementsow
+             *
+             * poza tym, nie mam teraz jak, ale warto by sprawdzic, jak dlugo
+             * prepared statements 'utrzymuja' sie w bazie. bo zakladam ze dluzej 
+             * niz okres zycia tej stalej ? jesli nie, to korzystanie z tego jest
+             * malo wygodne, i sensowne w tym wypadku.
+             *
+             * jesli prepared statements zyja wystarzajaca dlugo, np tyle samo
+             * co otwarte polaczenie z sql, to moze warto wrzucac w jakas tablice
+             * do sesji wartosci bool, czy dana 'przygotowana stala' zostala juz
+             * zdefiniowana. 
+             * 
+             */
+            // definicja warunku::true
+            define('STATEMENT_SET', true);
+        } else {
+            $query = sprintf("SET @config_name = '%1\$s'", $name);
+            $db->query($query);
+
+            $query = "EXECUTE get_config USING @config_name";
+        }
+    } else {
+        $query = sprintf("
+            SELECT
+                config_value
+            FROM
+                %1\$s
+            WHERE
+                config_name = '%2\$s'",
+
+            TABLE_CONFIG,
+            $name
+        );
+    }
+
+    $db->query($query);
+    $db->next_record();
+
+    return $db->f('config_value');
+}
+function set_config($name, $value) {
+
+    $db = new DB_SQL;
+
+    $query = sprintf("
+        UPDATE
+            %1\$s
+        SET
+            config_value = '%2\$s'
+        WHERE
+            config_name = '%3\$s'",
+
+        TABLE_CONFIG,
+        $value,
+        $name
+    );
+
+    $db -> query($query);
+
+    return true;
+}
+
+
+function pathstripslashes(&$s)
+{
+    $s = preg_replace('#^([/|\\\\]+)?(.*?)([/|\\\\]+)?$#', '\\2', $s);
+    return $s;
+}
+function pathjoin()
+{
+    $arg_quant  = func_num_args();
+    if ($arg_quant == 0)
+    {
+        return '';
+    }
+
+    $args       = func_get_args();
+    $new_args   = array();
+    foreach ($args as $arg)
+    {
+        if (is_array($arg))
+        {
+            $new_args   = array_merge($new_args, $arg);
+        }
+        else
+        {
+            $new_args[] = $arg;
+        }
+    }
+
+    array_walk($new_args, 'pathstripslashes');
+
+    return implode(DIRECTORY_SEPARATOR, $new_args);
+}
+
+function _pathsplit($s, $slash)
+{
+    switch ($slash)
+    {
+        case '/':       $splits = array('/');       break;
+        case '\\':      $splits = array('\\');      break;
+        case 'all':     $splits = array('/', '\\'); break;
+        default:        return false;
+    }
+
+    $len = strlen($s);
+    $ret = array();
+    $word = '';
+
+    for ($i=0; $i<$len; $i++)
+    {
+        $char = $s[$i];
+
+        if (in_array($char, $splits))
+        {
+            if (!empty($word))
+            {
+                $ret[] = $word;
+            }
+            $word = '';
+        }
+        else
+        {
+            $word .= $char;
+        }
+    }
+
+    if (!empty($word))
+    {
+        $ret[] = $word;
+    }
+
+    return $ret;
+}
+function pathsplit($s, $slash = DIRECTORY_SEPARATOR)
+{
+    $ret = array();
+    if (is_array($s))
+    {
+        foreach ($s as $path)
+        {
+            $ret = array_merge($ret, _pathsplit($path, $slash));
+        }
+    }
+    else
+    {
+        $ret = array(_pathsplit($s, $slash));
+    }
+
+    return $ret;
 }
 
 ?>

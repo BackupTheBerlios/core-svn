@@ -18,7 +18,7 @@
         <pubDate>{DATE} GMT</pubDate>
         <title>{TITLE}</title>
         <dc:creator>{AUTHOR}</dc:creator>
-        <link>{SITE_ROOT}/{PERMALINK}</link>
+        <link>http://{PERMALINK}</link>
         <description>{TEXT}</description>
         <!-- IFDEF: NEWS_FEED -->
         <category>
@@ -26,7 +26,7 @@
         {CATEGORY_NAME}{COMMA}
         <!-- END DYNAMIC BLOCK: cat_row -->
         </category>
-        <comments>{SITE_ROOT}/{COMMENTS_LINK}</comments>
+        <comments>http://{COMMENTS_LINK}</comments>
         <!-- ELSE -->
         <!-- ENDIF -->
     </item>

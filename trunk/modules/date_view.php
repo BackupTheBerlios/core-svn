@@ -7,14 +7,14 @@ $query = sprintf("
 	SELECT 
         a.*,
         UNIX_TIMESTAMP(a.date) AS date,
-		c.comments_id,
+		c.id_news,
 		count(c.id) AS comments 
 	FROM 
 		%1\$s a 
 	LEFT JOIN 
 		%3\$s c 
 	ON 
-		a.id = c.comments_id
+		a.id = c.id_news
 	WHERE 
 		published = 1 
     AND 
@@ -56,10 +56,12 @@ if($db->num_rows() > 0) {
 	    
 	    $comments          = $db->f("comments");
 	    
-	    $news->list_assigned_categories($id);
+	    list_assigned_categories($id);
+	    
+	    $perma_link = (bool)$rewrite ? sprintf('1,%s,1,item.html', $id) : 'index.php?p=1&amp;id=' . $id;
         
         $text = preg_replace("/\[code:\"?([a-zA-Z0-9\-_\+\#\$\%]+)\"?\](.*?)\[\/code\]/sie", "highlighter('\\2', '\\1')", $text);
-        $text = $news->show_me_more($text);
+        $text   = show_me_more($text);
 	    
 	    $ft->assign(array(
             'DATE'          =>$date,
@@ -68,15 +70,15 @@ if($db->num_rows() > 0) {
             'NEWS_AUTHOR'   =>$author,
             'NEWS_ID'       =>$id,
             'NEWS_CATEGORY' =>$c_id,
-            'PERMA_LINK'    =>perma_link($rewrite, $id), 
+            'PERMA_LINK'    =>$perma_link, 
             'STRING'        =>'', 
             'PAGINATED'     =>false, 
             'MOVE_BACK'     =>false, 
             'MOVE_FORWARD'  =>false
 	    ));
 	    
-	    $news->get_comments_link($comments_allow, $comments, $id);
-	    $news->get_image_status($image, $id);
+	    get_comments_link($comments_allow, $comments, $id);
+	    get_image_status($image, $id);
 	    
 	    $ft->assign('RETURN', '');
 	    $ft->parse('MAIN', ".note_row");

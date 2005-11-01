@@ -140,6 +140,22 @@ class DB_Sql {
   		}
   		return $stat;
 	}
+
+    function get_record() {
+        if(!$this->Query_ID) {
+            $this->halt('get_record called with no query pending.');
+            return 0;
+        }
+        if(!$this->Row) {
+            $this->halt('get_record called without next_record first.');
+            return 0;
+        }
+        if (!is_array($this->Record))
+        {
+            return false;
+        }
+        return $this->Record;
+    }
 	
 	// position in result set
 	function seek($pos = 0) {

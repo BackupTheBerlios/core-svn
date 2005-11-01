@@ -1,11 +1,266 @@
 <?php
 // $Id$
 
+function get_breadcrumb($page_id, $level) {
+	
+	global 
+        $ft, 
+        $rewrite, 
+        $pages_sort, 
+        $pages_id;
+
+	$query = sprintf("
+        SELECT 
+            id, 
+            parent_id, 
+            title 
+        FROM 
+            %1\$s 
+        WHERE 
+            id = '%2\$d' 
+        AND 
+            published = 'Y' 
+        ORDER BY 
+            id 
+        ASC", 
+	
+        TABLE_PAGES, 
+        $page_id
+    );
+
+	$db = new DB_SQL;
+	$db->query($query);
+		
+	while($db->next_record()) {
+	
+		$page_id 	= $db->f("id");
+		$parent_id 	= $db->f("parent_id");
+		$page_name 	= $db->f("title");
+		$page_link  = (bool)$rewrite ? '1,' . $page_id . ',5,item.html' : 'index.php?p=5&amp;id=' . $page_id . '';
+	
+		$ft->assign(array(
+            'PAGE_TITLE'    =>$page_name,
+            'PAGE_ID'       =>$page_id,
+            'CLASS'         =>"child",
+            'PARENT'        =>str_repeat('&nbsp; ', $level), 
+            'PAGE_LINK'     =>$page_link
+        ));
+        
+        $pages_sort[]   = $page_name;
+        $pages_id[]     = $page_id;
+
+		get_breadcrumb($parent_id, $level+2);
+	}
+}
+
+
+function get_cat($page_id, $level) {
+	
+	global 
+        $ft, 
+        $rewrite;
+
+	$query = sprintf("
+        SELECT 
+            id, 
+            parent_id, 
+            title 
+        FROM 
+            %1\$s 
+        WHERE 
+            parent_id = '%2\$d' 
+        AND 
+            published = 'Y' 
+        ORDER BY 
+            id 
+        ASC", 
+	
+        TABLE_PAGES, 
+        $page_id
+    );
+
+	$db = new DB_SQL;
+	$db->query($query);
+		
+	while($db->next_record()) {
+	
+		$page_id 	= $db->f("id");
+		$parent_id 	= $db->f("parent_id");
+		$page_name 	= $db->f("title");
+		$page_link  = (bool)$rewrite ? '1,' . $page_id . ',5,item.html' : 'index.php?p=5&amp;id=' . $page_id . '';
+	
+		$ft->assign(array(
+            'PAGE_NAME' =>$page_name,
+            'PAGE_ID'   =>$page_id,
+            'CLASS'     =>"child",
+            'PARENT'    =>str_repeat('&nbsp; ', $level), 
+            'PAGE_LINK' =>$page_link
+        ));
+
+		$ft->parse('PAGES_ROW', ".pages_row");
+		get_cat($page_id, $level+2);
+	}
+}
+
+
+// funkcja pobierajaca rekurencyjnie kategorie na stronie g³ównej
+function get_category_cat($cat_id, $level) {
+	
+	global 
+        $ft, 
+        $rewrite;
+
+	$query = sprintf("
+        SELECT 
+            category_id, 
+            category_parent_id, 
+            category_name 
+        FROM 
+            %1\$s 
+        WHERE 
+            category_parent_id = '%2\$d' 
+        ORDER BY 
+            category_id 
+        ASC", 
+	
+        TABLE_CATEGORY, 
+        $cat_id
+    );
+
+	$db = new DB_SQL;
+	$db->query($query);
+		
+	while($db->next_record()) {
+	
+		$cat_id           = $db->f("category_id");
+		$cat_parent_id    = $db->f("category_parent_id");
+		$cat_name         = $db->f("category_name");
+		$cat_link         = (bool)$rewrite ? '1,' . $cat_id . ',4,item.html' : 'index.php?p=4&amp;id=' . $cat_id . '';
+	
+		$ft->assign(array(
+            'CAT_NAME'  =>$cat_name,
+            'NEWS_CAT'  =>$cat_id,
+            'CLASS'     =>"cat_child",
+            'PARENT'    =>str_repeat('&nbsp; ', $level), 
+            'CAT_LINK'  =>$cat_link
+        ));
+
+		$ft->parse('CATEGORY_ROW', ".category_row");
+		get_category_cat($cat_id, $level+2);
+	}
+}
+
+
+function show_me_more($text) {
+    
+    global 
+        $perma_link, 
+        $i18n;
+    
+	if($find = strpos($text, '[podziel]') OR $find = strpos($text, '[more]')) {
+	        
+        $text = sprintf('%s<br /><a href="%s">%s</a>',
+        
+            substr($text, 0, $find),
+            $perma_link,
+            $i18n['main_view'][2]
+        );
+	}
+	
+	return $text;
+}
+
+
+function get_comments_link($comments_allow, $comments, $id) {
+    
+    global 
+        $ft, 
+        $rewrite, 
+        $CoreRewrite;
+    
+    if(($comments_allow) == 0 ) {
+        $ft->assign(array(
+            'COMMENTS_ALLOW'    =>false, 
+            'COMMENTS'          =>''
+        ));
+    } else {
+        if($comments == 0) {
+            $ft->assign(array(
+                'COMMENTS_LINK' =>$CoreRewrite->addcomments($id, $rewrite), 
+                'COMMENTS_ALLOW'=>true, 
+                'COMMENTS'      =>''
+            ));
+	    } else {
+            $ft->assign(array(
+                'COMMENTS_LINK' =>$CoreRewrite->showcomments($id, $rewrite), 
+                'COMMENTS_ALLOW'=>true, 
+                'COMMENTS'      =>$comments
+            ));
+	    }
+    }
+}
+
+
+function get_image_status($image, $id) {
+    
+    global 
+        $ft, 
+        $max_photo_width, 
+        $rewrite;
+    
+    if(empty($image)) {
+        // IFDEF: IMAGE_EXIST zwraca pusta wartosc, przechodzimy
+        // do warunku ELSE
+        $ft->assign(array(
+            'IMAGE'         =>'', 
+            'IMAGE_EXIST'   =>false, 
+            'IMAGE_NAME'    =>false
+        ));
+    } else {
+        
+        $img_path = get_root() . '/photos/' . $image;
+        
+        if(is_file($img_path)) {
+            
+            list($width, $height) = getimagesize($img_path);
+            
+            $photo_link = (bool)$rewrite ? 'photo?id=' . $id . '' : 'photo.php?id=' . $id . '';
+            
+            // wysoko¶æ, szeroko¶æ obrazka
+            $ft->assign(array(
+                'WIDTH'         =>$width,
+                'HEIGHT'        =>$height,
+                'PHOTO_LINK'    =>$photo_link
+            ));
+            
+            if($width > $max_photo_width) {
+                
+                $ft->assign(array(
+                    'UID'           =>$id,
+                    'IMAGE_NAME'    =>''
+                ));
+            } else {
+                $ft->assign('IMAGE_NAME', $image);
+            }
+            
+            $ft->assign('IMAGE_EXIST', true);
+        } else {
+            
+            $ft->assign(array(
+                'IMAGE_EXIST'   =>false, 
+                'IMAGE_NAME'    =>false
+            ));
+        }
+    }
+}
+
+
 function list_assigned_categories($id) {
     
     global 
         $ft, 
-        $rewrite;
+        $rewrite, 
+        $CoreRewrite;
     
     $query = sprintf("
         SELECT 
@@ -37,7 +292,7 @@ function list_assigned_categories($id) {
         
         $ft->assign(array(
             'CATEGORY_NAME' =>$cname, 
-            'CATEGORY_LINK' =>category_link($rewrite, $cid), 
+            'CATEGORY_LINK' =>$CoreRewrite->category_news($cid, $rewrite), 
             'COMMA'         =>$count_cats == $idx ? '' : ', '
         ));
         
@@ -63,148 +318,6 @@ function coreMakeClickable($text) {
 	//$text = substr($text, 1);
 
 	return($text);
-}
-
-
-// news permanent link
-function perma_link($rewrite, $id) {
-    
-    $perma_link = (bool)$rewrite ? sprintf('%s', $id) : 'index.php?p=1&amp;id=' . $id;
-    
-    return $perma_link;
-}
-
-
-// pagination link
-function pagination_link($rewrite) {
-    
-    $pagination_link = (bool)$rewrite ? 'offset/' : 'index.php?p=all&amp;start=';
-    
-    return $pagination_link;
-}
-
-
-// category link
-function category_link($rewrite, $id) {
-    
-    $category_link = (bool)$rewrite ? sprintf('category/%s', $id) : 'index.php?p=4&amp;id=' . $id;
-    
-    return $category_link;
-}
-
-// category pagination link
-function category_pagination_link($rewrite, $id) {
-    
-    $category_pagination_link = (bool)$rewrite ? sprintf('category/%s/', $id) : 'index.php?p=4&amp;id=' . $id . '&amp;start=';
-    
-    return $category_pagination_link;
-}
-
-
-// comments quote link
-function comments_quote_link($rewrite, $comments_id, $id) {
-    
-    $comments_quote_link = (bool)$rewrite ? sprintf('addcomments/%s/quote/%s/', $comments_id, $id) : sprintf('index.php?p=3&amp;id=%s&amp;c=%s', $comments_id, $id);
-    
-    return $comments_quote_link;
-}
-
-
-// addcomments link
-function addcomments_link($rewrite, $id) {
-    
-    $addcomments_link = (bool)$rewrite ? sprintf('addcomments/%s', $id) : 'index.php?p=3&amp;id=' . $id;
-    
-    return $addcomments_link;
-}
-
-
-// showcomments link
-function showcomments_link($rewrite, $id) {
-    
-    $showcomments_link = (bool)$rewrite ? sprintf('comments/%s', $id) : 'index.php?p=2&amp;id=' . $id;
-    
-    return $showcomments_link;
-}
-
-
-// template_switcher link
-function template_switcher_link($rewrite, $issue) {
-    
-    $template_switcher_link = (bool)$rewrite ? sprintf('switch/%s', $issue) : 'design.php?issue=' . $issue;
-    
-    return $template_switcher_link;
-}
-
-
-// search link
-function search_link($rewrite) {
-    
-    $search_link = (bool)$rewrite ? 'search' : 'index.php?p=8';
-    
-    return $search_link;
-}
-
-
-// form link
-function form_link($rewrite) {
-    
-    $form_link = (bool)$rewrite ? 'add/3' : 'index.php?p=3&amp;action=add';
-    
-    return $form_link;
-}
-
-
-// search pagination link
-function search_pagination_link($rewrite, $word) {
-    
-    $search_pagination_link = (bool)$rewrite ? sprintf('search/%s/', $word) : sprintf('index.php?p=8&search_word=%s&amp;start=', $word);
-    
-    return $search_pagination_link;
-}
-
-
-// date link
-function date_link($rewrite, $month, $day) {
-    
-    $date_link = (bool)$rewrite ? sprintf('<a href="' .SITE_ROOT . '/date/%s-%s">%s</a>', $month, $day, $day) : sprintf('<a href="' .SITE_ROOT . '/index.php?p=9&amp;date=%s-%s">%s</a>', $month, $day, $day);
-    
-    return $date_link;
-}
-
-
-// show_all link
-function category_all_link($rewrite) {
-    
-    $category_all_link = (bool)$rewrite ? 'all' : 'index.php?p=all';
-    
-    return $category_all_link;
-}
-
-
-// page link
-function page_link($rewrite, $id) {
-    
-    $page_link = (bool)$rewrite ? sprintf('node/%s', $id) : 'index.php?p=5&amp;id=' . $id;
-    
-    return $page_link;
-}
-
-
-// photo link
-function photo_link($rewrite, $id) {
-    
-    $photo_link = (bool)$rewrite ? sprintf('photo/%s', $id) : 'index.php?id=' . $id;
-    
-    return $photo_link;
-}
-
-// page photo link
-function page_photo_link($rewrite, $id) {
-    
-    $page_photo_link = (bool)$rewrite ? sprintf('page/photo/%s', $id) : 'index.php?p=5id=' . $id;
-    
-    return $page_photo_link;
 }
 
 ?>
