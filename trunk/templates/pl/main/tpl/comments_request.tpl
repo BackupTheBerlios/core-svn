@@ -60,7 +60,7 @@ przechowywany wy³±cznie w bazie danych w celach czysto informacyjnych.<br /><br 
 <!-- ELSE -->
 <div class="center">
 {CONFIRMATION}<br />
-<a href="{SUBMIT_LINK}">Wróæ do komentarzy...
+<a href="{SUBMIT_LINK}">Wrï¿½ï¿½ do komentarzy...
 </div>
 <!-- ENDIF -->
 </div>

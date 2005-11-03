@@ -101,6 +101,7 @@
 			<input class="left" type="text" name="search_word" size="25" maxlength="255" /><br />
 			<div class="right">
               <a href="#" onclick="document.getElementById('formSearch').submit()">wyszukaj</a>
+
 			</div>
 		</form>
 		<br />
@@ -132,7 +133,7 @@
         </ul>
         <br />
 		
-		<span class="title">dla paranoików</span>
+		<span class="title">dla paranoikï¿½w</span>
 		<br />
 		<ul>
 			<li class="v"><a href="http://validator.w3.org/check/referer" target="_blank">xhtml 1.0</a></li>
@@ -147,7 +148,7 @@
 		
 		<div class="right">
             <a href="javascript:text_resize('content',-1)"><img alt="Zmniejsz tekst" src="templates/{LANG}/{THEME}/images/minus.jpg" width="12" height="12" /></a>
-            <a href="javascript:text_resize('content',1)"><img alt="Powiêksz tekst" src="templates/{LANG}/{THEME}/images/plus.jpg" width="12" height="12" /></a>
+            <a href="javascript:text_resize('content',1)"><img alt="Powiï¿½ksz tekst" src="templates/{LANG}/{THEME}/images/plus.jpg" width="12" height="12" /></a>
 		</div>
 		
 		<div id="content">
@@ -156,14 +157,14 @@
 		
 		<div class="right">
 		<!-- IFDEF: PAGINATED -->
-		<b>Id¼ do strony</b>: 
+		<b>Idï¿½ do strony</b>: 
             <!-- IFDEF: MOVE_BACK -->
             <strong><a href="{MOVE_BACK_LINK}">poprzednia</a></strong> 
             <!-- ELSE -->
             <!-- ENDIF -->
 			{STRING} 
 			<!-- IFDEF: MOVE_FORWARD -->
-			<strong><a href="{MOVE_FORWARD_LINK}">nastêpna</a></strong>
+			<strong><a href="{MOVE_FORWARD_LINK}">nastï¿½pna</a></strong>
 			<!-- ELSE -->
 			<!-- ENDIF -->
         <!-- ELSE -->
