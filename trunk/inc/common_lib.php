@@ -409,7 +409,16 @@ function pathjoin()
 
     array_walk($new_args, 'pathstripslashes');
 
-    return implode(DIRECTORY_SEPARATOR, $new_args);
+    //pathstripslashes() czysci rowniez poczatkowy /, wiec jesli byl, to
+    //trzeba go teraz dodac. jesli znasz elegantsza metode - feel free :)
+    $new_path = implode(DIRECTORY_SEPARATOR, $new_args);
+
+    if (strlen($new_path) > 0 && $args[0][0] == DIRECTORY_SEPARATOR)
+    {
+        $new_path = DIRECTORY_SEPARATOR . $new_path;
+    }
+
+    return $new_path;
 }
 
 function _pathsplit($s, $slash)
