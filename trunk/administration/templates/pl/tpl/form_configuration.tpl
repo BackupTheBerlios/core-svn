@@ -1,46 +1,46 @@
 <div id="left">
-<img src="templates/{LANG}/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>Konfiguracja - edycja/modyfikacja ustawieñ core &copy;</b><br /><br />
+<img src="templates/{LANG}/images/main.gif" width="14" height="14" align="middle" hspace="2"><b>Konfiguracja - edycja/modyfikacja ustawieÅ„ Core CMS &copy;</b><br /><br />
 <form enctype="multipart/form-data" method="post" action="main.php?p=10&amp;action=add" id="formConfig">
 <table width="100%" align="left">
 	<tr>
-		<td width="200"><label for="mainpostsPerPage">Liczba postów na stronê:</label></td>
+		<td width="200"><label for="mainpostsPerPage">Liczba postÃ³w na stronÄ™:</label></td>
 		<td><input class="short" type="text" name="mainposts_per_page" id="mainpostsPerPage" value="{MAINPOSTS_PER_PAGE}" /></td>
 	</tr>
 	<tr>
-		<td><label for="titlePage">Tytu³ strony:</label></td>
+		<td><label for="titlePage">TytuÅ‚ strony:</label></td>
 		<td><input class="long" type="text" name="title_page" id="titlePage" value="{TITLE_PAGE}" /></td>
 	</tr>
 	<tr>
-		<td><label for="editpostsPerPage">Liczba postów na stronê(administracja):</label></td>
+		<td><label for="editpostsPerPage">Liczba postÃ³w na stronÄ™(administracja):</label></td>
 		<td><input class="short" type="text" name="editposts_per_page" id="editpostsPerPage" value="{EDITPOSTS_PER_PAGE}" /></td>
 	</tr>
 	<tr>
-		<td><label for="maxPhotoWidth">Maksymalna szerko¶æ zdjêcia na stronie g³ownej (px):</label></td>
+		<td><label for="maxPhotoWidth">Maksymalna szerkoÅ›Ä‡ zdjÄ™cia na stronie gÅ‚ownej (px):</label></td>
 		<td><input class="short" type="text" name="max_photo_width" id="maxPhotoWidth" value="{MAX_PHOTO_WIDTH}" /></td>
 	</tr>
 	<tr>
-		<td>Wy¶wietlaj kalendarz:</td>
+		<td>WyÅ›wietlaj kalendarz:</td>
 		<td>
             <label><input class="radio" type="radio" name="show_calendar" value="1" align="top" {CALENDAR_YES} />- tak&nbsp;</label>
             <label><input class="radio" type="radio" name="show_calendar" value="0" align="top" {CALENDAR_NO} />- nie</label>
         </td>
 	</tr>
 	<tr>
-		<td>Przyjazne linki (wymaga modu³u <strong>mod_rewrite</strong> na serwerze):</td>
+		<td>Przyjazne linki (wymaga moduÅ‚u <strong>mod_rewrite</strong> na serwerze):</td>
 		<td>
             <label><input class="radio" type="radio" name="rewrite_allow" value="1" align="top" {REWRITE_YES} />- tak&nbsp;</label>
             <label><input class="radio" type="radio" name="rewrite_allow" value="0" align="top" {REWRITE_NO} />- nie</label>
         </td>
 	</tr>
 	<tr>
-		<td>Nowo¶ci CORE RSS na stronie g³ównej panelu:</td>
+		<td>NowoÅ›ci CORE RSS na stronie gÅ‚Ã³wnej panelu:</td>
 		<td>
             <label><input class="radio" type="radio" name="core_rss" value="1" align="top" {CORE_RSS_YES} />- tak&nbsp;</label>
             <label><input class="radio" type="radio" name="core_rss" value="0" align="top" {CORE_RSS_NO} />- nie</label>
         </td>
 	</tr>
     <tr>
-      <td><label for="dateFormat">Format daty (<a href="http://php.net/date">szczegó³y</a>):</label></td>
+      <td><label for="dateFormat">Format daty (<a href="http://php.net/date">szczegÃ³Å‚y</a>):</label></td>
       <td><input class="long" type="text" name="date_format" id="dateFormat" value="{DATE_FORMAT}" /></td>
     </tr>
     <tr>
@@ -55,7 +55,7 @@
             <!-- ELSE -->
             <!-- ENDIF -->
           </optgroup>
-          <optgroup label="kategorie aktualno¶ci">
+          <optgroup label="kategorie aktualnoÅ›ci">
             <!-- IFDEF: START_PAGE_CATEGORIES -->
                 <!-- BEGIN DYNAMIC BLOCK: category_row -->
                 <option value="{C_ID}" {CURRENT}>{C_NAME}</option>
@@ -66,7 +66,7 @@
       </select></td>
     </tr>
     <tr>
-		<td><label for="language">Jêzyk:</label></td>
+		<td><label for="language">JÄ™zyk:</label></td>
 		<td class="form" colspan="2">
 		<select class="category_form" name="language" id="language">
 			

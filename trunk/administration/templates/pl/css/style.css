@@ -432,3 +432,30 @@ h2 {
     font-size: 11px;
     margin-bottom: 12px;
 }
+
+.form_login {
+    width: 248px;
+    margin: auto;
+}
+
+.form_login input {
+    border-top: 1px solid #666666;
+    border-left: 1px solid #666666;
+    border-right: 1px solid #E5E5E5;
+    border-bottom: 1px solid #E5E5E5;
+    background-color: #FAFAFA;
+}
+
+label.login {
+    width: 90px;
+    float: left;
+}   
+
+p.clear {
+	clear: both;
+	margin: 5px;
+}
+
+div.submit {
+    text-align: right;
+}    
