@@ -15,6 +15,7 @@ $Id$
 - lark - [podziel] w jednym jezyku, to tylko tag, nie czesc informacyjna
 - lark - [podziel] wg: http://www.core-cms.com/board/viewtopic.php?t=80
 - lark - wyrzucenie : aktualności -> najczesciej komentowane (vide: statystyki bloga w 'pozniej')
+- lark - instalator: pobieranie od usera i wstawianie do config.php wartosci BASE_HREF
 
 -      - umozliwic (switch) wylistowanie tworcow strony - bez tego nie ma sensu wpisywanie takeij ilosci danych przy dodawaniu userow (plugin?)
 -      - system plugin�w
