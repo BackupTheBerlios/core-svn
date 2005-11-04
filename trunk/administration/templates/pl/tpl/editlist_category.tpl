@@ -38,7 +38,7 @@
 		</td>
 		<td class="{ID_CLASS} center">{COUNT}</td>
 		<td class="{ID_CLASS} center"><a href="main.php?p=9&amp;action=show&amp;id={CATEGORY_ID}">Edycja</a></td>
-		<td class="{ID_CLASS} center"><a href="main.php?p=9&amp;action=delete&amp;id={CATEGORY_ID}">Usu�</a></td>
+		<td class="{ID_CLASS} center"><a href="main.php?p=9&amp;action=delete&amp;id={CATEGORY_ID}">Usuń</a></td>
 	</tr>
 	<!-- END DYNAMIC BLOCK: row -->
 </tbody>

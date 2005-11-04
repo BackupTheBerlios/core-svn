@@ -22,7 +22,7 @@
 	<tr>
 		<td id="pagination" colspan="7">
 		<!-- IFDEF: PAGINATED -->
-		<b>Id� do strony</b>:
+		<b>Idź do strony</b>:
 		<!-- ELSE -->
 		<!-- ENDIF -->
 		<!-- IFDEF: MOVE_BACK -->
@@ -54,7 +54,7 @@
 		<td class="{ID_CLASS} center"><a href="main.php?p=2&amp;id={ID}">Edycja</a></td>
 		<td class="{ID_CLASS} center"><a
             href="main.php?p=16&amp;delete={ID}"
-            onclick="return confirm('Czy na pewno chcesz usunąć wybrany wpis?')">Usu�</a></td>
+            onclick="return confirm('Czy na pewno chcesz usunąć wybrany wpis?')">Usuń</a></td>
 	</tr>
 	<!-- END DYNAMIC BLOCK: row -->
 </tbody>
