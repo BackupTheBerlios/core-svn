@@ -7,7 +7,6 @@ $Id$
 - MySZ - 
 
 - lark - przepisanie komentarzy na obiekty, doprowadzenie ich do stanu uzywalnosci
-- lark - przejscie w 100% na UTF-8
 - lark - przy logowaniu - checkbox zeby zapisywal w cookim haslo i login :)
 - lark - bezpieczenstwo - przy logowaniu do panelu, ma byc w jakims cookim zapisywany login i haslo usera, a pozneij za kazdym razem ma byc sprawdzana ta wartosc z baza. obecny sposob jest _niebezpieczny_
 - lark - zmienic, istniejace w niektorych miejscach 'podglad', na 'zapisz i kontynuuj'. Ma to dzialac tak jak w WP: klikniecie tego dodaje do bazy artykul/strone (o ile juz w bazie nie jest zapisane) lub po prostu zapisuje zmiany.
@@ -15,12 +14,10 @@ $Id$
 - lark - w panelu jest pole na 'opis kategorii' przy tworzeniu nowej kategorii etc - trzeba umozliwic wyciagniecie tego opisu na strone glowna/podstrone/whatever
 - lark - [podziel] w jednym jezyku, to tylko tag, nie czesc informacyjna
 - lark - [podziel] wg: http://www.core-cms.com/board/viewtopic.php?t=80
-- lark - wyrzucenie : aktualno¶ci -> najczesciej komentowane (vide: statystyki bloga w 'pozniej')
-- lark - logowanie: submit jako button, link jest cholernie niepraktyczny i wkurwiajacy ;)
-- lark - 
+- lark - wyrzucenie : aktualnoÅ›ci -> najczesciej komentowane (vide: statystyki bloga w 'pozniej')
 
 -      - umozliwic (switch) wylistowanie tworcow strony - bez tego nie ma sensu wpisywanie takeij ilosci danych przy dodawaniu userow (plugin?)
--      - system pluginów
+-      - system pluginï¿½w
 -      - mozliwosc wlaczenia/wylaczenia zmiany \n na <br />
 -      - umieszczenie niektorych tagow (jak np search) w uniwersalnych miejscach, tak zeby dalo sie je przenosic miedzy roznymi czesciami strony. dotyczy to na pewno searcha, menu strony etc
 -      - uporzadkowanie kodu, ulozenie , wyczyszczenie etc
@@ -40,5 +37,5 @@ pozniej:
 -      - mozliwosc dodania do bazy konkretnych katalogow, i oznaczenia ich jako 'listuj zawartosc'. po takim oznaczeniu user ma mozliwosc dodania tresci do dwoch pol w adminie, tresc jednego z nich pojawi sie powyzej listingu tresci oznaczonego katalogu, a druga - ponizej listingu (plugin?)
 -      - statystyki odwiedzalnosci (plugin?)
 -      - strony: mozliwosc wyrzucenia ich z listy stron (strona jest aktywna, i mozna ja zobaczyc, ale nie listuja sie w drzewku. cos a'la 'tylko w kategorii' dla wpisow
--      - przepisanie pozosta³ych czê¶ci kodu na styl obiektowy
+-      - przepisanie pozostaÅ‚ych czÄ™Å›ci kodu na styl obiektowy
 -      - 
