@@ -1,5 +1,5 @@
 <div id="left">
-<h2><img src="templates/{LANG}/images/main.gif">Aktualno¶ci - edycja wpisów</h2>
+<h2><img src="templates/{LANG}/images/main.gif">AktualnoÅ›ci - edycja wpisÃ³w</h2>
 <!-- NAME: editlist_notes.tpl -->
 
 {MESSAGE}<br />
@@ -15,14 +15,14 @@
 		<th width="11%">Autor</th>
 		<th width="11%">Aktywna</th>
 		<th width="10%">Edycja</th>
-		<th width="8%">Usuñ</th>
+		<th width="8%">UsuÅ„</th>
 	</tr>
 </thead>
 <tfoot>
 	<tr>
 		<td id="pagination" colspan="7">
 		<!-- IFDEF: PAGINATED -->
-		<b>Id¼ do strony</b>:
+		<b>Idï¿½ do strony</b>:
 		<!-- ELSE -->
 		<!-- ENDIF -->
 		<!-- IFDEF: MOVE_BACK -->
@@ -31,15 +31,15 @@
 		<!-- ENDIF -->
 			{STRING}
 		<!-- IFDEF: MOVE_FORWARD -->
-		<strong><a href="{MOVE_FORWARD_LINK}">nastêpna</a></strong> 
+		<strong><a href="{MOVE_FORWARD_LINK}">nastÄ™pna</a></strong> 
         <!-- ELSE -->
         <!-- ENDIF -->
 		</td>
 	</tr>
     <tr>
         <td class="addinfo" colspan="7">
-            <input type="submit" name="sub_status" value="Prze³±cz status zaznaczonych" />
-            <input type="submit" name="sub_delete" value="Usuñ zaznaczone"  onclick="return askChecked('Czy na pewno chcesz usun±æ zaznaczone wpisy?', 'selected_notes[]')" />
+            <input type="submit" name="sub_status" value="PrzeÅ‚Ä…cz status zaznaczonych" />
+            <input type="submit" name="sub_delete" value="UsuÅ„ zaznaczone"  onclick="return askChecked('Czy na pewno chcesz usunÄ…Ä‡ zaznaczone wpisy?', 'selected_notes[]')" />
         </td>
     </tr>
 </tfoot>
@@ -54,7 +54,7 @@
 		<td class="{ID_CLASS} center"><a href="main.php?p=2&amp;id={ID}">Edycja</a></td>
 		<td class="{ID_CLASS} center"><a
             href="main.php?p=16&amp;delete={ID}"
-            onclick="return confirm('Czy na pewno chcesz usun¹æ wybrany wpis?')">Usuñ</a></td>
+            onclick="return confirm('Czy na pewno chcesz usunÄ…Ä‡ wybrany wpis?')">Usuï¿½</a></td>
 	</tr>
 	<!-- END DYNAMIC BLOCK: row -->
 </tbody>

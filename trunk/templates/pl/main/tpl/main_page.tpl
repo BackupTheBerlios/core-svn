@@ -4,9 +4,9 @@
 		<title>{TITLE}</title>
 		<link rel="alternate" title="{TITLE} -  RSS Newsfeed" href="/rss" type="application/rss+xml" />
 
-		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta http-equiv="Content-language" content="pl" />
-		<meta name="generator" content="Core {CORE_VERSION}" /> <!-- proszę, zostaw dla statystyk -->
+		<meta name="generator" content="Core {CORE_VERSION}" /> <!-- proszÄ, zostaw dla statystyk -->
 		<base href="{BASE_HREF}" />
 	
 		<script type="text/javascript" src="templates/{LANG}/{THEME}/js/functions.js"></script>
@@ -19,7 +19,7 @@
 	<div id="left">
 		<span class="title">newsletter</span>
 		<br /><br />
-		Chcesz wiedzieć, co się u mnie dzieje? Podaj proszę adres email.
+		Chcesz wiedzieÄ, co siÄ u mnie dzieje? Podaj proszÄ adres email.
 		<form style="margin-top:5px;" name="newsletter_form" action="#">
 			<input class="left" type="text" name="email" size="25" maxlength="255" />
 			<div class="right">
@@ -96,7 +96,7 @@
 		
 		<span class="title">wyszukaj</span>
 		<br /><br />
-		Interesującą Cię frazę wpisz w pole formularza.<br />
+		InteresujÄcÄ CiÄ frazÄ wpisz w pole formularza.<br />
 		<form style="margin-top:5px;" method="post" action="{SEARCH_LINK}" id="formSearch">
 			<input class="left" type="text" name="search_word" size="25" maxlength="255" /><br />
 			<div class="right">
@@ -133,7 +133,7 @@
         </ul>
         <br />
 		
-		<span class="title">dla paranoików</span>
+		<span class="title">dla paranoikĂłw</span>
 		<br />
 		<ul>
 			<li class="v"><a href="http://validator.w3.org/check/referer" target="_blank">xhtml 1.0</a></li>
@@ -148,7 +148,7 @@
 		
 		<div class="right">
             <a href="javascript:text_resize('content',-1)"><img alt="Zmniejsz tekst" src="templates/{LANG}/{THEME}/images/minus.jpg" width="12" height="12" /></a>
-            <a href="javascript:text_resize('content',1)"><img alt="Powiększ tekst" src="templates/{LANG}/{THEME}/images/plus.jpg" width="12" height="12" /></a>
+            <a href="javascript:text_resize('content',1)"><img alt="Powiďż˝ksz tekst" src="templates/{LANG}/{THEME}/images/plus.jpg" width="12" height="12" /></a>
 		</div>
 		
 		<div id="content">
@@ -157,14 +157,14 @@
 		
 		<div class="right">
 		<!-- IFDEF: PAGINATED -->
-		<b>Idź do strony</b>: 
+		<b>IdĹş do strony</b>: 
             <!-- IFDEF: MOVE_BACK -->
             <strong><a href="{MOVE_BACK_LINK}">poprzednia</a></strong> 
             <!-- ELSE -->
             <!-- ENDIF -->
 			{STRING} 
 			<!-- IFDEF: MOVE_FORWARD -->
-			<strong><a href="{MOVE_FORWARD_LINK}">następna</a></strong>
+			<strong><a href="{MOVE_FORWARD_LINK}">nastÄpna</a></strong>
 			<!-- ELSE -->
 			<!-- ENDIF -->
         <!-- ELSE -->
@@ -175,9 +175,7 @@
 	
 	<div class="clear"></div>
 	
-	<div class="engine">
-        Based on <a href="http://core-cms.com/" target="_blank">Core</a>
-	</div>
+	<div class="engine">{ENGINE_VERSION}</div>
     <script type="text/javascript">
     <!--
     edCanvas = document.getElementById('canvas')

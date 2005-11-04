@@ -11,7 +11,7 @@
 		<th width="6%"></th>
 		<th width="10%">Liczba</th>
 		<th width="10%">Edycja</th>
-		<th width="10%">Usuñ</th>
+		<th width="10%">UsuÅ„</th>
 	</tr>
 </thead>
 <tfoot>
@@ -38,7 +38,7 @@
 		</td>
 		<td class="{ID_CLASS} center">{COUNT}</td>
 		<td class="{ID_CLASS} center"><a href="main.php?p=9&amp;action=show&amp;id={CATEGORY_ID}">Edycja</a></td>
-		<td class="{ID_CLASS} center"><a href="main.php?p=9&amp;action=delete&amp;id={CATEGORY_ID}">Usuñ</a></td>
+		<td class="{ID_CLASS} center"><a href="main.php?p=9&amp;action=delete&amp;id={CATEGORY_ID}">Usuï¿½</a></td>
 	</tr>
 	<!-- END DYNAMIC BLOCK: row -->
 </tbody>

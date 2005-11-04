@@ -1,6 +1,8 @@
 <?php
 // $Id$
 
+header('Content-type: text/html; charset=UTF8');
+
 /*
  * IMPORTANT: do not change include to require!
  *
@@ -64,7 +66,7 @@ $theme = prepare_template($lang, $i18n);
 
 @setcookie('devlog_design', $theme, time() + 3600 * 24 * 365);
 
-// inicjowanie klasy, wkazanie katalogu przechowuj±cego szablony
+// inicjowanie klasy, wkazanie katalogu przechowujï¿½cego szablony
 $templates_dir = pathjoin(ROOT, 'templates', $lang);
 $ft = new FastTemplate(pathjoin($templates_dir, $theme, 'tpl'));
 
@@ -81,7 +83,7 @@ $ft->define(array(
 ));
     
 
-// warto¶æ poczatkowa zmiennej $start -> potrzebna przy stronnicowaniu
+// wartoï¿½ï¿½ poczatkowa zmiennej $start -> potrzebna przy stronnicowaniu
 $start  = isset($_GET['start']) ? (int)$_GET['start'] : 0;
 $val    = empty($val) ? '' : $val;
 

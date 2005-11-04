@@ -4,23 +4,23 @@
 class calendar {
     
     var $Days = array(
-        'Pn', 'Wt', '¦r', 'Cz', 'Pt', 'So', 'N'
+        'Pn', 'Wt', 'Åšr', 'Cz', 'Pt', 'So', 'N'
     );
     
     var $Months = array(
         'pl'    =>array( 
-            'Styczeñ', 
+            'StyczeÅ„', 
             'Luty', 
             'Marzec', 
-            'Kwiecieñ', 
+            'KwiecieÅ„', 
             'Maj', 
             'Czerwiec', 
             'Lipiec', 
-            'Sierpieñ', 
-            'Wrzesieñ', 
-            'Pa¼dziernik', 
+            'SierpieÅ„', 
+            'WrzesieÅ„', 
+            'PaÅºdziernik', 
             'Listopad', 
-            'Grudzieñ'
+            'GrudzieÅ„'
         ), 
         'en'    =>array( 
             'January', 

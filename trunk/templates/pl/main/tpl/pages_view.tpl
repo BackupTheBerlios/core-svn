@@ -13,7 +13,7 @@
     </div>
     <!-- ELSE -->
     <div id="image">
-	   Obrazek do³±czony do wpisu jest za du¿y, aby go tu wy¶wietliæ. 
+	   Obrazek doÅ‚Ä…czony do wpisu jest za duÅ¼y, aby go tu wyÅ›wietliÄ‡. 
 	   <a href="javascript:foto('{PHOTO_LINK}', {WIDTH}, {HEIGHT});">Zobacz</a> go 
 	   w nowym oknie.
     </div>
@@ -22,5 +22,5 @@
 <!-- ENDIF -->
 <span class="line"></span>
 <div align="right">
-	<a href="javascript:history.back()">powrót</a>
+	<a href="javascript:history.back()">powrÃ³t</a>
 </div>

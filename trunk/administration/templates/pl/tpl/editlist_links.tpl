@@ -10,18 +10,18 @@
             href="#" onclick="switchChecked('selected_links[]')"><img
             src="templates/{LANG}/images/ar.gif" /></a>
         </th>
-		<th width="30%">Tytu≥</th>
+		<th width="30%">Tytu≈Ñ</th>
 		<th width="31%">URI</th>
 		<th width="6%"></th>
 		<th width="10%">Edycja</th>
-		<th width="10%">UsuÒ</th>
+		<th width="10%">Usu≈Ñ</th>
 	</tr>
 </thead>
 <tfoot>
 	<tr>
 		<td class="addinfo" colspan="6"><input
-            type="submit" name="sub_delete" value="UsuÒ zaznaczone linki"
-            onclick="return askChecked('Czy na pewno chcesz usun±Ê zaznaczone linki?', 'selected_links[]')" /></td>
+            type="submit" name="sub_delete" value="Usu≈Ñ zaznaczone linki"
+            onclick="return askChecked('Czy na pewno chcesz usunƒÖƒá zaznaczone linki?', 'selected_links[]')" /></td>
 	</tr>
 </tfoot>
 <tbody>
@@ -42,7 +42,7 @@
 		<!-- ENDIF -->
 		</td>
 		<td class="{ID_CLASS} center"><a href="main.php?p=12&amp;action=show&amp;id={LINK_ID}">Edycja</a></td>
-		<td class="{ID_CLASS} center"><a href="main.php?p=12&amp;action=delete&amp;id={LINK_ID}">UsuÒ</a></td>
+		<td class="{ID_CLASS} center"><a href="main.php?p=12&amp;action=delete&amp;id={LINK_ID}">Usu≈Ñ</a></td>
 	</tr>
 	<!-- END DYNAMIC BLOCK: row -->
 </tbody>

@@ -1,16 +1,16 @@
-<?xml version="1.0" encoding="iso-8859-2"?>
+<?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/">
 
 <channel>
     <!-- IFDEF: NEWS_FEED -->
-    <title>./dev-log - RSS feed</title>
+    <title>Core CMS - RSS feed</title>
     <!-- ELSE -->
-    <title>./dev-log - RSS comments</title>
+    <title>Core CMS - RSS comments</title>
     <!-- ENDIF -->
     <link>{MAINSITE_LINK}</link>
-    <description>./dev-log | about work</description>
+    <description>Core CMS | description</description>
     <language>pl</language>
-    <copyright>Copyright (c) 2005 Core | Łukasz Skowroń, Marcin Sztolcman</copyright>
+    <copyright>Copyright (c) 2005 Core | Ĺukasz SkowroĹ, Marcin Sztolcman</copyright>
 	
     <!-- IFDEF: DISPLAY_XML -->
     <!-- BEGIN DYNAMIC BLOCK: xml_row -->

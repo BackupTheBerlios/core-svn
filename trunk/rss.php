@@ -1,6 +1,7 @@
 <?php
 // $Id$
 
+header('Content-type: text/html; charset=UTF8');
 header("Content-type: application/xml");
 
 require_once("administration/inc/config.php");

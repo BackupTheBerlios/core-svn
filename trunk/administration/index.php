@@ -1,6 +1,8 @@
 <?php
 // $Id$
 
+header('Content-type: text/html; charset=UTF8');
+
 /*
  * IMPORTANT: do not change include to require!
  *
@@ -32,10 +34,10 @@ session_register('loggedIn');
 
 /*
  * TODO:
- * w sesji przechowywaæ login i hash has³a. przy ka¿dym wejœciu
- * musi byæ sprawdzana poprawnoœæ. inaczej, jeœli ktoœ siê nie 
- * bêdzie wylogowywa³ wystaczaj¹co d³ugo, mo¿e to spowodowaæ problemy z
- * bezpieczeñstwem (wy³¹czenie/skasowanie usera nie spowoduje braku mo¿liwoœci
+ * w sesji przechowywaï¿½ login i hash hasï¿½a. przy kaï¿½dym wejï¿½ciu
+ * musi byï¿½ sprawdzana poprawnoï¿½ï¿½. inaczej, jeï¿½li ktoï¿½ siï¿½ nie 
+ * bï¿½dzie wylogowywaï¿½ wystaczajï¿½co dï¿½ugo, moï¿½e to spowodowaï¿½ problemy z
+ * bezpieczeï¿½stwem (wyï¿½ï¿½czenie/skasowanie usera nie spowoduje braku moï¿½liwoï¿½ci
  * namieszania przez niego w systemie)
  *
  */
@@ -58,10 +60,10 @@ $lang = get_config('language_set');
 require_once('i18n/' . $lang . '/i18n.php');
 require_once(PATH_TO_CLASSES . '/cls_fast_template.php');
 
-// warto¶æ pocz±tkowa zmiennej $start -> potrzebna przy stronnicowaniu
+// wartoï¿½ï¿½ poczï¿½tkowa zmiennej $start -> potrzebna przy stronnicowaniu
 $start = isset($_GET['start']) ? intval($_GET['start']) : 0;
 
-// inicjowanie klasy, wkazanie katalogu przechowuj±cego szablony
+// inicjowanie klasy, wkazanie katalogu przechowujï¿½cego szablony
 $ft = new FastTemplate('./templates/' . $lang . '/tpl');
 
 $ft->define(array(
@@ -87,7 +89,7 @@ if($p == 'log') {
     
     if(empty($login) || empty($password)) {
         
-        // U¿ytkownik nie uzupe³ni³ wszystkich pól::form
+        // Uï¿½ytkownik nie uzupeï¿½niï¿½ wszystkich pï¿½l::form
         $ft->assign('ERROR_MSG', $i18n['index'][1]);
         $ft->parse('ROWS', '.form_login');
     } else {
@@ -122,12 +124,12 @@ if($p == 'log') {
                 break;
             } else {
                 
-                // U¿ytkownik nie zaaktywowa³ konta::db
+                // Uï¿½ytkownik nie zaaktywowaï¿½ konta::db
                 $ft->assign('ERROR_MSG', $i18n['index'][2]);
                 $ft->parse('ROWS', '.form_login');
             }
         } else {
-            // Niepoprawne dane wej¶cia<->wyj¶cia::form, db
+            // Niepoprawne dane wejï¿½cia<->wyjï¿½cia::form, db
             $ft->assign('ERROR_MSG', $i18n['index'][3]);
             $ft->parse('ROWS', '.form_login');
         }

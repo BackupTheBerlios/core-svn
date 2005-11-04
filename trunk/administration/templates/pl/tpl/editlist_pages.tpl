@@ -1,14 +1,14 @@
 <div id="left">
-<img src="templates/{LANG}/images/main.gif"><strong>Zarz±dzanie stronami - edycja</strong><br /><br />
+<img src="templates/{LANG}/images/main.gif"><strong>ZarzÄ…dzanie stronami - edycja</strong><br /><br />
 <table class="list">
 <thead>
 	<tr>
 		<th width="7%">Id</th>
-		<th width="55%">Tytu³ strony</th>
+		<th width="55%">TytuÅ‚ strony</th>
 		<th width="6%"></th>
 		<th width="12%">Aktywna</th>
 		<th width="10%">Edycja</th>
-		<th width="10%">Usuñ</th>
+		<th width="10%">UsuÅ„</th>
 	</tr>
 </thead>
 <tfoot>
@@ -30,7 +30,7 @@
 		</td>
 		<td class="{ID_CLASS} center">{PUBLISHED}</td>
 		<td class="{ID_CLASS} center"><a href="main.php?p=4&amp;action=show&amp;id={ID}">Edycja</a></td>
-		<td class="{ID_CLASS} center"><a href="main.php?p=4&amp;action=delete&amp;id={ID}">Usuñ</a></td>
+		<td class="{ID_CLASS} center"><a href="main.php?p=4&amp;action=delete&amp;id={ID}">UsuÅ„</a></td>
 	</tr>
 	<!-- END DYNAMIC BLOCK: row -->
 </tbody>

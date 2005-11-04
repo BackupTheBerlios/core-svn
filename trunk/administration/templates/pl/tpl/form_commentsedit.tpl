@@ -16,7 +16,7 @@
 	<tr>
 		<td class="form" width="80">&nbsp;</td>
 		<td class="form" width="364" colspan="2">
-		<input type="text" name="helpline" id="helpline" value="Rada: Style mog± byæ stosowane szybko do zaznaczonego tekstu" disabled="disabled" />
+		<input type="text" name="helpline" id="helpline" value="Rada: Style mogÄ… byÄ‡ stosowane szybko do zaznaczonego tekstu" disabled="disabled" />
 		</td>
 	</tr>
 	<tr>
@@ -30,7 +30,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="form" width="80"><label for="canvas">Tre¶æ wpisu:</label></td>
+		<td class="form" width="80"><label for="canvas">TreÅ›Ä‡ wpisu:</label></td>
 		<td class="form" width="364" colspan="2"><textarea class="note_textarea" name="text" id="canvas">{TEXT}</textarea></td>
 	</tr>
 	<tr>

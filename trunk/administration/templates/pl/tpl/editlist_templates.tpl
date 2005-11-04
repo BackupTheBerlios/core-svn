@@ -7,7 +7,7 @@
 <table width="100%" align="left" id="templateEdit">
 	<tr>
 		<td class="form" width="100%" colspan="3">
-            <input type="text" name="helpline" value="Rada: Style mog¹ byæ stosowane szybko do zaznaczonego tekstu" id="helpline" disabled="disabled" />
+            <input type="text" name="helpline" value="Rada: Style mogÄ… byÄ‡ stosowane szybko do zaznaczonego tekstu" id="helpline" disabled="disabled" />
 		</td>
 	</tr>
 	<tr>

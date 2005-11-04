@@ -1,5 +1,5 @@
 <div id="left">
-<img src="templates/{LANG}/images/main.gif"><strong>Komentarze - najczê¶ciej komentowane wpisy</strong><br /><br />
+<img src="templates/{LANG}/images/main.gif"><strong>Komentarze - najczÄ™ciej komentowane wpisy</strong><br /><br />
 <!-- NAME: editlist_mostcomments.tpl -->
 <form method="post" action="main.php?p=2">
 <table class="list">
@@ -9,16 +9,16 @@
 		<th width="5%"><a
             href="#" onclick="switchChecked('selected_notes[]')"><img
             src="templates/{LANG}/images/ar.gif" /></a></td>
-		<th width="50%">Tytu³ wpisu</td>
+		<th width="50%">TytuÅ‚ wpisu</td>
 		<th width="12%">Liczba</td>
 		<th width="10%">Edycja</td>
-		<th width="10%">Usuñ</td>
+		<th width="10%">UsuÅ„</td>
 	</tr>
 </thead>
 <tfoot>
 	<tr>
 		<td class="addinfo" colspan="6">
-            <input type="submit" name="sub_delete" value="Usuñ zaznaczone wpisy" onclick="return askChecked('Czy na pewno chcesz usun¹æ zaznaczone wpisy?', 'selected_notes[]')" />
+            <input type="submit" name="sub_delete" value="UsuÅ„ zaznaczone wpisy" onclick="return askChecked('Czy na pewno chcesz usunÄ…Ä‡ zaznaczone wpisy?', 'selected_notes[]')" />
         </td>
 	</tr>
 </tfoot>
@@ -30,7 +30,7 @@
 		<td class="{ID_CLASS}">{TITLE}</td>
 		<td class="{ID_CLASS} center">{COMMENTS}</td>
 		<td class="{ID_CLASS} center"><a href="main.php?p=2&amp;action=show&amp;id={ID}">Edycja</a></td>
-		<td class="{ID_CLASS} center"><a href="main.php?p=2&amp;action=delete&amp;id={ID}">Usuñ</a></td>
+		<td class="{ID_CLASS} center"><a href="main.php?p=2&amp;action=delete&amp;id={ID}">UsuÅ„</a></td>
 	</tr>
 	<!-- END DYNAMIC BLOCK: row -->
 	<tr>

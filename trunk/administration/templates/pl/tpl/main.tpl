@@ -3,7 +3,7 @@
 	<head>
 		<title>{TITLE}</title>
 		<link rel="stylesheet" type="text/css" href="templates/{LANG}/css/style.css" media="screen" />
-		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <script src="templates/{LANG}/js/common.js" type="text/javascript"></script>
 	</head>
 <body style="margin-top: 200px; background-color: #FFF;">

@@ -1,11 +1,11 @@
 <!-- NAME: comments_view.tpl -->
-<b><a class="date" href="{PERMA_LINK}">{NEWS_TITLE}</a></b> - link bezpo¶redni<br /><br />
+<b><a class="date" href="{PERMA_LINK}">{NEWS_TITLE}</a></b> - link bezpoÅ›redni<br /><br />
 <!-- BEGIN DYNAMIC BLOCK: comments_row -->
 <dl>
     <dt>{DATE}</dt>
     <dd>{COMMENTS_TEXT}<br />
     <div class="right">
-        <a class="comments" href="{QUOTE_LINK}">odpowiedz cytuj±c</a>
+        <a class="comments" href="{QUOTE_LINK}">odpowiedz cytujÄ…c</a>
     </div>
     <div class="author">{COMMENTS_AUTHOR}</div>
     </dd>

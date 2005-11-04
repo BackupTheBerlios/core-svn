@@ -1,22 +1,22 @@
 <div id="left">
 <img src="templates/{LANG}/images/main.gif" width="14" height="14" align="middle" hspace="2">
-<b>Uøytkownicy - dodaj nowego uøytkownika</b><br /><br />
+<b>U≈ºytkownicy - dodaj nowego u≈ºytkownika</b><br /><br />
 <form enctype="multipart/form-data" method="post" action="main.php?p=7&amp;action=add" id="formUser">
 <table width="100%" align="left">
 	<tr>
 		<td class="form" width="80" align="right"><label for="loginName">Login:</label></td>
 		<td class="form" width="364" align="left" valign="top">
-            <input type="text" name="login_name" id="loginName" size="15" maxlength="32" />&nbsp;(4-32 znakÛw)
+            <input type="text" name="login_name" id="loginName" size="15" maxlength="32" />&nbsp;(4-32 znak√≥w)
         </td>
 	</tr>
 	<tr>
-		<td class="form" width="80" align="right"><label for="password">Has≥o:</label></td>
+		<td class="form" width="80" align="right"><label for="password">Has≈Ço:</label></td>
 		<td class="form" width="364" align="left" valign="top">
-          <input type="password" name="password" id="password" size="15" />&nbsp;(&gt;6 znakÛw)
+          <input type="password" name="password" id="password" size="15" />&nbsp;(&gt;6 znak√≥w)
         </td>
 	</tr>
 	<tr>
-		<td class="form" width="80" align="right"><label for="passwordRepeat">PowtÛrz Has≥o:</label></td>
+		<td class="form" width="80" align="right"><label for="passwordRepeat">Powt√≥rz Has≈Ço:</label></td>
 		<td class="form" width="364" align="left" valign="top">
             <input type="password" name="password_repeat" id="passwordRepeat" size="15" />
         </td>
@@ -33,7 +33,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="form" width="80" align="right"><label for="name">ImiÍ:</label></td>
+		<td class="form" width="80" align="right"><label for="name">Imiƒô:</label></td>
 		<td class="form" width="364" align="left" valign="top">
             <input class="medium" type="text" name="name" id="name" />
         </td>
@@ -93,7 +93,7 @@
         </td>
 	</tr>
 	<tr>
-		<td class="form" width="364" align="left" valign="top" colspan="2"><br /><img src="templates/{LANG}/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="E('formUser').submit()">Dodaj uøytkownika</a></td>
+		<td class="form" width="364" align="left" valign="top" colspan="2"><br /><img src="templates/{LANG}/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="E('formUser').submit()">Dodaj u≈ºytkownika</a></td>
 	</tr>
 </table>
 </form>

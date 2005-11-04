@@ -64,10 +64,10 @@ class DB_Sql {
 	    if(0 == $this->Link_ID) {
 	        if(!$this->PConnect) {
 	            $this->Link_ID = mysql_connect($Host, $User, $Password);
-	            mysql_query("SET NAMES latin2", $this->Link_ID);
+	            mysql_query("SET NAMES utf8", $this->Link_ID);
 	        } else {
 	            $this->Link_ID = mysql_pconnect($Host, $User, $Password);
-	            mysql_query("SET NAMES latin2", $this->Link_ID); 
+	            mysql_query("SET NAMES utf8", $this->Link_ID); 
 	        }
 	        
 	        if(!$this->Link_ID) {

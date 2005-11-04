@@ -8,7 +8,7 @@ Witamy na stronie administracji serwisem.<br /><br />
 	</tr>	
 	<tr>
 		<td width="75%">
-		Liczba wpisÛw: <br />
+		Liczba wpis√≥w: <br />
 		Publikowane: <br />
 		Nie publikowane: 
 		</td>
@@ -24,7 +24,7 @@ Witamy na stronie administracji serwisem.<br /><br />
 <table class="main_table">
 	<tr>
 		<td style="text-align: right;" colspan="2">
-		<span class="black">Core - strona g≥Ûwna:</span>
+		<span class="black">Core CMS - strona g≈Ç√≥wna:</span>
 		</td>
 	</tr>	
 	<tr>
@@ -32,7 +32,7 @@ Witamy na stronie administracji serwisem.<br /><br />
 		<!-- BEGIN DYNAMIC BLOCK: rss_row -->
         <b>{NEWS_TITLE}</b>&nbsp;{NEWS_TEXT}
         <div class="right">
-        <img alt="gÛra" src="templates/{LANG}/images/top.gif" width="11" height="11" hspace="2" align="middle" /> <a href="{PERMA_LINK}">zobacz ca≥y</a>
+        <img alt="gÔøΩra" src="templates/{LANG}/images/top.gif" width="11" height="11" hspace="2" align="middle" /> <a href="{PERMA_LINK}">zobacz ca≈Çy</a>
         </div>
         <br />
         <!-- END DYNAMIC BLOCK: rss_row -->

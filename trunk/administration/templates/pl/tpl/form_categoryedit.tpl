@@ -26,11 +26,11 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="form"><label for="categoryPostPerpage">Ilo¶æ postów/stronê:</label></td>
+		<td class="form"><label for="categoryPostPerpage">IloÅ›Ä‡ postÃ³w/stronÄ™:</label></td>
 		<td class="form"><input class="perpage" type="text" name="category_post_perpage" id="categoryPostPerpage" value="{CATEGORY_PERPAGE}" /></td>
 	</tr>
 	<tr>
-      <td class="form" width="364" colspan="2"><br /><img src="templates/{LANG}/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="E('formCat').submit()">Zmodyfikuj kategoriê</a></td>
+      <td class="form" width="364" colspan="2"><br /><img src="templates/{LANG}/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="E('formCat').submit()">Zmodyfikuj kategoriÄ™</a></td>
 	</tr>
 </table>
 </form>

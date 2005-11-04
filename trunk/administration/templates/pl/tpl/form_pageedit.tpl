@@ -5,7 +5,7 @@
 <table width="100%" align="left">
     <!-- IFDEF: PAGE_PREVIEW -->
     <tr>
-        <td class="form">Podgl±d:</td>
+        <td class="form">PodglÄ…d:</td>
         <td class="form image_exist" colspan="2">
             <strong class="title_preview">{TITLE}</strong>
             <p class="text_preview">{PG_TEXT}</p>
@@ -14,13 +14,13 @@
     <!-- ELSE -->
     <!-- ENDIF -->
 	<tr>
-		<td class="form" width="100"><label for="title">Tytu³ wpisu:</label></td>
+		<td class="form" width="100"><label for="title">TytuÅ‚ wpisu:</label></td>
 		<td class="form" colspan="2"><input type="text" name="title" id="title" size="30" maxlength="255" value="{TITLE}" /></td>
 	</tr>
 	<tr>
 		<td class="form">&nbsp;</td>
 		<td class="form" colspan="2">
-		<input type="text" name="helpline" id="helpline" value="Rada: Style mog± byæ stosowane szybko do zaznaczonego tekstu" disabled="disabled" />
+		<input type="text" name="helpline" id="helpline" value="Rada: Style mogÄ… byÄ‡ stosowane szybko do zaznaczonego tekstu" disabled="disabled" />
 		</td>
 	</tr>
 	<tr>
@@ -34,12 +34,12 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="form"><label for="canvas">Tre¶æ strony:</label></td>
+		<td class="form"><label for="canvas">TreÅ›Ä‡ strony:</label></td>
         <td class="form" colspan="2"><textarea class="note_textarea" name="text" id="canvas">{TEXT}</textarea></td>
 	</tr>
 	{IF_IMAGE_EXIST}
 	<tr>
-		<td class="form"><label for="file">Za³±cz zdjêcie:</label></td>
+		<td class="form"><label for="file">ZaÅ‚Ä…cz zdjÄ™cie:</label></td>
 		<td class="form"><input type="file" name="file" id="file" maxlength="255"></td>
 		<td class="form">
 		<!-- IFDEF: OVERWRITE_PHOTO -->
@@ -52,7 +52,7 @@
 		<td class="form">Listuj dzieci osobno:</td>
 		<td class="form" colspan="2">
             <label><input class="radio" type="radio" name="separately" id="separately" value="0" {SEPARATELY_NO} />- nie</label>
-            <label><input class="radio" type="radio" name="separately" id="separately" value="1" {SEPARATELY_YES} />- tak (dotyczy <strong>tylko</strong> stron nadrzêdnych)</label>
+            <label><input class="radio" type="radio" name="separately" id="separately" value="1" {SEPARATELY_YES} />- tak (dotyczy <strong>tylko</strong> stron nadrzÄ™dnych)</label>
         </td>
 	</tr>
 	<tr>
@@ -77,7 +77,7 @@
 	<tr>
 		<td class="form"></td>
 		<td class="form center" colspan="2">
-            <input type="submit" tabindex="5" name="preview" value="Podgl±d strony" />
+            <input type="submit" tabindex="5" name="preview" value="PodglÄ…d strony" />
             <input type="submit" accesskey="s" tabindex="6" name="post" value="Zapisz" />
         </td>
 	</tr>

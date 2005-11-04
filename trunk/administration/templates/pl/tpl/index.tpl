@@ -3,7 +3,7 @@
 <head>
 	<title>{PAGE_TITLE}</title>
   <link rel="stylesheet" type="text/css" href="{CSS_HREF}" media="screen" />
- 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2" />
+ 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
  	<script type="text/javascript">
     function switchChecked(v) {
         
@@ -39,8 +39,8 @@
 </div>
 
 <div id="footer">
-  <span class="black">Core</span> - System Zarządzania Treścią (v.{VERSION})<br />
-Copyright 2005 - Wszystkie Prawa Zastrzeżone: <span class="black">Core Dev Team</span>
+  <span class="black">Core</span> - System ZarzÄdzania TreĹciÄ (v.{VERSION})<br />
+Copyright 2005 - Wszystkie Prawa ZastrzeĹźone: <span class="black">Core Dev Team</span>
 </div>
 </body>
 </html>

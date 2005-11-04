@@ -12,17 +12,17 @@ if(!defined('CORE_INSTALLED')) {
     exit;
 }
 
-
+header('Content-type: text/html; charset=UTF8');
 
 session_register('login');
 session_register('loggedIn');
 
 /*
  * TODO:
- * w sesji przechowywaæ login i hash has³a. przy ka¿dym wejœciu
- * musi byæ sprawdzana poprawnoœæ. inaczej, jeœli ktoœ siê nie 
- * bêdzie wylogowywa³ wystaczaj¹co d³ugo, mo¿e to spowodowaæ problemy z
- * bezpieczeñstwem (wy³¹czenie/skasowanie usera nie spowoduje braku mo¿liwoœci
+ * w sesji przechowywaÄ‡ login i hash hasÅ‚a. przy kaÅ¼dym wejÅ›ciu
+ * musi byÅ‚ sprawdzana poprawnoÅ›Ä‡. inaczej, jeÅ›li ktoÅ› siÄ™ nie 
+ * bÄ™dzie wylogowywaÄ‡ wystaczajÄ…co dÅ‚ugo, moÅ¼e to spowodowaÄ‡ problemy z
+ * bezpieczeÅ„stwem (wyÅ‚Ä…czenie/skasowanie usera nie spowoduje braku moÅ¼liwoÅ›ci
  * namieszania przez niego w systemie)
  *
  */
@@ -71,15 +71,15 @@ require_once pathjoin(ROOT, 'administration', 'i18n', $lang, 'i18n.php');
 
 
 
-// warto¶æ pocz±tkowa zmiennej $start -> potrzebna przy stronnicowaniu
+// wartoÅ›Ä‡ poczÄ…tkowa zmiennej $start -> potrzebna przy stronnicowaniu
 $start = isset($_GET['start']) ? intval($_GET['start']) : 0;
 
-// egzemplarz klasy obs³uguj±cej bazê danych Core
+// egzemplarz klasy obsÅ‚ugujÄ…cej bazÄ™ danych Core
 $db = new DB_SQL;
 
 
 //UPRAWNIENIA
-// pobieramy poziom uprawnieñ
+// pobieramy poziom uprawnieÅ„
 $query = sprintf("
     SELECT 
         permission_level 
@@ -97,7 +97,7 @@ $db->next_record();
 
 $privileges = $db->f('permission_level');
 
-// egzemplarz klasy do obs³ugi uprawnieñ
+// egzemplarz klasy do obsï¿½ugi uprawnieï¿½
 $perms          = new permissions();
 $permarr        = $perms->getPermissions($privileges);
 
@@ -111,16 +111,11 @@ switch ($privileges)
 }
 
 
-
-
-
-
-
 //SZABLONY
-// inicjowanie klasy, wkazanie katalogu przechowuj±cego szablony
+// inicjowanie klasy, wkazanie katalogu przechowujacego szablony
 $ft = new FastTemplate(pathjoin('templates', $lang, 'tpl'));
 
-// tablica definicji u¿ytych plików *.tpl
+// tablica definicji uÅ¼ytych plikÃ³w *.tpl
 $ft->define(array(
         'index'             => 'index.tpl',
         'main_loader'       => 'main_loader.tpl',
@@ -133,7 +128,7 @@ $ft->define_dynamic('menu_row', 'menu');
 
 
 
-// prze³±cznica ³adowanej tre¶ci                    
+// przeÅ‚Ä…cznica Å‚adowanej treÅ›ci                    
 $CorePage = isset($_GET['p']) ? $_GET['p'] : 0;
 $CoreModulesMap = array(
     1  => 'add_note.php',
@@ -153,98 +148,66 @@ $CoreModulesMap = array(
     15 => 'transfer_note.php',
     16 => 'list_note.php'
 );
-if (array_key_exists($CorePage, $CoreModulesMap))
-{
+
+if(array_key_exists($CorePage, $CoreModulesMap)) {
     require pathjoin(PATH_TO_MODULES_ADM, $CoreModulesMap[$CorePage]);
-}
-else
-{
+} else {
     require pathjoin(PATH_TO_MODULES_ADM, 'main.php');
 }
 
-
-
 //menu glowne - zaznaczenie wybranej zakladki
-if (in_array($CorePage, array(1, 2, 5, 6)))
-{
+if(in_array($CorePage, array(1, 2, 5, 6))) {
     $tag = 'NEWS_CURRENT';
-}
-elseif (in_array($CorePage, array(3, 4)))
-{
+} elseif(in_array($CorePage, array(3, 4))) {
     $tag = 'PAGES_CURRENT';
-}
-elseif (in_array($CorePage, array(7, 13)))
-{
+} elseif(in_array($CorePage, array(7, 13))) {
     $tag = 'USERS_CURRENT';
-}
-elseif (in_array($CorePage, array(8, 9, 15)))
-{
+} elseif(in_array($CorePage, array(8, 9, 15))) {
     $tag = 'CAT_CURRENT';
-}
-elseif (in_array($CorePage, array(10)))
-{
+} elseif(in_array($CorePage, array(10))) {
     $tag = 'CONFIG_CURRENT';
-}
-elseif (in_array($CorePage, array(11, 12)))
-{
+} elseif(in_array($CorePage, array(11, 12))) {
     $tag = 'LINKS_CURRENT';
-}
-elseif (in_array($CorePage, array(14)))
-{
+} elseif(in_array($CorePage, array(14))) {
     $tag = 'TEMPLATES_CURRENT';
-}
-else
-{
+} else {
     $tag = 'MAIN_CURRENT';
 }
 
 //zawartosc submenu
-if (in_array($CorePage, array(1, 2, 16, 5, 6)))
-{
+if(in_array($CorePage, array(1, 2, 16, 5, 6))) {
     $menu_content = array(
         '1'     =>$i18n['subcat_menu'][0], 
         '16'    =>$i18n['subcat_menu'][1], 
         '5'     =>$i18n['subcat_menu'][2], 
         '6'     =>$i18n['subcat_menu'][3]
     );
-}
-elseif (in_array($CorePage, array(3, 4)))
-{
+} elseif(in_array($CorePage, array(3, 4))) {
     $menu_content = array(
         '3'     =>$i18n['subcat_menu'][4], 
         '4'     =>$i18n['subcat_menu'][5]
     );
-}
-elseif (in_array($CorePage, array(7,13)))
-{
+} elseif(in_array($CorePage, array(7,13))) {
     $menu_content = array(
         '7'     =>$i18n['subcat_menu'][6], 
         '13'    =>$i18n['subcat_menu'][7]
     );
-}
-elseif (in_array($CorePage, array(8, 9, 15)))
-{
+} elseif(in_array($CorePage, array(8, 9, 15))) {
     $menu_content = array(
         '8'     =>$i18n['subcat_menu'][8], 
         '9'     =>$i18n['subcat_menu'][9], 
         '15'    =>$i18n['subcat_menu'][10]
     );
-}
-elseif (in_array($CorePage, array(10)))
-{
+} elseif(in_array($CorePage, array(10))) {
     $menu_content = array(
         '10'     =>$i18n['subcat_menu'][11]
     );
-}
-elseif (in_array($CorePage, array(11, 12)))
-{
+} elseif(in_array($CorePage, array(11, 12))) {
     $menu_content = array(
         '11'    =>$i18n['subcat_menu'][12], 
         '12'    =>$i18n['subcat_menu'][13]
     );
-}
-elseif (in_array($CorePage, array(14)))
-{
+} elseif(in_array($CorePage, array(14))) {
     $menu_content = array(
         '14'     =>$i18n['subcat_menu'][14]
     );

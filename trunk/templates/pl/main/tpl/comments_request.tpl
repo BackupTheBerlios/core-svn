@@ -1,9 +1,9 @@
 <div>
 <!-- IFDEF: SHOW_COMMENT_FORM -->
-Przy wype³nianiu formularza pole e-mail jest ca³kowicie opcjonalne, co znaczy ¿e nie wymagam podania adresu poczty mailowej.
-Je¶li jednak ju¿ zdecydujesz siê to zrobiæ, to muszê zaznaczyæ, ¿e Twój adres nie bêdzie widoczny bezpo¶rednio przy komentarzu, a
-przechowywany wy³±cznie w bazie danych w celach czysto informacyjnych.<br /><br />
-<b><a class="date" href="{PERMA_LINK}">{NEWS_TITLE}</a></b> - link bezpo¶redni<br /><br />
+Przy wypeÅ‚nianiu formularza pole e-mail jest caï¿½kowicie opcjonalne, co znaczy Å¼e nie wymagam podania adresu poczty mailowej.
+JeÅ›li jednak juÅ¼ zdecydujesz siÄ™ to zrobiÄ‡, to muszÄ™ zaznaczyÄ‡, Å¼e TwÃ³j adres nie bÄ™dzie widoczny bezpoÅ›rednio przy komentarzu, a
+przechowywany wyÅ‚Ä…cznie w bazie danych w celach czysto informacyjnych.<br /><br />
+<b><a class="date" href="{PERMA_LINK}">{NEWS_TITLE}</a></b> - link bezposredni<br /><br />
 
 <script type="text/javascript" src="templates/{LANG}/{THEME}/js/comments.js"></script>
 <form method="post" action="{FORM_LINK}" name="post">
@@ -43,11 +43,11 @@ przechowywany wy³±cznie w bazie danych w celach czysto informacyjnych.<br /><br 
 	<tr>
         <td width="20%" height="18" valign="top"></td>
 		<td class="form" align="left" valign="top">
-            <input type="text" name="helpbox" size="45" maxlength="100" class="helpline" value="Rada: Style mog± byæ stosowane szybko do zaznaczonego tekstu" readonly="readonly" />
+            <input type="text" name="helpbox" size="45" maxlength="100" class="helpline" value="Rada: Style mogÄ… byÄ‡ stosowane szybko do zaznaczonego tekstu" readonly="readonly" />
 		</td>
 	</tr>
 	<tr>
-		<td width="20%" height="25" valign="top">Tre¶æ komentarza:</td>
+		<td width="20%" height="25" valign="top">TreÅ›Ä‡ komentarza:</td>
 		<td width="80" class="nav" align="left">
 		<textarea wrap="virtual" tabindex="3" name="text" cols="65" rows="12" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" id="canvas">{QUOTE}</textarea>
 		</td>
@@ -60,7 +60,7 @@ przechowywany wy³±cznie w bazie danych w celach czysto informacyjnych.<br /><br 
 <!-- ELSE -->
 <div class="center">
 {CONFIRMATION}<br />
-<a href="{SUBMIT_LINK}">Wrï¿½ï¿½ do komentarzy...
+<a href="{SUBMIT_LINK}">WrÃ³c do komentarzy...
 </div>
 <!-- ENDIF -->
 </div>

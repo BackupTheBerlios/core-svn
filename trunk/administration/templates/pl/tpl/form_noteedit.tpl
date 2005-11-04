@@ -1,13 +1,13 @@
 <form enctype="multipart/form-data" method="post" action="main.php?p=2">
 <div id="left">
-<h2><img src="templates/{LANG}/images/main.gif">Aktualno¶ci - edycja wpisu</h2>
+<h2><img src="templates/{LANG}/images/main.gif">AktualnoÅ›ci - edycja wpisu</h2>
 
 {MESSAGE}
 
 <table width="100%" align="left">
     <!-- IFDEF: NOTE_PREVIEW -->
     <tr>
-        <td class="form">Podgl±d:&nbsp;</td>
+        <td class="form">PodglÄ…d:&nbsp;</td>
         <td class="form image_exist" colspan="2">
             <strong class="title_preview">{TITLE}</strong>
             <p class="text_preview">{NOTE_PREVIEW}</p>
@@ -16,7 +16,7 @@
     <!-- ELSE -->
     <!-- ENDIF -->
 	<tr>
-		<td class="form" width="100"><label for="title">Tytu³ wpisu:</label></td>
+		<td class="form" width="100"><label for="title">TytuÅ‚ wpisu:</label></td>
 		<td class="form" colspan="2"><input type="text" name="title" id="title" maxlength="255" value="{TITLE}" /></td>
 	</tr>
 	<tr>
@@ -33,7 +33,7 @@
 	<tr>
 		<td class="form">&nbsp;</td>
 		<td class="form" colspan="2">
-		<input type="text" name="helpline" id="helpline" value="Rada: Style mog± byæ stosowane szybko do zaznaczonego tekstu" disabled="disabled" />
+		<input type="text" name="helpline" id="helpline" value="Rada: Style mogÄ… byÄ‡ stosowane szybko do zaznaczonego tekstu" disabled="disabled" />
 		</td>
 	</tr>
 	<tr>
@@ -43,7 +43,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="form"><label for="canvas">Tre¶æ wpisu:</label></td>
+		<td class="form"><label for="canvas">TreÅ›Ä‡ wpisu:</label></td>
         <td class="form" colspan="2"><textarea class="note_textarea" name="text" id="canvas">{TEXT}</textarea></td>
 	</tr>
 	<tr>
@@ -71,7 +71,7 @@
 		<td class="form"></td>
 		<td class="form center" colspan="2">
             <input type="hidden" name="id" value="{ID}" />
-            <input type="submit" name="sub_preview" value="Podgl±d tre¶ci" tabindex="5" />
+            <input type="submit" name="sub_preview" value="PodglÄ…d treÅ›ci" tabindex="5" />
             <input type="submit" name="sub_commit" value="Zapisz" accesskey="s" tabindex="6" />
         </td>
 	</tr>
