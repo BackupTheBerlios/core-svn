@@ -7,7 +7,7 @@ $mainposts_per_page = get_config('mainposts_per_page');
 $CoreNews   = new CoreNews();
 $num_items  = $CoreNews->news_count();
 
-// inicjowanie funkcji stronnicuj±cej wpisy
+// inicjowanie funkcji stronnicujï¿½cej wpisy
 $pagination = pagination($CoreRewrite->pagination($rewrite), $mainposts_per_page, $num_items);
 
 // definiujemy blok dynamiczny szablonu
@@ -44,7 +44,7 @@ if(count($CoreNews->news)) {
     }
 } else {
     
-    // Obs³uga b³êdu, kiedy w bazie danych nie ma jeszcze ¿adnego wpisu
+    // Obsï¿½uga bï¿½ï¿½du, kiedy w bazie danych nie ma jeszcze ï¿½adnego wpisu
     $ft->assign(array(
         'QUERY_FAILED'  =>$i18n['main_view'][1],
         'STRING'        =>'', 

@@ -1,5 +1,5 @@
 <?php
-// $Id: cls_calendar.php 1128 2005-08-03 22:16:55Z mysz $
+// $Id$
 
 class CoreNews extends CoreBase {
     
@@ -38,7 +38,7 @@ class CoreNews extends CoreBase {
             $this->error_set('CoreNews::NewsAdd:: ' . $this->i18n['add_note'][2]);
         }
         
-        //sprawdzamy czy format czasu jest prawid³owy
+        //sprawdzamy czy format czasu jest prawidï¿½owy
         if(is_null($timestamp)) {
             $regexp = '/
                 ^
@@ -72,7 +72,7 @@ class CoreNews extends CoreBase {
             }
         }
         
-        // sprawdzamy czy news zosta³ przypisany do jakichs kategorii
+        // sprawdzamy czy news zostaï¿½ przypisany do jakichs kategorii
         if( !isset($_POST['assign2cat']) || 
             !is_array($_POST['assign2cat']) || 
             count($_POST['assign2cat']) == 0) {
@@ -150,7 +150,7 @@ class CoreNews extends CoreBase {
             $this->error_set('CoreNews::NewsUpdate:: ' . $this->i18n['update_note'][2]);
         }
         
-        //sprawdzamy czy format czasu jest prawid³owy
+        //sprawdzamy czy format czasu jest prawidï¿½owy
         if(is_null($timestamp)){
             $regexp = '/
                 ^
@@ -184,7 +184,7 @@ class CoreNews extends CoreBase {
             }
         }
         
-        //sprawdzamy czy news zosta³ przypisany do jakichs kategorii
+        //sprawdzamy czy news zostaï¿½ przypisany do jakichs kategorii
         if( !isset($_POST['assign2cat']) || 
             !is_array($_POST['assign2cat']) || 
             count($_POST['assign2cat']) == 0) {

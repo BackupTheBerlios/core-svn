@@ -103,7 +103,7 @@ function get_cat($page_id, $level) {
 }
 
 
-// funkcja pobierajaca rekurencyjnie kategorie na stronie g³ównej
+// funkcja pobierajaca rekurencyjnie kategorie na stronie gï¿½ï¿½wnej
 function get_category_cat($cat_id, $level) {
 	
 	global 
@@ -226,7 +226,7 @@ function get_image_status($image, $id) {
             
             $photo_link = (bool)$rewrite ? 'photo?id=' . $id . '' : 'photo.php?id=' . $id . '';
             
-            // wysoko¶æ, szeroko¶æ obrazka
+            // wysokoï¿½ï¿½, szerokoï¿½ï¿½ obrazka
             $ft->assign(array(
                 'WIDTH'         =>$width,
                 'HEIGHT'        =>$height,
