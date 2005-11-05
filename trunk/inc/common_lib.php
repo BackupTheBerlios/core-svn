@@ -207,6 +207,25 @@ function pagination($url, $mainposts_per_page, $num_items) {
 	
 	return $ret;
 }
+function pagination2($all_items, $per_page, $current)
+{
+    $pagination = array(
+        'prev' => null,
+        'next' => null,
+        'list' => array(
+            
+        )
+    );
+
+    if ($all_items == 0)
+    {
+        return $pagination;
+    }
+    if ($all_items < 3)
+    {
+        
+    }
+}
 
 
 function highlighter($text, $geshi_lang) {
