@@ -529,9 +529,9 @@ class CoreNews extends CoreBase {
             
             $id = $this->db->f('id');
             
-            $cmnt_entries[$id]['id']         = $this->db->f('id');
+            $cmnt_entries[$id]['id']         = $id;
             $cmnt_entries[$id]['date']       = $this->db->f('date');
-            $cmnt_entries[$id]['id_news']    = $this->db->f('id_news');
+            $cmnt_entries[$id]['id_news']    = $id_news;
             $cmnt_entries[$id]['author']     = $this->db->f('author');
             $cmnt_entries[$id]['author_ip']  = $this->db->f('author_ip');
             $cmnt_entries[$id]['email']      = $this->db->f('email');
