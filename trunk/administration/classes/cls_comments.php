@@ -333,7 +333,7 @@ class Comments extends CoreBase {
         // building query
         
         // set type
-        $query = !is_null($id) ? "INSERT INTO" : "UPDATE";
+        $query = is_null($id) ? "INSERT INTO" : "UPDATE";
         
         // table
         $query .= sprintf("
