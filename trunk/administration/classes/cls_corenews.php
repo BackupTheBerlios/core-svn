@@ -511,46 +511,32 @@ class CoreNews extends CoreBase {
             FROM
                 %s 
             WHERE 
-                id_news = %d",
-
-            TABLE_COMMENTS, 
-            $this->get_id()
-        );
-        
-        // continue query building
-        $query .= sprintf("
+                id_news = %d 
             ORDER BY 
                 date 
-            %s", 
-        
+            %s",
+
+            TABLE_COMMENTS, 
+            $this->get_id(), 
             $order
         );
 
         $this->db->query($query);
 
-        $cmt_entries = array();
+        $cmnt_entries = array();
         
         while($this->db->next_record()) {
             
-            $id         = $this->db->f('id');
-            $date       = $this->db->f('date');
-            $id_news    = $this->db->f('id_news');
-            $author     = $this->db->f('author');
-            $author_ip  = $this->db->f('author_ip');
-            $email      = $this->db->f('email');
-            $text       = $this->db->f('text');
+            $cmnt_entries[$id]['id']         = $this->db->f('id');
+            $cmnt_entries[$id]['date']       = $this->db->f('date');
+            $cmnt_entries[$id]['id_news']    = $this->db->f('id_news');
+            $cmnt_entries[$id]['author']     = $this->db->f('author');
+            $cmnt_entries[$id]['author_ip']  = $this->db->f('author_ip');
+            $cmnt_entries[$id]['email']      = $this->db->f('email');
+            $cmnt_entries[$id]['text']       = $this->db->f('text');
             
-            
-            $cmt_entries[$id]['id']         = $id;
-            $cmt_entries[$id]['date']       = $date;
-            $cmt_entries[$id]['id_news']    = $id_news;
-            $cmt_entries[$id]['author']     = $author;
-            $cmt_entries[$id]['author_ip']  = $author_ip;
-            $cmt_entries[$id]['email']      = $email;
-            $cmt_entries[$id]['text']       = $text;
-            
-            $this->comments[$k] =& new Comments();
-            $this->comments[$k]->set_from_array($entries[$k]);
+            $this->comments[$id] =& new Comments();
+            $this->comments[$id]->set_from_array($cmnt_entries[$id]);
         }
 
         krsort($this->comments);
