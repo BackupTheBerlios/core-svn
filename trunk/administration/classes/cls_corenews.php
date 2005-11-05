@@ -3,7 +3,8 @@
 
 class CoreNews extends CoreBase {
     
-    var $news = array();
+    var $news       = array();
+    var $comments   = array();
 
     /*
      * constructor
@@ -184,7 +185,7 @@ class CoreNews extends CoreBase {
             }
         }
         
-        //sprawdzamy czy news zosta� przypisany do jakichs kategorii
+        // sprawdzamy czy news został przypisany do jakichs kategorii
         if( !isset($_POST['assign2cat']) || 
             !is_array($_POST['assign2cat']) || 
             count($_POST['assign2cat']) == 0) {
@@ -196,8 +197,8 @@ class CoreNews extends CoreBase {
             return false;
         }
 
-        //jesli nie ma bledow, to dodajemy
-        //ukladamy wlasciwa tablice
+        // jesli nie ma bledow, to dodajemy
+        // ukladamy wlasciwa tablice
         $news_data = array(
             'id'                =>$_POST['id'],
             'id_cat'            =>$_POST['assign2cat'],
@@ -279,9 +280,9 @@ class CoreNews extends CoreBase {
         );
         $and = 'WHERE';
 
-        //budowania query ciag dalszy: warunki
-        //skracamy sprawdzanie po kolei warunkow if/elseif i wrzucamy
-        //to w petle
+        // budowania query ciag dalszy: warunki
+        // skracamy sprawdzanie po kolei warunkow if/elseif i wrzucamy
+        // to w petle
         $keys = array('published', 'only_in_category', 'comments_allow');
         foreach($keys as $key) {
             
@@ -306,7 +307,7 @@ class CoreNews extends CoreBase {
             }
         }
 
-        //budowanie query cd: LIMIT
+        // budowanie query cd: LIMIT
         if($limit > -1) {
             $query .= sprintf("
                 LIMIT %d, %d",
@@ -318,11 +319,11 @@ class CoreNews extends CoreBase {
 
         $this->db->query($query);
 
-        //poniewaz id kategorii do jakich zostal przydzielony wpis trzeba
-        //pobrac w osobnym zapytaniu, rozbijamy to na 2 etapy: najpierw
-        //pobranie do tablicy $entries zawartosci wpisow, pozniej
-        //dopiero dodajemy, w nastepnej petli iteracyjnej, liste kategorii
-        //dopiero na koniec tworzymy obiekt klasy News
+        // poniewaz id kategorii do jakich zostal przydzielony wpis trzeba
+        // pobrac w osobnym zapytaniu, rozbijamy to na 2 etapy: najpierw
+        // pobranie do tablicy $entries zawartosci wpisow, pozniej
+        // dopiero dodajemy, w nastepnej petli iteracyjnej, liste kategorii
+        // dopiero na koniec tworzymy obiekt klasy News
         $entries = array();
         
         while($this->db->next_record()) {
