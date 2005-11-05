@@ -428,6 +428,7 @@ class CoreNews extends CoreBase {
         return $this->db->f('count');
     }
 
+    
     /**
      *
      */
@@ -453,7 +454,7 @@ class CoreNews extends CoreBase {
             case 'news':
                 foreach($id_list as $id) {
                     
-                    $cmnt = new Comment();
+                    $cmnt = new Comments();
                     $cmnt->delByNewsId($id);
                     
                     unset($cmnt);
@@ -463,7 +464,7 @@ class CoreNews extends CoreBase {
             case 'comment':
                 foreach($id_list as $id) {
                     
-                    $cmnt = new Comment($id);
+                    $cmnt = new Comments($id);
                     $cmnt->del($id);
                     
                     unset($cmnt);
@@ -485,17 +486,89 @@ class CoreNews extends CoreBase {
     
     /**
      * @param $id_news
-     * @param $start
-     * @param limit
+     * @param $order - comments sort order
      */
-    function cmnt_list($id_news, $start = 0, $limit = -1) {
+    function cmnt_list($id_news, $order) {
+        
+        if(!in_array($order, array('asc', 'desc'))) {
+            $this->error_set('CoreNews::CommentsList:: incorrect value of $order - none of "asc" or "desc".');
+        }
+
+        if($this->is_error()) {
+            return false;
+        }
+
+        // building query
+        $query = sprintf("
+            SELECT 
+                id,
+                UNIX_TIMESTAMP(date) AS date,
+                id_news,
+                author,
+                author_ip,
+                email,
+                text
+            FROM
+                %s 
+            WHERE 
+                id_news = %d",
+
+            TABLE_COMMENTS, 
+            $this->get_id()
+        );
+        
+        // continue query building
+        $query .= sprintf("
+            ORDER BY 
+                date 
+            %s", 
+        
+            $order
+        );
+
+        $this->db->query($query);
+
+        $cmt_entries = array();
+        
+        while($this->db->next_record()) {
+            
+            $id         = $this->db->f('id');
+            $date       = $this->db->f('date');
+            $id_news    = $this->db->f('id_news');
+            $author     = $this->db->f('author');
+            $author_ip  = $this->db->f('author_ip');
+            $email      = $this->db->f('email');
+            $text       = $this->db->f('text');
+            
+            
+            $cmt_entries[$id]['id']         = $id;
+            $cmt_entries[$id]['date']       = $date;
+            $cmt_entries[$id]['id_news']    = $id_news;
+            $cmt_entries[$id]['author']     = $author;
+            $cmt_entries[$id]['author_ip']  = $author_ip;
+            $cmt_entries[$id]['email']      = $email;
+            $cmt_entries[$id]['text']       = $text;
+            
+            $this->comments[$k] =& new Comments();
+            $this->comments[$k]->set_from_array($entries[$k]);
+        }
+
+        krsort($this->comments);
+        reset($this->comments);
+
         return true;
     }
+    
     
     /**
      *
      */
     function cmnt_get() {
+        $this->comments[$id_news] =& new Comments($id_news);
+        
+        krsort($this->comments, SORT_NUMERIC);
+        reset($this->comments);
+        
         return true;
     }
     
@@ -507,6 +580,7 @@ class CoreNews extends CoreBase {
         return false;
     }
 
+    
     /**
      * @param $id_news
      */
