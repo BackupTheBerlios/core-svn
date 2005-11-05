@@ -67,7 +67,7 @@ class Comments extends CoreBase {
     
     
     /**
-     * @param $id_cat
+     * @param $id_news
      */
     function set_id_news($id_news) {
         
@@ -337,21 +337,16 @@ class Comments extends CoreBase {
         
         // table
         $query .= sprintf("
-                    %s
-                SET",
+                %s
+            SET
+                id_news     = %d,
+                date        = FROM_UNIXTIME(%d),
+                author      = '%s',
+                author_ip   = '%s',
+                email       = '%s',
+                text        = '%s'",
         
-            TABLE_COMMENTS
-        );
-        
-        // data
-        $query .= sprintf("
-            id_news     = %d,
-            date        = FROM_UNIXTIME(%d),
-            author      = '%s',
-            author_ip   = '%s',
-            email       = '%s',
-            text        = '%s'",
-        
+            TABLE_COMMENTS, 
             $this->get_id_news(),
             $this->get_timestamp(),
             $this->get_author(),
