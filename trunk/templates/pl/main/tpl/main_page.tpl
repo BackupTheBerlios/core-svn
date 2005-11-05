@@ -175,7 +175,7 @@
 	
 	<div class="clear"></div>
 	
-	<div class="engine">{ENGINE_VERSION}</div>
+    <div class="engine">Engine: <a href="http://core-cms.com/" title="Core CMS - System Zarz±dzania Tre¶ci±">Core CMS</a></div>
     <script type="text/javascript">
     <!--
     edCanvas = document.getElementById('canvas')

@@ -29,7 +29,6 @@ $i18n = array();
 
 $i18n['index'] = array();
 $i18n['index'][0] = 'Brak wybranego skina do systemu <strong>CORE</strong>.';
-$i18n['index'][1] = 'Engine: <a href="http://core-cms.com/">Core CMS</a>';
 $i18n['index'][2] = 'Skasuj katalog <b>install/</b> zanim uruchomisz <strong>CORE</strong>.';
 
 $i18n['design'] = array();
