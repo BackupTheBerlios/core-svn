@@ -491,7 +491,7 @@ class CoreNews extends CoreBase {
     function cmnt_list($id_news, $order) {
         
         if(!in_array($order, array('asc', 'desc'))) {
-            $this->error_set('CoreNews::CommentsList:: incorrect value of $order - none of "asc" or "desc".');
+            $this->error_set('CoreNews::CmntList:: incorrect value of $order - none of "asc" or "desc".');
         }
 
         if($this->is_error()) {
@@ -517,7 +517,7 @@ class CoreNews extends CoreBase {
             %s",
 
             TABLE_COMMENTS, 
-            $this->get_id(), 
+            $id_news, 
             $order
         );
 
@@ -527,6 +527,8 @@ class CoreNews extends CoreBase {
         
         while($this->db->next_record()) {
             
+            $id = $this->db->f('id');
+            
             $cmnt_entries[$id]['id']         = $this->db->f('id');
             $cmnt_entries[$id]['date']       = $this->db->f('date');
             $cmnt_entries[$id]['id_news']    = $this->db->f('id_news');
@@ -535,8 +537,8 @@ class CoreNews extends CoreBase {
             $cmnt_entries[$id]['email']      = $this->db->f('email');
             $cmnt_entries[$id]['text']       = $this->db->f('text');
             
-            $this->comments[$id] =& new Comments();
-            $this->comments[$id]->set_from_array($cmnt_entries[$id]);
+            $this->comments[$id_news][$id_cmnt] =& new Comments();
+            $this->comments[$id_news][$id_cmnt]->set_from_array($cmnt_entries[$id]);
         }
 
         krsort($this->comments);
