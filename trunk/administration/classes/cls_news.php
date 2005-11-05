@@ -437,24 +437,19 @@ class News extends CoreBase {
                 UPDATE";
         }
 
-        // tabela
+        // tabela i dane
         $query .= sprintf("
                     %s
-                SET",
+                SET
+                    date = FROM_UNIXTIME(%d),
+                    title = '%s',
+                    author = '%s',
+                    text = '%s',
+                    comments_allow = %d,
+                    published = %d,
+                    only_in_category = %d",
         
-            TABLE_MAIN
-        );
-
-        // dane
-        $query .= sprintf("
-            date = FROM_UNIXTIME(%d),
-            title = '%s',
-            author = '%s',
-            text = '%s',
-            comments_allow = %d,
-            published = %d,
-            only_in_category = %d",
-        
+            TABLE_MAIN,
             $this->get_timestamp(),
             $this->get_title(),
             $this->get_author(),
