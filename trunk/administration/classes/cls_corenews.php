@@ -525,6 +525,7 @@ class CoreNews extends CoreBase {
         $this->db->query($query);
 
         $cmnt_entries = array();
+        $this->comments[$id_news] = array();
         
         while($this->db->next_record()) {
             
