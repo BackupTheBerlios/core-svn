@@ -1,2 +1,2 @@
 {WARN}
-{MONIT}
+{MONIT} 

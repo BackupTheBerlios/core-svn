@@ -46,4 +46,6 @@ define('PATH_TO_MODULES_USER', ROOT . 'modules/');
 
 define('TMPDIR', ROOT . 'administration/_tmp/');
 
+define('BASE_HREF', 'http://some_example.com/'); // slash at the end
+
 ?>

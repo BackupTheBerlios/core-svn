@@ -26,7 +26,7 @@ if(!empty($post)) {
     define('SQL_SCHEMA', 'dbschema');
 
     $err    = '';
-    $monit  = array(); // tablica przechowuj±ca b³êdy
+    $monit  = array(); // bugs array
 
     $dbname = $_POST['dbname'];
     $dbhost = $_POST['dbhost'];
@@ -34,13 +34,15 @@ if(!empty($post)) {
     $dbpass = $_POST['dbpass'];
     $lang   = $_POST['lang'];
 
-    $dbprefix     = $_POST['dbprefix'];
+    $dbprefix   = $_POST['dbprefix'];
+    
+    $corehost   = $_POST['corehost'];
 
-    $coreuser     = $_POST['coreuser'];
-    $coremail     = $_POST['coremail'];
+    $coreuser   = $_POST['coreuser'];
+    $coremail   = $_POST['coremail'];
 
-    $corepass_1   = $_POST['corepass_1'];
-    $corepass_2   = $_POST['corepass_2'];
+    $corepass_1 = $_POST['corepass_1'];
+    $corepass_2 = $_POST['corepass_2'];
 
     if(strlen($coreuser) < 4) {
 
@@ -61,6 +63,8 @@ if(!empty($post)) {
 
         $monit[] = $i18n['main_content'][3];
     }
+    
+    if(empty($corehost)) $monit[] = $i18n['main_content'][7];
 
     $rdbms = empty($_POST['rdbms']) ? '' : $_POST['rdbms'];
 
@@ -79,8 +83,8 @@ if(!empty($post)) {
 
         if(isset($_POST['dbcreate'])) {
 
-            $link   = mysql_pconnect($dbhost, $dbuser, $dbpass) or die('Nie mo¿na siê po³±czyæ: ' . mysql_error());
-            $result = mysql_query("CREATE DATABASE $dbname") or die("Nie mo¿na utworzyæ bazy danych!");
+            $link   = mysql_pconnect($dbhost, $dbuser, $dbpass) or die('Nie moÅ¼na siÄ™ poÅ‚Ä…czyÄ‡: ' . mysql_error());
+            $result = mysql_query("CREATE DATABASE $dbname") or die("Nie moÅ¼na utworzyÄ‡ bazy danych!");
             $link   = mysql_close($link);
 
         }
@@ -92,7 +96,7 @@ if(!empty($post)) {
 
         $db = new DB_Sql;
             
-        // poprawiono dla wersji php < 4.3.0
+        // fixed for php < 4.3.0
         if(!function_exists('file_get_contents')) {
             $sql_query = implode('', file($db_schema));
             $sql_query = explode(';', $sql_query);
@@ -101,7 +105,7 @@ if(!empty($post)) {
         }
             
         $sql_query = str_replace('core_', $dbprefix, $sql_query);
-        $sql_query = $lang == 'en' ? str_replace('DEFAULT_CATEGORY', 'default', $sql_query) : str_replace('DEFAULT_CATEGORY', 'ogólna', $sql_query);
+        $sql_query = $lang == 'en' ? str_replace('DEFAULT_CATEGORY', 'default', $sql_query) : str_replace('DEFAULT_CATEGORY', 'ogï¿½lna', $sql_query);
 
         $sql_size = sizeof($sql_query) - 1;
         for($i = 0; $i < $sql_size; $i++) {
@@ -138,6 +142,8 @@ if(!empty($post)) {
         $file .= "define('PATH_TO_MODULES_USER', ROOT . 'modules/');\n\n";
 
         $file .= "define('TMPDIR', ROOT . 'administration/_tmp/');\n\n";
+        
+        $file .= "define('BASE_HREF', '" . $corehost . "');";
 
 
         $file .= '?' . '>';
@@ -146,13 +152,14 @@ if(!empty($post)) {
         $result = @fputs($fp, $file, strlen($file));
         @fclose($fp);
 
-        $pass    = md5($corepass_1);
-        $t1        = $dbprefix . 'users';
-        $t2        = $dbprefix . 'category';
-        $t3        = $dbprefix . 'config';
+        $pass   = md5($corepass_1);
+        $t1     = $dbprefix . 'users';
+        $t2     = $dbprefix . 'category';
+        $t3     = $dbprefix . 'config';
 
         $perms = new permissions();
-        // Nadajemu stosowne uprawnienia u¿ytkownikowi
+        
+        // set permissions to default user
         $perms->permissions["user"]                     = TRUE;
         $perms->permissions["writer"]                   = TRUE;
         $perms->permissions["moderator"]                = TRUE;
@@ -161,7 +168,7 @@ if(!empty($post)) {
 
         $bitmask = $perms->toBitmask();
 
-        // wstawiamy pocz±tkowego u¿ytkownika
+        // default langauge
         $query = sprintf("
             INSERT INTO
                 %1\$s
@@ -174,7 +181,7 @@ if(!empty($post)) {
 
         $db->query($query);
         
-        // wstawiamy pocz±tkowego u¿ytkownika
+        // set default user
         $query = sprintf("
             INSERT INTO
                 %1\$s
@@ -234,7 +241,8 @@ if(!empty($post)) {
         
     $databases = array(
         'mysql4'    =>'MySQL 4.0.x', 
-        'mysql41'   =>'MySQL 4.1.x'
+        'mysql41'   =>'MySQL 4.1.x', 
+        'pgsql7'    =>'PostgreSQL 7.x'
     );
         
     foreach($databases as $key => $row) {

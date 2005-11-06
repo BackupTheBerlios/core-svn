@@ -17,6 +17,8 @@
  * 
  */
 
+header('Content-type: text/html; charset=UTF8');
+
 define('PATH_TO_CLASSES', '../administration/classes');
 define('EXTENSION', '.php');
 

@@ -2,19 +2,19 @@
 	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 	<head>
 		<title>Core / Instalator</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<link rel="stylesheet" href="{CSS_HREF}" type="text/css" media="screen" />
 	</head>
 <body>
 <div id="container">
 	<div id="header">
-		Core / Instalator
+		Core CMS / Instalator
 	</div>
 	<div id="content">
 		{ROWS}
 	</div>	
 	<div id="footer">
-		Core - System Zarządzania Treścią
+		Core CMS - System ZarzÄdzania TreĹciÄ
 	</div>
 </div>
 </body>
