@@ -78,14 +78,10 @@ require_once pathjoin(PATH_TO_CLASSES, 'cls_db_config.php');
 require_once pathjoin(ROOT, 'administration', 'inc', 'tpl_functions.php');
 require_once pathjoin(ROOT, 'inc', 'common_db_lib.php');
 
-
-
 // mysql_server_version
 get_mysql_server_version();
 $lang = get_config('language_set');
 require_once pathjoin(ROOT, 'administration', 'i18n', $lang, 'i18n.php');
-
-
 
 // wartość początkowa zmiennej $start -> potrzebna przy stronnicowaniu
 $start = isset($_GET['start']) ? intval($_GET['start']) : 0;
@@ -172,7 +168,7 @@ if(array_key_exists($CorePage, $CoreModulesMap)) {
 }
 
 //menu glowne - zaznaczenie wybranej zakladki
-if(in_array($CorePage, array(1, 2, 5, 6))) {
+if(in_array($CorePage, array(1, 2, 5, 6, 16))) {
     $tag = 'NEWS_CURRENT';
 } elseif(in_array($CorePage, array(3, 4))) {
     $tag = 'PAGES_CURRENT';
@@ -230,7 +226,6 @@ if(in_array($CorePage, array(1, 2, 16, 5, 6))) {
 }
 
 
-
 if(!empty($CorePage)) {
 
     // parsujemy menu na podstawie tablicy
@@ -258,8 +253,6 @@ $ft->assign(array(
         'LANG'              => $lang,
         $tag                => 'id="current"'
 ));
-
-
 
 $ft->parse('MENU_HEADER', '.menu_header');
 $ft->parse('MAIN_CONTENT', array('main_loader', 'index'));
