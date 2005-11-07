@@ -43,7 +43,7 @@ CREATE TABLE core_comments (
   author_ip varchar(15) DEFAULT '' NOT NULL,
   email varchar(30) DEFAULT '' NOT NULL,
   text text NOT NULL, 
-  CONSTRAINT core_comments_pkey PRIMARY KEY(id, comments_id)
+  CONSTRAINT core_comments_pkey PRIMARY KEY(id, id_news)
 );
 
 CREATE INDEX id_news_core_comments_index ON core_comments (id_news);
@@ -59,13 +59,13 @@ CREATE TABLE core_config (
 CREATE TABLE core_devlog (
   id int DEFAULT '0' NOT NULL,
   date timestamp,
-  title varchar(50) DEFAULT '' NOT NULL,
-  author varchar(30) DEFAULT '' NOT NULL,
+  title varchar(255) DEFAULT '' NOT NULL,
+  author varchar(255) DEFAULT '' NOT NULL,
   text text DEFAULT '' NOT NULL,
   image varchar(255) DEFAULT '' NOT NULL,
   comments_allow char(1) DEFAULT '1' NOT NULL,
-  published smallint(1) DEFAULT '1' NOT NULL,
-  only_in_category smallint(1) DEFAULT '-1' NOT NULL,
+  published int2 DEFAULT '1' NOT NULL,
+  only_in_category int2 DEFAULT '-1' NOT NULL,
   CONSTRAINT core_devlog_pkey PRIMARY KEY(id)
 );
 
@@ -85,8 +85,8 @@ CREATE INDEX id_core_links_index ON core_links (id);
 
 CREATE TABLE core_newsletter (
   id int DEFAULT '0' NOT NULL,
-  email varchar(40) DEFAULT '' NOT NULL, 
-  active smallint(1) DEFAULT '1' NOT NULL, 
+  email varchar(255) DEFAULT '' NOT NULL, 
+  active int2 DEFAULT '1' NOT NULL, 
   token varchar(32) DEFAULT '' NOT NULL, 
   CONSTRAINT core_newsletter_pkey PRIMARY KEY(id)
 );
@@ -134,17 +134,18 @@ CREATE TABLE core_users (
 CREATE INDEX id_core_users_index ON core_users (id);
 
 
-INSERT INTO core_category VALUES ('', '', '10', 'DEFAULT_CATEGORY', '', 'default', '6');
+INSERT INTO core_category VALUES (nextval('core_category_category_id_seq'), '0', '10', 'DEFAULT_CATEGORY', '', 'default', '6');
 
 INSERT INTO core_config VALUES ('counter', '0');
 INSERT INTO core_config VALUES ('mainposts_per_page', '4');
 INSERT INTO core_config VALUES ('editposts_per_page', '15');
 INSERT INTO core_config VALUES ('mostcomments_on_page', '20');
-INSERT INTO core_config VALUES ('title_page', './Core {lektura wcale nie obowiązkowa}');
+INSERT INTO core_config VALUES ('title_page', 'Core CMS');
 INSERT INTO core_config VALUES ('max_photo_width', '440');
 INSERT INTO core_config VALUES ('mod_rewrite', '0');
 INSERT INTO core_config VALUES ('date_format', 'Y-m-d H:i:s');
 INSERT INTO core_config VALUES ('core_version', '0.4.4');
-INSERT INTO core_config VALUES ('start_page_type', 'all'), ('start_page_id', '0');
+INSERT INTO core_config VALUES ('start_page_type', 'all');
+INSERT INTO core_config VALUES ('start_page_id', '0');
 INSERT INTO core_config VALUES ('show_calendar', 1);
 INSERT INTO core_config VALUES ('core_rss', 1);

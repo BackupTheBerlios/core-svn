@@ -124,7 +124,7 @@ INSERT INTO core_config VALUES ('counter', '0');
 INSERT INTO core_config VALUES ('mainposts_per_page', '4');
 INSERT INTO core_config VALUES ('editposts_per_page', '15');
 INSERT INTO core_config VALUES ('mostcomments_on_page', '20');
-INSERT INTO core_config VALUES ('title_page', 'Core CMS - System Zarządzania Treścią}');
+INSERT INTO core_config VALUES ('title_page', 'Core CMS');
 INSERT INTO core_config VALUES ('max_photo_width', '440');
 INSERT INTO core_config VALUES ('mod_rewrite', '0');
 INSERT INTO core_config VALUES ('date_format', 'Y-m-d H:i:s');
