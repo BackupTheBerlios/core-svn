@@ -109,7 +109,7 @@ $db->next_record();
 
 $privileges = $db->f('permission_level');
 
-// egzemplarz klasy do obs�ugi uprawnie�
+// egzemplarz klasy do obsługi uprawnień
 $perms          = new permissions();
 $permarr        = $perms->getPermissions($privileges);
 
@@ -123,7 +123,7 @@ switch ($privileges)
 }
 
 
-//SZABLONY
+// Templates
 // inicjowanie klasy, wkazanie katalogu przechowujacego szablony
 $ft = new FastTemplate(pathjoin('templates', $lang, 'tpl'));
 
@@ -136,8 +136,6 @@ $ft->define(array(
         'menu'              => 'menu.tpl'
 ));
 $ft->define_dynamic('menu_row', 'menu');
-
-
 
 
 // przełącznica ładowanej treści                    
@@ -186,49 +184,69 @@ if(in_array($CorePage, array(1, 2, 5, 6, 16))) {
     $tag = 'MAIN_CURRENT';
 }
 
-//zawartosc submenu
-if(in_array($CorePage, array(1, 2, 16, 5, 6))) {
-    $menu_content = array(
-        '1'     =>$i18n['subcat_menu'][0], 
-        '16'    =>$i18n['subcat_menu'][1], 
-        '5'     =>$i18n['subcat_menu'][2], 
-        '6'     =>$i18n['subcat_menu'][3]
-    );
-} elseif(in_array($CorePage, array(3, 4))) {
-    $menu_content = array(
-        '3'     =>$i18n['subcat_menu'][4], 
-        '4'     =>$i18n['subcat_menu'][5]
-    );
-} elseif(in_array($CorePage, array(7,13))) {
-    $menu_content = array(
-        '7'     =>$i18n['subcat_menu'][6], 
-        '13'    =>$i18n['subcat_menu'][7]
-    );
-} elseif(in_array($CorePage, array(8, 9, 15))) {
-    $menu_content = array(
-        '8'     =>$i18n['subcat_menu'][8], 
-        '9'     =>$i18n['subcat_menu'][9], 
-        '15'    =>$i18n['subcat_menu'][10]
-    );
-} elseif(in_array($CorePage, array(10))) {
-    $menu_content = array(
-        '10'     =>$i18n['subcat_menu'][11]
-    );
-} elseif(in_array($CorePage, array(11, 12))) {
-    $menu_content = array(
-        '11'    =>$i18n['subcat_menu'][12], 
-        '12'    =>$i18n['subcat_menu'][13]
-    );
-} elseif(in_array($CorePage, array(14))) {
-    $menu_content = array(
-        '14'     =>$i18n['subcat_menu'][14]
-    );
-}
+switch($CorePage) {
+    
+    // news menu content
+    case in_array($CorePage, array(1, 2, 16, 5, 6)):
+        $menu_content = array(
+            '1'     =>$i18n['subcat_menu'][0], 
+            '16'    =>$i18n['subcat_menu'][1], 
+            '5'     =>$i18n['subcat_menu'][2], 
+            '6'     =>$i18n['subcat_menu'][3]
+        );
+    break;    
+    
+    // page menu content  
+    case in_array($CorePage, array(3, 4)):
+        $menu_content = array(
+            '3'     =>$i18n['subcat_menu'][4], 
+            '4'     =>$i18n['subcat_menu'][5]
+        );
+    break;
 
+    // users menu content
+    case in_array($CorePage, array(7,13)):
+        $menu_content = array(
+            '7'     =>$i18n['subcat_menu'][6], 
+            '13'    =>$i18n['subcat_menu'][7]
+        );
+    break;
+    
+    // category menu content
+    case in_array($CorePage, array(8, 9, 15)):
+        $menu_content = array(
+            '8'     =>$i18n['subcat_menu'][8], 
+            '9'     =>$i18n['subcat_menu'][9], 
+            '15'    =>$i18n['subcat_menu'][10]
+        );
+    break;
+    
+    // configuration menu content
+    case in_array($CorePage, array(10)):
+        $menu_content = array(
+            '10'     =>$i18n['subcat_menu'][11]
+        );
+    break;
+    
+    // links menu content
+    case in_array($CorePage, array(11, 12)):
+        $menu_content = array(
+            '11'    =>$i18n['subcat_menu'][12], 
+            '12'    =>$i18n['subcat_menu'][13]
+        );
+    break;
+    
+    // template menu content
+    case in_array($CorePage, array(14)):
+        $menu_content = array(
+            '14'     =>$i18n['subcat_menu'][14]
+        );
+    break;
+}
 
 if(!empty($CorePage)) {
 
-    // parsujemy menu na podstawie tablicy
+    // walk & parse through an array
     foreach ($menu_content as $menu_num => $menu_desc) {
 
         $ft->assign(array(
@@ -243,15 +261,14 @@ if(!empty($CorePage)) {
 }
 
 
-
 $ft->assign(array(
-        'PRIVILEGE_LEVEL'   => $privilege_level,
-        'PAGE_TITLE'        => $i18n['main'][0],
-        'LOGGED_IN'         => $_SESSION['login'],
-        'VERSION'           => get_config('core_version'),
-        'CSS_HREF'          => sprintf('templates/%s/css/style.css', $lang),
-        'LANG'              => $lang,
-        $tag                => 'id="current"'
+        'PRIVILEGE_LEVEL'   =>$privilege_level,
+        'PAGE_TITLE'        =>$i18n['main'][0],
+        'LOGGED_IN'         =>$_SESSION['login'],
+        'VERSION'           =>get_config('core_version'),
+        'CSS_HREF'          =>sprintf('templates/%s/css/style.css', $lang),
+        'LANG'              =>$lang,
+        $tag                =>'id="current"'
 ));
 
 $ft->parse('MENU_HEADER', '.menu_header');
