@@ -40,7 +40,7 @@ class CoreRss extends CoreBase {
      * @param $only_in_category
      * @param $order
      */
-    function rss_list($published = true, $comments_allow = null, $order = 'asc', $limit) {
+    function rss_list($published = true, $comments_allow = null, $order = 'asc', $limit=5) {
         
         if(!in_array($order, array('asc', 'desc'))) {
             $this->error_set('CoreRss::RssList:: incorrect value of $order - none of "asc" or "desc".');
@@ -65,12 +65,12 @@ class CoreRss extends CoreBase {
             AS 
                 comments 
             FROM 
-                %1\$s a, 
-                %2\$s b 
+                (%1\$s a, 
+                %2\$s b) 
             LEFT JOIN 
                 %3\$s c 
             ON 
-                a.id = c.id_news 
+                (a.id = c.id_news) 
             LEFT JOIN 
                 %4\$s d 
             ON 
@@ -116,7 +116,7 @@ class CoreRss extends CoreBase {
             $query .= sprintf("
                 LIMIT %d",
 
-                $start
+                $limit
             );
         }
 

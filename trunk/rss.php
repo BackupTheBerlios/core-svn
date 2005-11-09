@@ -22,30 +22,72 @@ header("Content-type: application/xml");
 
 require_once("administration/inc/config.php");
 
+require_once 'inc/common_lib.php';
+require_once pathjoin(ROOT, 'inc', 'main_lib.php');
+
 $required_classes = array(
-    'db_mysql', 
-    'fast_template', 
-    'view', 
-    'db_config', 
-    'xml_feed'
+    'db_mysql.php', 
+    'fast_template.php', 
+    'db_config.php',
+    'view.php',
+    'corebase.php',
+    'corerss.php', 
+    'rss.php'
 );
 
 while(list($c) = each($required_classes)) {
-    require_once PATH_TO_CLASSES . '/cls_' . $required_classes[$c] . CLASS_EXTENSION;
+    require_once pathjoin(PATH_TO_CLASSES, 'cls_' . $required_classes[$c]);
 }
-
-require_once("inc/common_lib.php");
-require_once("inc/main_lib.php");
 
 // mysql_server_version
 get_mysql_server_version();
 
-$xml =& new xml_feed();
+$CoreRss = new CoreRss();
 
-$lang = $xml->db_conf->get_config('language_set');
+$ft =& new FastTemplate('./templates/pl/main/tpl/');
 
-$ft  =& new FastTemplate('./templates/' . $lang . '/main/tpl/');
+$ft->define('xml_feed', 'xml_feed.tpl');
+$ft->define_dynamic('xml_row', 'xml_feed');
+$ft->define_dynamic("cat_row", "xml_feed");
 
-$xml->parse_news_feed();
+$ft->assign(array(
+    'MAINSITE_LINK' =>'http://',
+    'NEWS_FEED'     =>true
+));
+
+$CoreRss->rss_list(null);
+
+foreach($CoreRss->rss as $rss) {
+        
+    $id = $rss->get_id();
+    
+    /*
+    $ft->assign(array(
+           'DATE'          =>date($date_format, $rss->get_timestamp()),
+           'NEWS_TITLE'    =>$rss->get_title(),
+	       'NEWS_TEXT'     =>$text,
+           'NEWS_AUTHOR'   =>$rss->get_author(),
+	       'NEWS_ID'       =>$id,
+	       'NEWS_CATEGORY' =>'', //TODO
+	       'PERMA_LINK'    =>$CoreRewrite->permanent_news($id, $rewrite), 
+	       'PAGINATED'     =>!empty($pagination['page_string']) ? true : false, 
+	       'STRING'        =>$pagination['page_string']
+	    ));
+	  
+	*/
+      
+    $ft->assign(array(
+        'DATE'          =>date($date_format, $rss->get_timestamp()), 
+        'TITLE'         =>$rss->get_title(), 
+        'AUTHOR'        =>$rss->get_author(), 
+        'PERMALINK'     =>$permanent_link, 
+        'TEXT'          =>$text, 
+        'COMMENTS_LINK' =>$comments_link, 
+        'DISPLAY_XML'   =>true
+    ));
+    
+    $ft->parse('XML_ROW', ".xml_row");
+
+}
 
 ?>
