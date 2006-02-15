@@ -3,7 +3,7 @@
 
 class CoreDB {
     
-    private static $instance = null;
+    private static $_instance = null;
     
     private function __construct() {}
     
