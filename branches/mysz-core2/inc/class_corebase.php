@@ -1,4 +1,5 @@
 <?php
+// $Id$
 
 require_once 'core_exceptions.php';
 
@@ -25,4 +26,5 @@ abstract class CoreBase
   }
 }
 
+// vim: expandtab:shiftwidth=4:softtabstop=4:tabstop=4
 ?>
