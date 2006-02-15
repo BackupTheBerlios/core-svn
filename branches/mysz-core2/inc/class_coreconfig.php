@@ -122,7 +122,7 @@ class CoreConfig extends CoreBase {
       throw new CENotFound(sprintf('Config property "%s" not found.', $key));
     }
 
-    return $row['value'];
+    return unserialize($row['value']);
   }
 
   /**
@@ -138,7 +138,7 @@ class CoreConfig extends CoreBase {
   public function __set($key, $value)
   {
     try {
-      $this->stmt_set->execute(array('key'=>$key, 'value'=>$value));
+      $this->stmt_set->execute(array('key'=>$key, 'value'=>serialize($value)));
     } catch (PDOException $e) {
       throw new CEDBError($e->getMessage());
     }
