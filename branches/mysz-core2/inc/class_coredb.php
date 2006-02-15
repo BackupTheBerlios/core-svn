@@ -8,31 +8,30 @@ class CoreDB {
     private function __construct() {}
     
     public static function connect($type='mysql') {
-        if(!isset(self::$instance)) {
+        if(!isset(self::$_instance)) {
             $c = __CLASS__;
-            self::$instance = new $c;
-        }
-        
-        $conn = null;
-        
-        try {
-            switch($type) {
-                case 'mysql':
-                    $conn =& new PDO(sprintf(
-                        'mysql:host=%s;dbname=%s', DB_HOST, DB_NAME), 
-                        DB_USER, 
-                        DB_PASS
-                    );
-                break;
-            default:
-                throw new CESyntaxError('Invalid database type.');
+            self::$_instance = new $c;
+
+            try {
+                switch($type) {
+                    case 'mysql':
+                        $conn =& new PDO(sprintf(
+                            'mysql:host=%s;dbname=%s', DB_HOST, DB_NAME), 
+                            DB_USER, 
+                            DB_PASS
+                        );
+                    break;
+                default:
+                    throw new CESyntaxError('Invalid database type.');
+                }
+            } catch(PDOException $e) {
+                throw new CEDBError(sprintf('Connection failed: %s.', $e->getMessage()));
             }
-        } catch(PDOException $e) {
-            throw new CEDBError(sprintf('Connection failed: %s.', $e->getMessage()));
+        
+            self::$_instance->db = $conn;
         }
         
-        self::$instance->db = $conn;
-        return self::$instance->db;
+        return self::$_instance->db;
     }
     
     public function __clone() {
