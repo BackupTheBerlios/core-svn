@@ -32,11 +32,13 @@ class CENotFound extends CEBase {
 
 class CEMultiErrors extends CEBase {
     
-    public function __construct($message, $code = null) {
+    public function __construct($message, $code = null)
+    {
         parent::__construct($message, $code);
     }
     
-    public function __toString() {
+    public function __toString()
+    {
         return $this->toString(__CLASS__);
     }
 }
@@ -44,11 +46,13 @@ class CEMultiErrors extends CEBase {
 
 class CESyntaxError extends CEBase {
     
-    public function __construct($message, $code = null) {
+    public function __construct($message, $code = null)
+    {
         parent::__construct($message, $code);
     }
     
-    public function __toString() {
+    public function __toString()
+    {
         return $this->toString(__CLASS__);
     }
 }
@@ -56,11 +60,13 @@ class CESyntaxError extends CEBase {
 
 class CEDBError extends CEBase {
     
-    public function __construct($message, $code = null) {
+    public function __construct($message, $code = null)
+    {
         parent::__construct($message, $code);
     }
     
-    public function __toString() {
+    public function __toString()
+    {
         return $this->toString(__CLASS__);
     }
 }

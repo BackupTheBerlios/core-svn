@@ -7,7 +7,8 @@ class CoreDB {
     
     private function __construct() {}
     
-    public static function connect($type='mysql') {
+    public static function connect($type='mysql')
+    {
         if(!isset(self::$_instance)) {
             $c = __CLASS__;
             self::$_instance = new $c;
@@ -34,7 +35,8 @@ class CoreDB {
         return self::$_instance->db;
     }
     
-    public function __clone() {
+    public function __clone()
+    {
         throw new CESyntaxError('Clone not allowed.');
     }
 }
