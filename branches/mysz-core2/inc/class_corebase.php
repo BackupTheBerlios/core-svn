@@ -27,3 +27,4 @@ abstract class CoreBase {
 
 // vim: expandtab:shiftwidth=4:softtabstop=4:tabstop=4
 ?>
+

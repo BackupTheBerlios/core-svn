@@ -67,3 +67,4 @@ class CEDBError extends CEBase {
 
 // vim: expandtab:shiftwidth=4:softtabstop=4:tabstop=4
 ?>
+
