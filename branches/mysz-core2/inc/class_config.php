@@ -1,12 +1,5 @@
 <?php
-define('TBL_CONFIG', 'core_config');
-define('DB_HOST', 'localhost');
-define('DB_USER', 'mysz');
-define('DB_PASS', 'ttt');
-define('DB_NAME', 'core_new');
-require_once 'class_coredb.php';
-require_once 'class_corebase.php';
-require_once 'class_exceptions.php';
+
 // vim: expandtab shiftwidth=4 softtabstop=4 tabstop=4
 
 /**
