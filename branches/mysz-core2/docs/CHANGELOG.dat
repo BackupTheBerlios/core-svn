@@ -1,0 +1,23 @@
+$Id$
+
+CHANGELOG
+
+Core CMS - Content Management System
+Current Version: 0.4.4  2005/08/31
+
+==================================
+0.4.4 Changes: 01 August 2005 
+
+- Calendar bug fixed. If site based on Core CMS exist over the one year, news on
+  calendar was incorectly selected
+
+
+==================================
+0.4.3 Changes: 22 June 2005 
+
+- ENGLISH version. Yeah
+- Support for easy translation Core CMS to other languages
+- PREPARED STATEMENTS used if MySQL >= 4.1
+- Added calendar control switcher in admin panel - display on/off
+- incorrectly XML Feed(news|comments) parsing bug - fixed
+- incorrectly text replacing when tag [more] used - fixed
