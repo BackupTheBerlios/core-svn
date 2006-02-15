@@ -187,7 +187,6 @@ abstract class CoreBase {
      * $this->set_$property_name().
      *
      * If property type is an string, it runs the addslashes method on it.
-     * 
      *
      * @param string $key   name of class property
      * @param mixed  $value value of property
