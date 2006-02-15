@@ -60,6 +60,14 @@ abstract class CoreBase {
     protected $errors = array();
 
     /**
+     * Database connection handler
+     *
+     * @var object
+     * @access protected
+     */
+    protected $db;
+
+    /**
      * Properties set of this class
      *
      * Storing all class properties as an array. All properties must set be here
@@ -91,6 +99,18 @@ abstract class CoreBase {
      * @access protected
      */
     protected $set_external = array();
+
+    /**
+     * Constructor
+     *
+     * Initialize database connection.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->db = CoreDB::connect();
+    }
 
     /**
      * Check that any error occurrence
