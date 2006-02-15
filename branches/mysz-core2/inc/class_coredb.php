@@ -21,7 +21,7 @@ class CoreDB {
           throw new CESyntaxError('Invalid database type.');
       }
     } catch (PDOException $e) {
-      throw new CEDBError(sprintf('Connection failed: %s.', $e->message));
+      throw new CEDBError(sprintf('Connection failed: %s.', $e->getMessage()));
     }
         
     self::$instance->db = $conn;
