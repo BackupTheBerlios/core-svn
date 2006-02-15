@@ -47,7 +47,6 @@
  * @version    SVN: $Id$
  * @link       http://core-cms.com/
  */
-
 abstract class CoreBase {
     
     /**
@@ -59,6 +58,39 @@ abstract class CoreBase {
      * @access protected
      */
     protected $errors = array();
+
+    /**
+     * Properties set of this class
+     *
+     * Storing all class properties as an array. All properties must set be here
+     * in all of subclasses, as array of arrays:
+     * <samp>$properties = array(
+     *   'var1' => array(3, 'int'),
+     *   'var2' => array(array(1,2,3), 'array'),
+     *   'var3' => array('asd', 'string)
+     * );</samp>
+     * It's for type checking.
+     *
+     * @var array
+     * @access protected
+     */
+    protected $properties = array();
+
+    /**
+     * Set of properties who must have an external getter method
+     *
+     * @var array
+     * @access protected
+     */
+    protected $get_external = array();
+
+    /**
+     * Set of properties who must have an external setter method
+     *
+     * @var array
+     * @access protected
+     */
+    protected $set_external = array();
 
     /**
      * Check that any error occurrence
@@ -117,6 +149,77 @@ abstract class CoreBase {
     public function error_clear()
     {
         $this->errors = array();
+        return true;
+    }
+
+    /**
+     * Overloaded getter
+     *
+     * If property doesn't have external getter (if isn't in 
+     * $this->get_external array) returns that property (from
+     * $this->properties array). In other case, it execute private method
+     * $this->get_$property_name()
+     *
+     * @param string $key seeked class property
+     *
+     * @return mixed value of property
+     *
+     * @access public
+     */
+    public function __get($key)
+    {
+        if (!array_key_exists($key, $this->properties)) {
+            throw new CENotFound(sprintf('"%s" property doesn\'t exists.', $key));
+        }
+        if (array_key_exists($key, $this->get_external)) {
+            $fun = sprintf('get_%s', $key);
+            return $this->$fun();
+        }
+        return $this->properties[$key][0];
+    }
+
+    /**
+     * Overloaded setter
+     *
+     * If property doesn't have external setter (if isn't in 
+     * $this->set_external array) set value of this property (to
+     * $this->properties array). In other case, it execute private method
+     * $this->set_$property_name().
+     *
+     * If property type is an string, it runs the addslashes method on it.
+     * 
+     *
+     * @param string $key   name of class property
+     * @param mixed  $value value of property
+     *
+     * @return mixed value of property
+     * @throws CESyntaxError if type of $value is wrong
+     *
+     * @access public
+     */
+    public function __set($key, $value)
+    {
+        if (!array_key_exists($key, $this->properties)) {
+            throw new CENotFound(sprintf('"%s" property doesn\'t exists.', $key));
+        }
+        if (array_key_exists($key, $this->set_external)) {
+            $fun = sprintf('set_%s', $key);
+            return $this->$fun();
+        }
+
+        if (gettype($value) != $this->properties[$key][1]) {
+            throw new CESyntaxError(sprintf('"%s" property must be an "%s" type, is "%s".',
+                $key,
+                $this->properties[$key][1],
+                gettype($value)
+            ));
+        }
+        
+        if ($this->properties[$key][1] == 'string') {
+            $this->properties[$key][0] = addslashes($value);
+        } else {
+            $this->properties[$key][0] = $value;
+        }
         return true;
     }
 }
