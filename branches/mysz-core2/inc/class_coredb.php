@@ -5,7 +5,7 @@
 /**
  * Provide class for database connection as a singletone
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * This file is internal part of Core CMS (http://core-cms.com/) engine.
  *
@@ -26,7 +26,7 @@
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
- * @version    SVN: $Id:$
+ * @version    SVN: $Id$
  * @link       http://core-cms.com/
  */
 
@@ -39,7 +39,7 @@
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
- * @version    SVN: $Id:$
+ * @version    SVN: $Id$
  * @link       http://core-cms.com/
  */
 class CoreDB {
