@@ -178,7 +178,9 @@ abstract class CoreBase {
      * If property doesn't have external getter (if isn't in 
      * $this->get_external array) returns that property (from
      * $this->properties array). In other case, it execute private method
-     * $this->get_$property_name()
+     * $this->get_$property_name().
+     *
+     * Returned value, if it's type is 'string', is stripslashed() before.
      *
      * @param string $key seeked class property
      *
@@ -195,7 +197,11 @@ abstract class CoreBase {
             $fun = sprintf('get_%s', $key);
             return $this->$fun();
         }
-        return $this->properties[$key][0];
+        if ($this->properties[$key][1] == 'string') {
+            return stripslashes($this->properties[$key][0]);
+        } else {
+            return $this->properties[$key][0];
+        }
     }
 
     /**
