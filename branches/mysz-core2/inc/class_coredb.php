@@ -12,7 +12,7 @@ class CoreDB
 
   private function __construct() {}
 
-  public static function singleton($type='mysql')
+  public static function connect($type='mysql')
   {
     if (!isset(self::$instance))
     {
@@ -47,7 +47,7 @@ class CoreDB
   }
 }
 
-$db = CoreDB::singleton('mysql');
+$db = CoreDB::connect('mysql');
 //$db = $db->db;
 $a = $db->query('select * from core_config');
 echo $a->rowCount();
