@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 -- 
 -- Host: localhost
--- Czas wygenerowania: 15 Lut 2006, 22:54
+-- Czas wygenerowania: 16 Lut 2006, 11:24
 -- Wersja serwera: 5.0.18
 -- Wersja PHP: 5.1.2
 -- 
@@ -62,7 +62,7 @@ CREATE TABLE core_postcats (
   id_cat bigint(20) unsigned NOT NULL,
   id_parent bigint(20) unsigned NOT NULL,
   `name` varchar(255) NOT NULL,
-  name_latin varchar(255) NOT NULL,
+  permalink varchar(255) NOT NULL,
   description text NOT NULL,
   tpl_name varchar(255) NOT NULL,
   enabled tinyint(1) NOT NULL default '1'
@@ -111,6 +111,7 @@ CREATE TABLE core_posts (
   id_type bigint(20) unsigned NOT NULL,
   id_section bigint(20) unsigned NOT NULL,
   title varchar(255) NOT NULL,
+  permalink varchar(255) NOT NULL,
   caption text,
   body longtext,
   tpl_name varchar(255) default NULL,
