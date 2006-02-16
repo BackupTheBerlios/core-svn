@@ -138,7 +138,7 @@ abstract class CoreBase {
      */
     protected function error_set($msg, $code = 0)
     {
-        $errors[] = array($code, $msg);
+        $this->errors[] = array($code, $msg);
         return true;
     }
 
@@ -193,7 +193,7 @@ abstract class CoreBase {
         if (!array_key_exists($key, $this->properties)) {
             throw new CENotFound(sprintf('"%s" property doesn\'t exists.', $key));
         }
-        if (array_key_exists($key, $this->get_external)) {
+        if (in_array($key, $this->get_external)) {
             $fun = sprintf('get_%s', $key);
             return $this->$fun();
         }
@@ -224,15 +224,16 @@ abstract class CoreBase {
      */
     public function __set($key, $value)
     {
+        //printf('%s | %s<br />',  __CLASS__, __line__);
         if (!array_key_exists($key, $this->properties)) {
             throw new CENotFound(sprintf('"%s" property doesn\'t exists.', $key));
         }
-        if (array_key_exists($key, $this->set_external)) {
+        if (in_array($key, $this->set_external)) {
             $fun = sprintf('set_%s', $key);
-            return $this->$fun();
+            return $this->$fun($value);
         }
 
-        if (gettype($value) != $this->properties[$key][1]) {
+        if (!$this->is_type($key, $value)) {
             throw new CESyntaxError(sprintf('"%s" property must be an "%s" type, is "%s".',
                 $key,
                 $this->properties[$key][1],
@@ -246,6 +247,32 @@ abstract class CoreBase {
             $this->properties[$key][0] = $value;
         }
         return true;
+    }
+
+    /**
+     * Check for types compatibility of property
+     * 
+     * @param string $key   name of class property
+     * @param string $value value of property (reference)
+     * @param bool   $throw has throw an exception?
+     *
+     * @return bool if $throw == false
+     * @throws CESyntaxError instead of returning bool ($throw decides)
+     *
+     * @access protected
+     */
+    protected function is_type($key, &$value, $throw = true) {
+        if ($this->properties[$key][1] == gettype($value)) {
+            return true;
+        }
+        if ($throw) {
+            throw new CESyntaxError(sprintf('"%s" property must be an "%s" type, is "%s".',
+                $key,
+                $this->properties[$key][1],
+                gettype($value)
+            ));
+        }
+        return false;
     }
 }
 
