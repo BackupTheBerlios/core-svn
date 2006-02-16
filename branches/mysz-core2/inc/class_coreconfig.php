@@ -26,7 +26,7 @@
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
- * @version    SVN: $Id: class_corebase.php 1246 2006-02-15 12:37:04Z mysz $
+ * @version    SVN: $Id$
  * @link       http://core-cms.com/
  */
 
@@ -41,7 +41,7 @@
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
- * @version    SVN: $Id: class_corebase.php 1246 2006-02-15 12:37:04Z mysz $
+ * @version    SVN: $Id$
  * @link       http://core-cms.com/
  */
 class CoreConfig extends CoreBase {
