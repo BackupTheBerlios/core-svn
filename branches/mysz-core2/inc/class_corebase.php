@@ -73,11 +73,12 @@ abstract class CoreBase {
      * Storing all class properties as an array. All properties must set be here
      * in all of subclasses, as array of arrays:
      * <samp>$properties = array(
-     *   'var1' => array(3, 'int'),
-     *   'var2' => array(array(1,2,3), 'array'),
-     *   'var3' => array('asd', 'string)
+     *   'var1' => array(3,            'int'   ),
+     *   'var2' => array(array(1,2,3), 'array' ),
+     *   'var3' => array('asd',        'string')
      * );</samp>
      * It's for type checking.
+     * First item in array is value of var1 property, second - type of value.
      *
      * @var array
      * @access protected
