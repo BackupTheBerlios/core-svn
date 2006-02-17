@@ -105,8 +105,6 @@ abstract class CoreBase {
      * Constructor
      *
      * Initialize database connection.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -116,7 +114,7 @@ abstract class CoreBase {
     /**
      * Check that any error occurrence
      *
-     * @return bool
+     * @return boolean
      * 
      * @access public
      */
@@ -133,7 +131,7 @@ abstract class CoreBase {
      * @param string $message contains message
      * @param int    $code    contains error code
      * 
-     * @return bool
+     * @return boolean
      *
      * @access protected
      */
@@ -163,7 +161,7 @@ abstract class CoreBase {
     /**
      * Clears messages array
      *
-     * @return bool
+     * @return boolean
      *
      * @access public
      */
@@ -257,7 +255,7 @@ abstract class CoreBase {
      * @param string $value value of property (reference)
      * @param bool   $throw has throw an exception?
      *
-     * @return bool if $throw == false
+     * @return boolean if $throw == false
      * @throws CESyntaxError instead of returning bool ($throw decides)
      *
      * @access protected

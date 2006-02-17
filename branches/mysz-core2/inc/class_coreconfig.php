@@ -65,8 +65,6 @@ class CoreConfig extends CoreBase {
    *
    * Creates prepared statements with acquire bindings.
    *
-   * @return void
-   *
    * @access public
    */
   public function __construct()

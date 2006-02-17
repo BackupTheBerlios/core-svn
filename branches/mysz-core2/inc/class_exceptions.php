@@ -51,8 +51,6 @@ abstract class CEBase extends Exception {
      * @param string $message error message
      * @param int    $code    error code
      *
-     * @return void
-     *
      * @access public
      */
     public function __construct($message, $code) {
@@ -101,8 +99,6 @@ class CENotFound extends CEBase {
      * @param string $message error message
      * @param int    $code    error code
      *
-     * @return void
-     *
      * @access public
      */
     public function __construct($message, $code = null) {
@@ -143,8 +139,6 @@ class CESyntaxError extends CEBase {
      *
      * @param string $message error message
      * @param int    $code    error code
-     *
-     * @return void
      *
      * @access public
      */
@@ -188,8 +182,6 @@ class CEDBError extends CEBase {
      *
      * @param string $message error message
      * @param int    $code    error code
-     *
-     * @return void
      *
      * @access public
      */
