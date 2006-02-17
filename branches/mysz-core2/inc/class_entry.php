@@ -56,7 +56,7 @@ include 'config.php';
  * @version    SVN: $Id$
  * @link       http://core-cms.com/
  */
-class Entry extends CoreBase {
+abstract class Entry extends CoreBase {
 
     /**
      * Basic properties of all kinds of entries
@@ -68,22 +68,22 @@ class Entry extends CoreBase {
      */
     protected $properties   =  array(
         /* for core_posts table */
-        'id_post'           => array(null, 'integer'),
-        'id_parent'         => array(null, 'integer'),
-        'id_type'           => array(null, 'integer'),
-        'id_section'        => array(null, 'integer'),
-        'title'             => array(null, 'string'),
-        'caption'           => array(null, 'string'),
-        'body'              => array(null, 'string'),
-        'tpl_name'          => array(null, 'string'),
-        'author_name'       => array(null, 'string'),
-        'author_mail'       => array(null, 'string'),
-        'author_www'        => array(null, 'string'),
-        'date_add'          => array(null, 'string'),
-        'date_add_ts'       => array(null, 'integer'),
-        'date_mod'          => array(null, 'string'),
-        'date_mod_ts'       => array(null, 'integer'),
-        'status'            => array(null, 'string')
+        'id_post'           => array(null,    'integer'),
+        'id_parent'         => array(null,    'integer'),
+        'id_type'           => array(null,    'integer'),
+        'id_section'        => array(null,    'integer'),
+        'title'             => array('',      'string' ),
+        'caption'           => array(null,    'string' ),
+        'body'              => array(null,    'string' ),
+        'tpl_name'          => array('',      'string' ),
+        'author_name'       => array(null,    'string' ),
+        'author_mail'       => array(null,    'string' ),
+        'author_www'        => array(null,    'string' ),
+        'date_add'          => array('',      'string' ),
+        'date_add_ts'       => array(0,       'integer'),
+        'date_mod'          => array('',      'string' ),
+        'date_mod_ts'       => array(0,       'integer'),
+        'status'            => array('draft', 'string' )
     );
 
     /**
@@ -111,13 +111,36 @@ class Entry extends CoreBase {
     protected $status_array = array('published', 'draft', 'disabled');
 
     /**
+     * Constructor
+     *
+     * Fill object properties from data in param, or set actual date and
+     * time in proper properties.
+     *
+     * @param array $data
+     *
+     * @throws CESyntaxError if gettype($array) != array
+     *
+     * @access public
+     */
+    public function __construct($data = null) {
+        parent::__construct();
+
+        if (is_null($data)) {
+            $this->date_add = null;
+            $this->date_mod = null;
+        } else {
+            $this->set_from_array($data);
+        }
+    }
+
+    /**
      * Checking for correctness of entry title 
      *
      * Sets an error message if title is empty.
      *
      * @param string $data entry title
      * 
-     * @return bool
+     * @return boolean
      * @throws CESyntaxError if incorrect type (@see $this->is_type())
      *
      * @access protected
@@ -139,7 +162,7 @@ class Entry extends CoreBase {
      *
      * @param string $data entry caption
      * 
-     * @return bool
+     * @return boolean
      * @throws CESyntaxError if incorrect type (@see $this->is_type())
      *
      * @access protected
@@ -156,7 +179,7 @@ class Entry extends CoreBase {
      *
      * @param string $data entry body
      * 
-     * @return bool
+     * @return boolean
      * @throws CESyntaxError if incorrect type (@see $this->is_type())
      *
      * @access protected
@@ -173,7 +196,7 @@ class Entry extends CoreBase {
      *
      * @param string $data author's www address
      * 
-     * @return bool
+     * @return boolean
      * @throws CESyntaxError if incorrect type (@see $this->is_type())
      *
      * @access protected
@@ -194,7 +217,7 @@ class Entry extends CoreBase {
      *
      * @param string $data author's email address
      * 
-     * @return bool
+     * @return boolean
      * @throws CESyntaxError if incorrect type (@see $this->is_type())
      *
      * @access protected
@@ -244,12 +267,11 @@ class Entry extends CoreBase {
      * $ret['timestamp'] - unix timestamp
      * $ret['date']      - date in format: yymmddhhmmss
      *
-     * @param string  $data date
-     * @param integer $data unix timestamp
-     * @param null    $data
+     * @param string      $data date
+     * @param integer     $data unix timestamp
+     * @param null        $data
      * 
-     * @return bool   if format is incorrect
-     * @return array  date
+     * @return array|bool date and timestamp array, or false if incorrect format
      *
      * @access protected
      */
@@ -319,7 +341,7 @@ class Entry extends CoreBase {
      *
      * @param string  $data date
      * 
-     * @return bool
+     * @return boolean
      *
      * @access protected
      */
@@ -340,7 +362,7 @@ class Entry extends CoreBase {
      *
      * @param string  $data date
      * 
-     * @return bool
+     * @return boolean
      *
      * @access protected
      */
@@ -361,7 +383,7 @@ class Entry extends CoreBase {
      *
      * @param string  $data status
      * 
-     * @return bool
+     * @return boolean
      * @throws CESyntaxError if incorrect type (@see $this->is_type())
      *
      * @access protected
@@ -375,6 +397,48 @@ class Entry extends CoreBase {
         }
         $this->properties['status'][0]      = $data;
     }
+
+
+
+    /**
+     * Set properties of entry from an array.
+     *
+     * @param $data array array of properties
+     *
+     * @return boolean       false if some of property doesn't exists, otherwise true
+     * @throws CESyntaxError if gettype($array) != array
+     *
+     * @access protected
+     */
+    protected function set_from_array($data) {
+        if (!is_array($data)) {
+            throw new CESyntaxError(sprintf('Incorrect argument type: expected "array", received "%s".',
+                gettype($data)
+            ));
+
+        }
+
+        $ret = true;
+        foreach ($data as $property => $value) {
+            if (array_key_exists($property, $this->properties)) {
+                $this->$property = $value;
+            } else {
+                $this->error_set(sprintf('Property "%s" doesn\'t exists.', $property));
+                $ret = false;
+            }
+        }
+        return $ret;
+    }
+ 
+    /**
+     * Will save an entry in database
+     *
+     * @return boolean true - if all required fields are set, otherwise false
+     *
+     * @access public
+     * @abstract
+     */
+    abstract public function save();
 }
 
 ?>
