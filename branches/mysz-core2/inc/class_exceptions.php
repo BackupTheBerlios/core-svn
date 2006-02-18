@@ -203,5 +203,49 @@ class CEDBError extends CEBase {
     }
 }
 
-?>
 
+/**
+ * File error exception
+ *
+ * Exception class used to report, that is file access error.
+ *
+ * @category   Classes
+ * @package    Classess
+ * @author     Core Dev Team <core@core-cms.com>
+ * @copyright  2006 Core Dev Team
+ * @license    http://www.fsf.org/copyleft/gpl.html
+ * @license    http://www.gnu.org.pl/text/licencja-gnu.html
+ * @version    SVN: $Id$
+ * @link       http://core-cms.com/
+ */
+class CEFileError extends CEBase {
+    
+    /**
+     * Constructor
+     *
+     * @param string $message error message
+     * @param int    $code    error code
+     *
+     * @return void
+     *
+     * @access public
+     */
+    public function __construct($message, $code = null)
+    {
+        parent::__construct($message, $code);
+    }
+    
+    /**
+     * Overloaded function to create string describing the class.
+     *
+     * @return string 
+     *
+     * @access public
+     */
+    public function __toString()
+    {
+        return $this->toString(__CLASS__);
+    }
+}
+
+?>
