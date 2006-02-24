@@ -70,6 +70,14 @@ final class CoreInit
      * @access private
      */
     private $_initialized;
+
+    /**
+     * Enable/disable debug mode
+     *
+     * @var boolean
+     * @access private
+     */
+    private $_debug = false;
     
     
     /**
@@ -124,6 +132,53 @@ final class CoreInit
     }
 
     /**
+     * Set default options for php settings
+     *
+     * Set also error handler.
+     */
+    private function _init_phpsettings() {
+        ini_set('arg_separator.output',        '&amp;');
+        ini_set('arg_separator.input',         ';&');
+        ini_set('include_path',      implode(PATH_SEPARATOR, $this->_inc_path)); //NFY. how to put here these variable ?
+        ini_set('magic_quotes_gpc',            0);
+        ini_set('magic_quotes_runtime',        0);
+        ini_set('magic_quotes_sybase',         0);
+        ini_set('register_globals',            0);
+        ini_set('zend.ze1_compatibility_mode', 0);
+        ini_set('variables_order',             'EGPCS');
+
+        ini_set('sendmail_from',               'core@core-cms.com'); //from config. NFY
+        ini_set('session.hash_function',       1);
+
+        if ($this->_debug) {
+          ini_set('error_reporting',           E_STRICT | E_ALL);
+          ini_set('display_errors',            1);
+          ini_set('mysql.trace_mode',          1);
+          ini_set('error_log',                 null);
+          ini_set('log_errors',                0);
+        } else {
+          ini_set('error_reporting',           E_ERROR | E_STRICT | 
+                                               E_USER_ERROR | E_USER_WARNING |
+                                               E_USER_NOTICE);
+          ini_set('display_errors',            0);
+          ini_set('mysql.trace_mode',          0);
+          ini_set('error_log',                 'C:/www/htdocs/testy/php.log'); //from config. NFY
+          ini_set('log_errors',                1);
+
+          set_error_handler(array($this, 'error_handler'));
+          set_exception_handler(array($this, 'error_handler'));
+        }
+
+        ini_set('html_errors',                 1); //do przedyskutowania (jesli bedzie CoreErrorHandler to ta opcja jest niepotrzebna)
+        ini_set('error_prepend_string',        '<span style="color:#ff0000">'); //jesli zostaje html_errors
+        ini_set('error_append_string',         '</span>'); //jesli zostaje html_errors
+        ini_set('last_modified',               1); //do przedyskutowania
+        ini_set('memory_limit',                '2M'); //do przedyskutowania
+        ini_set('session.auto_start',          1); //do przedyskutowania
+    }
+
+
+    /**
      * Constructor
      *
      * Checks for valid parameters, and initializes proper options.
@@ -136,6 +191,10 @@ final class CoreInit
      */
     public function __construct($enc_from='iso-8859-2', $enc_to='utf-8', $comp_level=5)
     {
+        if (defined('DEBUG') && DEBUG) {
+            $this->_debug = true;
+        }
+
         $start_opts = array();
 
         if ($comp_level > 0) {
@@ -171,6 +230,85 @@ final class CoreInit
         if ($this->_initialized) {
             ob_flush();
         }
+    }
+
+    /**
+     * Error handler
+     *
+     * These method is set as error/exception handler for Core CMS.
+     * If something is wrong, and debug mode is off, error messages
+     * are logged into a file, and no error info is on main page.
+     * Additionally, if error type is E_STRICT, E_ERROR or E_USER_ERROR,
+     * an email is sending to admin (if his address is set).
+     *
+     * WARNING: Fatal errors aren't handled by this function - PHP
+     * doesn't allow this.
+     *
+     * @param mixed $errno   int if we are handling errors, object if exceptions
+     * @param mixed $errmsg  int for errors, otherwise null
+     * @param mixed $errfile string for errors, otherwise null
+     * @param mixed $errline int for errors, otherwise null
+     * @param mixed $vars    all available variables in error context
+     *
+     * @access public
+     */
+    public function error_handler($errno, $errmsg=null, $errfile=null,
+                                    $errline=null, $vars=null) {
+        if (is_object($errno)) {    // if we handle an exception
+            $errmsg  = sprintf('Uncaught exception (%s): %s',
+                get_class($errno),
+                $errno->getMessage()
+            );
+            $errfile = $errno->getFile();
+            $errline = $errno->getLine();
+            $errcode = $errno->getCode();
+        } else {                    // if we handle error
+            $errtype = array (
+                E_ERROR           => 'Error',
+                E_WARNING         => 'Warning',
+                E_PARSE           => 'Parsing Error',
+                E_NOTICE          => 'Notice',
+                E_CORE_ERROR      => 'Core Error',
+                E_CORE_WARNING    => 'Core Warning',
+                E_COMPILE_ERROR   => 'Compile Error',
+                E_COMPILE_WARNING => 'Compile Warning',
+                E_USER_ERROR      => 'User Error',
+                E_USER_WARNING    => 'User Warning',
+                E_USER_NOTICE     => 'User Notice',
+                E_STRICT          => 'Runtime Notice'
+            );
+            $errcode = $errtype[$errno];
+        }
+
+
+        // Error messages have links to reference manual. We won't them.
+        $errmsg = preg_replace('# \[<a href=.*?</a>\]#', '', $errmsg);
+  
+        $msg1 = array(
+            'Core CMS Error:',
+            'Type: ' . $errcode,
+            'File: ' . $errfile,
+            'Line: ' . $errline,
+            'Error message: ' . $errmsg
+        );
+        $msg1 = implode("\n\t", $msg1); //version for logs
+        $msg2 = implode("\n\t", array(
+            $msg1, '', '',
+            'All variables:', '',
+            print_r($vars, 1))
+        );                              //version for email
+
+        switch ($errno) {
+            case E_STRICT:
+            case E_ERROR:
+            case E_USER_ERROR:
+                if (defined('ADMIN_MAIL')) {
+                    @mail(ADMIN_MAIL, 'Core CMS Error: ' . $errcode, $msg2);
+                }
+                break;
+        }
+
+        error_log($msg1, 0); //we want to log into specified file (see: CoreInit::_init_phpsettings(())
     }
 }
 
