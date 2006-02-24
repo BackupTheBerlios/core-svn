@@ -156,6 +156,10 @@ final class CoreInit
           ini_set('mysql.trace_mode',          1);
           ini_set('error_log',                 null);
           ini_set('log_errors',                0);
+
+          ini_set('html_errors',               1);
+          ini_set('error_prepend_string',      '<span style="color: #ff0000">');
+          ini_set('error_append_string',       '</span>');
         } else {
           ini_set('error_reporting',           E_ERROR | E_STRICT | 
                                                E_USER_ERROR | E_USER_WARNING |
