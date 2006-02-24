@@ -165,15 +165,11 @@ final class CoreInit
           ini_set('error_log',                 'C:/www/htdocs/testy/php.log'); //from config. NFY
           ini_set('log_errors',                1);
 
-          set_error_handler(array($this, 'error_handler'));
+          set_error_handler(    array($this, 'error_handler'));
           set_exception_handler(array($this, 'error_handler'));
         }
 
-        ini_set('html_errors',                 1); //do przedyskutowania (jesli bedzie CoreErrorHandler to ta opcja jest niepotrzebna)
-        ini_set('error_prepend_string',        '<span style="color:#ff0000">'); //jesli zostaje html_errors
-        ini_set('error_append_string',         '</span>'); //jesli zostaje html_errors
-        ini_set('last_modified',               1); //do przedyskutowania
-        ini_set('memory_limit',                '2M'); //do przedyskutowania
+        ini_set('memory_limit',                '2M'); //do przedyskutowania. from config, NFY
         ini_set('session.auto_start',          1); //do przedyskutowania
     }
 
