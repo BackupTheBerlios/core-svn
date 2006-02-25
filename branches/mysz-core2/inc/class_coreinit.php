@@ -216,6 +216,8 @@ final class CoreInit
         } else {
             $this->_initialized = false;
         }
+
+        $this->_init_phpsettings();
     }
 
     /**
