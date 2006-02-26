@@ -10,7 +10,7 @@
   //  License, or (at your option) any later version.                       //
   //  --------------------------------------------------------------------  //
   //
-  // $Id: opt.api.php 33 2005-12-07 18:20:51Z zyxist $
+  // $Id$
 
 	define('OPT_MAX_NESTING_LEVEL', 32);
 	define('OPT_FORCE_REWRITE', 1);

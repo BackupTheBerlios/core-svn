@@ -10,7 +10,7 @@
   //  License, or (at your option) any later version.                       //
   //  --------------------------------------------------------------------  //
   //
-  // $Id: opt.instructions.php 33 2005-12-07 18:20:51Z zyxist $
+  // $Id$
 
 	class optInstruction
 	{

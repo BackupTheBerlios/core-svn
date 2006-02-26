@@ -26,7 +26,7 @@
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
- * @version    SVN: $Id: class_entry.php 1260 2006-02-17 02:08:01Z lark $
+ * @version    SVN: $Id$
  * @link       http://core-cms.com/
  */
 

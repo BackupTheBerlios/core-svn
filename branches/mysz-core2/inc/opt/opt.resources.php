@@ -10,7 +10,7 @@
   //  License, or (at your option) any later version.                       //
   //  --------------------------------------------------------------------  //
   //
-  // $Id: opt.resources.php 33 2005-12-07 18:20:51Z zyxist $
+  // $Id$
 
 	define('OPT_IO_FREE', 0);
 	define('OPT_IO_LOCKED', 1);

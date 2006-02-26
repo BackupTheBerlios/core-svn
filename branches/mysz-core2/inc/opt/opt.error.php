@@ -10,7 +10,7 @@
   //  License, or (at your option) any later version.                       //
   //  --------------------------------------------------------------------  //
   //
-  // $Id: opt.error.php 23 2005-10-09 13:03:09Z zyxist $
+  // $Id$
 
 	class optException extends Exception
 	{

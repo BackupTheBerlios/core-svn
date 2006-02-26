@@ -10,7 +10,7 @@
   //  License, or (at your option) any later version.                       //
   //  --------------------------------------------------------------------  //
   //
-  // $Id: opt.compiler.php 33 2005-12-07 18:20:51Z zyxist $
+  // $Id$
 
 	// parameter flags
 	define('OPT_PARAM_REQUIRED', 0);

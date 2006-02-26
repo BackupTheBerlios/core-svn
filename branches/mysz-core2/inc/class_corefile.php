@@ -26,7 +26,7 @@
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
- * @version    SVN: $Id: class_coreconfig.php 1259 2006-02-17 01:33:25Z mysz $
+ * @version    SVN: $Id$
  * @link       http://core-cms.com/
  */
 
@@ -39,7 +39,7 @@
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
- * @version    SVN: $Id: class_coreconfig.php 1259 2006-02-17 01:33:25Z mysz $
+ * @version    SVN: $Id$
  * @link       http://core-cms.com/
  */
 abstract class CoreFile extends CoreBase {
