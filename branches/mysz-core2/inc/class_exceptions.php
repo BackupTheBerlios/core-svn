@@ -13,7 +13,7 @@
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published
  * by the Free Software Foundation; version 2 only.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -42,7 +42,7 @@
  * @link       http://core-cms.com/
  */
 abstract class CEBase extends Exception {
-    
+
     /**
      * Contsructor
      *
@@ -56,21 +56,21 @@ abstract class CEBase extends Exception {
     public function __construct($message, $code) {
         parent::__construct($message, $code);
     }
-    
+
     /**
      * Creates string describing the class.
      *
      * @param string $class classname
      *
-     * @return string 
+     * @return string
      *
      * @access protected
      */
     protected function toString($class) {
         return sprintf(
-            '%s::%d:: %s', 
-            $class, 
-            $this->code, 
+            '%s::%d:: %s',
+            $class,
+            $this->code,
             $this->message
         );
     }
@@ -104,11 +104,11 @@ class CENotFound extends CEBase {
     public function __construct($message, $code = null) {
         parent::__construct($message, $code);
     }
-    
+
     /**
      * Overloaded function to create string describing the class.
      *
-     * @return string 
+     * @return string
      *
      * @access public
      */
@@ -133,7 +133,7 @@ class CENotFound extends CEBase {
  * @link       http://core-cms.com/
  */
 class CESyntaxError extends CEBase {
-    
+
     /**
      * Constructor
      *
@@ -146,11 +146,11 @@ class CESyntaxError extends CEBase {
     {
         parent::__construct($message, $code);
     }
-    
+
     /**
      * Overloaded function to create string describing the class.
      *
-     * @return string 
+     * @return string
      *
      * @access public
      */
@@ -176,7 +176,7 @@ class CESyntaxError extends CEBase {
  * @link       http://core-cms.com/
  */
 class CEDBError extends CEBase {
-    
+
     /**
      * Constructor
      *
@@ -189,11 +189,11 @@ class CEDBError extends CEBase {
     {
         parent::__construct($message, $code);
     }
-    
+
     /**
      * Overloaded function to create string describing the class.
      *
-     * @return string 
+     * @return string
      *
      * @access public
      */
@@ -219,7 +219,7 @@ class CEDBError extends CEBase {
  * @link       http://core-cms.com/
  */
 class CEFileError extends CEBase {
-    
+
     /**
      * Constructor
      *
@@ -234,11 +234,11 @@ class CEFileError extends CEBase {
     {
         parent::__construct($message, $code);
     }
-    
+
     /**
      * Overloaded function to create string describing the class.
      *
-     * @return string 
+     * @return string
      *
      * @access public
      */

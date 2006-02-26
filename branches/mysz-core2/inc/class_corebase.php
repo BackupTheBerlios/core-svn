@@ -14,7 +14,7 @@
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published
  * by the Free Software Foundation; version 2 only.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -48,7 +48,7 @@
  * @link       http://core-cms.com/
  */
 abstract class CoreBase {
-    
+
     /**
      * All error messages
      *
@@ -115,14 +115,14 @@ abstract class CoreBase {
      * Check that any error occurrence
      *
      * @return boolean
-     * 
+     *
      * @access public
      */
     public function is_error()
     {
         return (bool)count($this->errors);
     }
-    
+
     /**
      * Add an error message
      *
@@ -130,7 +130,7 @@ abstract class CoreBase {
      *
      * @param string $message contains message
      * @param int    $code    contains error code
-     * 
+     *
      * @return boolean
      *
      * @access protected
@@ -157,7 +157,7 @@ abstract class CoreBase {
         }
         return $this->errors;
     }
-    
+
     /**
      * Clears messages array
      *
@@ -174,7 +174,7 @@ abstract class CoreBase {
     /**
      * Overloaded getter
      *
-     * If property doesn't have external getter (if isn't in 
+     * If property doesn't have external getter (if isn't in
      * $this->get_external array) returns that property (from
      * $this->properties array). In other case, it execute private method
      * $this->get_$property_name().
@@ -206,7 +206,7 @@ abstract class CoreBase {
     /**
      * Overloaded setter
      *
-     * If property doesn't have external setter (if isn't in 
+     * If property doesn't have external setter (if isn't in
      * $this->set_external array) set value of this property (to
      * $this->properties array). In other case, it execute private method
      * $this->set_$property_name().
@@ -239,7 +239,7 @@ abstract class CoreBase {
                 gettype($value)
             ));
         }
-        
+
         if ($this->properties[$key][1] == 'string') {
             $this->properties[$key][0] = addslashes($value);
         } else {
@@ -250,7 +250,7 @@ abstract class CoreBase {
 
     /**
      * Check for types compatibility of property
-     * 
+     *
      * @param string $key   name of class property
      * @param string $value value of property (reference)
      * @param bool   $throw has throw an exception?

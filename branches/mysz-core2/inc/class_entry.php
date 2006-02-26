@@ -14,7 +14,7 @@
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published
  * by the Free Software Foundation; version 2 only.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -134,12 +134,12 @@ abstract class Entry extends CoreBase {
     }
 
     /**
-     * Checking for correctness of entry title 
+     * Checking for correctness of entry title
      *
      * Sets an error message if title is empty.
      *
      * @param string $data entry title
-     * 
+     *
      * @return boolean
      * @throws CESyntaxError if incorrect type (@see $this->is_type())
      *
@@ -161,7 +161,7 @@ abstract class Entry extends CoreBase {
      * Converts new line chars to html's new line tag in caption
      *
      * @param string $data entry caption
-     * 
+     *
      * @return boolean
      * @throws CESyntaxError if incorrect type (@see $this->is_type())
      *
@@ -178,7 +178,7 @@ abstract class Entry extends CoreBase {
      * Converts new line chars to html's new line tag in body
      *
      * @param string $data entry body
-     * 
+     *
      * @return boolean
      * @throws CESyntaxError if incorrect type (@see $this->is_type())
      *
@@ -195,7 +195,7 @@ abstract class Entry extends CoreBase {
      * Checks for starting 'http://|https://' and add it if neccessary
      *
      * @param string $data author's www address
-     * 
+     *
      * @return boolean
      * @throws CESyntaxError if incorrect type (@see $this->is_type())
      *
@@ -216,7 +216,7 @@ abstract class Entry extends CoreBase {
      * Checks for correctness of email address
      *
      * @param string $data author's email address
-     * 
+     *
      * @return boolean
      * @throws CESyntaxError if incorrect type (@see $this->is_type())
      *
@@ -270,7 +270,7 @@ abstract class Entry extends CoreBase {
      * @param string      $data date
      * @param integer     $data unix timestamp
      * @param null        $data
-     * 
+     *
      * @return array|bool date and timestamp array, or false if incorrect format
      *
      * @access protected
@@ -323,8 +323,8 @@ abstract class Entry extends CoreBase {
                             (int)$d_match[1],
                             -1
                     ),
-                    'date' =>   $d_match[1] .  $d_match[2] .  $d_match[3] .
-                                $d_match[4] .  $d_match[5] .  $d_match[6]
+                    'date' =>   $d_match[1] . $d_match[2] . $d_match[3] .
+                                $d_match[4] . $d_match[5] . $d_match[6]
                 );
             }
         } else {
@@ -340,7 +340,7 @@ abstract class Entry extends CoreBase {
      * Additional set auxilliary property date_add_ts (as unix timestamp)
      *
      * @param string  $data date
-     * 
+     *
      * @return boolean
      *
      * @access protected
@@ -361,7 +361,7 @@ abstract class Entry extends CoreBase {
      * Additional set auxilliary property date_mod_ts (as unix timestamp)
      *
      * @param string  $data date
-     * 
+     *
      * @return boolean
      *
      * @access protected
@@ -382,7 +382,7 @@ abstract class Entry extends CoreBase {
      * For proper values @see Entry::status_array
      *
      * @param string  $data status
-     * 
+     *
      * @return boolean
      * @throws CESyntaxError if incorrect type (@see $this->is_type())
      *
@@ -429,7 +429,7 @@ abstract class Entry extends CoreBase {
         }
         return $ret;
     }
- 
+
     /**
      * Will save an entry in database
      *

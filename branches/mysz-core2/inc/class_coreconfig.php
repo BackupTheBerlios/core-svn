@@ -14,7 +14,7 @@
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published
  * by the Free Software Foundation; version 2 only.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -48,14 +48,14 @@ class CoreConfig extends CoreBase {
 
   /**
    * Prepared query for getting properties.
-   * 
+   *
    * @var object
    */
   protected $stmt_get = null;
 
   /**
    * Prepared query for setting properties.
-   * 
+   *
    * @var object
    */
   protected $stmt_set = null;
@@ -90,7 +90,7 @@ class CoreConfig extends CoreBase {
         `value` = :value
       WHERE
       `key` = :key",
-      
+
       TBL_CONFIG
     );
     $this->stmt_set = $this->db->prepare($query);

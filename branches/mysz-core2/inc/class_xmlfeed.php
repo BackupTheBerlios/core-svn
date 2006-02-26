@@ -14,7 +14,7 @@
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published
  * by the Free Software Foundation; version 2 only.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -33,7 +33,7 @@
 class XmlFeed extends DOMDocument {
 
     /**
-     * elements - data content array 
+     * elements - data content array
      *
      * @var array
      * @access protected
@@ -44,7 +44,6 @@ class XmlFeed extends DOMDocument {
         'copyright' =>'Core Dev Team'
     );
 
-    
     /**
      * Constructor
      *
@@ -52,53 +51,51 @@ class XmlFeed extends DOMDocument {
      *
      * @access public
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct('1.0', 'utf-8');
-
     }
-    
-    
+
     /**
      * Set the basic data, like rss version, feed title, copyrights.
      *
      * @access public
      */
-    public function set_xml() {
-        
+    public function set_xml()
+    {
         // set rss element
         $this->root = $this->createElement('rss');
         $this->root = $this->appendChild($this->root);
-        
+
         $this->root->setAttribute('version', '2.0');
-        
+
         // create channel element
         $channel = $this->createElement('channel');
         $channel = $this->root->appendChild($channel);
-        
+
         foreach($this->elements as $name => $value) {
             $name = $this->createElement($name);
             $name = $channel->appendChild($name);
-            
+
             $name->appendChild($this->createTextNode($value));
         }
-        
+
         // cleans array, will be used later for content data
         unset($this->elements);
-        
+
         $this->parse_feed();
     }
-    
-    
+
     /**
      * Send headers and output feed to the browser
      *
      * @access public
      */
-    public function parse_feed() {
+    public function parse_feed()
+    {
         header('Content-Type: text/xml');
         echo $this->saveXML();
     }
- 
 }
 
 // returns feed

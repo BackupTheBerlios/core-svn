@@ -14,7 +14,7 @@
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published
  * by the Free Software Foundation; version 2 only.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -65,7 +65,7 @@ final class CoreInit
 {
     /**
      * Holds status of output buffering.
-     * 
+     *
      * @var boolean
      * @access private
      */
@@ -78,8 +78,8 @@ final class CoreInit
      * @access private
      */
     private $_debug = false;
-    
-    
+
+
     /**
      * Set compressing level.
      *
@@ -161,7 +161,7 @@ final class CoreInit
           ini_set('error_prepend_string',      '<span style="color: #ff0000">');
           ini_set('error_append_string',       '</span>');
         } else {
-          ini_set('error_reporting',           E_ERROR | E_STRICT | 
+          ini_set('error_reporting',           E_ERROR | E_STRICT |
                                                E_USER_ERROR | E_USER_WARNING |
                                                E_USER_NOTICE);
           ini_set('display_errors',            0);
@@ -183,8 +183,8 @@ final class CoreInit
      *
      * Checks for valid parameters, and initializes proper options.
      *
-     * @param string $enc_from character set of files (present)
-     * @param string $enc_to   output character set
+     * @param string  $enc_from   character set of files (present)
+     * @param string  $enc_to     output character set
      * @param integer $comp_level
      *
      * @access public
@@ -195,23 +195,23 @@ final class CoreInit
             $this->_debug = true;
         }
 
-        $start_opts = array();
+        $ob_start_opts = array();
 
         if ($comp_level > 0) {
             $comp = $this->_init_compress($comp_level);
             if ($comp !== false) {
-                $start_opts[] = $comp;
+                $ob_start_opts[] = $comp;
             }
         }
         if ($enc_from != $enc_to) {
             $enc = $this->_init_encoding($enc_from, $enc_to);
             if ($enc !== false) {
-                $start_opts[] = $enc;
+                $ob_start_opts[] = $enc;
             }
         }
 
-        if (count($start_opts) > 0) {
-            ob_start($start_opts);
+        if (count($ob_start_opts) > 0) {
+            ob_start($ob_start_opts);
             $this->_initialized = true;
         } else {
             $this->_initialized = false;
@@ -255,7 +255,8 @@ final class CoreInit
      * @access public
      */
     public function error_handler($errno, $errmsg=null, $errfile=null,
-                                    $errline=null, $vars=null) {
+                                  $errline=null, $vars=null)
+    {
         if (is_object($errno)) {    // if we handle an exception
             $errmsg  = sprintf('Uncaught exception (%s): %s',
                 get_class($errno),
@@ -285,7 +286,7 @@ final class CoreInit
 
         // Error messages have links to reference manual. We won't them.
         $errmsg = preg_replace('# \[<a href=.*?</a>\]#', '', $errmsg);
-  
+
         $msg1 = array(
             'Core CMS Error:',
             'Type: ' . $errcode,
@@ -294,12 +295,15 @@ final class CoreInit
             'Error message: ' . $errmsg
         );
         $msg1 = implode("\n\t", $msg1); //version for logs
-        $msg2 = implode("\n\t", array(
+        $msg2 = implode("\n\t", array(  //version for email
             $msg1, '', '',
             'All variables:', '',
             print_r($vars, 1))
-        );                              //version for email
+        );
 
+        // in_array() can be quicker, but switch() is more extendable - in
+        // future we may want to handle additional actions for any type of
+        // error
         switch ($errno) {
             case E_STRICT:
             case E_ERROR:
@@ -310,7 +314,8 @@ final class CoreInit
                 break;
         }
 
-        error_log($msg1, 0); //we want to log into specified file (see: CoreInit::_init_phpsettings(())
+        error_log($msg1, 0); // we want to log into specified file
+                             // (see: CoreInit::_init_phpsettings(())
     }
 }
 

@@ -14,7 +14,7 @@
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published
  * by the Free Software Foundation; version 2 only.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -43,7 +43,7 @@
  * @link       http://core-cms.com/
  */
 class CoreDB {
-    
+
     /**
      * Instance of PDO connection
      *
@@ -52,7 +52,7 @@ class CoreDB {
      * @static
      */
     private static $_instance = null;
-    
+
     /**
      * Constructor
      *
@@ -86,8 +86,8 @@ class CoreDB {
                 switch($type) {
                     case 'mysql':
                         $conn =& new PDO(sprintf(
-                            'mysql:host=%s;dbname=%s', DB_HOST, DB_NAME), 
-                            DB_USER, 
+                            'mysql:host=%s;dbname=%s', DB_HOST, DB_NAME),
+                            DB_USER,
                             DB_PASS
                         );
                     break;
@@ -97,10 +97,10 @@ class CoreDB {
             } catch(PDOException $e) {
                 throw new CEDBError(sprintf('Connection failed: %s.', $e->getMessage()));
             }
-        
+
             self::$_instance->db = $conn;
         }
-        
+
         return self::$_instance->db;
     }
 
