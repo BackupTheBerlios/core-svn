@@ -419,7 +419,8 @@ abstract class Entry extends CoreBase {
         }
 
         $ret = true;
-        foreach ($data as $property => $value) {
+        while (list($property, $value) = each($data)) {
+        //foreach ($data as $property => $value) {
             if (array_key_exists($property, $this->properties)) {
                 $this->$property = $value;
             } else {
