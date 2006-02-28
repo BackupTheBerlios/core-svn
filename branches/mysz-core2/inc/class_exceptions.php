@@ -25,8 +25,8 @@
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
- * @version    SVN: $Id$
- * @link       http://core-cms.com/
+ * @version    SVN: $Id: class_exceptions.php 1270 2006-02-26 11:13:34Z lark $
+ * @link       $HeadURL$
  */
 
 /**
@@ -38,8 +38,8 @@
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
- * @version    SVN: $Id$
- * @link       http://core-cms.com/
+ * @version    SVN: $Id: class_exceptions.php 1270 2006-02-26 11:13:34Z lark $
+ * @link       $HeadURL$
  */
 abstract class CEBase extends Exception {
 
@@ -88,7 +88,7 @@ abstract class CEBase extends Exception {
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
- * @version    SVN: $Id$
+ * @version    SVN: $Id: class_exceptions.php 1270 2006-02-26 11:13:34Z lark $
  * @link       http://core-cms.com/
  */
 class CENotFound extends CEBase {
@@ -129,7 +129,7 @@ class CENotFound extends CEBase {
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
- * @version    SVN: $Id$
+ * @version    SVN: $Id: class_exceptions.php 1270 2006-02-26 11:13:34Z lark $
  * @link       http://core-cms.com/
  */
 class CESyntaxError extends CEBase {
@@ -172,7 +172,7 @@ class CESyntaxError extends CEBase {
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
- * @version    SVN: $Id$
+ * @version    SVN: $Id: class_exceptions.php 1270 2006-02-26 11:13:34Z lark $
  * @link       http://core-cms.com/
  */
 class CEDBError extends CEBase {
@@ -215,7 +215,7 @@ class CEDBError extends CEBase {
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
- * @version    SVN: $Id$
+ * @version    SVN: $Id: class_exceptions.php 1270 2006-02-26 11:13:34Z lark $
  * @link       http://core-cms.com/
  */
 class CEFileError extends CEBase {

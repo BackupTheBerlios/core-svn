@@ -26,8 +26,8 @@
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
- * @version    SVN: $Id$
- * @link       http://core-cms.com/
+ * @version    SVN: $Id: class_xmlfeed.php 1273 2006-02-28 13:43:44Z lark $
+ * @link       $HeadURL$
  */
 
 
@@ -43,8 +43,8 @@
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
- * @version    SVN: $Id$
- * @link       http://core-cms.com/
+ * @version    SVN: $Id: class_xmlfeed.php 1273 2006-02-28 13:43:44Z lark $
+ * @link       $HeadURL$
  */
 class XmlFeed extends DOMDocument {
 

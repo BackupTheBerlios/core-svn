@@ -26,8 +26,8 @@
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
- * @version    SVN: $Id$
- * @link       http://core-cms.com/
+ * @version    SVN: $Id: class_entry.php 1272 2006-02-26 18:36:12Z mysz $
+ * @link       $HeadURL$
  */
 
 
@@ -53,8 +53,8 @@ include 'config.php';
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
- * @version    SVN: $Id$
- * @link       http://core-cms.com/
+ * @version    SVN: $Id: class_entry.php 1272 2006-02-26 18:36:12Z mysz $
+ * @link       $HeadURL$
  */
 abstract class Entry extends CoreBase {
 
