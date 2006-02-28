@@ -223,7 +223,6 @@ abstract class CoreBase {
      */
     public function __set($key, $value)
     {
-        //printf('%s | %s<br />',  __CLASS__, __line__);
         if (!array_key_exists($key, $this->properties)) {
             throw new CENotFound(sprintf('"%s" property doesn\'t exists.', $key));
         }
@@ -231,21 +230,69 @@ abstract class CoreBase {
             $fun = sprintf('set_%s', $key);
             return $this->$fun($value);
         }
-
-        if (!$this->is_type($key, $value)) {
-            throw new CESyntaxError(sprintf('"%s" property must be an "%s" type, is "%s".',
-                $key,
-                $this->properties[$key][1],
-                gettype($value)
-            ));
-        }
-
-        if ($this->properties[$key][1] == 'string') {
-            $this->properties[$key][0] = addslashes($value);
+        if (is_null($value)) {
+            $this->properties[$key][0] = null;
         } else {
-            $this->properties[$key][0] = $value;
+            if (!$this->is_type($key, $value)) {
+                throw new CESyntaxError(sprintf('"%s" property must be an "%s" type, is "%s".',
+                    $key,
+                    $this->properties[$key][1],
+                    gettype($value)
+                ));
+            }
+
+            if ($this->properties[$key][1] == 'string') {
+                $this->properties[$key][0] = addslashes($value);
+            } else {
+                $this->properties[$key][0] = $value;
+            }
         }
         return true;
+    }
+
+    /**
+     * Overloaded checking by isset() function.
+     *
+     * Checks for null value in $this->properties, and return true/false.
+     * Better way to checking that property is set:
+     * isset($entry->title)
+     *
+     * returns true if title is not null.
+     *
+     * @param string $key name of property
+     *
+     * @return boolean true for not null value
+     *
+     * @access public
+     */
+    public function __isset($key)
+    {
+        if (!array_key_exists($this->properties)) {
+            return false;
+        }
+        return ($this->properties[$key][0] == null);
+    }
+
+    /**
+     * Overloaded unsetting by unset() function.
+     *
+     * Set null value for unsetting property.
+     * Now can be simple way to unset (set null) values of properties, ex.:
+     * unset($entry->title)
+     *
+     * @param string $key name of property
+     *
+     * @throws CENotFound if property isn't in $this->properties
+     *
+     * @access public
+     */
+    public function __unset($key)
+    {
+        if (array_key_exists($this->properties)) {
+            $this->properties[$key][0] = null;
+        } else {
+            throw new CENotFound(sprintf());
+        }
     }
 
     /**
