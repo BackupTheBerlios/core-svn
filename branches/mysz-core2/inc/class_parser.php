@@ -26,7 +26,7 @@
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
- * @version    SVN: $Id: class_corebase.php 1275 2006-02-28 15:58:36Z mysz $
+ * @version    SVN: $Id$
  * @link       $HeadURL$
  */
 
@@ -45,7 +45,7 @@
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
- * @version    SVN: $Id: class_corebase.php 1275 2006-02-28 15:58:36Z mysz $
+ * @version    SVN: $Id$
  * @link       $HeadURL$
  */
 class Parser {
