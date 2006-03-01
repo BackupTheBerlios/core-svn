@@ -310,6 +310,7 @@ class Parser {
     {
         $this->parser = xml_parser_create();
 
+        xml_parser_set_option(  $this->parser, XML_OPTION_CASE_FOLDING, false);
         xml_set_object(                $this->parser, $this                  );
         xml_set_element_handler(       $this->parser, 'tag_open', 'tag_close');
         xml_set_character_data_handler($this->parser, 'cdata'                );
@@ -371,16 +372,12 @@ class Parser {
      */
     private function tag_open($parser, $tag, $attributes) 
     {
-        $tag = strtolower($tag);
-
         if (in_array($tag, $this->tags_allowed)) { //we want these tag in our output ?
             $htmlTag = '<' . $tag;
 
             if ($attributes) {
 
                 while(list($attr, $val) = each($attributes)) {
-                    $attr = strtolower($attr);
-
                     if (in_array($attr, $this->attributes[$tag]) ||
                         in_array($attr, $this->attributes_const)) {
 
@@ -389,7 +386,7 @@ class Parser {
                             $val = $this->$m($val);
                         }
 
-                        $htmlTag .= sprintf(' %s="%s"', strtolower($attr), $val);
+                        $htmlTag .= sprintf(' %s="%s"', $attr, $val);
                     }
 
                 }
@@ -464,8 +461,6 @@ class Parser {
      */
     private function tag_close($parser, $tag) 
     {
-        $tag = strtolower($tag);
-
         if (!in_array($tag, $this->tags_closed) && in_array($tag, $this->tags_allowed)) {
             $this->output[] = sprintf('</%s>', $tag);
         }
@@ -529,7 +524,7 @@ class Parser {
     }
 }
 
-/*
+
 $content = 'cze¶æ. co¶ tam co¶ tam, tralala.
 <head>tralala <title>tytul</title> <a href="as">link as</a> sad</head>
 <strong>mony</strong>
@@ -559,7 +554,6 @@ header('Content-type: text/html; charset=utf-8');
 
 $p = new Parser;
 echo $p->parse($content, 'text', false);
-*/
+
 
 ?>
-
