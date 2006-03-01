@@ -524,7 +524,7 @@ class Parser {
     }
 }
 
-
+/*
 $content = 'cze¶æ. co¶ tam co¶ tam, tralala.
 <head>tralala <title>tytul</title> <a href="as">link as</a> sad</head>
 <strong>mony</strong>
@@ -554,6 +554,6 @@ header('Content-type: text/html; charset=utf-8');
 
 $p = new Parser;
 echo $p->parse($content, 'text', false);
-
+*/
 
 ?>
