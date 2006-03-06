@@ -64,12 +64,35 @@
 final class CoreInit
 {
     /**
+     * Constant - default source encoding
+     */
+    const enc_from = 'iso-8859-2';
+
+    /**
+     * Constant - default target encoding
+     */
+    const enc_to   = 'UTF-8';
+
+    /**
+     * Constant - default compression level
+     */
+    const comp_level = 5;
+    
+    /**
      * Holds status of output buffering.
      *
      * @var boolean
      * @access private
      */
     private $_initialized;
+
+    /**
+     * Include path
+     *
+     * @var array
+     * @access private
+     */
+    private $_inc_path = array('.', 'inc');
 
     /**
      * Enable/disable debug mode
@@ -189,8 +212,18 @@ final class CoreInit
      *
      * @access public
      */
-    public function __construct($enc_from='iso-8859-2', $enc_to='utf-8', $comp_level=5)
+    public function __construct($enc_from=null, $enc_to=null, $comp_level=null)
     {
+        if (is_null($comp_level)) {
+            $comp_level = self::comp_level;
+        }
+        if (is_null($enc_from)) {
+            $enc_from = self::enc_from;
+        }
+        if (is_null($enc_to)) {
+            $enc_to = self::enc_to;
+        }
+
         if (defined('DEBUG') && DEBUG) {
             $this->_debug = true;
         }
@@ -203,7 +236,7 @@ final class CoreInit
                 $ob_start_opts[] = $comp;
             }
         }
-        if ($enc_from != $enc_to) {
+        if ($enc_from !== $enc_to) {
             $enc = $this->_init_encoding($enc_from, $enc_to);
             if ($enc !== false) {
                 $ob_start_opts[] = $enc;
@@ -320,4 +353,3 @@ final class CoreInit
 }
 
 ?>
-
