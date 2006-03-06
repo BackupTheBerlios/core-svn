@@ -89,7 +89,7 @@ abstract class CEBase extends Exception {
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
  * @version    SVN: $Id: class_exceptions.php 1270 2006-02-26 11:13:34Z lark $
- * @link       http://core-cms.com/
+ * @link       $HeadURL$
  */
 class CENotFound extends CEBase {
 
@@ -130,7 +130,7 @@ class CENotFound extends CEBase {
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
  * @version    SVN: $Id: class_exceptions.php 1270 2006-02-26 11:13:34Z lark $
- * @link       http://core-cms.com/
+ * @link       $HeadURL$
  */
 class CESyntaxError extends CEBase {
 
@@ -173,7 +173,7 @@ class CESyntaxError extends CEBase {
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
  * @version    SVN: $Id: class_exceptions.php 1270 2006-02-26 11:13:34Z lark $
- * @link       http://core-cms.com/
+ * @link       $HeadURL$
  */
 class CEDBError extends CEBase {
 
@@ -203,11 +203,11 @@ class CEDBError extends CEBase {
     }
 }
 
-
 /**
- * File error exception
+ * Incorrect type error
  *
- * Exception class used to report, that is file access error.
+ * Exception throwed when function/emthod received any param of other type
+ * then expected.
  *
  * @category   Classes
  * @package    Classess
@@ -216,9 +216,9 @@ class CEDBError extends CEBase {
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
  * @version    SVN: $Id: class_exceptions.php 1270 2006-02-26 11:13:34Z lark $
- * @link       http://core-cms.com/
+ * @link       $HeadURL$
  */
-class CEFileError extends CEBase {
+class CETypeError extends CEBase {
 
     /**
      * Constructor
@@ -247,5 +247,6 @@ class CEFileError extends CEBase {
         return $this->toString(__CLASS__);
     }
 }
+
 
 ?>
