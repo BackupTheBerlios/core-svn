@@ -5,6 +5,9 @@
 // $HeadURL$
   
 class Image {
+    const format = 'png';
+    const quality = 75;
+
     private $fname = null;
     private $body = null;
 
@@ -26,6 +29,10 @@ class Image {
 
     public function __construct($fname=null)
     {
+        // these constants aren't compiled in if php use not bundle gd, but
+        // some other. In this case, we cant put here these constant, only
+        // if imagefilter() function exists (it means: when php use bundled
+        // version of gd)
         if (function_exists('imagefilter')) {
             $this->filters = array(
                 'negate'        => IMG_FILTER_NEGATE,
@@ -52,154 +59,165 @@ class Image {
         }
     }
 
-    public function open($fname=null)
+    public function open($fname=null, $return=false)
     {
         if (is_null($fname) || !file_exists($fname)) {
             return false;
         }
+        $fname = Path::normalize($fname);
 
-        $this->body = imagecreatefromstring(file_get_contents($fname));
-        $this->width = imagesx($this->body);
-        $this->height = imagesy($this->body);
-        $this->truecolor = imageistruecolor($this->body);
+        $dst = imagecreatefromstring(file_get_contents($fname));
+        if ($return) {
+            return $dst;
+        } else {
+            $this->swapImage($dst);
+            $this->width        = imagesx($dst);
+            $this->height       = imagesy($dst);
+            $this->truecolor    = imageistruecolor($dst);
+        }
     }
 
-    public function scale($dst_width=null, $dst_height=null, $prop=true,
-                          $bgcolor='ffffff', $position='center')
+    public function scale_prop($dst_width, $dst_height, $bgcolor='ffffff',
+                               $pos='center')
     {
         $this->is_initialized();
-        
-        $dst_data = array();
-        list($dst_data['width'], $dst_data['height'], $dst) = $this->image($dst_width, $dst_height);
 
-        $color = $this->color($bgcolor);
-        imagefill($dst, 0, 0, $color);
-        
-        if ($prop) { //skalujemy proporcjonalnie
-            $div_width  = $this->width  / $dst_data['width'];
-            $div_height = $this->height / $dst_data['height'];
+        $dst = $this->newImage($dst_width, $dst_height);
 
-            $dst_data['div'] = max($div_width, $div_height);
-            unset($div_width, $div_height);
+        //background color
+        imagefill($dst, 0, 0, $this->color($bgcolor));
 
-            $dst_data['th_w'] = $this->width   / $dst_data['div'];
-            $dst_data['th_h'] = $this->height / $dst_data['div'];
+        // we must to now dzielna
+        $div_width  = $this->width  / $dst_width;
+        $div_height = $this->height / $dst_height;
 
-            if ($dst_data['th_w'] > $dst_data['th_h']) {
-                $dst_data['coord'] = round(($dst_data['th_w'] - $dst_data['th_h'])/2);
+        $div = max($div_width, $div_height);
+        unset($div_width, $div_height);
 
-                if (!imagecopyresampled($dst, $this->body,
-                    0, $dst_data['coord'],
-                    0, 0,
-                    $dst_data['th_w'], $dst_data['th_h'],
-                    $this->width, $this->height)) {
-                    return false;
-                }
-            } else {
-                $dst_data['coord'] = round(($dst_data['th_h'] - $dst_data['th_w'])/2);
+        // proportional size of shrinked picture
+        $th_w = $this->width  / $div;
+        $th_h = $this->height / $div;
 
-                if (!imagecopyresampled($dst, $this->body,
-                        $dst_data['coord'], 0,
-                        0, 0,
-                        $dst_data['th_w'], $dst_data['th_h'],
-                        $this->width, $this->height)) {
-                    return false;
-                }
-            }
-        } else { //po prostu rozciagamy na full
+        if ($th_w > $th_h) {
             if (!imagecopyresampled($dst, $this->body,
-                    0, 0, 0, 0,
-                    $dst_data['width'], $dst_data['height'], $this->width, $this->height)) {
+                0, round(($th_w - $th_h)/2),
+                0, 0,
+                $th_w, $th_h,
+                $this->width, $this->height)) {
+                return false;
+            }
+        } else {
+            if (!imagecopyresampled($dst, $this->body,
+                    round(($th_h - $th_w)/2), 0,
+                    0, 0,
+                    $th_w, $th_h,
+                    $this->width, $this->height)) {
                 return false;
             }
         }
 
-        imagedestroy($this->body);
-        $this->body = &$dst;
-
-        $this->width  = imagesx($this->body);
-        $this->height = imagesy($this->body);
-        return true;
+        return $this->swapImage($dst);
     }
 
-    public function scale_prop($dst_width=null, $dst_height=null,
-                               $bgcolor='ffffff', $position='center')
+    public function scale_nonprop($dst_width, $dst_height,
+                                  $bgcolor='ffffff', $pos='center')
     {
-        return $this->scale($dst_width, $dst_height, true, $bgcolor, $position);
+        $this->is_initialized();
+        
+        $dst = $this->newImage($dst_width, $dst_height);
+
+        imagefill($dst, 0, 0, $this->color($bgcolor));
+        
+        if (!imagecopyresampled($dst, $this->body,
+                0, 0, 0, 0,
+                $dst_width, $dst_height, $this->width, $this->height)) {
+            return false;
+        }
+
+        return $this->swapImage($dst);
     }
 
-    public function scale_nonprop($dst_width=null, $dst_height=null,
-                               $bgcolor='ffffff', $position='center')
+    public function scale($dst_width, $dst_height, $prop,
+                          $bgcolor='ffffff', $pos='center')
     {
-        return $this->scale($dst_width, $dst_height, false, $bgcolor, $position);
+        if ($prop) {
+            return $this->scale_prop($dst_width, $dst_height, $bgcolor, $pos);
+        } else {
+            return $this->scale_nonprop($dst_width, $dst_height, $bgcolor, $pos);
+        }
     }
 
-    public function crop($t, $r, $b, $l)
+    public function crop1($t, $l, $w, $h)
+    {
+        $this->is_initialized();
+
+        $dst = $this->newImage($w, $h);
+
+        $test = imagecopy($dst, $this->body, 0, 0, $l, $t, $w, $h);
+        if ($test) {
+            return $this->swapImage($dst);
+        } else {
+            return false;
+        }
+    }
+
+    public function crop2($t, $r, $b, $l)
     {
         $w = $r - $l;
         $h = $b - $t;
         
-        $dst_data = array();
-        list($dst_data['width'], $dst_data['height'], $dst) = $this->image($w, $h);
-        imagecopy($dst, $this->body, 0, 0, $l, $t, $w, $h);
-
-        imagedestroy($this->body);
-        $this->body = &$dst;
-
-        $this->width  = imagesx($this->body);
-        $this->height = imagesy($this->body);
-
-        return true;
+        return $this->crop1($t, $l, $w, $h);
     }
-    public function show($type='png', $send_headers=true)
+    public function show($format=null, $quality=75, $send_headers=true)
     {
         $this->is_initialized();
 
-        if (!array_key_exists($type, $this->formats)) {
-            throw new Exception(sprintf('Incorrect type: "%s".', $type));
-        }
-        if ('jpg' == $type) {
-            $type = 'jpeg';
-        }
+        $format = $this->checkFormat($format);
 
         if ($send_headers) {
-            header('Content-type: image/' . $type);
+            header('Content-type: image/' . $format);
         }
-        $this->formats[$type]($this->body);
+
+        if (is_null($quality)) {
+            $quality = self::quality;
+        }
+
+        $this->formats[$format]($this->body, '', $quality);
     }
 
-    public function saveToFile($fname, $overwrite = false)
+    public function saveToFile($fname, $format=null, $quality=75, $overwrite=false)
     {
         $this->is_initialized();
 
-        $ext = pathinfo($fname, PATHINFO_EXTENSION);
+        $pathinfo = pathinfo($fname);
 
-        $dst_dir = dirname($fname);
-        if ($dst_dir == '') {
-            $dst_dir = '.';
+        if (is_null($format)) {
+            $format = $pathinfo['extension'];
         }
-        $dst_dir = realpath($dst_dir);
-        $dst_dir .= substr($dst_dir, -1) == DIRECTORY_SEPARATOR ? '' : DIRECTORY_SEPARATOR;
-        $fname = $dst_dir . $fname;
+        $format = $this->checkFormat($format);
 
-        if (!is_writeable($dst_dir)) {
-            throw new Exception(sprintf('Cannot write to "%s" directory.', $dst_dir));
+        if ($pathinfo['dirname'] == '') {
+            $pathinfo['dirname'] = '.';
         }
-        if (file_exists($fname)) {
+        $pathinfo['dirname'] = realpath($pathinfo['dirname']);
+        $fullpath = $pathinfo['dirname'] . DIRECTORY_SEPARATOR . $pathinfo['basename'];
+
+        if (!is_writeable($pathinfo['dirname'])) {
+            throw new Exception(sprintf('Cannot write to "%s" directory.', $pathinfo['dirname']));
+        }
+        if (file_exists($fullpath)) {
             if ($overwrite) {
-                unlink($fname);
+                unlink($fullpath);
             } else {
-                throw new Exception(sprintf('File "%s" already exists.', $fname));
+                throw new Exception(sprintf('File "%s" already exists.', $fullpath));
             }
         }
 
-        ob_start();
-        $this->show($ext, false);
-        $image = ob_get_contents();
-        ob_clean();
+        if (is_null($quality)) {
+            $quality = self::quality;
+        }
 
-        file_put_contents($fname, $image);
-        return true;
+        $this->formats[$format]($this->body, $fname, $quality);
     }
 
     public function filter($filter) //, $arg1=null, $arg2=null, $arg3=null)
@@ -207,9 +225,12 @@ class Image {
         $this->is_initialized();
 
         if (!in_array($filter, $this->filters)) {
-            throw new Exception(sprintf('Invalid filter name: "%s".', $filter));
+            throw new Exception(sprintf('Invalid filter: "%s".', $filter));
         }
 
+        // Workaround: i don't know why, but imagefilter() throw some fatal
+        // error if there is all 4 possible arguments, so i must give him
+        // only that, which are required at call time (depends of filter)
         $argc = func_num_args();
         $argv = func_get_args();
         switch ($argc) {
@@ -229,42 +250,81 @@ class Image {
         $angle = (float)$angle;
         $color = $this->color($bgcolor);
         $this->body = imagerotate($this->body, $angle, $color, $ignore_transparent);
-        return true;
     }
 
     public function border($thick, $color='000000')
     {
         imagesetthickness($this->body, $thick);
 
-        if (is_array($color)) {
-            if (count($color) != 4) {
-                return false;
-            }
+        if ()
 
-            $col1 = $this->color($color[0]);
-            $col2 = $this->color($color[1]);
-            $col3 = $this->color($color[2]);
-            $col4 = $this->color($color[3]);
-        } else {
-            $col1 = $col2 = $col3 = $col4 = $this->color($color);
-        }
         $coords = $thick/2;
+        $this->line(array(0, $coords), array($this->width, $coords), $color[0]);
 
-        imageline($this->body, 0, $coords, $this->width, $coords, $col1);
-        imageline($this->body, $this->width-$coords, 0,
-                  $this->width-$coords, $this->height, $col2);
-        imageline($this->body, $this->width, $this->height-$coords,
-                  0, $this->height-$coords, $col3);
-        imageline($this->body, $coords, $this->height, $coords, 0, $col4);
+        /*
+        if (is_array($style1)) {
+            imagesetstyle($this->body, $style1);
+        }
+        imageline($this->body,
+                    0, $coords,
+                    $this->width, $coords,
+                    $col1);
+        *//*
+        if (is_array($style2)) {
+            imagesetstyle($this->body, $style2);
+        }
+        imageline($this->body,
+                    $this->width - $coords, 0,
+                    $this->width - $coords, $this->height,
+                    $col2);
+
+        if (is_array($style3)) {
+            imagesetstyle($this->body, $style3);
+        }
+        imageline($this->body,
+                    $this->width, $this->height - $coords,
+                    0, $this->height - $coords,
+                    $col3);
+
+        if (is_array($style4)) {
+            imagesetstyle($this->body, $style4);
+        }
+        imageline($this->body,
+                    $coords, $this->height,
+                    $coords, 0,
+                    $col4);
+        */
 
         return true;
+    }
+
+    public function addLayer($fname, $alpha=100)
+    {
+        $layer = $this->open($fname, true);
+        if (!$layer) {
+            return false;
+        }
+
+        return imagecopymerge($this->body, $layer, 0, 0, 0, 0, imagesx($layer),
+                imagesy($layer), $alpha);
+    }
+
+    public function toString($format=null, $quality = null)
+    {
+        $format = $this->checkFormat($format);
+
+        $fname = tempnam(getcwd(), 'core_');
+        $this->saveToFile($fname, $format, $quality, true);
+        $img = file_get_contents($fname);
+        unlink($fname);
+        return $img;
     }
 
     private function is_initialized($exc = true)
     {
         if (is_null($this->body)) {
             if ($exc) {
-                throw new Exception('Image not initialized - call Image::init() first.');
+                throw new Exception('Image no loaded - call Image::open() first.');
             } else {
                 return false;
             }
@@ -285,41 +345,78 @@ class Image {
         return $data;
     }
 
-    private function color($hex)
+    public function color($hex)
     {
         list($r, $g, $b) = $this->hex2rgb($hex);
 
         return imagecolorallocate($this->body, $r, $g, $b);
     }
 
-    private function image($dst_width=null, $dst_height=null)
+    private function newImage($width=null, $height=null)
     {
-        $dst = array();
         //docelowa szerokosc
-        if (!is_null($dst_width)) {
-            $dst[] = $dst_width;
-        } elseif ($this->dst_width > 0) {
-            $dst[] = $this->dst_width;
-        } else {
-            $dst[] = $this->width;
+        if (is_null($width)) {
+            $width = $this->width;
         }
         //docelowa wysokosc
-        if (!is_null($dst_height)) {
-            $dst[] = $dst_height;
-        } elseif ($this->dst_height > 0) {
-            $dst[] = $this->dst_height;
-        } else {
-            $dst[] = $this->height;
+        if (is_null($height)) {
+            $height = $this->height;
         }
 
         if ($this->truecolor) {
-            $dst[] = imagecreatetruecolor($dst[0], $dst[1]);
+            return imagecreatetruecolor($width, $height);
         } else {
-            $dst[] = imagecreate($dst[0], $dst_data[1]);
+            return imagecreate($width, $height);
         }
-
-        return $dst;
     }
+
+    private function checkFormat($format)
+    {
+        if (!array_key_exists($format, $this->formats)) {
+            $format = self::format;
+        }
+        if ('jpg' == $format) {
+            $format = 'jpeg';
+        }
+        return $format;
+    }
+
+    private function swapImage(&$dst)
+    {
+        if (is_resource($dst)) {
+            if (!is_null($this->body)) {
+                imagedestroy($this->body);
+            }
+            $this->body = &$dst;
+
+            $this->width  = imagesx($this->body);
+            $this->height = imagesy($this->body);
+            
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private function line($begin, $end, $color)
+    {
+        //Arrays::debug(func_get_args(), 1);
+        if (is_string($color)) {
+            //$color = $this->color($color);
+            imageline($this->body,
+                      $begin[0], $begin[1],
+                      $end[0], $end[1],
+                      $color);
+        } elseif (is_array($color)) {
+            imagesetstyle($this->body, $color);
+            imageline($this->body,
+                      $begin[0], $begin[1],
+                      $end[0], $end[1],
+                      IMG_COLOR_STYLED);
+        }
+        return true;
+    }
+
 
     // shortcuts filter functions
     public function filter_negate() {
@@ -362,30 +459,6 @@ class Image {
     public function filter_smooth($value) {
         return $this->filter('smooth', $value);
     }
-}
-
-function debug($v, $e=true)
-{
-    if (!defined('DEBUG') || !DEBUG) {return;}
-    echo '<pre>';
-    print_r($v);
-    echo '</pre>';
-    if ($e) exit;
-}
-
-//define('DEBUG', true);
-
-try {
-    $i = new Image('03.jpg');
-    //$i->show();
-
-    //$i->border(6, array('aabbcc', '112233', '445566', '778899'));
-    //$i->scale(100, 100, true, '334455');
-    $i->crop(0, 500, 400, 100);
-    $i->show();
-    //$i->saveToFile('asd.jpg', 1);
-} catch(Exception $e) {
-    echo $e->getMessage();
 }
 
 ?>
