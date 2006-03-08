@@ -20,10 +20,10 @@ function __autoload($classname)
     }
 }
 
-define('OPT_DIR', Path::join(ROOT, 'inc', 'opt'));
-
 require_once 'config.php';
-require_once Path::join(ROOT, 'inc', 'opt', 'opt.class.php');
+
+define('OPT_DIR', Path::join(ROOT, 'inc', 'opt'));
+//require_once Path::join(ROOT, 'inc', 'opt', 'opt.class.php');
 
 new CoreInit(null, null, 5);
 
