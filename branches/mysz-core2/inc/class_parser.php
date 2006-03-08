@@ -298,7 +298,7 @@ class Parser {
      * @var array
      * @access private
      */
-    private $attributes_ext      = array('href');
+    private $attributes_ext      = array('href', 'src');
 
     /**
      * Contructor.
@@ -514,12 +514,29 @@ class Parser {
      *
      * @access private
      */
-    private function checkattr_href($val) {
+    private function checkattr_href($val)
+    {
         if (substr($val, 0, 11) == 'javascript:') {
             return substr($val, 11);
         } else {
             return $val;
         }
+    }
+
+    /**
+     * Checker for value of 'src' attribute.
+     *
+     * Src cannot start with 'javascript' - XSS preventing.
+     *
+     * @param $val string value of src attribute
+     *
+     * @return string
+     *
+     * @access private
+     */
+    private function checkattr_src($val)
+    {
+        return $this->checkattr_href($val);
     }
 }
 
