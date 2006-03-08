@@ -17,7 +17,7 @@ abstract class Strings {
 
     public static function parse($s, $rettype='text', $wellformed=false)
     {
-        static $parser = new Parser;
+        $parser = new Parser;
         return $parser->parse($s, $rettype, $wellformed);
     }
             
