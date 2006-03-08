@@ -56,14 +56,13 @@ class Parser {
      *
      * @access public
      */
-    const   virttag             = 'corecms:virtual';
+    const   VIRTTAG             = 'corecms:virtual';
 
     /**
      * Define when replace new line chars on html < br/>
      *
      * Used by Parse::cdata()
      *
-     * @internal
      * @var    integer
      * @access private
      */
@@ -73,8 +72,8 @@ class Parser {
      * Hold tags which content is not nl2br'ed
      *
      * Doesn't affect child of these tags.
-     * 
-     * @var    array 
+     *
+     * @var    array
      * @access private
      */
     private $safe               = array('style', 'ul', 'ol', 'dl', 'html');
@@ -85,13 +84,13 @@ class Parser {
      * @var    array
      * @access private
      */
-    private $safe_tree          = array('head', 'script', 'pre');
+    private $safe_tree          = array('head', 'script', 'pre', 'style');
 
     /**
      * If true, strip <b>all</b> new line chars and with empty lines.
      *
      * If $newline is set to non blank, it is not stripped. If You want
-     * to strip <b>all</b> new line chars, with $newline, You must set 
+     * to strip <b>all</b> new line chars, with $newline, You must set
      * $newline to blank.
      *
      * @var    boolean
@@ -117,9 +116,9 @@ class Parser {
      * Array with tags which aren't stripped from input data
      *
      * @var    array
-     * @access private
+     * @access public
      */
-    private $tags_allowed       = array('a', 'abbr', 'acronym', 'address', 'b',
+    public $tags_allowed       = array('a', 'abbr', 'acronym', 'address', 'b',
                                   'blockquote', 'br', 'caption', 'cite', 'code',
                                   'dd', 'del', 'dfn', 'div', 'dl', 'dt', 'em',
                                   'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'i',
@@ -171,7 +170,7 @@ class Parser {
      * Elements which have not closing tag
      * @var array
      */
-    private $tags_closed        = array('meta', 'img', 'link', 'br', 'col',
+    public $tags_closed         = array('meta', 'img', 'link', 'br', 'col',
                                   'hr', 'base', 'area', 'input');
 
     /**
@@ -180,7 +179,7 @@ class Parser {
      * @var array
      * @access private
      */
-    private $attributes_const   = array('title', 'name', 'id', 'lang', 'class',
+    public $attributes_const    = array('title', 'name', 'id', 'lang', 'class',
                                   'style');
 
     /**
@@ -193,7 +192,7 @@ class Parser {
      * @var array
      * @access private
      */
-    private $attributes         = array(
+    public $attributes          = array(
       'a'           => array('href', 'type', 'target'),
       'abbr'        => array(),
       'acronym'     => array(),
@@ -299,8 +298,8 @@ class Parser {
      * @var array
      * @access private
      */
-    private $attributes_ext     = array('href');
-  
+    private $attributes_ext      = array('href');
+
     /**
      * Contructor.
      *
@@ -341,7 +340,7 @@ class Parser {
     {
         // if input data isn't well-formed XML, we must put it into virtual tags
         if (!$wellformed) {
-            $data = sprintf('<%s>%s</%s>', self::virttag, $data, self::virttag);
+            $data = sprintf('<%s>%s</%s>', self::VIRTTAG, $data, self::VIRTTAG);
         }
 
         xml_parse($this->parser, $data);
@@ -370,7 +369,7 @@ class Parser {
      *
      * @return bool true
      */
-    private function tag_open($parser, $tag, $attributes) 
+    private function tag_open($parser, $tag, $attributes)
     {
         if (in_array($tag, $this->tags_allowed)) { //we want these tag in our output ?
             $htmlTag = '<' . $tag;
@@ -418,12 +417,12 @@ class Parser {
      * If Parser::strip is set to FALSE, or character data
      * isn't empty, append parsed text into Parser::output.
      *
-     * @param object $parser 
+     * @param object $parser
      * @param string $cdata founded character data
      *
      * @return bool true
      */
-    private function cdata($parser, $cdata) 
+    private function cdata($parser, $cdata)
     {
         $last = end($this->tag_queue);
 
@@ -459,7 +458,7 @@ class Parser {
      * @param string $tag name of closed tag
      * @return bool true
      */
-    private function tag_close($parser, $tag) 
+    private function tag_close($parser, $tag)
     {
         if (!in_array($tag, $this->tags_closed) && in_array($tag, $this->tags_allowed)) {
             $this->output[] = sprintf('</%s>', $tag);
@@ -480,7 +479,7 @@ class Parser {
      * @param object $parser
      * @param string $data
      * @return bool true
-     */    
+     */
     private function h_default($parser, $cdata)
     {
         if (!$this->strip || trim($cdata) != '') {
@@ -492,7 +491,7 @@ class Parser {
 
     /**
      * Creates snapshot of current tag queue. Used only for DEBUG purposes.
-     * 
+     *
      * @access private
      * @return bool true
      */
@@ -523,37 +522,5 @@ class Parser {
         }
     }
 }
-
-/*
-$content = 'cze¶æ. co¶ tam co¶ tam, tralala.
-<head>tralala <title>tytul</title> <a href="as">link as</a> sad</head>
-<strong>mony</strong>
-<em style="font-size: small">emfazja</em>
-<a href="#" onclick="alert(\'test\')">link</a>
-
-<a href="javascript:alert(\'tralala\')">tralala</a>
-
-<ul>
-  <li>test <a href="asd">tralal</a></li>
-
-  <li>umcyk <ol>
-    <li>tralala</li>
-    <li><a href="okulala">bum maryna</a></li>
-
-    </ol></li>
-</ul>
-
-<pre>trlala
-
-assasa
-as
-as
-a</pre>';
-$content = iconv('iso-8859-2', 'utf-8', $content);
-header('Content-type: text/html; charset=utf-8');
-
-$p = new Parser;
-echo $p->parse($content, 'text', false);
-*/
 
 ?>
