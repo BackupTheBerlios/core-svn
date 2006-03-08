@@ -1,5 +1,5 @@
 <?php
- 
+
 // vim: expandtab shiftwidth=4 softtabstop=4 tabstop=4
 // $Id$
 // $HeadURL$
@@ -25,11 +25,11 @@ abstract class Path
     public static function split($path)
     {
         $path = Path::normalize($path);
-    
+
         $ret = array();
         // we cut drive letter if os == windows and put it as first element
         if ('\\' == DIRECTORY_SEPARATOR &&  //windows
-                preg_match('#^([a-zA-Z]:\\\\)#', $path, $match)) {
+                preg_match('#^([a-z]:\\\\)#i', $path, $match)) {
             $ret[] = substr($match[1], 0, 2);
             $path = str_replace($match[1], '', $path);
         }
@@ -39,40 +39,31 @@ abstract class Path
 
     public static function normalize($path)
     {
-        $path = preg_replace(array('#\\\\#', '#/#'), array('/', DIRECTORY_SEPARATOR), $path);
+        $path = preg_replace(
+            array('#\\\\#', '#/#'              ),
+            array('/',      DIRECTORY_SEPARATOR),
+            $path
+        );
         if ('\\' == DIRECTORY_SEPARATOR) { //windows
             $path = strtolower($path);
         }
         return $path;
     }
 
-    public static function isdir($path)
-    {
-        return is_dir($path);
-    }
-
-    public static function isfile($path)
-    {
-        return is_file($path);
-    }
-
-    public static function islink($path)
-    {
-        return is_link($path);
-    }
-
     public static function real($path)
     {
         $path = Path::split($path);
         $newpath = array();
-        foreach ($path as $k=>$v) {
-            if ('.' == $v) {
-                continue;
-            } elseif ('..' == $v) {
-                array_pop($newpath);
-                continue;
+        while (list(, $v) = each($path)) {
+            switch ($v) {
+                case '.' :
+                    continue;
+                case '..':
+                    array_pop($newpath);
+                    continue;
+                default:
+                    $newpath[] = $v;
             }
-            $newpath[] = $v;
         }
         return Path::join($newpath);
     }
