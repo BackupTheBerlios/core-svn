@@ -83,7 +83,7 @@ abstract class CoreBase {
      * @var array
      * @access protected
      */
-    protected $properties = array();
+    abstract protected $properties = array();
 
     /**
      * Set of properties who must have an external getter method
@@ -91,7 +91,7 @@ abstract class CoreBase {
      * @var array
      * @access protected
      */
-    protected $get_external = array();
+    abstract protected $get_external = array();
 
     /**
      * Set of properties who must have an external setter method
@@ -99,7 +99,7 @@ abstract class CoreBase {
      * @var array
      * @access protected
      */
-    protected $set_external = array();
+    abstract protected $set_external = array();
 
     /**
      * Constructor
@@ -270,7 +270,7 @@ abstract class CoreBase {
         if (!array_key_exists($this->properties)) {
             return false;
         }
-        return ($this->properties[$key][0] == null);
+        return is_null($this->properties[$key][0]);
     }
 
     /**
@@ -291,7 +291,7 @@ abstract class CoreBase {
         if (array_key_exists($this->properties)) {
             $this->properties[$key][0] = null;
         } else {
-            throw new CENotFound(sprintf());
+            throw new CENotFound(sprintf('"%s" property doesn\'t exists.', $key));
         }
     }
 
@@ -307,8 +307,9 @@ abstract class CoreBase {
      *
      * @access protected
      */
-    protected function is_type($key, &$value, $throw = true) {
-        if ($this->properties[$key][1] == gettype($value)) {
+    protected function is_type($key, &$value, $throw=true)
+    {
+        if (gettype($value) == $this->properties[$key][1]) {
             return true;
         }
         if ($throw) {
@@ -323,4 +324,3 @@ abstract class CoreBase {
 }
 
 ?>
-
