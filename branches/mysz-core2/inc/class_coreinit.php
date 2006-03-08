@@ -66,18 +66,18 @@ final class CoreInit
     /**
      * Constant - default source encoding
      */
-    const enc_from = 'iso-8859-2';
+    const ENC_FROM = 'iso-8859-2';
 
     /**
      * Constant - default target encoding
      */
-    const enc_to   = 'UTF-8';
+    const ENC_TO   = 'UTF-8';
 
     /**
      * Constant - default compression level
      */
-    const comp_level = 5;
-    
+    const COMP_LEVEL = 5;
+
     /**
      * Holds status of output buffering.
      *
@@ -215,13 +215,13 @@ final class CoreInit
     public function __construct($enc_from=null, $enc_to=null, $comp_level=null)
     {
         if (is_null($comp_level)) {
-            $comp_level = self::comp_level;
+            $comp_level = self::COMP_LEVEL;
         }
         if (is_null($enc_from)) {
-            $enc_from = self::enc_from;
+            $enc_from = self::ENC_FROM;
         }
         if (is_null($enc_to)) {
-            $enc_to = self::enc_to;
+            $enc_to = self::ENC_TO;
         }
 
         if (defined('DEBUG') && DEBUG) {
