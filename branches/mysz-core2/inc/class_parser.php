@@ -516,11 +516,9 @@ class Parser {
      */
     private function checkattr_href($val)
     {
-        if (substr($val, 0, 11) == 'javascript:') {
-            return substr($val, 11);
-        } else {
-            return $val;
-        }
+        $pattern = '#^\s*j\s*a\s*v\s*a\s*s\s*c\s*r\s*i\s*p\s*t\s*:#im';
+        $val = preg_replace($pattern, '', $val);
+        return $val;
     }
 
     /**
