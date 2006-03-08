@@ -30,18 +30,6 @@
  * @link       $HeadURL$
  */
 
-
-/**
- * Just workarounds
- *
- * Will be deleted when class be finished.
- */
-function str_nl2br($s) {return nl2br($s);}
-function check_email($email) {
-    return eregi("^([a-z0-9_]|\\-|\\.)+@(((([a-z0-9_]|\\-)+\\.)+[a-z]{2,4})|localhost)$", $email);
-}
-include 'config.php';
-
 /**
  * Provides API for playing with entries.
  *
@@ -83,6 +71,7 @@ abstract class Entry extends CoreBase {
         'date_add_ts'       => array(0,       'integer'),
         'date_mod'          => array('',      'string' ),
         'date_mod_ts'       => array(0,       'integer'),
+        'meta'              => array(null,    'array'  ),
         'status'            => array('draft', 'string' )
     );
 
@@ -122,7 +111,8 @@ abstract class Entry extends CoreBase {
      *
      * @access public
      */
-    public function __construct($data = null) {
+    public function __construct($data=null)
+    {
         parent::__construct();
 
         if (is_null($data)) {
@@ -145,11 +135,12 @@ abstract class Entry extends CoreBase {
      *
      * @access protected
      */
-    protected function set_title($data) {
+    protected function set_title($data)
+    {
         $this->is_type('title', $data);
 
         $data = trim($data);
-        if ($data == '') {
+        if ('' == $data) {
             $this->error_set('Title cannot be empty.');
             return false;
         }
@@ -167,10 +158,11 @@ abstract class Entry extends CoreBase {
      *
      * @access protected
      */
-    protected function set_caption($data) {
+    protected function set_caption($data)
+    {
         $this->is_type('caption', $data);
 
-        $this->properties['caption'][0] = str_nl2br($data);
+        $this->properties['caption'][0] = Strings::parse($data);
         return true;
     }
 
@@ -184,10 +176,11 @@ abstract class Entry extends CoreBase {
      *
      * @access protected
      */
-    protected function set_body($data) {
+    protected function set_body($data)
+    {
         $this->is_type('body', $data);
 
-        $this->properties['body'][0] = str_nl2br($data);
+        $this->properties['body'][0] = Strings::parse($data);
         return true;
     }
 
@@ -201,11 +194,12 @@ abstract class Entry extends CoreBase {
      *
      * @access protected
      */
-    protected function set_author_www($data) {
+    protected function set_author_www($data)
+    {
         $this->is_type('author_www', $data);
         $data = trim($data);
 
-        if ($data != '' && !preg_match('#^(http|https)://#i', $data)) {
+        if ('' != $data && !preg_match('#^(http|https)://#i', $data)) {
             $data = 'http://' . $data;
         }
         $this->properties['author_www'][0] = $data;
@@ -222,11 +216,12 @@ abstract class Entry extends CoreBase {
      *
      * @access protected
      */
-    protected function set_author_mail($data) {
+    protected function set_author_mail($data)
+    {
         $this->is_type('author_mail', $data);
         $data = trim($data);
 
-        if ($data != '' && !check_email($data)) {
+        if ('' != $data && !Strings::email($data)) {
             $this->error_set('Incorrect email address.');
             return false;
         } else {
@@ -242,7 +237,8 @@ abstract class Entry extends CoreBase {
      *
      * @access protected
      */
-    protected function set_date_add_ts() {
+    protected function set_date_add_ts()
+    {
         throw new CESyntaxError('Incorrect property "date_add_ts".');
     }
 
@@ -253,7 +249,8 @@ abstract class Entry extends CoreBase {
      *
      * @access protected
      */
-    protected function set_date_mod_ts() {
+    protected function set_date_mod_ts()
+    {
         throw new CESyntaxError('Incorrect property "date_mod_ts".');
     }
 
@@ -275,7 +272,8 @@ abstract class Entry extends CoreBase {
      *
      * @access protected
      */
-    protected function check_date($date) {
+    protected function check_date($date)
+    {
         if(is_null($date)) { //it means: now
             $ts = time(); //for sure date == timestamp
             $ret = array(
@@ -345,7 +343,8 @@ abstract class Entry extends CoreBase {
      *
      * @access protected
      */
-    protected function set_date_add($data) {
+    protected function set_date_add($data)
+    {
         $date = $this->check_date($data);
         if (!$date) {
             $this->error_set(sprintf('Incorrect date format "%s".', $data));
@@ -366,7 +365,8 @@ abstract class Entry extends CoreBase {
      *
      * @access protected
      */
-    protected function set_date_mod($data) {
+    protected function set_date_mod($data)
+    {
         $date = $this->check_date($data);
         if (!$date) {
             $this->error_set(sprintf('Incorrect date "%s".', $data));
@@ -388,7 +388,8 @@ abstract class Entry extends CoreBase {
      *
      * @access protected
      */
-    protected function set_status($data) {
+    protected function set_status($data)
+    {
         $this->is_type('status', $data);
 
         if (!in_array($data, $this->status_array)) {
@@ -410,7 +411,8 @@ abstract class Entry extends CoreBase {
      *
      * @access protected
      */
-    protected function set_from_array($data) {
+    protected function set_from_array($data)
+    {
         if (!is_array($data)) {
             throw new CESyntaxError(sprintf('Incorrect argument type: expected "array", received "%s".',
                 gettype($data)
@@ -420,7 +422,6 @@ abstract class Entry extends CoreBase {
 
         $ret = true;
         while (list($property, $value) = each($data)) {
-        //foreach ($data as $property => $value) {
             if (array_key_exists($property, $this->properties)) {
                 $this->$property = $value;
             } else {
