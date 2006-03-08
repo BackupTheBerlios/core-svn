@@ -53,7 +53,8 @@ abstract class CEBase extends Exception {
      *
      * @access public
      */
-    public function __construct($message, $code) {
+    public function __construct($message, $code)
+    {
         parent::__construct($message, $code);
     }
 
@@ -101,7 +102,8 @@ class CENotFound extends CEBase {
      *
      * @access public
      */
-    public function __construct($message, $code = null) {
+    public function __construct($message, $code = null)
+    {
         parent::__construct($message, $code);
     }
 
@@ -112,7 +114,8 @@ class CENotFound extends CEBase {
      *
      * @access public
      */
-    public function __toString() {
+    public function __toString()
+    {
         return $this->toString(__CLASS__);
     }
 }
@@ -248,5 +251,46 @@ class CETypeError extends CEBase {
     }
 }
 
+/**
+ * Filesystem error
+ *
+ * @category   Classes
+ * @package    Classess
+ * @author     Core Dev Team <core@core-cms.com>
+ * @copyright  2006 Core Dev Team
+ * @license    http://www.fsf.org/copyleft/gpl.html
+ * @license    http://www.gnu.org.pl/text/licencja-gnu.html
+ * @version    SVN: $Id: class_exceptions.php 1270 2006-02-26 11:13:34Z lark $
+ * @link       $HeadURL$
+ */
+class CEFilesystemError extends CEBase {
+
+    /**
+     * Constructor
+     *
+     * @param string $message error message
+     * @param int    $code    error code
+     *
+     * @return void
+     *
+     * @access public
+     */
+    public function __construct($message, $code = null)
+    {
+        parent::__construct($message, $code);
+    }
+
+    /**
+     * Overloaded function to create string describing the class.
+     *
+     * @return string
+     *
+     * @access public
+     */
+    public function __toString()
+    {
+        return $this->toString(__CLASS__);
+    }
+}
 
 ?>
