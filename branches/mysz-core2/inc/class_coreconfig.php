@@ -46,102 +46,127 @@
  */
 class CoreConfig extends CoreBase {
 
-  /**
-   * Prepared query for getting properties.
-   *
-   * @var object
-   */
-  protected $stmt_get = null;
+    /**
+     * Prepared query for getting properties.
+     *
+     * @var object
+     * @access protected
+     */
+    protected $stmt_get     = null;
 
-  /**
-   * Prepared query for setting properties.
-   *
-   * @var object
-   */
-  protected $stmt_set = null;
+    /**
+     * Prepared query for setting properties.
+     *
+     * @var object
+     * @access protected
+     */
+    protected $stmt_set     = null;
 
-  /**
-   * Constructor
-   *
-   * Creates prepared statements with acquire bindings.
-   *
-   * @access public
-   */
-  public function __construct()
-  {
-    parent::__construct();
 
-    $query = sprintf("
-      SELECT
-        `value`
-      FROM
-        %s
-      WHERE
-        `key` = :key",
+    /**
+     * Prepared query for inserting properties.
+     *
+     * @var object
+     * @access protected
+     */
+    protected $stmt_insert  = null;
 
-      TBL_CONFIG
-    );
-    $this->stmt_get = $this->db->prepare($query);
+    /**
+     * Constructor
+     *
+     * Creates prepared statements with acquire bindings.
+     *
+     * @access public
+     */
+    public function __construct()
+    {
+        parent::__construct();
 
-    $query = sprintf("
-      UPDATE
-        %s
-      SET
-        `value` = :value
-      WHERE
-      `key` = :key",
+        $query = sprintf("
+            SELECT
+                `value`
+            FROM
+                %s
+            WHERE
+                `key` = :key",
 
-      TBL_CONFIG
-    );
-    $this->stmt_set = $this->db->prepare($query);
-  }
+            TBL_CONFIG
+        );
+        $this->stmt_get = $this->db->prepare($query);
 
-  /**
-   * Overloaded getter
-   *
-   * @param string $key name of property
-   *
-   * @return string value of property
-   * @throws CEDBError if any database error
-   * @throws CENotFound if property not found
-   *
-   * @access public
-   */
-  public function __get($key)
-  {
-    try {
-      $this->stmt_get->execute(array(':key'=>$key));
-    } catch (PDOException $e) {
-      throw new CEDBError($e->getMessage());
+        $query = sprintf("
+            UPDATE
+                %s
+            SET
+                `value` = :value
+            WHERE
+                `key` = :key",
+
+            TBL_CONFIG
+        );
+        $this->stmt_set = $this->db->prepare($query);
+
+        $query = sprintf("
+            INSERT INTO
+                %s
+            SET
+                `key` = :key,
+                `value = :value",
+
+            TBL_CONFIG
+        );
+        $this->stmt_insert = $this->db->prepare($query);
     }
 
-    $row = $this->stmt_get->fetch();
-    if (!$row) {
-      throw new CENotFound(sprintf('Config property "%s" not found.', $key));
+    /**
+     * Overloaded getter
+     *
+     * @param string $key name of property
+     *
+     * @return string     value of property
+     * @throws CEDBError  if any database error
+     * @throws CENotFound if property not found
+     *
+     * @access public
+     */
+    public function __get($key)
+    {
+        try {
+            $this->stmt_get->execute(array(':key'=>$key));
+        } catch (PDOException $e) {
+            throw new CEDBError($e->getMessage());
+        }
+
+        $row = $this->stmt_get->fetch();
+        if (!$row) {
+            throw new CENotFound(sprintf('Config property "%s" not found.', $key));
+        }
+
+        return unserialize($row['value']);
     }
 
-    return unserialize($row['value']);
-  }
-
-  /**
-   * Overloaded setter
-   *
-   * @param string $key   name of property
-   * @param string $value value of property
-   *
-   * @throws CEDBError if any database error
-   *
-   * @access public
-   */
-  public function __set($key, $value)
-  {
-    try {
-      $this->stmt_set->execute(array('key'=>$key, 'value'=>serialize($value)));
-    } catch (PDOException $e) {
-      throw new CEDBError($e->getMessage());
+    /**
+     * Overloaded setter
+     *
+     * @param string $key   name of property
+     * @param string $value value of property
+     *
+     * @throws CEDBError if any database error
+     *
+     * @access public
+     */
+    public function __set($key, $value)
+    {
+        try {
+            if ('_' != $key[0]) { //update of existing value
+                $this->stmt_set->execute(array('key'=>$key, 'value'=>serialize($value)));
+            } else { //insert new value
+                $this->stmt_insert->execute(array('key'=>substr($key, 1), 'value'=>serialize($value)));
+            }
+        } catch (PDOException $e) {
+            throw new CEDBError($e->getMessage());
+        }
     }
-  }
 }
 
 ?>
-
