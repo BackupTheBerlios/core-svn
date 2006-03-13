@@ -47,7 +47,8 @@
  * @version    SVN: $Id: class_corebase.php 1275 2006-02-28 15:58:36Z mysz $
  * @link       $HeadURL$
  */
-abstract class CoreBase {
+abstract class CoreBase
+{
 
     /**
      * All error messages
@@ -68,7 +69,7 @@ abstract class CoreBase {
     protected $db;
 
     /**
-     * Properties set of this class
+     * Base set of properties of this object
      *
      * Storing all class properties as an array. All properties must set be here
      * in all of subclasses, as array of arrays:
@@ -82,24 +83,54 @@ abstract class CoreBase {
      *
      * @var array
      * @access protected
+     * @static
      */
-    abstract protected $properties = array();
+    protected static $base_properties = array();
 
     /**
-     * Set of properties who must have an external getter method
+     * Base set of properties who must have an external getter method
      *
      * @var array
      * @access protected
+     * @static
      */
-    abstract protected $get_external = array();
+    protected static $base_getExternal = array();
+
+    /**
+     * Base set of properties who must have an external setter method
+     *
+     * @var array
+     * @access protected
+     * @static
+     */
+    protected static $base_setExternal = array();
+
+    /**
+     * Set of properties of this object
+     *
+     * @var array
+     * @access protected
+     * @static
+     */
+    protected $properties   = array();
 
     /**
      * Set of properties who must have an external setter method
      *
      * @var array
      * @access protected
+     * @static
      */
-    abstract protected $set_external = array();
+    protected $getExternal  = array();
+
+    /**
+     * Set of properties who must have an external getter method
+     *
+     * @var array
+     * @access protected
+     * @static
+     */
+    protected $setExternal  = array();
 
     /**
      * Constructor
@@ -118,7 +149,7 @@ abstract class CoreBase {
      *
      * @access public
      */
-    public function is_error()
+    public function isError()
     {
         return (bool)count($this->errors);
     }
@@ -135,7 +166,7 @@ abstract class CoreBase {
      *
      * @access protected
      */
-    protected function error_set($msg, $code = 0)
+    protected function errorSet($msg, $code = 0)
     {
         $this->errors[] = array($code, $msg);
         return true;
@@ -150,7 +181,7 @@ abstract class CoreBase {
      *
      * @access public
      */
-    public function error_get($last = true)
+    public function errorGet($last = true)
     {
         if($last) {
             return end($this->errors);
@@ -165,7 +196,7 @@ abstract class CoreBase {
      *
      * @access public
      */
-    public function error_clear()
+    public function errorClear()
     {
         $this->errors = array();
         return true;
@@ -175,7 +206,7 @@ abstract class CoreBase {
      * Overloaded getter
      *
      * If property doesn't have external getter (if isn't in
-     * $this->get_external array) returns that property (from
+     * $this->getExternal array) returns that property (from
      * $this->properties array). In other case, it execute private method
      * $this->get_$property_name().
      *
@@ -192,11 +223,11 @@ abstract class CoreBase {
         if (!array_key_exists($key, $this->properties)) {
             throw new CENotFound(sprintf('"%s" property doesn\'t exists.', $key));
         }
-        if (in_array($key, $this->get_external)) {
-            $fun = sprintf('get_%s', $key);
-            return $this->$fun();
+        if (in_array($key, $this->getExternal)) {
+            $m = sprintf('get_%s', $key);
+            return $this->$m();
         }
-        if ($this->properties[$key][1] == 'string') {
+        if ('string' == $this->properties[$key][1]) {
             return stripslashes($this->properties[$key][0]);
         } else {
             return $this->properties[$key][0];
@@ -207,7 +238,7 @@ abstract class CoreBase {
      * Overloaded setter
      *
      * If property doesn't have external setter (if isn't in
-     * $this->set_external array) set value of this property (to
+     * $this->setExternal array) set value of this property (to
      * $this->properties array). In other case, it execute private method
      * $this->set_$property_name().
      *
@@ -226,14 +257,14 @@ abstract class CoreBase {
         if (!array_key_exists($key, $this->properties)) {
             throw new CENotFound(sprintf('"%s" property doesn\'t exists.', $key));
         }
-        if (in_array($key, $this->set_external)) {
-            $fun = sprintf('set_%s', $key);
-            return $this->$fun($value);
+        if (in_array($key, $this->setExternal)) {
+            $m = sprintf('set_%s', $key);
+            return $this->$m($value);
         }
         if (is_null($value)) {
             $this->properties[$key][0] = null;
         } else {
-            if (!$this->is_type($key, $value)) {
+            if (!$this->isType($key, $value)) {
                 throw new CESyntaxError(sprintf('"%s" property must be an "%s" type, is "%s".',
                     $key,
                     $this->properties[$key][1],
@@ -241,7 +272,7 @@ abstract class CoreBase {
                 ));
             }
 
-            if ($this->properties[$key][1] == 'string') {
+            if ('string' == $this->properties[$key][1]) {
                 $this->properties[$key][0] = addslashes($value);
             } else {
                 $this->properties[$key][0] = $value;
@@ -307,7 +338,7 @@ abstract class CoreBase {
      *
      * @access protected
      */
-    protected function is_type($key, &$value, $throw=true)
+    protected function isType($key, &$value, $throw=true)
     {
         if (gettype($value) == $this->properties[$key][1]) {
             return true;
@@ -320,6 +351,11 @@ abstract class CoreBase {
             ));
         }
         return false;
+    }
+
+    public function getIter()
+    {
+        return new PropIterator($this->properties);
     }
 }
 
