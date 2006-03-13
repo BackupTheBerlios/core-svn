@@ -69,10 +69,11 @@ abstract class CEBase extends Exception {
      */
     protected function toString($class) {
         return sprintf(
-            '%s::%d:: %s',
+            "%s::%d:: %s\n%s",
             $class,
-            $this->code,
-            $this->message
+            $this->getCode(),
+            $this->getMessage(),
+            $this->getTraceAsString()
         );
     }
 }
