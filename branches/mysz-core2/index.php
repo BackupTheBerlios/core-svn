@@ -6,8 +6,14 @@
 
 function __autoload($classname)
 {
+    if ('CE' == substr($classname, 0, 2)) {
+        require_once sprintf('inc%sclass_exceptions.php', DIRECTORY_SEPARATOR);
+        return;
+    }
+    
     $fname = strtolower($classname);
     $fname = str_replace('_', '', $fname);
+
     $fname1 = sprintf('inc%sclass_%s.php', DIRECTORY_SEPARATOR, $fname);
     if (is_file($fname1)) {
         require_once($fname1);
@@ -21,10 +27,28 @@ function __autoload($classname)
 }
 
 require_once 'config.php';
+$config = new CoreConfig();
+new CoreInit(
+    $config->enc_from,
+    $config->enc_to,
+    $config->comp_level,
+    $config->email
+);
 
-define('OPT_DIR', Path::join(ROOT, 'inc', 'opt'));
-//require_once Path::join(ROOT, 'inc', 'opt', 'opt.class.php');
+define('OPT_DIR', Path::join(ROOT, 'inc/opt') . DIRECTORY_SEPARATOR);
+require_once Path::join(ROOT, 'inc/opt/opt.class.php');
 
-new CoreInit(null, null, 5);
+$id_post = 1;
+try {
+    $post = new Post($id_post);
+    $post->title = 'asd';
+    $post->show();
+} catch (CENotFound $e) {
+    echo '<pre>';
+    echo $e;
+    echo '</pre>';
+    exit;
+}
 
+//$post->setFromDB(1);
 ?>
