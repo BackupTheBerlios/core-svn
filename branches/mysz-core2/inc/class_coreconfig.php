@@ -44,7 +44,8 @@
  * @version    SVN: $Id: class_coreconfig.php 1270 2006-02-26 11:13:34Z lark $
  * @link       $HeadURL$
  */
-class CoreConfig extends CoreBase {
+final class CoreConfig extends CoreBase
+{
 
     /**
      * Prepared query for getting properties.
@@ -52,7 +53,7 @@ class CoreConfig extends CoreBase {
      * @var object
      * @access protected
      */
-    protected $stmt_get     = null;
+    protected $stmtGet     = null;
 
     /**
      * Prepared query for setting properties.
@@ -60,7 +61,7 @@ class CoreConfig extends CoreBase {
      * @var object
      * @access protected
      */
-    protected $stmt_set     = null;
+    protected $stmtSet     = null;
 
 
     /**
@@ -69,7 +70,7 @@ class CoreConfig extends CoreBase {
      * @var object
      * @access protected
      */
-    protected $stmt_insert  = null;
+    protected $stmtInsert  = null;
 
     /**
      * Constructor
@@ -88,42 +89,45 @@ class CoreConfig extends CoreBase {
             FROM
                 %s
             WHERE
-                `key` = :key",
+                `key` = :k",
 
             TBL_CONFIG
         );
-        $this->stmt_get = $this->db->prepare($query);
+        $this->stmtGet = $this->db->prepare($query);
 
         $query = sprintf("
             UPDATE
                 %s
             SET
-                `value` = :value
+                `value` = :v
             WHERE
-                `key` = :key",
+                `key` = :k",
 
             TBL_CONFIG
         );
-        $this->stmt_set = $this->db->prepare($query);
+        $this->stmtSet = $this->db->prepare($query);
 
         $query = sprintf("
             INSERT INTO
                 %s
             SET
-                `key` = :key,
-                `value = :value",
+                `key` = :k,
+                `value = :v",
 
             TBL_CONFIG
         );
-        $this->stmt_insert = $this->db->prepare($query);
+        $this->stmtInsert = $this->db->prepare($query);
     }
 
     /**
      * Overloaded getter
      *
+     * Magic: if property name begins with underscore, it will not raise an
+     * exception if property will not be found in database, but return false.
+     *
      * @param string $key name of property
      *
-     * @return string     value of property
+     * @return mixed      value of property or false if not found
      * @throws CEDBError  if any database error
      * @throws CENotFound if property not found
      *
@@ -131,15 +135,24 @@ class CoreConfig extends CoreBase {
      */
     public function __get($key)
     {
+        $silent = ('_' == substr($key, 0, 1));
+        if ($silent) {
+            $key = substr($key, 1);
+        }
+
         try {
-            $this->stmt_get->execute(array(':key'=>$key));
+            $this->stmtGet->execute(array(':k'=>$key));
         } catch (PDOException $e) {
             throw new CEDBError($e->getMessage());
         }
 
-        $row = $this->stmt_get->fetch();
+        $row = $this->stmtGet->fetch();
         if (!$row) {
-            throw new CENotFound(sprintf('Config property "%s" not found.', $key));
+            if ($silent) {
+                return false;
+            } else {
+                throw new CENotFound(sprintf('Config property "%s" not found.', $key));
+            }
         }
 
         return unserialize($row['value']);
@@ -147,6 +160,9 @@ class CoreConfig extends CoreBase {
 
     /**
      * Overloaded setter
+     *
+     * Magic: if key name begins with underscore, it will add _new_ property
+     * to database if it doesn't exists.
      *
      * @param string $key   name of property
      * @param string $value value of property
@@ -159,9 +175,10 @@ class CoreConfig extends CoreBase {
     {
         try {
             if ('_' != $key[0]) { //update of existing value
-                $this->stmt_set->execute(array('key'=>$key, 'value'=>serialize($value)));
+                $this->stmtSet->execute(array(':k'=>$key, ':v'=>serialize($value)));
             } else { //insert new value
-                $this->stmt_insert->execute(array('key'=>substr($key, 1), 'value'=>serialize($value)));
+                $binds = array(':k'=>substr($key, 1), ':v'=>serialize($value));
+                $this->stmtInsert->execute($binds);
             }
         } catch (PDOException $e) {
             throw new CEDBError($e->getMessage());
