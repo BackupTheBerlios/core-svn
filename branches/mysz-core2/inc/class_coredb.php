@@ -42,7 +42,8 @@
  * @version    SVN: $Id: class_coredb.php 1270 2006-02-26 11:13:34Z lark $
  * @link       $HeadURL$
  */
-class CoreDB {
+final class CoreDB
+{
 
     /**
      * Instance of PDO connection
@@ -85,17 +86,25 @@ class CoreDB {
             try {
                 switch($type) {
                     case 'mysql':
-                        $conn =& new PDO(sprintf(
+                        $conn = new PDO(sprintf(
                             'mysql:host=%s;dbname=%s', DB_HOST, DB_NAME),
                             DB_USER,
                             DB_PASS
                         );
                     break;
-                default:
-                    throw new CESyntaxError('Invalid database type.');
+
+                    default:
+                        throw new CESyntaxError('Invalid database type.');
                 }
+
+                $conn->setAttribute(PDO::ATTR_AUTOCOMMIT,   true);
+                $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $conn->setAttribute(PDO::ATTR_CASE,         PDO::CASE_NATURAL);
             } catch(PDOException $e) {
-                throw new CEDBError(sprintf('Connection failed: %s.', $e->getMessage()));
+                throw new CEDBError(sprintf('Connection failed: %s.',
+                
+                    $e->getMessage())
+                );
             }
 
             self::$_instance->db = $conn;
@@ -112,9 +121,8 @@ class CoreDB {
      */
     public function __clone()
     {
-        throw new CESyntaxError('Clone not allowed.');
+        throw new CESyntaxError('Singleton cloning not allowed.');
     }
 }
 
 ?>
-
