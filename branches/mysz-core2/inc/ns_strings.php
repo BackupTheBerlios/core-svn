@@ -23,29 +23,30 @@ abstract class Strings {
             
     public static function br2nl($s, $nl="\r\n")
     {
-        return str_replace(array('<br />', '<br>', '<br/>'), $nl, $s);
+        static $br = array('<br />', '<br>', '<br/>');
+        return str_replace($br, $nl, $s);
     }
 
     public static function entities($s)
     {
-        $p = array('<',    '>',    '"',       "'");
-        $r = array('&lt;', '&gt;', '&quot;', '&#39;');
+        static $p = array('<',    '>',    '"',       "'");
+        static $r = array('&lt;', '&gt;', '&quot;', '&#39;');
         return str_replace($p, $r, $s);
     }
 
     public static function htmlizelinks($s)
     {
-        $p = array(
+        static $p = array(
           '#(^|[\n ])([\w]+?://[^ "\n\r\t<]*)#i',
           '#(^|[\n ])((www|ftp)\.[^ "\t\n\r<]*)#i',
           '#(^|[\n ])([a-z0-9&\-_.]+?)@([\w\-]+\.([\w\-\.]+\.)*[\w]+)#i'
         );
-        $r = array(
+        static $r = array(
           '\\1<a href="\\2">\\2</a>',
           '\\1<a href="http://\\2">\\2</a>',
           '\\1<a href="mailto:\\2@\\3">\\2@\\3</a>'
         );
-	      return preg_replace($p, $r, $text);
+	      return preg_replace($p, $r, $s);
     }
 }
 
