@@ -27,7 +27,7 @@
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
  * @version    SVN: $Id$
- * @link       http://core-cms.com/
+ * @link       $HeadURL$
  */
 
 /**
@@ -59,7 +59,7 @@
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
  * @version    SVN: $Id$
- * @link       http://core-cms.com/
+ * @link       $HeadURL$
  */
 final class CoreInit
 {
@@ -92,7 +92,7 @@ final class CoreInit
      * @var array
      * @access private
      */
-    private $_inc_path = array('.', 'inc');
+    private $_incPath = array();
 
     /**
      * Enable/disable debug mode
@@ -101,6 +101,14 @@ final class CoreInit
      * @access private
      */
     private $_debug = false;
+
+    /**
+     * Email address which has to be put into sender of emails
+     *
+     * @var string
+     * @access private
+     */
+    private $_email;
 
 
     /**
@@ -113,7 +121,7 @@ final class CoreInit
      *
      * @access private
      */
-    private function _init_compress($comp_level)
+    private function _initCompress(&$comp_level)
     {
         if (!extension_loaded('zlib')) {
             throw new Exception('Compressing failed: "zlib" isn\'t loaded.');
@@ -138,7 +146,7 @@ final class CoreInit
      *
      * @access private
      */
-    private function _init_encoding($enc_from, $enc_to)
+    private function _initEncoding(&$enc_from, &$enc_to)
     {
         if (extension_loaded('iconv')) {
             iconv_set_encoding('internal_encoding', $enc_from);
@@ -159,10 +167,10 @@ final class CoreInit
      *
      * Set also error handler.
      */
-    private function _init_phpsettings() {
+    private function _initPhpSettings() {
         ini_set('arg_separator.output',        '&amp;');
         ini_set('arg_separator.input',         ';&');
-        ini_set('include_path',      implode(PATH_SEPARATOR, $this->_inc_path)); //NFY. how to put here these variable ?
+        ini_set('include_path',      implode(PATH_SEPARATOR, $this->_incPath));
         ini_set('magic_quotes_gpc',            0);
         ini_set('magic_quotes_runtime',        0);
         ini_set('magic_quotes_sybase',         0);
@@ -170,7 +178,7 @@ final class CoreInit
         ini_set('zend.ze1_compatibility_mode', 0);
         ini_set('variables_order',             'EGPCS');
 
-        ini_set('sendmail_from',               'core@core-cms.com'); //from config. NFY
+        ini_set('sendmail_from',               $this->_email);
         ini_set('session.hash_function',       1);
 
         if ($this->_debug) {
@@ -189,14 +197,13 @@ final class CoreInit
                                                E_USER_NOTICE);
           ini_set('display_errors',            0);
           ini_set('mysql.trace_mode',          0);
-          ini_set('error_log',                 'C:/www/htdocs/testy/php.log'); //from config. NFY
+          ini_set('error_log',                 Path::join(ROOT, 'php.log'));
           ini_set('log_errors',                1);
 
           set_error_handler(    array($this, 'error_handler'));
           set_exception_handler(array($this, 'error_handler'));
         }
 
-        ini_set('memory_limit',                '2M'); //do przedyskutowania. from config, NFY
         ini_set('session.auto_start',          1); //do przedyskutowania
     }
 
@@ -209,11 +216,24 @@ final class CoreInit
      * @param string  $enc_from   character set of files (present)
      * @param string  $enc_to     output character set
      * @param integer $comp_level
+     * @param array   $incpath    elements of include path
      *
      * @access public
      */
-    public function __construct($enc_from=null, $enc_to=null, $comp_level=null)
+    public function __construct(&$enc_from=null, &$enc_to=null, &$comp_level=null, &$email=null, &$incPath=null)
     {
+        if (is_null($incPath)) {
+            $this->_incPath = array(
+                ROOT,
+                Path::join(ROOT, 'inc')
+            );
+        } else {
+            $this->_incPath = $incPath;
+        }
+        if (!is_null($email) && Strings::email($email)) {
+            $this->_email = $email;
+        }
+        
         if (is_null($comp_level)) {
             $comp_level = self::COMP_LEVEL;
         }
@@ -231,13 +251,13 @@ final class CoreInit
         $ob_start_opts = array();
 
         if ($comp_level > 0) {
-            $comp = $this->_init_compress($comp_level);
+            $comp = $this->_initCompress($comp_level);
             if ($comp !== false) {
                 $ob_start_opts[] = $comp;
             }
         }
         if ($enc_from !== $enc_to) {
-            $enc = $this->_init_encoding($enc_from, $enc_to);
+            $enc = $this->_initEncoding($enc_from, $enc_to);
             if ($enc !== false) {
                 $ob_start_opts[] = $enc;
             }
@@ -250,7 +270,7 @@ final class CoreInit
             $this->_initialized = false;
         }
 
-        $this->_init_phpsettings();
+        $this->_initPhpSettings();
     }
 
     /**
@@ -348,7 +368,7 @@ final class CoreInit
         }
 
         error_log($msg1, 0); // we want to log into specified file
-                             // (see: CoreInit::_init_phpsettings(())
+                             // (see: CoreInit::_initPhpSettings(())
     }
 }
 
