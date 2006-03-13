@@ -3,7 +3,7 @@
 // vim: expandtab shiftwidth=4 softtabstop=4 tabstop=4
 
 /**
- * Class for xml feed
+ * Iterator class
  *
  * PHP version 5
  *
@@ -27,14 +27,13 @@
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
  * @version    SVN: $Id$
- * @link       http://core-cms.com/
+ * @link       $HeadURL$
  */
 
 /**
- * Class for prepare & parse xml feed, based on DOM
+ * Class for iterating via properties in subclasses of CoreBase
  *
- * Sets basic settings of xml file, like headers. Prepare data from array to
- * parse feed.
+ * Implements interface from SPL class Iterator.
  *
  * @category   Classes
  * @package    Classes
@@ -43,25 +42,29 @@
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
  * @version    SVN: $Id$
- * @link       http://core-cms.com/
+ * @link       $HeadURL$
  */
-class PropIterator implements Iterator {
-    private $properties = array();
+class PropIterator implements Iterator
+{
+    /**
+     * Holds properties array
+     */
+    private $_properties = array();
 
-    public function __construct($properties = null)
+    public function __construct(&$properties=null)
     {
         if (!is_array($properties)) {
             throw new CESyntaxError(sprintf('"$properties" must be an "array", is "%s".',
                 gettype($properties)
             ));
         }
-        $this->properties = $properties;
+        $this->_properties =& $properties;
     }
 
     public function current()
     {
-        $v = current($this->properties);
-        if ($v !== false) {
+        $v = current($this->_properties);
+        if (false !== $v) {
             return $v[0];
         } else {
             return false;
@@ -70,19 +73,19 @@ class PropIterator implements Iterator {
 
     public function key()
     {
-        $v = key($this->properties);
+        $v = key($this->_properties);
         return $v[0];
     }
 
     public function next()
     {
-        $v = next($this->properties);
+        $v = next($this->_properties);
         return $v[0];
     }
 
     public function rewind()
     {
-        $v = reset($this->properties);
+        $v = reset($this->_properties);
         return $v[0];
     }
 
@@ -92,23 +95,5 @@ class PropIterator implements Iterator {
     }
 }
 
-class CoreBase {}
-class T extends CoreBase{
-    private $o = array(
-        'a' => array(1, 'int'),
-        'b' => array(2, 'int'),
-        'c' => array('asd', 'string'),
-        'd' => array(true, 'boolean')
-    );
-    public function getIter()
-    {
-        return new PropIterator($this->o);
-    }
-}
-
-$a = new T;
-foreach ($a->getIter() as $k=>$v) {
-    printf('%s: %s<br />', $k, $v);
-}
 
 ?>
