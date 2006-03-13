@@ -44,20 +44,21 @@
  * @version    SVN: $Id: class_entry.php 1272 2006-02-26 18:36:12Z mysz $
  * @link       $HeadURL$
  */
-abstract class Entry extends CoreBase {
+abstract class CorePost extends CoreBase {
 
     /**
-     * Basic properties of all kinds of entries
+     * Base set of properties of all kinds of entries
      *
-     * @see CoreBase::properties
+     * @see CoreBase::base_properties
      *
      * @var array
      * @access protected
      */
-    protected $properties   =  array(
+    protected static $base_properties   =  array(
         /* for core_posts table */
         'id_post'           => array(null,    'integer'),
         'id_parent'         => array(null,    'integer'),
+        'id_cat'            => array(null,    'integer'),
         'id_type'           => array(null,    'integer'),
         'id_section'        => array(null,    'integer'),
         'title'             => array('',      'string' ),
@@ -76,19 +77,32 @@ abstract class Entry extends CoreBase {
     );
 
     /**
-     * Set of properties, which must have external setter
+     * Base set of properties, which must have external setter
      *
      * These properties has additional correctness checking.
      *
      * @var array
-     *
      * @access protected
+     * @static
      */
-    protected $set_external = array(
+    protected static $base_setExternal = array(
         'title', 'caption', 'body', 'author_www', 'author_mail',
         'date_add', 'date_add_ts', 'date_mod', 'date_mod_ts',
         'status'
     );
+
+    /**
+     * Base set of properties, which must have external getter
+     *
+     * @var array
+     * @access protected
+     * @static
+     */
+    protected static $base_getExternal = array();
+
+    protected $properties = array();
+    protected $getExternal = array();
+    protected $setExternal = array();
 
     /**
      * Available values for entry status
@@ -111,16 +125,21 @@ abstract class Entry extends CoreBase {
      *
      * @access public
      */
-    public function __construct($data=null)
+    public function __construct(&$data=null)
     {
         parent::__construct();
-
-        if (is_null($data)) {
-            $this->date_add = null;
-            $this->date_mod = null;
-        } else {
-            $this->set_from_array($data);
-        }
+        self::$base_properties  = array_merge(
+            parent::$base_properties, 
+            self::$base_properties
+        );
+        self::$base_setExternal = array_merge(
+            parent::$base_setExternal,
+            self::$base_setExternal
+        );
+        self::$base_getExternal = array_merge(
+            parent::$base_getExternal,
+            self::$base_getExternal
+        );
     }
 
     /**
@@ -137,7 +156,7 @@ abstract class Entry extends CoreBase {
      */
     protected function set_title($data)
     {
-        $this->is_type('title', $data);
+        $this->isType('title', $data);
 
         $data = trim($data);
         if ('' == $data) {
@@ -255,6 +274,75 @@ abstract class Entry extends CoreBase {
     }
 
     /**
+     * Checks for correctness of date_add
+     *
+     * Additional set auxilliary property date_add_ts (as unix timestamp)
+     *
+     * @param string  $data date
+     *
+     * @return boolean
+     *
+     * @access protected
+     */
+    protected function set_date_add($data)
+    {
+        $date = $this->checkDate($data);
+        if (!$date) {
+            $this->error_set(sprintf('Incorrect date format "%s".', $data));
+        }
+
+        $this->properties['date_add'][0]    = $date['date'];
+        $this->properties['date_add_ts'][0] = $date['timestamp'];
+    }
+
+    /**
+     * Checks for correctness of date_mod
+     *
+     * Additional set auxilliary property date_mod_ts (as unix timestamp)
+     *
+     * @param string  $data date
+     *
+     * @return boolean
+     *
+     * @access protected
+     */
+    protected function set_date_mod($data)
+    {
+        $date = $this->checkDate($data);
+        if (!$date) {
+            $this->error_set(sprintf('Incorrect date "%s".', $data));
+        }
+
+        $this->properties['date_mod'][0]    = $date['date'];
+        $this->properties['date_mod_ts'][0] = $date['timestamp'];
+    }
+
+    /**
+     * Checks for correct value of status
+     *
+     * For proper values @see CorePost::status_array
+     *
+     * @param string  $data status
+     *
+     * @return boolean
+     * @throws CESyntaxError if incorrect type (@see $this->is_type())
+     *
+     * @access protected
+     */
+    protected function set_status($data)
+    {
+        $this->is_type('status', $data);
+
+        if (!in_array($data, $this->status_array)) {
+            $this->error_set(sprintf('Incorrect status "%s".', $data));
+            return false;
+        }
+        $this->properties['status'][0]      = $data;
+    }
+
+
+
+    /**
      * Checks for correctness of date
      *
      * As parametr can be an string in correct format ('yy-mm-dd hh:mm:ss'),
@@ -272,7 +360,7 @@ abstract class Entry extends CoreBase {
      *
      * @access protected
      */
-    protected function check_date($date)
+    protected function checkDate($date)
     {
         if(is_null($date)) { //it means: now
             $ts = time(); //for sure date == timestamp
@@ -291,7 +379,7 @@ abstract class Entry extends CoreBase {
                 'date'      => date('YmdHis', $date)
             );
         } elseif (is_string($date)) {
-            $regexp = '/
+            static $regexp = '/
                 ^
                 ([0-9][0-9][0-9][0-9]) #year (index:1)
                 -
@@ -333,75 +421,6 @@ abstract class Entry extends CoreBase {
     }
 
     /**
-     * Checks for correctness of date_add
-     *
-     * Additional set auxilliary property date_add_ts (as unix timestamp)
-     *
-     * @param string  $data date
-     *
-     * @return boolean
-     *
-     * @access protected
-     */
-    protected function set_date_add($data)
-    {
-        $date = $this->check_date($data);
-        if (!$date) {
-            $this->error_set(sprintf('Incorrect date format "%s".', $data));
-        }
-
-        $this->properties['date_add'][0]    = $date['date'];
-        $this->properties['date_add_ts'][0] = $date['timestamp'];
-    }
-
-    /**
-     * Checks for correctness of date_mod
-     *
-     * Additional set auxilliary property date_mod_ts (as unix timestamp)
-     *
-     * @param string  $data date
-     *
-     * @return boolean
-     *
-     * @access protected
-     */
-    protected function set_date_mod($data)
-    {
-        $date = $this->check_date($data);
-        if (!$date) {
-            $this->error_set(sprintf('Incorrect date "%s".', $data));
-        }
-
-        $this->properties['date_mod'][0]    = $date['date'];
-        $this->properties['date_mod_ts'][0] = $date['timestamp'];
-    }
-
-    /**
-     * Checks for correct value of status
-     *
-     * For proper values @see Entry::status_array
-     *
-     * @param string  $data status
-     *
-     * @return boolean
-     * @throws CESyntaxError if incorrect type (@see $this->is_type())
-     *
-     * @access protected
-     */
-    protected function set_status($data)
-    {
-        $this->is_type('status', $data);
-
-        if (!in_array($data, $this->status_array)) {
-            $this->error_set(sprintf('Incorrect status "%s".', $data));
-            return false;
-        }
-        $this->properties['status'][0]      = $data;
-    }
-
-
-
-    /**
      * Set properties of entry from an array.
      *
      * @param $data array array of properties
@@ -411,7 +430,7 @@ abstract class Entry extends CoreBase {
      *
      * @access protected
      */
-    protected function set_from_array($data)
+    protected function setFromArray($data)
     {
         if (!is_array($data)) {
             throw new CESyntaxError(sprintf('Incorrect argument type: expected "array", received "%s".',
@@ -441,6 +460,16 @@ abstract class Entry extends CoreBase {
      * @abstract
      */
     abstract public function save();
+
+    /**
+     * Get entry data from database
+     *
+     * @return boolean
+     *
+     * @access public
+     * @abstract
+     */
+    abstract public function setFromDB($id, $order='DESC', $where=null);
 }
 
 ?>
