@@ -39,11 +39,10 @@ abstract class Path
 
     public static function normalize($path)
     {
-        $path = preg_replace(
-            array('#\\\\#', '#/#'              ),
-            array('/',      DIRECTORY_SEPARATOR),
-            $path
-        );
+        static $p = array('#\\\\#', '#/#');
+        static $r = array('/', DIRECTORY_SEPARATOR);
+        $path = preg_replace($p, $r, $path);
+
         if ('\\' == DIRECTORY_SEPARATOR) { //windows
             $path = strtolower($path);
         }
