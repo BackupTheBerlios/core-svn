@@ -190,17 +190,17 @@ class Image {
      *
      * @param string  $format       possible values in $this->_formats
      * @param integer $quality      quality of output jpeg
-     * @param boolean $send_headers if true, send content-type header
+     * @param boolean $sendHeaders if true, send content-type header
      *
      * @access public
      */
-    public function show($format=null, $quality=75, $send_headers=true)
+    public function show($format=null, $quality=75, $sendHeaders=true)
     {
-        $this->_is_initialized();
+        $this->_isInitialized();
 
         $format = $this->_checkFormat($format);
 
-        if ($send_headers) {
+        if ($sendHeaders) {
             header('Content-type: image/' . $format);
         }
 
@@ -225,7 +225,7 @@ class Image {
      */
     public function saveToFile($fname, $format=null, $quality=75, $overwrite=false)
     {
-        $this->_is_initialized();
+        $this->_isInitialized();
 
         $pathinfo = pathinfo($fname);
 
@@ -281,7 +281,7 @@ class Image {
 
 
     /**
-     * Alias for scaleProp() and scaleNonprop()
+     * Alias for scaleProp() and scaleNonProp()
      *
      * @param integer $width  width of image
      * @param integer $height height of image
@@ -297,7 +297,7 @@ class Image {
         if ($prop) {
             return $this->scaleProp($width, $height, $bgcolor);
         } else {
-            return $this->scaleNonprop($width, $height, $bgcolor);
+            return $this->scaleNonProp($width, $height, $bgcolor);
         }
     }
 
@@ -316,7 +316,7 @@ class Image {
      */
     public function scaleProp($width, $height, $bgcolor='ffffff')
     {
-        $this->_is_initialized();
+        $this->_isInitialized();
 
         $dst = $this->_newImage($width, $height);
 
@@ -368,9 +368,9 @@ class Image {
      *
      * @access public
      */
-    public function scaleNonprop($width, $height, $bgcolor='ffffff')
+    public function scaleNonProp($width, $height, $bgcolor='ffffff')
     {
-        $this->_is_initialized();
+        $this->_isInitialized();
 
         $dst = $this->_newImage($width, $height);
 
@@ -404,7 +404,7 @@ class Image {
      */
     public function crop1($x, $y, $h, $w)
     {
-        $this->_is_initialized();
+        $this->_isInitialized();
 
         $dst = $this->_newImage($h, $w);
 
@@ -452,7 +452,7 @@ class Image {
      */
     public function filter($filter)
     {
-        $this->_is_initialized();
+        $this->_isInitialized();
 
         if (!in_array($filter, $this->_filters)) {
             throw new CESyntaxError(sprintf('Invalid filter: "%s".', $filter));
@@ -630,13 +630,13 @@ class Image {
      *
      * @access public
      */
-    public function rotate($angle, $bgcolor='ffffff', $ignore_transparent=false)
+    public function rotate($angle, $bgColor='ffffff', $ignoreTransparent=false)
     {
-        $this->_is_initialized();
+        $this->_isInitialized();
 
         $angle = (float)$angle;
-        $color = $this->color($bgcolor);
-        $this->_body = imagerotate($this->_body, $angle, $color, $ignore_transparent);
+        $color = $this->color($bgColor);
+        $this->_body = imagerotate($this->_body, $angle, $color, $ignoreTransparent);
     }
 
     /**
@@ -814,7 +814,7 @@ class Image {
      * Checks for image that was loaded
      *
      * If image wasn't loaded, and $exc == true, an exception is raised.
-     * If $exc == false, is_initialized() return false.
+     * If $exc == false, _isInitialized() return false.
      *
      * @param boolean $exc if true, an exception is raised when image wasn't loaded
      *
@@ -823,7 +823,7 @@ class Image {
      *
      * @access private
      */
-    private function _is_initialized($exc=true)
+    private function _isInitialized($exc=true)
     {
         if (is_null($this->_body)) {
             if ($exc) {
