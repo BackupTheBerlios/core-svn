@@ -50,23 +50,21 @@
  */
 class Parser {
     /**
-     * Constance
+     * Constant
      *
      * Holds what virtual tag is used if source is not well formed xml.
-     *
-     * @access public
      */
     const   VIRTTAG             = 'corecms:virtual';
 
     /**
      * Define when replace new line chars on html < br/>
      *
-     * Used by Parse::cdata()
+     * Used by Parse::_cdata()
      *
      * @var    integer
      * @access private
      */
-    private $nl2br              = 0;
+    private $_nl2br              = 0;
 
     /**
      * Hold tags which content is not nl2br'ed
@@ -76,7 +74,7 @@ class Parser {
      * @var    array
      * @access private
      */
-    private $safe               = array('style', 'ul', 'ol', 'dl', 'html');
+    static private $_safe        = array('style', 'ul', 'ol', 'dl', 'html');
 
     /**
      * Hold tags which content (and theyre childs too).
@@ -84,33 +82,33 @@ class Parser {
      * @var    array
      * @access private
      */
-    private $safe_tree          = array('head', 'script', 'pre', 'style');
+    static private $_safeTree   = array('head', 'script', 'pre', 'style');
 
     /**
      * If true, strip <b>all</b> new line chars and with empty lines.
      *
-     * If $newline is set to non blank, it is not stripped. If You want
-     * to strip <b>all</b> new line chars, with $newline, You must set
-     * $newline to blank.
+     * If $_newline is set to non blank, it is not stripped. If You want
+     * to strip <b>all</b> new line chars, with $_newline, You must set
+     * $_newline to blank.
      *
      * @var    boolean
      * @access private
      */
-    private $strip              = false;
+    private $_strip              = false;
 
     /**
      * This chars will be inserted past < br />.
      *
      * If You want not to strip new line chars from data, you may set this
      * para as "\n" (for example). If You want to strip - set this to blank.
-     * <code>$newline = "\n";
-     *$newline = "\r";
-     *$newline = "\r\n";</code>
+     * <code>$_newline = "\n";
+     *$_newline = "\r";
+     *$_newline = "\r\n";</code>
      *
      * @var string
      * @access private
      */
-    private $newline            = "\n";
+    private $_newline            = "\n";
 
     /**
      * Array with tags which aren't stripped from input data
@@ -118,7 +116,7 @@ class Parser {
      * @var    array
      * @access public
      */
-    public $tags_allowed       = array('a', 'abbr', 'acronym', 'address', 'b',
+    static public $tagsAllowed   = array('a', 'abbr', 'acronym', 'address', 'b',
                                   'blockquote', 'br', 'caption', 'cite', 'code',
                                   'dd', 'del', 'dfn', 'div', 'dl', 'dt', 'em',
                                   'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'i',
@@ -130,31 +128,33 @@ class Parser {
     /**
      * Enable or disable DEBUG mode
      * @var bool
+     * @access private
      */
-    private $DEBUG              = false;
+    private $_DEBUG              = false;
 
     /**
      * XML Parser object
      * @var object
      * @access private
      */
-    private $parser             = null;
+    private $_parser             = null;
 
     /**
      * Holds parsed data as array
      * @var array
+     * @access private
      */
-    private $output             = array();
+    private $_output             = array();
 
     /**
-     * Holds all $tag_queue lists tree from parsed domcument.
+     * Holds all $_tagQueue lists tree from parsed domcument.
      *
      * Used for DEBUG purposes.
      *
      * @var array
      * @access private
      */
-    private $snapshots          = array();
+    private $_snapshots          = array();
 
     /**
      * Holds tags queue from parsed document.
@@ -164,22 +164,23 @@ class Parser {
      * @var array
      * @access private
      */
-    private $tag_queue          = array();
+    private $_tagQueue          = array();
 
     /**
      * Elements which have not closing tag
      * @var array
+     * @access public
      */
-    public $tags_closed         = array('meta', 'img', 'link', 'br', 'col',
+    static public $tagsClosed   = array('meta', 'img', 'link', 'br', 'col',
                                   'hr', 'base', 'area', 'input');
 
     /**
      * Attributes which can occur in any tags.
      *
      * @var array
-     * @access private
+     * @access public
      */
-    public $attributes_const    = array('title', 'name', 'id', 'lang', 'class',
+    static public $attributesConst = array('title', 'name', 'id', 'lang', 'class',
                                   'style');
 
     /**
@@ -190,9 +191,9 @@ class Parser {
      * in corresponding to its tag.
      *
      * @var array
-     * @access private
+     * @access public
      */
-    public $attributes          = array(
+    static public $attributes   = array(
       'a'           => array('href', 'type', 'target'),
       'abbr'        => array(),
       'acronym'     => array(),
@@ -298,22 +299,25 @@ class Parser {
      * @var array
      * @access private
      */
-    private $attributes_ext      = array('href', 'src');
+    static private $_attributesExt = array('href', 'src');
 
     /**
      * Contructor.
      *
-     * Initializes XML Parser object and pass it to $this->parser.
+     * Initializes XML Parser object and pass it to $this->_parser.
+     *
+     * @access public
      */
     public function __construct()
     {
-        $this->parser = xml_parser_create();
+        $this->_parser = xml_parser_create();
 
-        xml_parser_set_option(  $this->parser, XML_OPTION_CASE_FOLDING, false);
-        xml_set_object(                $this->parser, $this                  );
-        xml_set_element_handler(       $this->parser, 'tag_open', 'tag_close');
-        xml_set_character_data_handler($this->parser, 'cdata'                );
-        xml_set_default_handler(       $this->parser, 'h_default'            );
+        xml_parser_set_option(  $this->_parser, XML_OPTION_CASE_FOLDING, false);
+        xml_set_object(                $this->_parser, $this                  );
+        xml_set_element_handler(       $this->_parser, '_tagOpen', '_tagClose');
+        xml_set_character_data_handler($this->_parser, '_cdata'                );
+        xml_set_default_handler(       $this->_parser, '_hDefault'            );
+        xml_set_processing_instruction_handler($this->_parser, '_PIHandler'    );
     }
 
     /**
@@ -335,6 +339,8 @@ class Parser {
      * @param bool $wellformed defines that input text is well formed XML
      *
      * @return mixed
+     *
+     * @access public
      */
     public function parse($data, $rettype='text', $wellformed = false)
     {
@@ -343,16 +349,16 @@ class Parser {
             $data = sprintf('<%s>%s</%s>', self::VIRTTAG, $data, self::VIRTTAG);
         }
 
-        xml_parse($this->parser, $data);
+        xml_parse($this->_parser, $data);
 
-        if ($this->DEBUG) {
-            echo implode("<br />\n", $this->snapshots);
+        if ($this->_DEBUG) {
+            echo implode("<br />\n", $this->_snapshots);
         }
 
         switch ($rettype) {
-            case 'array': return $this->output;
+            case 'array': return $this->_output;
             case 'raw':   return $data;
-            case 'text':  return implode('', $this->output);
+            case 'text':  return implode('', $this->_output);
             default:      return null;
         }
     }
@@ -361,27 +367,29 @@ class Parser {
      * Handle start tag.
      *
      * Push into Parser::output start tag (or tag who hasn't closing tag).
-     * If Parser::DEBUG is TRUE, it release Parser::make_snapshot() method.
+     * If Parser::DEBUG is TRUE, it release Parser::_makeSnapshot() method.
      *
-     * @param object $parser
+     * @param object $_parser
      * @param string $tag name of new tag
      * @param array $attributes list of tag attributes
      *
      * @return bool true
+     *
+     * @access private
      */
-    private function tag_open($parser, $tag, $attributes)
+    private function _tagOpen($_parser, $tag, $attributes)
     {
-        if (in_array($tag, $this->tags_allowed)) { //we want these tag in our output ?
+        if (in_array($tag, $this->tagsAllowed)) { //we want these tag in our output ?
             $htmlTag = '<' . $tag;
 
             if ($attributes) {
 
                 while(list($attr, $val) = each($attributes)) {
                     if (in_array($attr, $this->attributes[$tag]) ||
-                        in_array($attr, $this->attributes_const)) {
+                        in_array($attr, $this->attributesConst)) {
 
-                        if (in_array($attr, $this->attributes_ext)) {
-                            $m = 'checkattr_' . $attr;
+                        if (in_array($attr, $this->_attributesExt)) {
+                            $m = '_checkattr_' . $attr;
                             $val = $this->$m($val);
                         }
 
@@ -391,18 +399,18 @@ class Parser {
                 }
             } //if ($attributes)
 
-            $htmlTag .= in_array($tag, $this->tags_closed) ? ' />' : '>';
+            $htmlTag .= in_array($tag, $this->tagsClosed) ? ' />' : '>';
 
-            $this->output[]     = $htmlTag;
-        } //if (in_array($tag, $this->tags_allowed))
+            $this->_output[]     = $htmlTag;
+        } //if (in_array($tag, $this->tagsAllowed))
 
 
-        if ($this->DEBUG) {
-            $this->tag_queue[]  = $tag;
-            $this->make_snapshot();
+        if ($this->_DEBUG) {
+            $this->_tagQueue[]  = $tag;
+            $this->_makeSnapshot();
         }
-        if (in_array($tag, $this->safe_tree)) {
-            $this->nl2br++;
+        if (in_array($tag, $this->_safeTree)) {
+            $this->_nl2br++;
         }
 
         return true;
@@ -411,37 +419,39 @@ class Parser {
     /**
      * Handle character data in parsed text.
      *
-     * Checks did text isn't Parser::safe Parser::safe_tree,
+     * Checks did text isn't Parser::safe Parser::_safeTree,
      * and if not, replace all new line chars with < br /> XHTML tag,
      * and behind it, content of Parser::newline.
      * If Parser::strip is set to FALSE, or character data
      * isn't empty, append parsed text into Parser::output.
      *
-     * @param object $parser
+     * @param object $_parser
      * @param string $cdata founded character data
      *
      * @return bool true
+     *
+     * @access private
      */
-    private function cdata($parser, $cdata)
+    private function _cdata($_parser, $cdata)
     {
-        $last = end($this->tag_queue);
+        $last = end($this->_tagQueue);
 
-        if ($this->DEBUG) {
-            $br = sprintf('<br type="%s" />', $last) . $this->newline;
+        if ($this->_DEBUG) {
+            $br = sprintf('<br type="%s" />', $last) . $this->_newline;
         } else {
-            $br = '<br />' . $this->newline;
+            $br = '<br />' . $this->_newline;
         }
 
-        if (0 == $this->nl2br && !in_array($last, $this->safe)) {
+        if (0 == $this->_nl2br && !in_array($last, $this->_safe)) {
             $cdata = str_replace(array("\r\n", "\r", "\n"), $br, $cdata);
         }
 
-        if ($this->strip) {
+        if ($this->_strip) {
             $cdata = trim($cdata, "\r\n");
         }
 
-        if (!$this->strip || '' != trim($cdata)) {
-            $this->output[] = $cdata;
+        if (!$this->_strip || '' != trim($cdata)) {
+            $this->_output[] = $cdata;
         }
 
         return true;
@@ -450,24 +460,27 @@ class Parser {
     /**
      * Handle action at close tag.
      *
-     * If handled tag isn't in Parser::safe or Parser::safe_tree,
-     * and is in Parser::tags_allowed, append a close part of
+     * If handled tag isn't in Parser::safe or Parser::_safeTree,
+     * and is in Parser::tagsAllowed, append a close part of
      * tag into Parser::output.
      *
-     * @param object $parser
+     * @param object $_parser
      * @param string $tag name of closed tag
+     *
      * @return bool true
+     *
+     * @access private
      */
-    private function tag_close($parser, $tag)
+    private function _tagClose($_parser, $tag)
     {
-        if (!in_array($tag, $this->tags_closed) && in_array($tag, $this->tags_allowed)) {
-            $this->output[] = sprintf('</%s>', $tag);
+        if (!in_array($tag, $this->tagsClosed) && in_array($tag, $this->tagsAllowed)) {
+            $this->_output[] = sprintf('</%s>', $tag);
         }
 
-        array_pop($this->tag_queue);
+        array_pop($this->_tagQueue);
 
-        if (in_array($tag, $this->safe_tree)) {
-            $this->nl2br--;
+        if (in_array($tag, $this->_safeTree)) {
+            $this->_nl2br--;
         }
 
         return true;
@@ -476,29 +489,55 @@ class Parser {
     /**
      * Released when found other type of data, not handled by previuos methods.
      *
-     * @param object $parser
+     * @param object $_parser
      * @param string $data
+     *
      * @return bool true
+     *
+     * @access private
      */
-    private function h_default($parser, $cdata)
+    private function _hDefault($_parser, $cdata)
     {
-        if (!$this->strip || trim($cdata) != '') {
-            $this->output[] = $cdata;
+        if (!$this->_strip || trim($cdata) != '') {
+            $this->_output[] = $cdata;
         }
 
         return true;
     }
 
     /**
-     * Creates snapshot of current tag queue. Used only for DEBUG purposes.
+     * If allowed, evaluate PHP code.
+     *
+     * @param object $_parser
+     * @param string $target type of processing instruction
+     * @param string $data
+     *
+     * @return string
      *
      * @access private
-     * @return bool true
      */
-    private function make_snapshot()
+    private function _PIHandler($_parser, $target, $data)
     {
-        if (count($this->tag_queue) > 1) {
-            $this->snapshots[] = implode(' -&gt; ', array_slice($this->tag_queue, 1));
+        if ('php' == strtolower($target)) {
+            if ($this->parsePHP) {
+                return eval($data);
+            } else {
+                return Strings::entities($data);
+            }
+        }
+    }
+
+    /**
+     * Creates snapshot of current tag queue. Used only for DEBUG purposes.
+     *
+     * @return bool true
+     *
+     * @access private
+     */
+    private function _makeSnapshot()
+    {
+        if (count($this->_tagQueue) > 1) {
+            $this->_snapshots[] = implode(' -&gt; ', array_slice($this->_tagQueue, 1));
         }
         return true;
     }
@@ -514,11 +553,10 @@ class Parser {
      *
      * @access private
      */
-    private function checkattr_href($val)
+    private function _checkattr_href($val)
     {
         $pattern = '#^\s*j\s*a\s*v\s*a\s*s\s*c\s*r\s*i\s*p\s*t\s*:#im';
-        $val = preg_replace($pattern, '', $val);
-        return $val;
+        return preg_replace($pattern, '', $val);
     }
 
     /**
@@ -532,9 +570,9 @@ class Parser {
      *
      * @access private
      */
-    private function checkattr_src($val)
+    private function _checkattr_src($val)
     {
-        return $this->checkattr_href($val);
+        return $this->_checkattr_href($val);
     }
 }
 
