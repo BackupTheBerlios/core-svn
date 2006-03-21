@@ -34,7 +34,7 @@
  * Singleton's pattern of database connection class
  *
  * @category   Classes
- * @package    Classess
+ * @package    Classes
  * @author     Core Dev Team <core@core-cms.com>
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
