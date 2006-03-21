@@ -48,6 +48,26 @@ abstract class Strings {
         );
 	      return preg_replace($p, $r, $s);
     }
+
+    public static function startswith($string, $prefix)
+    {
+        return (substr($string, 0, strlen($prefix)) == $prefix);
+    }
+
+    public static function endswith($string, $postfix)
+    {
+        return (substr($string, -strlen($postfix)) == $postfix);
+    }
+
+    public static function istartswith($string, $prefix)
+    {
+        return (strtolower(substr($string, 0, strlen($prefix))) == strtolower($prefix));
+    }
+
+    public static function iendswith($string, $postfix)
+    {
+        return (strtolower(substr($string, -strlen($postfix))) == strtolower($postfix));
+    }
 }
 
 ?>
