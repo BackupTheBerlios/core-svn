@@ -18,9 +18,14 @@ abstract class Arrays {
         return $arr;
     }
 
-    public static function debug($array, $exit = false)
+    public static function debug($array, $exit=false, $funcName='print_r')
     {
-        printf('<pre>%s</pre>', print_r($array, 1));
+        echo '<pre>';
+        if (!function_exists($funcName)) {
+            $funcName = 'print_r';
+        }
+        $funcName($array);
+        echo '</pre>';
         if ($exit) {
             exit;
         }
