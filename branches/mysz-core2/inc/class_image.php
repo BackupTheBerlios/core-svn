@@ -56,61 +56,57 @@ class Image {
     const QUALITY = 75;
 
     /**
-     * Height of image
-     *
-     * @var integer
-     * @access public
+     * Constant - max size of image. Used when in {scale,grow,shrink}Prop
+     * as $max_{width,height} is false.
      */
-    public $height = 0;
+    const MAX_SIZE = 40960;
 
     /**
-     * Width of image
+     * Properties of image
      *
-     * @var integer
-     * @access public
-     */
-    public $width = 0;
-
-    /**
-     * Is this image truecolor or not
+     * Have to be read only, so we keep it in internal array and
+     * access to them is via __set() and __get() methods
      *
-     * @var boolean
-     * @access public
+     * @var array
+     * @access protected
      */
-    public $truecolor = null;
+    protected $properties = array(
+        'width'     => null,
+        'height'    => null,
+        'truecolor' => null
+    );
 
     /**
      * Image descriptor (handler)
      *
      * @var object
-     * @access private
+     * @access protected
      */
-    private $_body = null;
+    protected $_body = null;
 
     /**
-     * Filters which can be used.
+     * Available filters
      *
      * List is initialized from constructor, because filters are available
      * only if php use it's internal gd.
      */
-    private $_filters = array();
+    protected $_filters = array();
 
     /**
-     * Formats handled by this class.
+     * Image formats handled by this class.
      *
      * This array maps possible formats to assigned with them functions from
      * image extension.
      *
      * @var array
-     * @access private
+     * @access protected
      */
-    private $_formats = array(
+    protected $_formats = array(
         'jpg'  => 'imagejpeg',
         'jpeg' => 'imagejpeg',
         'gif'  => 'imagegif',
         'png'  => 'imagepng'
     );
-
 
     /**
      * Constructor.
@@ -144,13 +140,17 @@ class Image {
             );
         }
 
-        $this->open($fname);
+        if (!is_null($fname)) {
+            $this->open($fname);
+        }
     }
 
     /**
      * Destructor
      *
      * Destroy opened image
+     *
+     * @access public
      */
     public function __destruct()
     {
@@ -166,22 +166,25 @@ class Image {
      * @param boolean $return return file image object if true
      *
      * @return mixed
+     * @throws CEFileSystemError ({@link CEFileSystemError description})
+     *
+     * @access public
      */
-    public function open($fname=null, $return=false)
+    public function open($fname, $return=false)
     {
-        if (is_null($fname) || !file_exists($fname)) {
-            return false;
+        $fname = Path::real($fname);
+        if (!file_exists($fname) || !is_readable($fname)) {
+            throw new CEFileSystemError(sprintf('Cannot read "%s".', $fname));
         }
-        $fname = Path::normalize($fname);
 
         $dst = imagecreatefromstring(file_get_contents($fname));
         if ($return) {
             return $dst;
         } else {
             $this->_swap($dst);
-            $this->width        = imagesx($dst);
-            $this->height       = imagesy($dst);
-            $this->truecolor    = imageistruecolor($dst);
+            $this->properties['width']     = imagesx($dst);
+            $this->properties['height']    = imagesy($dst);
+            $this->properties['truecolor'] = imageistruecolor($dst);
         }
     }
 
@@ -194,7 +197,7 @@ class Image {
      *
      * @access public
      */
-    public function show($format=null, $quality=75, $sendHeaders=true)
+    public function show($format=null, $quality=null, $sendHeaders=true)
     {
         $this->_isInitialized();
 
@@ -219,11 +222,11 @@ class Image {
      * @param integer $quality   quality of output jpeg
      * @param boolean $overwrite if true, it overwrite file if it exists
      *
-     * @throws CEFilesystemError
+     * @throws CEFilesystemError ({@link CEFileSystemError description})
      *
      * @access public
      */
-    public function saveToFile($fname, $format=null, $quality=75, $overwrite=false)
+    public function saveToFile($fname, $format=null, $quality=null, $overwrite=false)
     {
         $this->_isInitialized();
 
@@ -232,22 +235,22 @@ class Image {
         if (is_null($format)) {
             $format = $pathinfo['extension'];
         }
-        $format = $this->_checkFormat($format);
+        $format = $this->_checkFormat(strtolower($format));
 
-        if ($pathinfo['dirname'] == '') {
+        if ('' == $pathinfo['dirname']) {
             $pathinfo['dirname'] = '.';
         }
         $pathinfo['dirname'] = realpath($pathinfo['dirname']);
-        $fullpath = $pathinfo['dirname'] . DIRECTORY_SEPARATOR . $pathinfo['basename'];
+        $fullpath = Path::join($pathinfo['dirname'], $pathinfo['basename']);
 
         if (!is_writeable($pathinfo['dirname'])) {
-            throw new CEFilesystemError(sprintf('Cannot write to "%s" directory.', $pathinfo['dirname']));
+            throw new CEFileSystemError(sprintf('Cannot write to "%s" directory.', $pathinfo['dirname']));
         }
         if (file_exists($fullpath)) {
             if ($overwrite) {
                 unlink($fullpath);
             } else {
-                throw new CEFilesystemError(sprintf('File "%s" already exists.', $fullpath));
+                throw new CEFileSystemError(sprintf('File "%s" already exists.', $fullpath));
             }
         }
 
@@ -272,81 +275,100 @@ class Image {
     {
         $format = $this->_checkFormat($format);
 
-        $fname = tempnam(getcwd(), 'core_');
+        $fname = tempnam(getcwd(), 'coreImg_');
         $this->saveToFile($fname, $format, $quality, true);
         $img = file_get_contents($fname);
         unlink($fname);
         return $img;
     }
 
-
-    /**
-     * Alias for scaleProp() and scaleNonProp()
-     *
-     * @param integer $width  width of image
-     * @param integer $height height of image
-     * @param boolean $prop   proportional or nonproportional scaling
-     * @param string  $color  background color in html notation
-     *
-     * @return boolean
-     *
-     * @access public
-     */
-    public function scale($width, $height, $prop, $bgcolor='ffffff')
-    {
-        if ($prop) {
-            return $this->scaleProp($width, $height, $bgcolor);
-        } else {
-            return $this->scaleNonProp($width, $height, $bgcolor);
-        }
-    }
-
     /**
      * Proportional scaling of image
      *
-     * Return false if fail
+     * If $fill == true, image dimensions has been equal to $max_{width,height}.
+     * Free space between scaled image and edge of image will be filled by
+     * $bgcolor.
+     * If $fill == false, image dimensions will be equal to scaled image, not
+     * bigger then $max_{width,height}.
      *
-     * @param integer $width   width of image
-     * @param integer $height  of image
-     * @param string  $bgcolor background color
+     * If $padding is specified, image will be scaled down to be equal
+     * or smaller then $max_width-$padding and $max_height-$padding, and free
+     * space will be filled by $bgcolor.
+     * $padding can be either an integer (all padding are equal) or array:
+     * - 2 elements for top/bottom and left/right paddings;
+     * - 4 elemnts for top, tight, bottm and left values of padding
+     * Scaled image wil be 'placed' into selected (in $position) place of
+     * output image.
+     *
+     * $max_width or $max_height (but no both) can be false. In this case image
+     * will be scaled only for second, non-false dimension.
+     *
+     * Return false if fail.
+     *
+     * @param mixed   $max_width
+     * @param mixed   $max_height
+     * @param string  $bgcolor
+     * @param boolean $fill
+     * @param string  $position
+     * @param mixed   $padding
      *
      * @return boolean
+     * @throws CETypeError ({@link CETypeError description})
      *
      * @access public
      */
-    public function scaleProp($width, $height, $bgcolor='ffffff')
+    public function scaleProp($max_width, $max_height, $bgcolor='ffffff',
+                              $fill=true, $position='c', $padding=0)
     {
         $this->_isInitialized();
 
-        $dst = $this->_newImage($width, $height);
-
-        //background color
-        imagefill($dst, 0, 0, $this->color($bgcolor));
-
-        // we must to now dzielna
-        $div_width  = $this->width  / $width;
-        $div_height = $this->height / $height;
-
-        $div = max($div_width, $div_height);
-        unset($div_width, $div_height);
-
-        // proportional size of shrinked picture
-        $th_w = $this->width  / $div;
-        $th_h = $this->height / $div;
-
-        if ($th_w > $th_h) {
-            $test = imagecopyresampled($dst, $this->_body,
-                0, round(($th_w - $th_h)/2),
-                0, 0,
-                $th_w, $th_h,
-                $this->width, $this->height);
-        } else {
-            $test = imagecopyresampled($dst, $this->_body,
-                round(($th_h - $th_w)/2), 0,
-                0, 0,
-                $th_w, $th_h,
-                $this->width, $this->height);
+        if ($max_width === false && $max_height === false) {
+            throw new CETypeError('Both values: $max_width and $max_height cannot be false');
         }
+        if ($max_width  === false) {
+            $max_width  = self::MAX_SIZE;
+            $fill       = false;
+        }
+        if ($max_height === false) {
+            $max_height = self::MAX_SIZE;
+            $fill       = false;
+        }
+
+        if (!is_array($padding)) {
+            $padding = array_fill(0, 4, $padding);
+        } elseif (2 == count($padding)) {
+            $padding = array($padding[0], $padding[1], $padding[0], $padding[1]);
+        } elseif (4 != count($padding)) {
+            throw new CETypeError('Incorrect quant of elements in "$padding" parameter.');
+        }
+
+        $width  = $max_width  - ($padding[1] + $padding[3]);
+        $height = $max_height - ($padding[0] + $padding[2]);
+
+        list($th_width, $th_height) = $this->_calculateSize($width, $height);
+
+        if ($fill) {
+            $dst_width  = $max_width;
+            $dst_height = $max_height;
+
+            $pos = $this->_calculatePosition($width, $height, $position);
+        } else {
+            $dst_width  = $th_width  + ($padding[1] + $padding[3]);
+            $dst_height = $th_height + ($padding[0] + $padding[2]);
+
+            $pos = $this->_calculatePosition($th_width, $th_height, $position);
+        }
+
+        // initializing destination image
+        $dst = $this->_newImage($dst_width, $dst_height);
+
+        imagefill($dst, 0, 0, $this->color($bgcolor)); //set background color
+        $test = imagecopyresampled($dst, $this->_body,
+            $pos[0]+$padding[3], $pos[1]+$padding[0],
+            $pos[2], $pos[3],
+            $th_width, $th_height,
+            $this->properties['width'], $this->properties['height']
+        );
 
         if ($test) {
             return $this->_swap($dst);
@@ -355,30 +377,45 @@ class Image {
         }
     }
 
+
     /**
-     *  Non proportional scaling
+     * Non proportional scaling
+     *
+     * If $padding is specified, image will be scaled down to be equal
+     * or smaller then $max_width-$padding and $max_height-$padding, and free
+     * space will be filled by $bgcolor.
+     * $padding can be either an integer (all padding are equal) or array of
+     * top, right, bottom, and left padding value.
      *
      * Return false if fail
      *
      * @param integer $width   width of image
      * @param integer $height  height of image
+     * @param mixed   $padding
      * @param string  $bgcolor background color
      *
      * @return boolean
      *
      * @access public
      */
-    public function scaleNonProp($width, $height, $bgcolor='ffffff')
+    public function scaleNonProp($width, $height, $padding=0, $bgcolor='ffffff')
     {
         $this->_isInitialized();
 
         $dst = $this->_newImage($width, $height);
-
-        imagefill($dst, 0, 0, $this->color($bgcolor));
+        if ($padding) {
+            imagefill($dst, 0, 0, $this->color($bgcolor));
+        }
+        if (!is_array($padding)) {
+            $padding = array_fill(0, 4, $padding);
+        }
 
         $test = imagecopyresampled($dst, $this->_body,
-                0, 0, 0, 0,
-                $width, $height, $this->width, $this->height);
+                $padding[3], $padding[0], 0, 0,
+                $width - ($padding[1] + $padding[3]),
+                $height - ($padding[0] + $padding[2]),
+                $this->properties['width'], $this->properties['height']
+        );
 
         if ($test) {
             return $this->_swap($dst);
@@ -388,7 +425,148 @@ class Image {
     }
 
     /**
-     * Cropping of an image, style 1.
+     * Grow an image (proportional)
+     *
+     * Grow image if is smaller then $max_width & $max_height. Return true if
+     * bigger and leave image non touched.
+     * Use Image::scaleProp()
+     *
+     * $max_width or $max_height (but no both) can be false. In this case image
+     * will be scaled only for second, non-false dimension.
+     *
+     * Params description: {@link Image::scaleProp()}
+     *
+     * @param integer $max_width
+     * @param integer $max_height
+     * @param string  $bgcolor
+     * @param boolean $fill
+     * @param string  $position
+     * @param mixed   $padding
+     *
+     * @return boolean
+     *
+     * @access public
+     */
+    public function growProp($max_width, $max_height, $bgcolor='ffffff',
+                             $fill=true, $position='c', $padding=0)
+    {
+        if ($max_width === false && $max_height === false) {
+            throw new CETypeError('Both values: $max_width and $max_height cannot be false');
+        }
+        if (
+                ($max_width  !== false && $this->properties['width']  <= $max_width)  ||
+                ($max_height !== false && $this->properties['height'] <= $max_height)
+           ) {
+            return $this->scaleProp($max_width, $max_height, $bgcolor,
+                                   $fill, $position, $padding);
+       } else {
+           return true;
+       }
+    }
+
+    /**
+     * Grow an image (non-proportional)
+     *
+     * Grow image if is smaller then $max_width & $max_height. Return true if
+     * bigger and leave image non touched.
+     * Use {@link Image::scaleNonProp()}
+     *
+     * Params description: {@link Image::scaleProp()}
+     *
+     * @param integer $max_width
+     * @param integer $max_height
+     * @param string  $bgcolor
+     * @param boolean $fill
+     * @param string  $position
+     * @param mixed   $padding
+     *
+     * @return boolean
+     *
+     * @access public
+     */
+    public function growNonProp($max_width, $max_height,
+                                $padding=0, $bgcolor='ffffff')
+    {
+        if ($this->properties['width'] <= $max_width ||
+                $this->properties['height'] <= $max_height) {
+            return $this->scaleNonProp($max_width, $max_height, $bgcolor,
+                                      $fill, $position, $padding);
+       } else {
+           return true;
+       }
+    }
+
+    /**
+     * Shrink an image (proportional)
+     *
+     * Shrinks image if is bigger then $min_width & $min_height. Return true if
+     * smaller and leave image non touched.
+     * Use Image::scaleProp()
+     *
+     * Params description: {@link Image::scaleProp()}
+     *
+     * @param integer $min_width
+     * @param integer $min_height
+     * @param string  $bgcolor
+     * @param boolean $fill
+     * @param string  $position
+     * @param mixed   $padding
+     *
+     * @return boolean
+     *
+     * @access public
+     */
+    public function shrinkProp($min_width, $min_height, $bgcolor='ffffff',
+                               $fill=true, $position='c', $padding=0)
+    {
+        if ($min_width === false && $min_height === false) {
+            throw new CETypeError('Both values: $min_width and $min_height cannot be false');
+        }
+        if (
+                ($min_width  !== false && $this->properties['width']  >= $min_width)  ||
+                ($min_height !== false && $this->properties['height'] >= $min_height)
+           ) {
+            return $this->scaleProp($min_width, $min_height, $bgcolor,
+                                   $fill, $position, $padding);
+       } else {
+           return true;
+       }
+    }
+
+    /**
+     * Shrink an image (non-proprtional)
+     *
+     * Shrinks image if is bigger then $min_width & $min_height. Return true if
+     * smaller and leave image non touched.
+     * Use Image::scaleNonProp()
+     *
+     * Params description: {@link Image::scaleProp()}
+     *
+     * @param integer $min_width
+     * @param integer $min_height
+     * @param string  $bgcolor
+     * @param boolean $fill
+     * @param string  $position
+     * @param mixed   $padding
+     *
+     * @return boolean
+     *
+     * @access public
+     */
+    public function shrinkNonProp($min_width, $min_height,
+                                  $padding=0, $bgcolor='ffffff')
+    {
+        if ($this->properties['width'] >= $min_width ||
+                $this->properties['height'] >= $min_height) {
+            return $this->scaleNonProp($min_width, $min_height,
+                                      $padding, $bgcolor);
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Cropping of an image, method 1.
      *
      * As parameters are given: x and y coordinats of top left corner
      * cropped area, and width and height of it.
@@ -417,7 +595,7 @@ class Image {
     }
 
     /**
-     * Cropping of an image, style 2.
+     * Cropping of an image, method 2.
      *
      * As parameters are given: top, right, bottom and left coordinates of
      * image.
@@ -442,11 +620,11 @@ class Image {
     /**
      * Apply filter to an image
      *
-     * @param string $filter filter name (available filters from $this->_filters)
-     * @param...             @sse htp://php.net/imagefilter
+     * @param string $filter     filter name (available filters from $this->_filters)
+     * @param string $filter,... {@link htp://php.net/imagefilter description}
      *
      * @return boolean
-     * @throws CESyntaxError if invalid filter name
+     * @throws CESyntaxError if invalid filter name ({@link CESyntaxError description})
      *
      * @access public
      */
@@ -471,7 +649,6 @@ class Image {
                 return imagefilter($this->_body, $this->_filters[$filter], $argv[1], $argv[2], $argv[3]);
         }
     }
-
 
     /**
      * Apply negate filter to an image
@@ -626,7 +803,7 @@ class Image {
      *
      * @param integer $angle
      * @param string  $bgcolor background color
-     * @param boolean $ignore_transparent @see http://php.net/imagerotate
+     * @param boolean $ignore_transparent {@link http://php.net/imagerotate}
      *
      * @access public
      */
@@ -642,7 +819,7 @@ class Image {
     /**
      * Apply an border to image
      *
-     * Border can be solid, or pattern (@see http://php.net/imagesetstyle).
+     * Border can be solid, or pattern ({@link http://php.net/imagesetstyle}).
      * Each of borders can be other color/style, and thickness.
      *
      * If $thickness is an integer, it means is one value (thickness) for
@@ -654,10 +831,10 @@ class Image {
      * and different for any of edge (all 4 $col* must be set).
      *
      * Colors can be as hex value in html notation, or result of
-     * imagecolorallocate() (@see http://php.net/imagecolorallocate).
+     * imagecolorallocate() ({@link http://php.net/imagecolorallocate}).
      *
      * If You want to set pattern for edges, You must set proper arrays
-     * (@see http://php.net/imagesetstyle).
+     * ({@link http://php.net/imagesetstyle}).
      *
      * @param mixed $thickness
      * @param mixed $colT
@@ -666,7 +843,7 @@ class Image {
      * @param mixed $colL
      *
      * @return boolean
-     * @throws CETypeError
+     * @throws CETypeError ({@link CETypeError description})
      *
      * @access public
      */
@@ -679,7 +856,7 @@ class Image {
             $thickness = array($tmp[0], $tmp[1], $tmp[0], $tmp[1]);
             unset($tmp);
         } elseif (4 != count($thickness)) { //four different
-            throw new CETypeError('Incorrect type of "$thickness" parameter.');
+            throw new CETypeError('Incorrect quant of elements in "$thickness" parameter.');
         }
 
         if (is_null($colR)) { //all borders have one style
@@ -690,20 +867,22 @@ class Image {
         }
         $col = array($colT, $colR, $colB, $colL);
 
-        $this->_line(
+        $this->_drawLine( //top
             array(0, $thickness[0]/2),
-            array($this->width, $thickness[0]/2),
+            array($this->properties['width'], $thickness[0]/2),
             $colT, $thickness[0]);
-        $this->_line(
-            array($this->width - ($thickness[1]/2), 0),
-            array($this->width - ($thickness[1]/2), $this->height),
+        $this->_drawLine( //right
+            array($this->properties['width'] - ($thickness[1]/2), 0),
+            array($this->properties['width'] - ($thickness[1]/2),
+                $this->properties['height']),
             $colR, $thickness[1]);
-        $this->_line(
-            array($this->width, $this->height - ($thickness[2]/2) ),
-            array(0, $this->height - ($thickness[2]/2) ),
+        $this->_drawLine( //left
+            array($this->properties['width'],
+                $this->properties['height'] - ($thickness[2]/2) ),
+            array(0, $this->properties['height'] - ($thickness[2]/2) ),
             $colB, $thickness[2]);
-        $this->_line(
-            array($thickness[3]/2, $this->height),
+        $this->_drawLine( //bottom
+            array($thickness[3]/2, $this->properties['height']),
             array($thickness[3]/2, 0),
             $colL, $thickness[3]);
 
@@ -715,7 +894,9 @@ class Image {
      *
      * If $layer is string, it suppose to be file name, which be loaded and
      * merged with current image.
-     * $layer can also be an image object (@see Image::get())
+     * $layer can also be an image object ({@link Image::get()}).
+     *
+     * Can be used to adding some blenda do thumbnails, for example.
      *
      * @param mixed   $layer
      * @param integer $alpha opacity of new layer
@@ -737,23 +918,27 @@ class Image {
                 imagesy($layer), $alpha);
     }
 
-
     /**
      * Allocate color.
      *
      * Can be used when adding borders etc.
-     * @see http://php.net/imagecolorallocate
+     * {@link http://php.net/imagecolorallocate}
      *
-     * @param string $hex color in html notation
+     * @param string   $hex color in html notation
+     * @param resource $img if not null, used by imagecolorallocate
      *
      * @return integer
      *
      * @access public
      */
-    public function color($hex)
+    public function color($hex, &$img=null)
     {
         list($r, $g, $b) = $this->_hex2rgb($hex);
-        return imagecolorallocate($this->_body, $r, $g, $b);
+        if (is_null($img)) {
+            return imagecolorallocate($this->_body, $r, $g, $b);
+        } else {
+            return imagecolorallocate($img, $r, $g, $b);
+        }
     }
 
     /**
@@ -776,7 +961,7 @@ class Image {
      * $begin and $end holds coordinates of begin and end points of line.
      * $color can be:
      * - integer - if line have to be solid
-     * - array - if line have to be an pattern (@see http://php.net/imagesestyle)
+     * - array - if line have to be an pattern ({@link http://php.net/imagesestyle})
      *
      *
      * @param array   $begin
@@ -788,7 +973,7 @@ class Image {
      *
      * @access public
      */
-    private function _line($begin, $end, $color, $thickness)
+    protected function _drawLine($begin, $end, $color, $thickness)
     {
         imagesetthickness($this->_body, $thickness);
 
@@ -819,11 +1004,11 @@ class Image {
      * @param boolean $exc if true, an exception is raised when image wasn't loaded
      *
      * @return boolean
-     * @throws CESyntaxError
+     * @throws CESyntaxError ({@link CESyntaxError description})
      *
-     * @access private
+     * @access protected
      */
-    private function _isInitialized($exc=true)
+    protected function _isInitialized($exc=true)
     {
         if (is_null($this->_body)) {
             if ($exc) {
@@ -844,9 +1029,9 @@ class Image {
      *
      * @return mixed
      *
-     * @access private
+     * @access protected
      */
-    private function _hex2rgb($hex)
+    protected function _hex2rgb($hex)
     {
         if (6 != strlen($hex)) {
             return false;
@@ -867,23 +1052,27 @@ class Image {
      *
      * @param integer $width
      * @param integer $height
+     * @param boolean $truecolor
      *
      * @return object
      *
-     * @access private
+     * @access protected
      */
-    private function _newImage($width=null, $height=null)
+    protected function _newImage($width=null, $height=null, $truecolor=null)
     {
         //docelowa szerokosc
         if (is_null($width)) {
-            $width = $this->width;
+            $width = $this->properties['width'];
         }
         //docelowa wysokosc
         if (is_null($height)) {
-            $height = $this->height;
+            $height = $this->properties['height'];
+        }
+        if (is_null($truecolor)) {
+            $truecolor = $this->properties['truecolor'];
         }
 
-        if ($this->truecolor) {
+        if ($truecolor) {
             return imagecreatetruecolor($width, $height);
         } else {
             return imagecreate($width, $height);
@@ -893,18 +1082,18 @@ class Image {
     /**
      * Check for correct image format
      *
-     * If format is incorrect, it return default format used by Image class
-     * (@see Image::format)
+     * If format is incorrect, it return default format used by Image class.
+     * See: {@link Image::FORMAT}, {@link Image::$_formats}
      *
      * @param string $format
      *
      * @return string
      *
-     * @access private
+     * @access protected
      */
-    private function _checkFormat($format)
+    protected function _checkFormat($format=null)
     {
-        if (!array_key_exists($format, $this->_formats)) {
+        if (is_null($format) || !array_key_exists($format, $this->_formats)) {
             $format = self::FORMAT;
         }
         if ('jpg' == $format) {
@@ -914,25 +1103,172 @@ class Image {
     }
 
     /**
+     * Calculate proportional size of scaled image
+     *
+     * @param integer $max_width
+     * @param integer $max_height
+     *
+     * @return array
+     *
+     * @access protected
+     */
+    protected function _calculateSize(&$max_width, &$max_height)
+    {
+        $div_width  = (double)($this->properties['width']  / $max_width);
+        $div_height = (double)($this->properties['height'] / $max_height);
+
+        $div = max($div_width, $div_height);
+
+        $ret = array();
+        $ret[] = (double)($this->properties['width']  / $div);
+        $ret[] = (double)($this->properties['height'] / $div);
+        $ret[] = &$div;
+
+        return $ret;
+    }
+
+    /**
+    * Calculate position of scaled image
+    *
+    * (coordinates of left top point and
+    *
+    * @param integer $max_width
+    * @param integer $max_height
+    * @param string  $position
+    *
+    * @return array
+    *
+    * @access protected
+    */
+    protected function _calculatePosition(&$max_width, &$max_height, $position)
+    {
+        //'c', 'lt', 'ct', 'rt', 'lc', 'rc', 'lb', 'cb', 'rb'
+        list($th_w, $th_h) = $this->_calculateSize($max_width, $max_height);
+        $ret = array(0, 0, 0, 0);
+        switch ($position)
+        {
+            case 'lt':
+            break;
+            case 'ct':
+                $ret[0] = ($max_width-$th_w)/2;
+            break;
+            case 'rt':
+                $ret[0] = $max_width-$th_w;
+            break;
+            case 'lc':
+                $ret[1] = ($max_height-$th_h)/2;
+            break;
+            case 'rc':
+                $ret[0] = $max_width-$th_w;
+                $ret[1] = ($max_height-$th_h)/2;
+            break;
+            case 'lb':
+                $ret[1] = $max_height-$th_h;
+            break;
+            case 'cb':
+                $ret[0] = ($max_width-$th_w)/2;
+                $ret[1] = $max_height-$th_h;
+            break;
+            case 'rb':
+                $ret[0] = $max_width-$th_w;
+                $ret[1] = $max_height-$th_h;
+            break;
+            default:
+                if ($th_w > $th_h) {
+                    $ret[1] = ($max_height - $th_h) / 2;
+                } else {
+                    $ret[0] = ($max_width - $th_w) / 2;
+                }
+        }
+
+        return $ret;
+    }
+
+
+    /**
      * Put given argument as content of Image::$_body
      *
      * @param object $dst
      *
      * @return boolean
      *
-     * @access private
+     * @access protected
      */
-    private function _swap(&$dst)
+    protected function _swap(&$dst)
     {
         if (is_resource($dst)) {
             if (!is_null($this->_body)) {
                 imagedestroy($this->_body);
             }
-            $this->_body = &$dst;
+            $this->_body = $dst;
 
-            $this->width  = imagesx($this->_body);
-            $this->height = imagesy($this->_body);
+            $this->properties['width']  = imagesx($this->_body);
+            $this->properties['height'] = imagesy($this->_body);
 
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Overloaded setter
+     *
+     * Use Image::$properties as store container.
+     *
+     * @param string $k name of property
+     * @param mixed  $v value of property
+     *
+     * @throws CESyntaxError ({@link CESyntaxError description})
+     * @throws CENotFound    ({@link CENotFound description})
+     *
+     * @access public
+     */
+    public function __set($k, $v)
+    {
+        if (array_key_exists($k, $this->properties)) {
+            throw new CESyntaxError(sprintf('Attribute "%s" is read only.', $k));
+        } else {
+            throw new CENotFound(sprintf('Attribute "%s" doesn\'t exists.', $k));
+        }
+    }
+
+    /**
+     * Overloaded getter
+     *
+     * Use Image::$properties as store container.
+     *
+     * @param string $k name of property
+     *
+     * @return mixed
+     * @throws CENotFound ({@link CENotFound description})
+     *
+     * @access public
+     */
+    public function __get($k)
+    {
+        if (array_key_exists($k, $this->properties)) {
+            return $this->properties[$k];
+        } else {
+            throw new CENotFound(sprintf('Attribute "%s" doesn\'t exists.', $k));
+        }
+    }
+
+    /**
+     * Overloaded isset()
+     *
+     * Use Image::$properties as store container.
+     *
+     * @param string $k name of property
+     *
+     * @return boolean
+     *
+     * @access public
+     */
+    public function __isset($k)
+    {
+        if (array_key_exists($k, $this->properties) &&
+                !is_null($this->properties[$k])) {
             return true;
         } else {
             return false;
