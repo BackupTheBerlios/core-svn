@@ -6,6 +6,8 @@
 
 abstract class Path
 {
+    const SEPARATOR = DIRECTORY_SEPARATOR;
+
     public static function join()
     {
         $argv = Arrays::flat(func_get_args());
@@ -19,7 +21,7 @@ abstract class Path
             $path = array_merge($path, $c);
         }
 
-        return implode(DIRECTORY_SEPARATOR, $path);
+        return implode(self::SEPARATOR, $path);
     }
 
     public static function split($path)
@@ -28,22 +30,22 @@ abstract class Path
 
         $ret = array();
         // we cut drive letter if os == windows and put it as first element
-        if ('\\' == DIRECTORY_SEPARATOR &&  //windows
+        if ('\\' == self::SEPARATOR &&  //windows
                 preg_match('#^([a-z]:\\\\)#i', $path, $match)) {
             $ret[] = substr($match[1], 0, 2);
             $path = str_replace($match[1], '', $path);
         }
 
-        return array_merge($ret, explode(DIRECTORY_SEPARATOR, $path));
+        return array_merge($ret, explode(self::SEPARATOR, $path));
     }
 
     public static function normalize($path)
     {
         static $p = array('#\\\\#', '#/#');
-        static $r = array('/', DIRECTORY_SEPARATOR);
+        static $r = array('/', self::SEPARATOR);
         $path = preg_replace($p, $r, $path);
 
-        if ('\\' == DIRECTORY_SEPARATOR) { //windows
+        if ('\\' == self::SEPARATOR) { //windows
             $path = strtolower($path);
         }
         return $path;
