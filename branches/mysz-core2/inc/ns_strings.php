@@ -54,9 +54,9 @@ abstract class Strings {
         return (substr($string, 0, strlen($prefix)) == $prefix);
     }
 
-    public static function endswith($string, $postfix)
+    public static function endswith($string, $prefix)
     {
-        return (substr($string, -strlen($postfix)) == $postfix);
+        return (substr($string, -strlen($prefix)) == $prefix);
     }
 
     public static function istartswith($string, $prefix)
@@ -64,9 +64,9 @@ abstract class Strings {
         return (strtolower(substr($string, 0, strlen($prefix))) == strtolower($prefix));
     }
 
-    public static function iendswith($string, $postfix)
+    public static function iendswith($string, $prefix)
     {
-        return (strtolower(substr($string, -strlen($postfix))) == strtolower($postfix));
+        return (strtolower(substr($string, -strlen($prefix))) == strtolower($prefix));
     }
 }
 
