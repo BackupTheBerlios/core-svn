@@ -35,6 +35,18 @@
  *
  * Scaling, resizing, cropping, applying filters and many others.
  *
+ * Error codes:
+ * 100 - CESyntaxError       Cannot read "%s"
+ * 101 - CESyntaxError       Invalid filter: "%s".
+ * 102 - CESyntaxError       Image no loaded - call Image::open() first.
+ * 103 - CESyntaxError       Attribute "%s" is read only.
+ * 200 - CETypeError         Both values: $max_width and $max_height cannot be false
+ * 201 - CETypeError         Specified image (%s) has dimensions different then %dx%d.
+ * 202 - CETypeError         Incorrect quant of elements in "$padding" parameter.
+ * 300 - CEFileSystemError   Cannot write to "%s" directory.
+ * 301 - CEFileSystemError   File "%s" already exists.
+ * 400 - CENotFound          Attribute "%s" doesn't exists.
+ *
  * @category   Classes
  * @package    Classes
  * @author     Core Dev Team <core@core-cms.com>
@@ -82,15 +94,19 @@ class Image {
      * @var object
      * @access protected
      */
-    protected $_body = null;
+    protected $body = null;
 
     /**
      * Available filters
      *
      * List is initialized from constructor, because filters are available
      * only if php use it's internal gd.
+     *
+     * @var array
+     * @access protected
+     * @static
      */
-    protected $_filters = array();
+    protected static $filters;
 
     /**
      * Image formats handled by this class.
@@ -100,8 +116,9 @@ class Image {
      *
      * @var array
      * @access protected
+     * @static
      */
-    protected $_formats = array(
+    protected static $formats = array(
         'jpg'  => 'imagejpeg',
         'jpeg' => 'imagejpeg',
         'gif'  => 'imagegif',
@@ -114,18 +131,24 @@ class Image {
      * If filename in argument is specfified, it opens file and read them.
      * Assign available filters too (if any).
      *
-     * @param $fname string filename to open
+     * Params description: {@link Image::open()}
+     *
+     * @param string  $fname
+     * @param mixed   $width
+     * @param mixed   $height
+     * @param boolean $exact
      *
      * @access public
      */
-    public function __construct($fname=null)
+    public function __construct($fname=null, $width=null, $height=null,
+                                $exact=true)
     {
         // these constants aren't compiled in if php use external gd.
         // In this case, we cant put here these constant, only
         // if imagefilter() function exists (it means: when php use bundled
         // version of gd)
-        if (function_exists('imagefilter')) {
-            $this->_filters = array(
+        if (function_exists('imagefilter') && !count(self::$filters)) {
+            self::$filters = array(
                 'negate'        => IMG_FILTER_NEGATE,
                 'grayscale'     => IMG_FILTER_GRAYSCALE,
                 'brightness'    => IMG_FILTER_BRIGHTNESS,
@@ -141,7 +164,7 @@ class Image {
         }
 
         if (!is_null($fname)) {
-            $this->open($fname);
+            $this->open($fname, $width, $height, $exact);
         }
     }
 
@@ -154,44 +177,74 @@ class Image {
      */
     public function __destruct()
     {
-        if (!is_null($this->_body)) {
-            imagedestroy($this->_body);
+        if (!is_null($this->body)) {
+            imagedestroy($this->body);
         }
     }
 
     /**
      * Read file and assign properties.
      *
+     * If $width and $height are not null, and $exact:
+     * - is true: if image dimensions are other then $width x $height, raise
+     *   CETypeError;
+     * - is false: propportional scale image to specified dimensions.
+     *
+     * $width or $height can be false ({@link Image::scaleProp() more}).
+     *
      * @param string  $fname  filename to read
-     * @param boolean $return return file image object if true
+     * @param mixed   $width
+     * @param mixed   $height
+     * @param boolean $exact
      *
      * @return mixed
      * @throws CEFileSystemError ({@link CEFileSystemError description})
+     * @throws CETypeError       ({@link CETypeError description})
      *
      * @access public
      */
-    public function open($fname, $return=false)
+    public function open($fname, $width=null, $height=null, $exact=true)
     {
         $fname = Path::real($fname);
         if (!file_exists($fname) || !is_readable($fname)) {
-            throw new CEFileSystemError(sprintf('Cannot read "%s".', $fname));
+            throw new CEFileSystemError(sprintf('Cannot read "%s".', $fname), 100);
         }
 
         $dst = imagecreatefromstring(file_get_contents($fname));
-        if ($return) {
-            return $dst;
-        } else {
-            $this->_swap($dst);
-            $this->properties['width']     = imagesx($dst);
-            $this->properties['height']    = imagesy($dst);
-            $this->properties['truecolor'] = imageistruecolor($dst);
+        $this->swap($dst);
+
+        if (!is_null($width) && !is_null($height)) {
+            if (false === $width && false === $height) {
+                throw new CETypeError('Both values: $max_width and $max_height ' .
+                    'cannot be false', 200);
+            }
+
+            if ($exact) { // if image has other dimensions then specified
+                if (
+                    ( false !== $width  && $width  != $this->width  ) ||
+                    ( false !== $height && $height != $this->height )
+                   ) {
+
+                    throw new CETypeError(sprintf('Specified image (%s) has ' .
+                        'dimensions different then %dx%d.',
+
+                        $fname,
+                        $width,
+                        $height
+                    ), 201);
+                }
+            } else {
+                return $this->scaleProp($width, $height, 'ffffff', false, 'c', 0);
+            }
         }
+
+        return true;
     }
 
     /**
      * Send image to standard output.
      *
-     * @param string  $format       possible values in $this->_formats
+     * @param string  $format       possible values in self::$formats
      * @param integer $quality      quality of output jpeg
      * @param boolean $sendHeaders if true, send content-type header
      *
@@ -199,9 +252,9 @@ class Image {
      */
     public function show($format=null, $quality=null, $sendHeaders=true)
     {
-        $this->_isInitialized();
+        $this->isInitialized();
 
-        $format = $this->_checkFormat($format);
+        $format = $this->checkFormat($format);
 
         if ($sendHeaders) {
             header('Content-type: image/' . $format);
@@ -211,14 +264,15 @@ class Image {
             $quality = self::QUALITY;
         }
 
-        $this->_formats[$format]($this->_body, '', $quality);
+        $fun = self::$formats[$format];
+        $fun($this->body, '', $quality);
     }
 
     /**
      * Save image to given file.
      *
      * @param string $fname      filename
-     * @param string $format     possible values in $this->_formats
+     * @param string $format     possible values in self::$formats
      * @param integer $quality   quality of output jpeg
      * @param boolean $overwrite if true, it overwrite file if it exists
      *
@@ -228,14 +282,14 @@ class Image {
      */
     public function saveToFile($fname, $format=null, $quality=null, $overwrite=false)
     {
-        $this->_isInitialized();
+        $this->isInitialized();
 
         $pathinfo = pathinfo($fname);
 
         if (is_null($format)) {
             $format = $pathinfo['extension'];
         }
-        $format = $this->_checkFormat(strtolower($format));
+        $format = $this->checkFormat(strtolower($format));
 
         if ('' == $pathinfo['dirname']) {
             $pathinfo['dirname'] = '.';
@@ -244,13 +298,13 @@ class Image {
         $fullpath = Path::join($pathinfo['dirname'], $pathinfo['basename']);
 
         if (!is_writeable($pathinfo['dirname'])) {
-            throw new CEFileSystemError(sprintf('Cannot write to "%s" directory.', $pathinfo['dirname']));
+            throw new CEFileSystemError(sprintf('Cannot write to "%s" directory.', $pathinfo['dirname']), 300);
         }
         if (file_exists($fullpath)) {
             if ($overwrite) {
                 unlink($fullpath);
             } else {
-                throw new CEFileSystemError(sprintf('File "%s" already exists.', $fullpath));
+                throw new CEFileSystemError(sprintf('File "%s" already exists.', $fullpath), 301);
             }
         }
 
@@ -258,13 +312,14 @@ class Image {
             $quality = self::QUALITY;
         }
 
-        $this->_formats[$format]($this->_body, $fname, $quality);
+        $fun = self::$formats[$format];
+        $fun($this->body, $fname, $quality);
     }
 
     /**
      * Return image as an string.
      *
-     * @param string  $format  possible alues in $this->_formats
+     * @param string  $format  possible alues in self::$formats
      * @param integer $quality quality of output jpeg
      *
      * @return string
@@ -273,7 +328,7 @@ class Image {
      */
     public function toString($format=null, $quality=null)
     {
-        $format = $this->_checkFormat($format);
+        $format = $this->checkFormat($format);
 
         $fname = tempnam(getcwd(), 'coreImg_');
         $this->saveToFile($fname, $format, $quality, true);
@@ -320,10 +375,10 @@ class Image {
     public function scaleProp($max_width, $max_height, $bgcolor='ffffff',
                               $fill=true, $position='c', $padding=0)
     {
-        $this->_isInitialized();
+        $this->isInitialized();
 
         if ($max_width === false && $max_height === false) {
-            throw new CETypeError('Both values: $max_width and $max_height cannot be false');
+            throw new CETypeError('Both values: $max_width and $max_height cannot be false', 200);
         }
         if ($max_width  === false) {
             $max_width  = self::MAX_SIZE;
@@ -339,31 +394,31 @@ class Image {
         } elseif (2 == count($padding)) {
             $padding = array($padding[0], $padding[1], $padding[0], $padding[1]);
         } elseif (4 != count($padding)) {
-            throw new CETypeError('Incorrect quant of elements in "$padding" parameter.');
+            throw new CETypeError('Incorrect quant of elements in "$padding" parameter.', 202);
         }
 
         $width  = $max_width  - ($padding[1] + $padding[3]);
         $height = $max_height - ($padding[0] + $padding[2]);
 
-        list($th_width, $th_height) = $this->_calculateSize($width, $height);
+        list($th_width, $th_height) = $this->calculateSize($width, $height);
 
         if ($fill) {
             $dst_width  = $max_width;
             $dst_height = $max_height;
 
-            $pos = $this->_calculatePosition($width, $height, $position);
+            $pos = $this->calculatePosition($width, $height, $position);
         } else {
             $dst_width  = $th_width  + ($padding[1] + $padding[3]);
             $dst_height = $th_height + ($padding[0] + $padding[2]);
 
-            $pos = $this->_calculatePosition($th_width, $th_height, $position);
+            $pos = $this->calculatePosition($th_width, $th_height, $position);
         }
 
         // initializing destination image
-        $dst = $this->_newImage($dst_width, $dst_height);
+        $dst = $this->newImage($dst_width, $dst_height);
 
         imagefill($dst, 0, 0, $this->color($bgcolor)); //set background color
-        $test = imagecopyresampled($dst, $this->_body,
+        $test = imagecopyresampled($dst, $this->body,
             $pos[0]+$padding[3], $pos[1]+$padding[0],
             $pos[2], $pos[3],
             $th_width, $th_height,
@@ -371,12 +426,11 @@ class Image {
         );
 
         if ($test) {
-            return $this->_swap($dst);
+            return $this->swap($dst);
         } else {
             return false;
         }
     }
-
 
     /**
      * Non proportional scaling
@@ -400,9 +454,9 @@ class Image {
      */
     public function scaleNonProp($width, $height, $padding=0, $bgcolor='ffffff')
     {
-        $this->_isInitialized();
+        $this->isInitialized();
 
-        $dst = $this->_newImage($width, $height);
+        $dst = $this->newImage($width, $height);
         if ($padding) {
             imagefill($dst, 0, 0, $this->color($bgcolor));
         }
@@ -410,7 +464,7 @@ class Image {
             $padding = array_fill(0, 4, $padding);
         }
 
-        $test = imagecopyresampled($dst, $this->_body,
+        $test = imagecopyresampled($dst, $this->body,
                 $padding[3], $padding[0], 0, 0,
                 $width - ($padding[1] + $padding[3]),
                 $height - ($padding[0] + $padding[2]),
@@ -418,7 +472,7 @@ class Image {
         );
 
         if ($test) {
-            return $this->_swap($dst);
+            return $this->swap($dst);
         } else {
             return false;
         }
@@ -451,7 +505,7 @@ class Image {
                              $fill=true, $position='c', $padding=0)
     {
         if ($max_width === false && $max_height === false) {
-            throw new CETypeError('Both values: $max_width and $max_height cannot be false');
+            throw new CETypeError('Both values: $max_width and $max_height cannot be false', 200);
         }
         if (
                 ($max_width  !== false && $this->properties['width']  <= $max_width)  ||
@@ -520,7 +574,7 @@ class Image {
                                $fill=true, $position='c', $padding=0)
     {
         if ($min_width === false && $min_height === false) {
-            throw new CETypeError('Both values: $min_width and $min_height cannot be false');
+            throw new CETypeError('Both values: $min_width and $min_height cannot be false', 200);
         }
         if (
                 ($min_width  !== false && $this->properties['width']  >= $min_width)  ||
@@ -582,13 +636,13 @@ class Image {
      */
     public function crop1($x, $y, $h, $w)
     {
-        $this->_isInitialized();
+        $this->isInitialized();
 
-        $dst = $this->_newImage($h, $w);
+        $dst = $this->newImage($h, $w);
 
-        $test = imagecopy($dst, $this->_body, 0, 0, $x, $y, $h, $w);
+        $test = imagecopy($dst, $this->body, 0, 0, $x, $y, $h, $w);
         if ($test) {
-            return $this->_swap($dst);
+            return $this->swap($dst);
         } else {
             return false;
         }
@@ -620,7 +674,7 @@ class Image {
     /**
      * Apply filter to an image
      *
-     * @param string $filter     filter name (available filters from $this->_filters)
+     * @param string $filter     filter name (available filters from self::$filters)
      * @param string $filter,... {@link htp://php.net/imagefilter description}
      *
      * @return boolean
@@ -630,10 +684,10 @@ class Image {
      */
     public function filter($filter)
     {
-        $this->_isInitialized();
+        $this->isInitialized();
 
-        if (!in_array($filter, $this->_filters)) {
-            throw new CESyntaxError(sprintf('Invalid filter: "%s".', $filter));
+        if (!in_array($filter, self::$filters)) {
+            throw new CESyntaxError(sprintf('Invalid filter: "%s".', $filter), 101);
         }
 
         // Workaround: i don't know why, but imagefilter() throw some fatal
@@ -642,11 +696,11 @@ class Image {
         $argc = func_num_args();
         $argv = func_get_args();
         switch ($argc) {
-            case 1: return imagefilter($this->_body, $this->_filters[$filter]);
-            case 2: return imagefilter($this->_body, $this->_filters[$filter], $argv[1]);
-            case 3: return imagefilter($this->_body, $this->_filters[$filter], $argv[1], $argv[2]);
+            case 1: return imagefilter($this->body, self::$filters[$filter]);
+            case 2: return imagefilter($this->body, self::$filters[$filter], $argv[1]);
+            case 3: return imagefilter($this->body, self::$filters[$filter], $argv[1], $argv[2]);
             default:
-                return imagefilter($this->_body, $this->_filters[$filter], $argv[1], $argv[2], $argv[3]);
+                return imagefilter($this->body, self::$filters[$filter], $argv[1], $argv[2], $argv[3]);
         }
     }
 
@@ -720,7 +774,7 @@ class Image {
     public function filterColorize($r, $g=null, $b=null)
     {
         if (is_null($g) || is_null($b)) {
-            $rgb = $this->_hex2rgb($r);
+            $rgb = $this->hex2rgb($r);
             if (false === $rgb) {
                 return false;
             }
@@ -809,11 +863,11 @@ class Image {
      */
     public function rotate($angle, $bgColor='ffffff', $ignoreTransparent=false)
     {
-        $this->_isInitialized();
+        $this->isInitialized();
 
         $angle = (float)$angle;
         $color = $this->color($bgColor);
-        $this->_body = imagerotate($this->_body, $angle, $color, $ignoreTransparent);
+        $this->body = imagerotate($this->body, $angle, $color, $ignoreTransparent);
     }
 
     /**
@@ -856,7 +910,7 @@ class Image {
             $thickness = array($tmp[0], $tmp[1], $tmp[0], $tmp[1]);
             unset($tmp);
         } elseif (4 != count($thickness)) { //four different
-            throw new CETypeError('Incorrect quant of elements in "$thickness" parameter.');
+            throw new CETypeError('Incorrect quant of elements in "$thickness" parameter.', 202);
         }
 
         if (is_null($colR)) { //all borders have one style
@@ -867,21 +921,21 @@ class Image {
         }
         $col = array($colT, $colR, $colB, $colL);
 
-        $this->_drawLine( //top
+        $this->drawLine( //top
             array(0, $thickness[0]/2),
             array($this->properties['width'], $thickness[0]/2),
             $colT, $thickness[0]);
-        $this->_drawLine( //right
+        $this->drawLine( //right
             array($this->properties['width'] - ($thickness[1]/2), 0),
             array($this->properties['width'] - ($thickness[1]/2),
                 $this->properties['height']),
             $colR, $thickness[1]);
-        $this->_drawLine( //left
+        $this->drawLine( //left
             array($this->properties['width'],
                 $this->properties['height'] - ($thickness[2]/2) ),
             array(0, $this->properties['height'] - ($thickness[2]/2) ),
             $colB, $thickness[2]);
-        $this->_drawLine( //bottom
+        $this->drawLine( //bottom
             array($thickness[3]/2, $this->properties['height']),
             array($thickness[3]/2, 0),
             $colL, $thickness[3]);
@@ -908,13 +962,14 @@ class Image {
     public function addLayer($layer, $alpha=100)
     {
         if (is_string($layer) && is_file($layer)) {
-            $layer = $this->open($layer, true);
+            $i = new Image($layer);
+            $layer = $i->get();
         }
         if (!$layer) {
             return false;
         }
 
-        return imagecopymerge($this->_body, $layer, 0, 0, 0, 0, imagesx($layer),
+        return imagecopymerge($this->body, $layer, 0, 0, 0, 0, imagesx($layer),
                 imagesy($layer), $alpha);
     }
 
@@ -933,9 +988,9 @@ class Image {
      */
     public function color($hex, &$img=null)
     {
-        list($r, $g, $b) = $this->_hex2rgb($hex);
+        list($r, $g, $b) = $this->hex2rgb($hex);
         if (is_null($img)) {
-            return imagecolorallocate($this->_body, $r, $g, $b);
+            return imagecolorallocate($this->body, $r, $g, $b);
         } else {
             return imagecolorallocate($img, $r, $g, $b);
         }
@@ -950,9 +1005,8 @@ class Image {
      */
     public function get()
     {
-        return $this->_body;
+        return $this->body;
     }
-
 
     /**
      * Draw a line on image
@@ -973,21 +1027,21 @@ class Image {
      *
      * @access public
      */
-    protected function _drawLine($begin, $end, $color, $thickness)
+    protected function drawLine($begin, $end, $color, $thickness)
     {
-        imagesetthickness($this->_body, $thickness);
+        imagesetthickness($this->body, $thickness);
 
         if (!is_array($color)) { //solid
             if (is_string($color)) {
                 $color = $this->color($color);
             }
-            imageline($this->_body,
+            imageline($this->body,
                     $begin[0], $begin[1],
                     $end[0], $end[1],
                     $color);
         } else { //pattern
-            imagesetstyle($this->_body, $color);
-            imageline($this->_body,
+            imagesetstyle($this->body, $color);
+            imageline($this->body,
                     $begin[0], $begin[1],
                     $end[0], $end[1],
                     IMG_COLOR_STYLED);
@@ -999,7 +1053,7 @@ class Image {
      * Checks for image that was loaded
      *
      * If image wasn't loaded, and $exc == true, an exception is raised.
-     * If $exc == false, _isInitialized() return false.
+     * If $exc == false, isInitialized() return false.
      *
      * @param boolean $exc if true, an exception is raised when image wasn't loaded
      *
@@ -1008,11 +1062,11 @@ class Image {
      *
      * @access protected
      */
-    protected function _isInitialized($exc=true)
+    protected function isInitialized($exc=true)
     {
-        if (is_null($this->_body)) {
+        if (is_null($this->body)) {
             if ($exc) {
-                throw new CESyntaxError('Image no loaded - call Image::open() first.');
+                throw new CESyntaxError('Image no loaded - call Image::open() first.', 102);
             } else {
                 return false;
             }
@@ -1031,7 +1085,7 @@ class Image {
      *
      * @access protected
      */
-    protected function _hex2rgb($hex)
+    protected function hex2rgb($hex)
     {
         if (6 != strlen($hex)) {
             return false;
@@ -1058,7 +1112,7 @@ class Image {
      *
      * @access protected
      */
-    protected function _newImage($width=null, $height=null, $truecolor=null)
+    protected function newImage($width=null, $height=null, $truecolor=null)
     {
         //docelowa szerokosc
         if (is_null($width)) {
@@ -1083,7 +1137,7 @@ class Image {
      * Check for correct image format
      *
      * If format is incorrect, it return default format used by Image class.
-     * See: {@link Image::FORMAT}, {@link Image::$_formats}
+     * See: {@link Image::FORMAT}, {@link Image::$formats}
      *
      * @param string $format
      *
@@ -1091,9 +1145,9 @@ class Image {
      *
      * @access protected
      */
-    protected function _checkFormat($format=null)
+    protected function checkFormat($format=null)
     {
-        if (is_null($format) || !array_key_exists($format, $this->_formats)) {
+        if (is_null($format) || !array_key_exists($format, self::$formats)) {
             $format = self::FORMAT;
         }
         if ('jpg' == $format) {
@@ -1112,7 +1166,7 @@ class Image {
      *
      * @access protected
      */
-    protected function _calculateSize(&$max_width, &$max_height)
+    protected function calculateSize(&$max_width, &$max_height)
     {
         $div_width  = (double)($this->properties['width']  / $max_width);
         $div_height = (double)($this->properties['height'] / $max_height);
@@ -1140,10 +1194,10 @@ class Image {
     *
     * @access protected
     */
-    protected function _calculatePosition(&$max_width, &$max_height, $position)
+    protected function calculatePosition(&$max_width, &$max_height, $position)
     {
         //'c', 'lt', 'ct', 'rt', 'lc', 'rc', 'lb', 'cb', 'rb'
-        list($th_w, $th_h) = $this->_calculateSize($max_width, $max_height);
+        list($th_w, $th_h) = $this->calculateSize($max_width, $max_height);
         $ret = array(0, 0, 0, 0);
         switch ($position)
         {
@@ -1184,9 +1238,8 @@ class Image {
         return $ret;
     }
 
-
     /**
-     * Put given argument as content of Image::$_body
+     * Put given argument as content of Image::$body
      *
      * @param object $dst
      *
@@ -1194,16 +1247,17 @@ class Image {
      *
      * @access protected
      */
-    protected function _swap(&$dst)
+    protected function swap(&$dst)
     {
         if (is_resource($dst)) {
-            if (!is_null($this->_body)) {
-                imagedestroy($this->_body);
+            if (!is_null($this->body)) {
+                imagedestroy($this->body);
             }
-            $this->_body = $dst;
+            $this->body = $dst;
 
-            $this->properties['width']  = imagesx($this->_body);
-            $this->properties['height'] = imagesy($this->_body);
+            $this->properties['width']     = imagesx($this->body);
+            $this->properties['height']    = imagesy($this->body);
+            $this->properties['truecolor'] = imageistruecolor($this->body);
 
             return true;
         } else {
@@ -1227,9 +1281,9 @@ class Image {
     public function __set($k, $v)
     {
         if (array_key_exists($k, $this->properties)) {
-            throw new CESyntaxError(sprintf('Attribute "%s" is read only.', $k));
+            throw new CESyntaxError(sprintf('Attribute "%s" is read only.', $k), 103);
         } else {
-            throw new CENotFound(sprintf('Attribute "%s" doesn\'t exists.', $k));
+            throw new CENotFound(sprintf('Attribute "%s" doesn\'t exists.', $k), 400);
         }
     }
 
@@ -1250,7 +1304,7 @@ class Image {
         if (array_key_exists($k, $this->properties)) {
             return $this->properties[$k];
         } else {
-            throw new CENotFound(sprintf('Attribute "%s" doesn\'t exists.', $k));
+            throw new CENotFound(sprintf('Attribute "%s" doesn\'t exists.', $k), 400);
         }
     }
 
@@ -1273,6 +1327,19 @@ class Image {
         } else {
             return false;
         }
+    }
+
+    /**
+     * Return array of available filters
+     *
+     * Can be usefull when we want to show which filters are available
+     * at runtime.
+     *
+     * @return array
+     */
+    public function getFilters()
+    {
+        return self::$filters;
     }
 }
 
