@@ -49,6 +49,19 @@
  */
 abstract class CoreBase
 {
+    /**
+     * Constant
+     *
+     * Literal 'DESC' for use in SQL queries
+     */
+    const DESC = 'DESC';
+
+    /**
+     * Constant
+     *
+     * Literal 'ASC' for use in SQL queries
+     */
+    const ASC  = 'ASC';
 
     /**
      * All error messages
@@ -298,10 +311,10 @@ abstract class CoreBase
      */
     public function __isset($key)
     {
-        if (!array_key_exists($this->properties)) {
+        if (!array_key_exists($key, $this->properties)) {
             return false;
         }
-        return is_null($this->properties[$key][0]);
+        return !is_null($this->properties[$key][0]);
     }
 
     /**
@@ -319,7 +332,7 @@ abstract class CoreBase
      */
     public function __unset($key)
     {
-        if (array_key_exists($this->properties)) {
+        if (array_key_exists($key, $this->properties)) {
             $this->properties[$key][0] = null;
         } else {
             throw new CENotFound(sprintf('"%s" property doesn\'t exists.', $key));
@@ -329,21 +342,21 @@ abstract class CoreBase
     /**
      * Check for types compatibility of property
      *
-     * @param string $key   name of class property
-     * @param string $value value of property (reference)
-     * @param bool   $throw has throw an exception?
+     * @param string $key    name of class property
+     * @param string $value  value of property (reference)
+     * @param bool   $silent has throw an exception?
      *
-     * @return boolean if $throw == false
+     * @return boolean if $silent == true
      * @throws CESyntaxError instead of returning bool ($throw decides)
      *
      * @access protected
      */
-    protected function isType($key, &$value, $throw=true)
+    protected function isType($key, &$value, $silent=false)
     {
         if (gettype($value) == $this->properties[$key][1]) {
             return true;
         }
-        if ($throw) {
+        if (!$silent) {
             throw new CESyntaxError(sprintf('"%s" property must be an "%s" type, is "%s".',
                 $key,
                 $this->properties[$key][1],
@@ -353,9 +366,76 @@ abstract class CoreBase
         return false;
     }
 
-    public function getIter()
+    /**
+     * Return properties iterator
+     *
+     * @return object {@link PropIterator}
+     * @access public
+     */
+    public function getIterator()
     {
         return new PropIterator($this->properties);
+    }
+
+    /**
+     * Quoting for DB with change empty strings to NULL statement
+     *
+     * @param string $s
+     *
+     * @return string
+     * @access public
+     */
+    public function quotenull($s)
+    {
+        if ('' == $s) {
+            return 'NULL';
+        } else {
+            return $this->db->quote($s);
+        }
+    }
+
+    /**
+     * Set properties from an array.
+     *
+     * @param $data array array of properties
+     *
+     * @return boolean       false if some of property doesn't exists, otherwise true
+     * @throws CESyntaxError if gettype($array) != array
+     *
+     * @access protected
+     */
+    protected function setFromArray(array &$data)
+    {
+        $ret = true;
+        while (list($property, $value) = each($data)) {
+            if (array_key_exists($property, $this->properties)) {
+                try {
+                    $this->$property = $value;
+                } catch (CEReadOnly $e) {
+                    $this->isType($property, $value);
+                    $this->properties[$property][0] = $value;
+                }
+            } else {
+                $this->errorSet(sprintf('Property "%s" doesn\'t exists.', $property));
+                $ret = false;
+            }
+        }
+        return $ret;
+    }
+
+
+
+    /**
+     * @internal just for debug purposes
+     * List all properties and their values
+     */
+    public function show() {
+        $it = $this->getIter();
+        echo '<pre>';
+        foreach ($it as $k=>$prop) {
+            printf('<b>%s</b>: %s %s'."\n", Strings::left($k, 20, ' ', false), Strings::left(gettype($prop), 10), $prop);
+        }
+        echo '</pre>';
     }
 }
 
