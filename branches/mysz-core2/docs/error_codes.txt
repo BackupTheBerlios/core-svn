@@ -1,0 +1,16 @@
+$Id$
+$HeadURL$
+
+All classes have their own error codes. But in all classes is one convention: every type of exception is in its range:
+
+Constant errors:
+CEReadOnly        - 10
+
+Other:
+CESyntaxError     - between 100 and 199
+CETypeError       - between 200 and 299
+CEFileSystemError - between 300 and 399
+CENotFound        - between 400 and 499
+CEDBError         - between 500 and 599
+CEUploadError     - between 600 and 699
+
