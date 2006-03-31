@@ -379,16 +379,16 @@ class Parser {
      */
     private function _tagOpen($_parser, $tag, $attributes)
     {
-        if (in_array($tag, $this->tagsAllowed)) { //we want these tag in our output ?
+        if (in_array($tag, self::$tagsAllowed)) { //we want these tag in our output ?
             $htmlTag = '<' . $tag;
 
             if ($attributes) {
 
                 while(list($attr, $val) = each($attributes)) {
-                    if (in_array($attr, $this->attributes[$tag]) ||
-                        in_array($attr, $this->attributesConst)) {
+                    if (in_array($attr, self::$attributes[$tag]) ||
+                        in_array($attr, self::$attributesConst)) {
 
-                        if (in_array($attr, $this->_attributesExt)) {
+                        if (in_array($attr, self::$_attributesExt)) {
                             $m = '_checkattr_' . $attr;
                             $val = $this->$m($val);
                         }
@@ -399,17 +399,17 @@ class Parser {
                 }
             } //if ($attributes)
 
-            $htmlTag .= in_array($tag, $this->tagsClosed) ? ' />' : '>';
+            $htmlTag .= in_array($tag, self::$tagsClosed) ? ' />' : '>';
 
             $this->_output[]     = $htmlTag;
-        } //if (in_array($tag, $this->tagsAllowed))
+        } //if (in_array($tag, self::$tagsAllowed))
 
 
         if ($this->_DEBUG) {
             $this->_tagQueue[]  = $tag;
             $this->_makeSnapshot();
         }
-        if (in_array($tag, $this->_safeTree)) {
+        if (in_array($tag, self::$_safeTree)) {
             $this->_nl2br++;
         }
 
@@ -442,7 +442,7 @@ class Parser {
             $br = '<br />' . $this->_newline;
         }
 
-        if (0 == $this->_nl2br && !in_array($last, $this->_safe)) {
+        if (0 == $this->_nl2br && !in_array($last, self::$_safe)) {
             $cdata = str_replace(array("\r\n", "\r", "\n"), $br, $cdata);
         }
 
@@ -461,7 +461,7 @@ class Parser {
      * Handle action at close tag.
      *
      * If handled tag isn't in Parser::safe or Parser::_safeTree,
-     * and is in Parser::tagsAllowed, append a close part of
+     * and is in Parser::$tagsAllowed, append a close part of
      * tag into Parser::output.
      *
      * @param object $_parser
@@ -473,13 +473,13 @@ class Parser {
      */
     private function _tagClose($_parser, $tag)
     {
-        if (!in_array($tag, $this->tagsClosed) && in_array($tag, $this->tagsAllowed)) {
+        if (!in_array($tag, self::$tagsClosed) && in_array($tag, self::$tagsAllowed)) {
             $this->_output[] = sprintf('</%s>', $tag);
         }
 
         array_pop($this->_tagQueue);
 
-        if (in_array($tag, $this->_safeTree)) {
+        if (in_array($tag, self::$_safeTree)) {
             $this->_nl2br--;
         }
 
