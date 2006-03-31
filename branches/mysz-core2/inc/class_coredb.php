@@ -80,37 +80,38 @@ final class CoreDB
     public static function connect($type='mysql')
     {
         if(!isset(self::$_instance)) {
-            $c = __CLASS__;
-            self::$_instance = new $c;
-
             try {
-                switch($type) {
+                switch ($type) {
                     case 'mysql':
-                        $conn = new PDO(sprintf(
-                            'mysql:host=%s;dbname=%s', DB_HOST, DB_NAME),
-                            DB_USER,
-                            DB_PASS
+                        $dsn = sprintf('mysql:host=%s;dbname=%s',
+                            DB_HOST,
+                            DB_NAME
                         );
+                        self::$_instance = new PDO($dsn, DB_USER, DB_PASS);
                     break;
-
                     default:
                         throw new CESyntaxError('Invalid database type.');
                 }
 
-                $conn->setAttribute(PDO::ATTR_AUTOCOMMIT,   true);
-                $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $conn->setAttribute(PDO::ATTR_CASE,         PDO::CASE_NATURAL);
+                self::$_instance->setAttribute(PDO::ATTR_AUTOCOMMIT,
+                    true);
+                self::$_instance->setAttribute(PDO::ATTR_ERRMODE,
+                    PDO::ERRMODE_EXCEPTION);
+                self::$_instance->setAttribute(PDO::ATTR_CASE,
+                    PDO::CASE_NATURAL);
+                self::$_instance->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY,
+                    true);
+                self::$_instance->setAttribute(PDO::ATTR_STRINGIFY_FETCHES,
+                    false);
             } catch(PDOException $e) {
                 throw new CEDBError(sprintf('Connection failed: %s.',
                 
                     $e->getMessage())
                 );
             }
-
-            self::$_instance->db = $conn;
         }
 
-        return self::$_instance->db;
+        return self::$_instance;
     }
 
     /**
