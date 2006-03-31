@@ -293,6 +293,7 @@ class CEFileSystemError extends CEBase {
         return $this->toString(__CLASS__);
     }
 }
+
 /**
  * Upload error
  *
@@ -336,4 +337,46 @@ class CEUploadError extends CEBase {
     }
 }
 
+/**
+ * Read only error
+ *
+ * @category   Classes
+ * @package    Classes
+ * @author     Core Dev Team <core@core-cms.com>
+ * @copyright  2006 Core Dev Team
+ * @license    http://www.fsf.org/copyleft/gpl.html
+ * @license    http://www.gnu.org.pl/text/licencja-gnu.html
+ * @version    SVN: $Id: class_exceptions.php 1270 2006-02-26 11:13:34Z lark $
+ * @link       $HeadURL$
+ */
+
+class CEReadOnly extends CEBase {
+
+    /**
+     * Constructor
+     *
+     * @param string $message error message
+     * @param int    $code    error code
+     *
+     * @return void
+     *
+     * @access public
+     */
+    public function __construct($message, $code = null)
+    {
+        parent::__construct($message, $code);
+    }
+
+    /**
+     * Overloaded function to create string describing the class.
+     *
+     * @return string
+     *
+     * @access public
+     */
+    public function __toString()
+    {
+        return $this->toString(__CLASS__);
+    }
+}
 ?>
