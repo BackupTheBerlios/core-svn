@@ -68,6 +68,43 @@ abstract class Strings {
     {
         return (strtolower(substr($string, -strlen($prefix))) == strtolower($prefix));
     }
+
+    public static function left($string, $width, $type=' ', $entit=true)
+    {
+        if ($entit) {
+            $len = strlen($string);
+            if ($width > $len) {
+                $width = ($width - $len)*strlen($type) + $len;
+            }
+        }
+        return str_pad($string, $width, $type, STR_PAD_RIGHT);
+    }
+    public static function right($string, $width, $type=' ', $entit=true)
+    {
+        if ($entit) {
+            $len = strlen($string);
+            if ($width > $len) {
+                $width = ($width - $len)*strlen($type) + $len;
+            }
+        }
+        return str_pad($string, $width, $type, STR_PAD_LEFT);
+    }
+    public static function center($string, $width, $type=' ', $entit=true)
+    {
+        if (!$entit) {
+            return str_pad($string, $width, $type, STR_PAD_BOTH);
+        }
+
+        $len   = strlen($string);
+
+        $left  = ceil(($width-$len)/2);
+        $right = $width - $len - $left;
+
+        $left  = implode('', array_pad(array(), $left,  $type));
+        $right = implode('', array_pad(array(), $right, $type));
+
+        return $left . $string . $right;
+    }
 }
 
 ?>
