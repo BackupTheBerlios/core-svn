@@ -47,6 +47,13 @@
 abstract class CorePost extends CoreBase {
 
     /**
+     * Constant
+     *
+     * Default link (in author_www property) prefix.
+     */
+    const DEFAULT_LINK = 'http://';
+
+    /**
      * Base set of properties of all kinds of entries
      *
      * @see CoreBase::base_properties
@@ -62,6 +69,7 @@ abstract class CorePost extends CoreBase {
         'id_type'           => array(null,    'integer'),
         'id_section'        => array(null,    'integer'),
         'title'             => array('',      'string' ),
+        'permalink'         => array('',      'string' ),
         'caption'           => array(null,    'string' ),
         'body'              => array(null,    'string' ),
         'tpl_name'          => array('',      'string' ),
@@ -72,7 +80,6 @@ abstract class CorePost extends CoreBase {
         'date_add_ts'       => array(0,       'integer'),
         'date_mod'          => array('',      'string' ),
         'date_mod_ts'       => array(0,       'integer'),
-        'meta'              => array(null,    'array'  ),
         'status'            => array('draft', 'string' )
     );
 
@@ -100,32 +107,39 @@ abstract class CorePost extends CoreBase {
      */
     protected static $base_getExternal = array();
 
-    protected $properties = array();
-    protected $getExternal = array();
-    protected $setExternal = array();
-
     /**
-     * Available values for entry status
+     * All post properties together
      *
      * @var array
-     *
      * @access protected
      */
-    protected $status_array = array('published', 'draft', 'disabled');
+    protected $properties;
+
+    /**
+     * All post external getters together
+     *
+     * @var array
+     * @access protected
+     */
+    protected $getExternal;
+
+    /**
+     * All post external setters together
+     *
+     * @var array
+     * @access protected
+     */
+    protected $setExternal;
 
     /**
      * Constructor
      *
-     * Fill object properties from data in param, or set actual date and
-     * time in proper properties.
-     *
-     * @param array $data
-     *
-     * @throws CESyntaxError if gettype($array) != array
+     * Merge $base_properties, $base_getExternal and $base_setExternal with
+     * parents.
      *
      * @access public
      */
-    public function __construct(&$data=null)
+    public function __construct()
     {
         parent::__construct();
         self::$base_properties  = array_merge(
@@ -150,7 +164,7 @@ abstract class CorePost extends CoreBase {
      * @param string $data entry title
      *
      * @return boolean
-     * @throws CESyntaxError if incorrect type (@see $this->is_type())
+     * @throws CESyntaxError if incorrect type (@see $this->isType())
      *
      * @access protected
      */
@@ -160,7 +174,7 @@ abstract class CorePost extends CoreBase {
 
         $data = trim($data);
         if ('' == $data) {
-            $this->error_set('Title cannot be empty.');
+            $this->errorSet('Title cannot be empty.');
             return false;
         }
         $this->properties['title'][0] = $data;
@@ -173,13 +187,18 @@ abstract class CorePost extends CoreBase {
      * @param string $data entry caption
      *
      * @return boolean
-     * @throws CESyntaxError if incorrect type (@see $this->is_type())
+     * @throws CESyntaxError if incorrect type (@see $this->isType())
      *
      * @access protected
      */
     protected function set_caption($data)
     {
-        $this->is_type('caption', $data);
+        if (is_null($data)) {
+            unset($this->caption);
+            return true;
+        }
+
+        $this->isType('caption', $data);
 
         $this->properties['caption'][0] = Strings::parse($data);
         return true;
@@ -191,13 +210,18 @@ abstract class CorePost extends CoreBase {
      * @param string $data entry body
      *
      * @return boolean
-     * @throws CESyntaxError if incorrect type (@see $this->is_type())
+     * @throws CESyntaxError if incorrect type (@see $this->istype())
      *
      * @access protected
      */
     protected function set_body($data)
     {
-        $this->is_type('body', $data);
+        if (is_null($data)) {
+            unset($this->body);
+            return true;
+        }
+
+        $this->isType('body', $data);
 
         $this->properties['body'][0] = Strings::parse($data);
         return true;
@@ -209,17 +233,22 @@ abstract class CorePost extends CoreBase {
      * @param string $data author's www address
      *
      * @return boolean
-     * @throws CESyntaxError if incorrect type (@see $this->is_type())
+     * @throws CESyntaxError if incorrect type (@see $this->isType())
      *
      * @access protected
      */
     protected function set_author_www($data)
     {
-        $this->is_type('author_www', $data);
+        if (is_null($data)) {
+            unset($this->author_www);
+            return true;
+        }
+
+        $this->isType('author_www', $data);
         $data = trim($data);
 
         if ('' != $data && !preg_match('#^(http|https)://#i', $data)) {
-            $data = 'http://' . $data;
+            $data = self::DEFAULT_LINK . $data;
         }
         $this->properties['author_www'][0] = $data;
         return true;
@@ -231,17 +260,22 @@ abstract class CorePost extends CoreBase {
      * @param string $data author's email address
      *
      * @return boolean
-     * @throws CESyntaxError if incorrect type (@see $this->is_type())
+     * @throws CESyntaxError if incorrect type (@see $this->isType())
      *
      * @access protected
      */
     protected function set_author_mail($data)
     {
-        $this->is_type('author_mail', $data);
+        if (is_null($data)) {
+            unset($this->author_mail);
+            return true;
+        }
+
+        $this->isType('author_mail', $data);
         $data = trim($data);
 
         if ('' != $data && !Strings::email($data)) {
-            $this->error_set('Incorrect email address.');
+            $this->errorSet('Incorrect email address.');
             return false;
         } else {
             $this->properties['author_mail'][0] = $data;
@@ -258,7 +292,7 @@ abstract class CorePost extends CoreBase {
      */
     protected function set_date_add_ts()
     {
-        throw new CESyntaxError('Incorrect property "date_add_ts".');
+        throw new CEReadOnly('Read only property.');
     }
 
     /**
@@ -270,7 +304,7 @@ abstract class CorePost extends CoreBase {
      */
     protected function set_date_mod_ts()
     {
-        throw new CESyntaxError('Incorrect property "date_mod_ts".');
+        throw new CEReadOnly('Read only property.');
     }
 
     /**
@@ -286,9 +320,14 @@ abstract class CorePost extends CoreBase {
      */
     protected function set_date_add($data)
     {
+        if (is_null($data)) {
+            unset($this->date_add);
+            return true;
+        }
+
         $date = $this->checkDate($data);
         if (!$date) {
-            $this->error_set(sprintf('Incorrect date format "%s".', $data));
+            $this->errorSet(sprintf('Incorrect date format "%s".', $data));
         }
 
         $this->properties['date_add'][0]    = $date['date'];
@@ -308,39 +347,20 @@ abstract class CorePost extends CoreBase {
      */
     protected function set_date_mod($data)
     {
+        if (is_null($data)) {
+            unset($this->date_mod);
+            return true;
+        }
+
         $date = $this->checkDate($data);
         if (!$date) {
-            $this->error_set(sprintf('Incorrect date "%s".', $data));
+            $this->errorSet(sprintf('Incorrect date "%s".', $data));
+            return false;
         }
 
         $this->properties['date_mod'][0]    = $date['date'];
         $this->properties['date_mod_ts'][0] = $date['timestamp'];
     }
-
-    /**
-     * Checks for correct value of status
-     *
-     * For proper values @see CorePost::status_array
-     *
-     * @param string  $data status
-     *
-     * @return boolean
-     * @throws CESyntaxError if incorrect type (@see $this->is_type())
-     *
-     * @access protected
-     */
-    protected function set_status($data)
-    {
-        $this->is_type('status', $data);
-
-        if (!in_array($data, $this->status_array)) {
-            $this->error_set(sprintf('Incorrect status "%s".', $data));
-            return false;
-        }
-        $this->properties['status'][0]      = $data;
-    }
-
-
 
     /**
      * Checks for correctness of date
@@ -420,56 +440,6 @@ abstract class CorePost extends CoreBase {
         return $ret;
     }
 
-    /**
-     * Set properties of entry from an array.
-     *
-     * @param $data array array of properties
-     *
-     * @return boolean       false if some of property doesn't exists, otherwise true
-     * @throws CESyntaxError if gettype($array) != array
-     *
-     * @access protected
-     */
-    protected function setFromArray($data)
-    {
-        if (!is_array($data)) {
-            throw new CESyntaxError(sprintf('Incorrect argument type: expected "array", received "%s".',
-                gettype($data)
-            ));
-
-        }
-
-        $ret = true;
-        while (list($property, $value) = each($data)) {
-            if (array_key_exists($property, $this->properties)) {
-                $this->$property = $value;
-            } else {
-                $this->error_set(sprintf('Property "%s" doesn\'t exists.', $property));
-                $ret = false;
-            }
-        }
-        return $ret;
-    }
-
-    /**
-     * Will save an entry in database
-     *
-     * @return boolean true - if all required fields are set, otherwise false
-     *
-     * @access public
-     * @abstract
-     */
-    abstract public function save();
-
-    /**
-     * Get entry data from database
-     *
-     * @return boolean
-     *
-     * @access public
-     * @abstract
-     */
-    abstract public function setFromDB($id, $order='DESC', $where=null);
 }
 
 ?>
