@@ -1027,7 +1027,7 @@ class Image {
      *
      * @access public
      */
-    protected function drawLine($begin, $end, $color, $thickness)
+    protected function drawLine(array $begin, array $end, $color, $thickness)
     {
         imagesetthickness($this->body, $thickness);
 
