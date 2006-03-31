@@ -74,7 +74,7 @@ class PropIterator implements Iterator
     public function key()
     {
         $v = key($this->_properties);
-        return $v[0];
+        return $v;
     }
 
     public function next()
