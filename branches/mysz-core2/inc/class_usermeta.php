@@ -3,7 +3,7 @@
 // vim: expandtab shiftwidth=4 softtabstop=4 tabstop=4
 
 /**
- * Class for post meta properties
+ * Class for user meta properties
  *
  * PHP version 5
  *
@@ -31,7 +31,7 @@
  */
 
 /**
- * Class for post meta properties
+ * Class for user meta properties
  *
  * @category   Classes
  * @package    Classes
@@ -42,7 +42,7 @@
  * @version    SVN: $Id$
  * @link       $HeadURL$
  */
-final class PostMeta extends CoreMeta
+final class UserMeta extends CoreMeta
 {
     /**
      * Set of properties of this object
@@ -51,10 +51,11 @@ final class PostMeta extends CoreMeta
      * @access protected
      */
     protected $properties = array(
-        'id_entry'          => array(null, 'integer'),
-        'sticky'            => array(null, 'boolean'),
-        'allow_comments'    => array(null, 'boolean'),
-        'only_in_category'  => array(null, 'boolean'),
+        'id_entry' => array(null, 'integer'),
+        'mail'     => array(null, 'string'),
+        'jid'      => array(null, 'string'),
+        'www'      => array(null, 'string'),
+        'phone'    => array(null, 'string'),
     );
 
     /**
@@ -64,7 +65,7 @@ final class PostMeta extends CoreMeta
      */
     public function __construct(&$data=null)
     {
-        parent::__construct($data, 'post');
+        parent::__construct($data, 'user');
     }
 }
 
