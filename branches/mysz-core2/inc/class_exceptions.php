@@ -20,7 +20,7 @@
  * GNU General Public License for more details.
  *
  * @category   Classes
- * @package    Classes
+ * @package    Exceptions
  * @author     Core Dev Team <core@core-cms.com>
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
@@ -33,7 +33,7 @@
  * Abstract base class for all exception classes
  *
  * @category   Classes
- * @package    Classes
+ * @package    Exceptions
  * @author     Core Dev Team <core@core-cms.com>
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
@@ -44,7 +44,7 @@
 abstract class CEBase extends Exception {
 
     /**
-     * Contsructor
+     * Constructor
      *
      * Execute it's parent constructor only
      *
@@ -85,7 +85,7 @@ abstract class CEBase extends Exception {
  * Exception class used to report, that something wasn't found.
  *
  * @category   Classes
- * @package    Classes
+ * @package    Exceptions
  * @author     Core Dev Team <core@core-cms.com>
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
@@ -128,7 +128,7 @@ class CENotFound extends CEBase {
  * correct syntax of file.
  *
  * @category   Classes
- * @package    Classes
+ * @package    Exceptions
  * @author     Core Dev Team <core@core-cms.com>
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
@@ -171,7 +171,7 @@ class CESyntaxError extends CEBase {
  * Exception class used to report, that is some sort of database access error.
  *
  * @category   Classes
- * @package    Classes
+ * @package    Exceptions
  * @author     Core Dev Team <core@core-cms.com>
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
@@ -214,7 +214,7 @@ class CEDBError extends CEBase {
  * then expected.
  *
  * @category   Classes
- * @package    Classes
+ * @package    Exceptions
  * @author     Core Dev Team <core@core-cms.com>
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
@@ -256,7 +256,7 @@ class CETypeError extends CEBase {
  * Filesystem error
  *
  * @category   Classes
- * @package    Classes
+ * @package    Exceptions
  * @author     Core Dev Team <core@core-cms.com>
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
@@ -298,7 +298,7 @@ class CEFileSystemError extends CEBase {
  * Upload error
  *
  * @category   Classes
- * @package    Classes
+ * @package    Exceptions
  * @author     Core Dev Team <core@core-cms.com>
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
@@ -306,7 +306,6 @@ class CEFileSystemError extends CEBase {
  * @version    SVN: $Id: class_exceptions.php 1270 2006-02-26 11:13:34Z lark $
  * @link       $HeadURL$
  */
-
 class CEUploadError extends CEBase {
 
     /**
@@ -341,7 +340,7 @@ class CEUploadError extends CEBase {
  * Read only error
  *
  * @category   Classes
- * @package    Classes
+ * @package    Exceptions
  * @author     Core Dev Team <core@core-cms.com>
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
@@ -349,7 +348,6 @@ class CEUploadError extends CEBase {
  * @version    SVN: $Id: class_exceptions.php 1270 2006-02-26 11:13:34Z lark $
  * @link       $HeadURL$
  */
-
 class CEReadOnly extends CEBase {
 
     /**
