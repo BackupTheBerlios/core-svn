@@ -36,16 +36,16 @@
  * Scaling, resizing, cropping, applying filters and many others.
  *
  * Error codes:
- * 100 - CESyntaxError       Cannot read "%s"
- * 101 - CESyntaxError       Invalid filter: "%s".
- * 102 - CESyntaxError       Image no loaded - call Image::open() first.
- * 103 - CESyntaxError       Attribute "%s" is read only.
- * 200 - CETypeError         Both values: $max_width and $max_height cannot be false
- * 201 - CETypeError         Specified image (%s) has dimensions different then %dx%d.
- * 202 - CETypeError         Incorrect quant of elements in "$padding" parameter.
- * 300 - CEFileSystemError   Cannot write to "%s" directory.
- * 301 - CEFileSystemError   File "%s" already exists.
- * 400 - CENotFound          Attribute "%s" doesn't exists.
+ * 100 - {@link CESyntaxError}       Cannot read "%s"
+ * 101 - {@link CESyntaxError}       Invalid filter: "%s".
+ * 102 - {@link CESyntaxError}       Image no loaded - call Image::open() first.
+ * 103 - {@link CESyntaxError}       Attribute "%s" is read only.
+ * 200 - {@link CETypeError}         Both values: $max_width and $max_height cannot be false
+ * 201 - {@link CETypeError}         Specified image (%s) has dimensions different then %dx%d.
+ * 202 - {@link CETypeError}         Incorrect quant of elements in "$padding" parameter.
+ * 300 - {@link CEFileSystemError}   Cannot write to "%s" directory.
+ * 301 - {@link CEFileSystemError}   File "%s" already exists.
+ * 400 - {@link CENotFound}          Attribute "%s" doesn't exists.
  *
  * @category   Classes
  * @package    Classes
@@ -588,7 +588,7 @@ class Image {
     }
 
     /**
-     * Shrink an image (non-proprtional)
+     * Shrink an image (non-proportional)
      *
      * Shrinks image if is bigger then $min_width & $min_height. Return true if
      * smaller and leave image non touched.
@@ -1017,13 +1017,12 @@ class Image {
      * - integer - if line have to be solid
      * - array - if line have to be an pattern ({@link http://php.net/imagesestyle})
      *
-     *
      * @param array   $begin
      * @param array   $end
      * @param mixed   $color
      * @param integer $thickness
      *
-     * @return blue
+     * @return boolean
      *
      * @access public
      */
