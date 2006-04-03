@@ -1,6 +1,3 @@
-$Id$
-$HeadURL$
-
 All classes have their own error codes. But in all classes is one convention: every type of exception is in its range:
 
 Constant errors:
