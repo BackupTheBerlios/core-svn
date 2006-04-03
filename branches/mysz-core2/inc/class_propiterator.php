@@ -63,9 +63,9 @@ class PropIterator implements Iterator
 
     public function current()
     {
-        $v = current($this->_properties);
-        if (false !== $v) {
-            return $v[0];
+        $c = current($this->_properties);
+        if (false !== $c) {
+            return $c[0];
         } else {
             return false;
         }
@@ -73,25 +73,25 @@ class PropIterator implements Iterator
 
     public function key()
     {
-        $v = key($this->_properties);
-        return $v;
+        $c = key($this->_properties);
+        return $c;
     }
 
     public function next()
     {
-        $v = next($this->_properties);
-        return $v[0];
+        $c = next($this->_properties);
+        return $c[0];
     }
 
     public function rewind()
     {
-        $v = reset($this->_properties);
-        return $v[0];
+        $c = reset($this->_properties);
+        return $c[0];
     }
 
     public function valid()
     {
-        return ($this->current() !== false);
+        return current($this->_properties);
     }
 }
 
