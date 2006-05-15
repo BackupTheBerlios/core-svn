@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 if(is_file('administration/inc/config.php')) {
     require_once('administration/inc/config.php');
