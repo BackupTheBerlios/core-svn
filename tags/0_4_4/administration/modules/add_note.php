@@ -1,4 +1,8 @@
 <?php
+if (!$permarr['writer']) {
+  header('Location: main.php');
+  exit;
+}
 
 // deklaracja zmiennej $action::form
 $post       = empty($_POST['post']) ? '' : $_POST['post'];
@@ -10,127 +14,108 @@ $ft->define_dynamic("error_row", "error_reporting");
 
 if(!empty($post)) {
 	
-        if($permarr['writer']) {
-            if(isset($_POST['assign2cat'])) {
-                
-                //sprawdzania daty
-                $date = isset($_POST['now']) ? date("Y-m-d H:i:s") : $_POST['date'];
-                
-                $text           = $_POST['text'];
-                $title 			= $_POST['title'];
-                $author 		= $_POST['author'];
-                $comments_allow = $_POST['comments_allow'];
-                $published 		= $_POST['published'];
-                $only_in_cat    = $_POST['only_in_category'];
-                $assign2cat     = $_POST['assign2cat'];
-                
-                $text = parse_markers($text, 1);
-                
-                $query = sprintf("
-                    INSERT INTO 
-                        %1\$s 
-                    VALUES 
-                        ('', '%2\$s','%3\$s','%4\$s','%5\$s', '', '%6\$d', '%7\$s', '%8\$s')",
-		
-                    TABLE_MAIN,
-                    $date,
-                    $title,
-                    $author,
-                    $text,
-                    $comments_allow,
-                    $published, 
-                    $only_in_cat
-                );
-            
-                $db->query($query);
+    if(isset($_POST['assign2cat'])) {
         
-                $query = sprintf("
-                    SELECT 
-                        max(id) as maxid 
-                    FROM 
-                        %1\$s",
+        //sprawdzania daty
+        $date = isset($_POST['now']) ? date("Y-m-d H:i:s") : $_POST['date'];
         
-                    TABLE_MAIN
-                );
-            
-                $db->query($query);
-                $db->next_record();
-			
-                // Przypisanie zmiennej $id
-                $id = $db->f("0");
-            
-                foreach ($assign2cat as $selected_cat) {
-                    $query = sprintf("
-                        INSERT INTO 
-                            %1\$s 
-                        VALUES('', '%2\$d', '%3\$d')", 
-                
-                        TABLE_ASSIGN2CAT, 
-                        $id, 
-                        $selected_cat
-                    );
-                    $db->query($query);
-                }
-		
-                if(!empty($_FILES['file']['name'])) {
-			
-                    $up = new upload;
-                    $upload_dir = "../photos";
-			
-                    // use function to upload file.
-                    $file = $up->upload_file($upload_dir, 'file', true, true, 0, "jpg|jpeg|gif");
-                    if($file == false) {
-				
-				        echo $up->error;
-                    } else {
-			    
-                        $query = sprintf("
-                            UPDATE 
-                                %1\$s 
-                            SET 
-                                image = '%2\$s' 
-                            WHERE 
-                                id = '%3\$d'", 
-			    
-                            TABLE_MAIN,
-                            $file,
-                            $id
-                        );
-                
-				        $db->query($query);
-				
-				        $ft->assign('CONFIRM', $i18n['add_note'][0]);
-				        $ft->parse('ROWS', ".result_note");
-                    }
-                }
-		
-                $ft->assign('CONFIRM', $i18n['add_note'][1]);
-                $ft->parse('ROWS',	".result_note");
-            } else {
-                
-                $monit[] = $i18n['add_note'][3];
-                foreach ($monit as $error) {
-    
-                    $ft->assign('ERROR_MONIT', $error);
-                    
-                    $ft->parse('ROWS',	".error_row");
-                }
-                        
-                $ft->parse('ROWS', "error_reporting");
-            }
-        } else {
-            
-            $monit[] = $i18n['add_note'][2];
+        $text           = $_POST['text'];
+        $title 			    = $_POST['title'];
+        $author 		    = $_POST['author'];
+        $comments_allow = $_POST['comments_allow'];
+        $published 		  = $_POST['published'];
+        $only_in_cat    = $_POST['only_in_category'];
+        $assign2cat     = $_POST['assign2cat'];
+        
+        $text = parse_markers($text, 1);
+        
+        $query = sprintf("
+            INSERT INTO 
+                %1\$s 
+            VALUES 
+                ('', '%2\$s','%3\$s','%4\$s','%5\$s', '', '%6\$d', '%7\$s', '%8\$s')",
 
-            foreach ($monit as $error) {
+            TABLE_MAIN,
+            $date,
+            $title,
+            $author,
+            $text,
+            $comments_allow,
+            $published, 
+            $only_in_cat
+        );
     
-                $ft->assign('ERROR_MONIT', $error);
-                    
-                $ft->parse('ROWS',	".error_row");
-            }
-                        
-            $ft->parse('ROWS', "error_reporting");
+        $db->query($query);
+
+        $query = sprintf("
+            SELECT 
+                max(id) as maxid 
+            FROM 
+                %1\$s",
+
+            TABLE_MAIN
+        );
+    
+        $db->query($query);
+        $db->next_record();
+
+        // Przypisanie zmiennej $id
+        $id = $db->f("0");
+    
+        foreach ($assign2cat as $selected_cat) {
+            $query = sprintf("
+                INSERT INTO 
+                    %1\$s 
+                VALUES('', '%2\$d', '%3\$d')", 
+        
+                TABLE_ASSIGN2CAT, 
+                $id, 
+                $selected_cat
+            );
+            $db->query($query);
         }
+
+        if(!empty($_FILES['file']['name'])) {
+
+            $up = new upload;
+            $upload_dir = "../photos";
+
+            // use function to upload file.
+            $file = $up->upload_file($upload_dir, 'file', true, true, 0, "jpg|jpeg|gif");
+            if($file == false) {
+
+              echo $up->error;
+            } else {
+  
+                $query = sprintf("
+                    UPDATE 
+                        %1\$s 
+                    SET 
+                        image = '%2\$s' 
+                    WHERE 
+                        id = '%3\$d'", 
+  
+                    TABLE_MAIN,
+                    $file,
+                    $id
+                );
+                $db->query($query);
+
+                $ft->assign('CONFIRM', $i18n['add_note'][0]);
+                $ft->parse('ROWS', ".result_note");
+            }
+        }
+
+        $ft->assign('CONFIRM', $i18n['add_note'][1]);
+        $ft->parse('ROWS',	".result_note");
+    } else {
+        $monit[] = $i18n['add_note'][3];
+        foreach ($monit as $error) {
+            $ft->assign('ERROR_MONIT', $error);
+            $ft->parse('ROWS',	".error_row");
+        }
+        $ft->parse('ROWS', "error_reporting");
+    }
 
 } else {
     

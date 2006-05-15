@@ -1,5 +1,10 @@
 <?php
 
+if (!$permarr['admin']) {
+  header('Location: main.php');
+  exit;
+}
+
 // deklaracja zmiennej $action::form
 $action = empty($_GET['action']) ? '' : $_GET['action'];
 
@@ -18,78 +23,65 @@ switch ($action) {
         // definicja szablonow obslugujacych bledy Core.
         $ft->define("error_reporting", "error_reporting.tpl");
         $ft->define_dynamic("error_row", "error_reporting");
+            
+        if(!is_numeric($mainposts_per_page)) $monit[] = $i18n['core_configuration'][0];
+        if(!is_numeric($editposts_per_page)) $monit[] = $i18n['core_configuration'][2];
         
-        if($permarr['admin']) {
-            
-            if(!is_numeric($mainposts_per_page)) $monit[] = $i18n['core_configuration'][0];
-            if(!is_numeric($editposts_per_page)) $monit[] = $i18n['core_configuration'][2];
-            
-            if(!is_numeric($max_photo_width)) $monit[] = $i18n['core_configuration'][4];
-            
-            if(($mainposts_per_page < 1)) $monit[] = $i18n['core_configuration'][1];
-            if(($editposts_per_page < 1)) $monit[] = $i18n['core_configuration'][3];
-            
-            if(empty($monit)) {
-		    
-                // set {MAINPOSTS_PER_PAGE} variable
-                // liczba listowanych wpisów w na stronie g³ównej::db
-                set_config('mainposts_per_page', $_POST['mainposts_per_page']);
-                
-                // set {TITLE_PAGE} variable
-                // liczba listowanych wpisów w na stronie g³ównej::db
-                set_config('title_page', $_POST['title_page']);
-                
-                // set {EDITOSTS_PER_PAGE} variable
-                // liczba listowanych wpisów w na stronie g³ównej::db
-                set_config('editposts_per_page', $_POST['editposts_per_page']);
-            
-                // set {MAX_PHOTO_WIDTH} variable
-                // maksymalna szerko¶æ zdjêcia do³±czonego do wpisu, 
-                // jakie jest wy¶wietlane na stronie g³ównej::db
-                set_config('max_photo_width', $_POST['max_photo_width']);
-                
-                // set {LANGUAGE_SET} variable
-                set_config('language_set', $_POST['language']);
-                
-                // set {SHOW_CALENDAR} variable
-                set_config('show_calendar', $_POST['show_calendar']);
-                
-                // set {MOD_REWRITE} variable
-                set_config('mod_rewrite', $_POST['rewrite_allow']);
-
-                // set {DATE_FORMAT} variable
-                set_config('date_format', $_POST['date_format']);
-
-                set_config('start_page_type', $start_page[0]);
-                set_config('start_page_id', $start_page[1]);
-                
-                $ft->assign('CONFIRM', $i18n['core_configuration'][5]);
-                $ft->parse('ROWS', ".result_note");
-            
-            } else {
-                
-                foreach ($monit as $error) {
+        if(!is_numeric($max_photo_width)) $monit[] = $i18n['core_configuration'][4];
+        
+        if(($mainposts_per_page < 1)) $monit[] = $i18n['core_configuration'][1];
+        if(($editposts_per_page < 1)) $monit[] = $i18n['core_configuration'][3];
+        
+        if(empty($monit)) {
     
-                    $ft->assign('ERROR_MONIT', $error);
-                    
-                    $ft->parse('ROWS',	".error_row");
-                }
-                        
-                $ft->parse('ROWS', "error_reporting");
-            }
+            // set {MAINPOSTS_PER_PAGE} variable
+            // liczba listowanych wpisów w na stronie g³ównej::db
+            set_config('mainposts_per_page', $_POST['mainposts_per_page']);
+            
+            // set {TITLE_PAGE} variable
+            // liczba listowanych wpisów w na stronie g³ównej::db
+            set_config('title_page', $_POST['title_page']);
+            
+            // set {EDITOSTS_PER_PAGE} variable
+            // liczba listowanych wpisów w na stronie g³ównej::db
+            set_config('editposts_per_page', $_POST['editposts_per_page']);
+        
+            // set {MAX_PHOTO_WIDTH} variable
+            // maksymalna szerko¶æ zdjêcia do³±czonego do wpisu, 
+            // jakie jest wy¶wietlane na stronie g³ównej::db
+            set_config('max_photo_width', $_POST['max_photo_width']);
+            
+            // set {LANGUAGE_SET} variable
+            set_config('language_set', $_POST['language']);
+            
+            // set {SHOW_CALENDAR} variable
+            set_config('show_calendar', $_POST['show_calendar']);
+            
+            // set {MOD_REWRITE} variable
+            set_config('mod_rewrite', $_POST['rewrite_allow']);
+
+            // set {DATE_FORMAT} variable
+            set_config('date_format', $_POST['date_format']);
+
+            // set {CORERSS} variable
+            set_config('get_rss', $_POST['corerss']);
+
+            set_config('start_page_type', $start_page[0]);
+            set_config('start_page_id', $start_page[1]);
+            
+            $ft->assign('CONFIRM', $i18n['core_configuration'][5]);
+            $ft->parse('ROWS', ".result_note");
+        
         } else {
             
-            $monit[] = $i18n['core_configuration'][6];
-
             foreach ($monit as $error) {
-    
+
                 $ft->assign('ERROR_MONIT', $error);
-                    
+                
                 $ft->parse('ROWS',	".error_row");
             }
-                        
+                    
             $ft->parse('ROWS', "error_reporting");
-            
         }
 		break;
 
@@ -211,6 +203,17 @@ switch ($action) {
                 $ft->parse('LANGUAGE_ROW', ".language_row");
             }
         }
+        if (get_config('get_rss') == 1) {
+          $ft->assign(array(
+            'CORERSS_YES' => 'checked="checked"',
+            'CORERSS_NO'  => ''
+          ));
+        } else {
+          $ft->assign(array(
+            'CORERSS_YES' => '',
+            'CORERSS_NO'  => 'checked="checked"',
+          ));
+        }
 		
 		// Ustawiamy zmienne
         $ft->assign(array(
@@ -218,7 +221,7 @@ switch ($action) {
             'EDITPOSTS_PER_PAGE'    =>get_config('editposts_per_page'),
             'TITLE_PAGE'            =>get_config('title_page'),
             'MAX_PHOTO_WIDTH'       =>get_config('max_photo_width'),
-            'DATE_FORMAT'           =>get_config('date_format')
+            'DATE_FORMAT'           =>get_config('date_format'),
         ));
 			
 		$ft->parse('ROWS', "form_configuration");

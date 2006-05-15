@@ -26,24 +26,34 @@ if(is_numeric($_GET['id'])) {
             $title          = $db->f('title');
             $comments_id    = $db->f('id');
             
-            if (isset($rewrite) && $rewrite == 1)
-            {
-              
+            if (isset($rewrite) && $rewrite == 1) {
               $perma_link = sprintf('1,%s,1,item.html', $id);
               $submit_link = sprintf('1,%s,3,item.html', $id);
             } else {
-
               $perma_link = 'index.php?p=1&amp;id=' . $id;
               $submit_link = 'index.php?p=3&amp;id=' . $id;
             }
 
+            switch ($db->f('comments_allow')) {
+              case 1:
+                $show_addcomment = true;
+              break;
+              case -1:
+                $show_addcomment = loggedIn();
+              break;
+              default:
+                $show_addcomment = false;
+            }
+              
+
             $ft->assign(array(
-                'NEWS_TITLE'    =>$title,
-                'NEWS_ID'       =>$id,
-                'COMMENTS_ID'   =>$id,
-                'STRING'        =>$page_string, 
-                'PERMA_LINK'    =>$perma_link, 
-                'SUBMIT_LINK'   =>$submit_link
+                'NEWS_TITLE'      =>$title,
+                'NEWS_ID'         =>$id,
+                'COMMENTS_ID'     =>$id,
+                'STRING'          =>$page_string, 
+                'PERMA_LINK'      =>$perma_link, 
+                'SUBMIT_LINK'     =>$submit_link,
+                'SHOW_ADDCOMMENT' =>$show_addcomment,
             ));
 
             $query = sprintf("
@@ -134,10 +144,10 @@ if(is_numeric($_GET['id'])) {
 }
 
 $ft->assign(array(
-    'STRING'        =>'', 
-    'PAGINATED'     =>false, 
-    'MOVE_BACK'     =>false, 
-    'MOVE_FORWARD'  =>false
+    'STRING'          =>'', 
+    'PAGINATED'       =>false, 
+    'MOVE_BACK'       =>false, 
+    'MOVE_FORWARD'    =>false,
 ));
 
 ?>

@@ -287,7 +287,7 @@ function highlighter($text, $code_start, $code_end) {
         $after  = str_replace(array('&lt;', '&gt;', '&amp;'), array('<', '>', '&'), $after);
         $added  = FALSE;
             
-        if(preg_match('/^<\?.*?\?>$/si', $after) <= 0) {
+        if(preg_match('/^<\?.*?\?' . '>$/si', $after) <= 0) {
             $after = "<?php $after ?>";
             $added = TRUE;
         }
@@ -320,11 +320,37 @@ function highlighter($text, $code_start, $code_end) {
 
 function get_mysql_server_version() {
     
-    $dbs = explode('.', mysql_get_server_info());
-    if($dbs[0] == '4' && $dbs[1] == '1') {
+    $dbinfo = @mysql_get_server_info();
+    if (false !== $dbinfo) {
+        $dbs = explode('.', $dbinfo);
+        if(count($dbs) > 1 && $dbs[0] == '4' && $dbs[1] == '1') {
         
-        define('RDBMS', '4.1');
+            define('RDBMS', '4.1');
+        } else {
+            define('RDBMS', '4.0');
+        }
+    } else {
+        define('RDBMS', '4.0');
     }
 }
+
+function str_entit($s) {
+
+  $p = array('<', '>', '"', "'");
+  $r = array('&lt;', '&gt;', '&quot;', '&#39;');
+  return str_replace($p, $r, $s);
+}
+
+function str_cut($s, $i=110, $c=' ') {
+    return substr($s, 0, strrpos(substr($s, 0, $i), $c));
+}
+
+if (!function_exists('file_get_contents')) {
+  function file_get_contents($fname) {
+    return implode('', file($fname));
+  }
+}
+
+
 
 ?>

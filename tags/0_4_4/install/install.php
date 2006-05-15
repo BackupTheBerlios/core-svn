@@ -1,4 +1,5 @@
 <?php
+  error_reporting(2047);
 
 define('PATH_TO_CLASSES', '../administration/classes');
 define('EXTENSION', '.php');

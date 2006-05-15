@@ -20,6 +20,7 @@ Witamy na stronie administracji serwisem.<br /><br />
 	</tr>
 </table>
 <br />
+<!-- IFDEF: GET_RSS -->
 <table class="main_table">
 	<tr>
 		<td style="text-align: right;" colspan="2">
@@ -39,4 +40,5 @@ Witamy na stronie administracji serwisem.<br /><br />
 	</tr>
 </table>
 <br />
+<!-- ENDIF -->
 </div>

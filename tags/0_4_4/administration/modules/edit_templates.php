@@ -1,4 +1,8 @@
 <?php
+if(!$permarr['tpl_editor']) {
+  header('Location: main.php');
+  exit;
+}
 
 // deklaracja zmiennej $action::form
 $action         = empty($_GET['action']) ? '' : $_GET['action'];
@@ -14,38 +18,32 @@ switch($action) {
     
     case "add":
     
-        if($permarr['tpl_editor']) {
+        $template   = $_POST['template_name'];
+        $text		= $_POST['text'];
     
-            $template   = $_POST['template_name'];
-            $text		= $_POST['text'];
+        $tpl = 	'../templates/' . $lang . '/main/tpl/' . $template . '.tpl';
+    
+        $text = str_replace('{NOTE_ROWS}', '{ROWS}', $text);
+    
+        if(is_writeable($tpl)) {
         
-            $tpl = 	'../templates/' . $lang . '/main/tpl/' . $template . '.tpl';
+            $fp	= fopen($tpl, 'w+');
+            fwrite($fp, stripslashes($text));
+            fclose($fp);
         
-            $text = str_replace('{NOTE_ROWS}', '{ROWS}', $text);
-        
-            if(is_writeable($tpl)) {
-            
-                $fp	= fopen($tpl, 'w+');
-                fwrite($fp, stripslashes($text));
-                fclose($fp);
-            
-                $ft->assign('WRITE_ERROR', $i18n['edit_templates'][0]);
-            } else {
-            
-                $ft->assign('WRITE_ERROR', $i18n['edit_templates'][1]);
-            }
+            $ft->assign('WRITE_ERROR', $i18n['edit_templates'][0]);
         } else {
-            
-            $ft->assign('WRITE_ERROR', $i18n['edit_templates'][2]);
+        
+            $ft->assign('WRITE_ERROR', $i18n['edit_templates'][1]);
         }
-        break;
+    break;
 		
-	case "show":
+    case "show":
 
         $ft->define('form_templateedit', "form_templateedit.tpl");
         
-        $tpl 		= empty($_GET['tpl']) ? '' : $_GET['tpl'];
-        $template 	= get_root() . '/templates/' . $lang . '/main/tpl/' . $tpl . '.tpl';
+        $tpl 		    = empty($_GET['tpl']) ? '' : $_GET['tpl'];
+        $template 	= sprintf('%s/templates/%s/main/tpl/%s.tpl', get_root(), $lang, '/main/tpl/', $tpl);
         
         if(!is_writeable($template)) {
             $ft->assign('WRITE_ERROR', $i18n['edit_templates'][3]);

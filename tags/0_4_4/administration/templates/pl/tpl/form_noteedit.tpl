@@ -11,7 +11,6 @@
             <p class="text_preview">{NT_TEXT}</p>
         </td>
     </tr>
-    <!-- ELSE -->
     <!-- ENDIF -->
 	<tr>
 		<td class="form" width="100">Tytu³ wpisu:&nbsp;</td>
@@ -53,31 +52,37 @@
 		<td class="form">
 		<!-- IFDEF: OVERWRITE_PHOTO -->
 		Poprzednie zostanie nadpisane
-		<!-- ELSE -->
 		<!-- ENDIF -->
 		</td>
 	</tr>
 	<tr>
 		<td class="form">Tylko w kategorii:&nbsp;</td>
-		<td class="form" colspan="2"><input class="radio" type="radio" name="only_in_category" value="1" align="top" {ONLYINCAT_YES} />- tak&nbsp;<input type="radio" name="only_in_category" value="-1" align="top" {ONLYINCAT_NO} />- nie</td>
+		<td class="form" colspan="2">
+      <label><input class="radio" type="radio" name="only_in_category" value="1" align="top" {ONLYINCAT_YES} />- tak&nbsp;</label>
+      <label><input type="radio" name="only_in_category" value="-1" align="top" {ONLYINCAT_NO} />- nie</label>
+    </td>
 	</tr>
 	<tr>
 		<td class="form">Komentarze:&nbsp;</td>
 		<td class="form" colspan="2">
-            <input class="radio" type="radio" name="comments_allow" value="1" align="top" {COMMENTS_YES} />- zezwalaj&nbsp;
-            <input class="radio" type="radio" name="comments_allow" value="0" align="top" {COMMENTS_NO} />- nie zewalaj
-        </td>
+      <label><input class="radio" type="radio" name="comments_allow" value="1" align="top" {COMMENTS_YES} />- zezwalaj&nbsp;</label>
+      <label><input class="radio" type="radio" name="comments_allow" value="0" align="top" {COMMENTS_NO} />- nie zezwalaj</label>
+      <label><input class="radio" type="radio" name="comments_allow" value="-1" align="top" {COMMENTS_LOGGED} />- dla zalogowanych</label>
+    </td>
 	</tr>
 	<tr>
 		<td class="form">Publikowana:&nbsp;</td>
 		<td class="form" colspan="2">
-            <input class="radio" type="radio" name="published" value="1" align="top" {CHECKBOX_YES} />- tak&nbsp;
-            <input class="radio" type="radio" name="published" value="-1" align="top" {CHECKBOX_NO} />- nie
-        </td>
+      <label><input class="radio" type="radio" name="published" value="1" align="top" {CHECKBOX_YES} />- tak&nbsp;</label>
+      <label><input class="radio" type="radio" name="published" value="-1" align="top" {CHECKBOX_NO} />- nie</label>
+    </td>
 	</tr>
 	<tr>
 		<td class="form"></td>
-		<td class="form center" colspan="2"><input type="submit" tabindex="5" name="preview" value="Podgl±d tre¶ci" />&nbsp;<input type="submit" accesskey="s" tabindex="6" name="post" value="Zapisz" /></td>
+		<td class="form center" colspan="2">
+      <input type="submit" tabindex="5" name="preview" value="Podgl±d tre¶ci" />&nbsp;
+      <input type="submit" accesskey="s" tabindex="6" name="post" value="Zapisz" />
+    </td>
 	</tr>
 </table>
 </div>

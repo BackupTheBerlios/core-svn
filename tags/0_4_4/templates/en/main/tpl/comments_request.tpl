@@ -1,5 +1,5 @@
 <div>
-<!-- IFDEF: SHOW_COMMENT_FORM -->
+<!-- IFDEF: SHOW_ADDCOMMENT -->
 If You live an e-mail address(optional) it would be hidden(stored only in database).
 <br /><br />
 <b><a class="date" href="{PERMA_LINK}">{NEWS_TITLE}</a></b> - perma link<br /><br />

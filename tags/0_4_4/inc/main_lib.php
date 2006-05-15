@@ -172,15 +172,44 @@ function show_me_more($text) {
 
 function get_comments_link($comments_allow, $comments, $id) {
     
-    global 
-        $ft, 
-        $rewrite;
+    global $ft, $rewrite;
+
+    /*
+    if ($comments_allow == -1) {
+      if (isset($_SESSION) && array_key_exists('loggedIn', $_SESSION) && $_SESSION['loggedIn'] == 1) {
+        $comments_allow = 1;
+      } else {
+        $comments_allow = 0;
+      }
+    }
+    */
     
-    if(($comments_allow) == 0 ) {
+    if(($comments_allow) == 0) {
         $ft->assign(array(
             'COMMENTS_ALLOW'    =>false, 
             'COMMENTS'          =>''
         ));
+    } else if ($comments_allow == -1) {
+      if ($comments > 0) {
+        $comments_link = (bool)$rewrite ? '1,' . $id . ',2,item.html' : 'index.php?p=2&amp;id=' . $id . '';
+        $ft->assign(array(
+            'COMMENTS_LINK' =>$comments_link, 
+            'COMMENTS_ALLOW'=>true, 
+            'COMMENTS'      =>$comments
+        ));
+      } else if (loggedIn()) {
+        $comments_link = (bool)$rewrite ? '1,' . $id . ',3,item.html' : 'index.php?p=3&amp;id=' . $id . '';
+        $ft->assign(array(
+            'COMMENTS_LINK' =>$comments_link, 
+            'COMMENTS_ALLOW'=>true, 
+            'COMMENTS'      =>''
+        ));
+      } else {
+        $ft->assign(array(
+            'COMMENTS_ALLOW'    =>false, 
+            'COMMENTS'          =>''
+        ));
+      }
     } else {
         if($comments == 0) {
             $comments_link = (bool)$rewrite ? '1,' . $id . ',3,item.html' : 'index.php?p=3&amp;id=' . $id . '';
@@ -347,5 +376,12 @@ function coreRssDateConvert($date) {
 	
 	return $date;
 }
-
+function loggedIn()
+{
+  if (isset($_SESSION) && array_key_exists('loggedIn', $_SESSION) && $_SESSION['loggedIn'] == 1) {
+    return true;
+  } else {
+    return false;
+  }
+}
 ?>

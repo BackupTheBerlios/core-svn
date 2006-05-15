@@ -38,18 +38,19 @@ CREATE TABLE core_config (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
-CREATE TABLE core_devlog (
-  id mediumint(7) NOT NULL auto_increment,
+CREATE TABLE `core_devlog` (
+  `id` mediumint(7) NOT NULL auto_increment,
   `date` datetime NOT NULL default '0000-00-00 00:00:00',
-  title varchar(50) NOT NULL default '',
-  author varchar(30) NOT NULL default '',
+  `title` varchar(50) NOT NULL default '',
+  `author` varchar(30) NOT NULL default '',
   `text` mediumtext NOT NULL,
-  image varchar(255) NOT NULL default '',
-  comments_allow char(1) NOT NULL default '1',
-  published smallint(1) DEFAULT '1' NOT NULL, 
-  only_in_category smallint(1) DEFAULT '-1' NOT NULL, 
-  KEY id (id)
+  `image` varchar(255) NOT NULL default '',
+  `comments_allow` tinyint(1) NOT NULL default '1',
+  `published` smallint(1) NOT NULL default '1',
+  `only_in_category` smallint(1) NOT NULL default '-1',
+  KEY `id` (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 
 
 CREATE TABLE core_links (
@@ -104,7 +105,7 @@ CREATE TABLE core_users (
   PRIMARY KEY  (id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-INSERT INTO core_category VALUES ('', '', '10', 'ogólna', '', 'default', '6');
+INSERT INTO core_category VALUES ('', '', '10', 'DEFAULT_CATEGORY', '', 'default', '6');
 
 INSERT INTO core_config VALUES ('counter', '0');
 INSERT INTO core_config VALUES ('mainposts_per_page', '4');
@@ -114,6 +115,8 @@ INSERT INTO core_config VALUES ('title_page', './Core {lektura wcale nie obowi±z
 INSERT INTO core_config VALUES ('max_photo_width', '440');
 INSERT INTO core_config VALUES ('mod_rewrite', '0');
 INSERT INTO core_config VALUES ('date_format', 'Y-m-d H:i:s');
-INSERT INTO core_config VALUES ('core_version', '0.4.2');
+INSERT INTO core_config VALUES ('core_version', '0.4.4');
 INSERT INTO core_config VALUES ('start_page_type', 'all'), ('start_page_id', '0');
 INSERT INTO core_config VALUES ('show_calendar', 1);
+INSERT INTO `core_config` ( `config_name` , `config_value` ) VALUES ( 'get_rss', '1');
+

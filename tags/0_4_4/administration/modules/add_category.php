@@ -1,5 +1,10 @@
 <?php
 
+if(!$permarr['moderator']) {
+  header('Location: main.php');
+  exit;
+}
+
 // deklaracja zmiennej $action::form
 $action = empty($_GET['action']) ? '' : $_GET['action'];
 
@@ -19,79 +24,64 @@ switch ($action) {
 		$ft->define("error_reporting", "error_reporting.tpl");
 		$ft->define_dynamic("error_row", "error_reporting");
 	
-		if($permarr['moderator']) {
-		    
-		    // Obs³uga formularza, jesli go zatwierdzono
-		    if($category_name == '') {
-		        $monit[] = $i18n['add_category'][0];
-		    }
-		    
-		    // Sprawdzamy czy liczba postow na stronie jest w odpowiednim przedziale
-		    if(!is_int($category_perpage) && ($category_perpage < 3 || $category_perpage > 99)) {
-		        $monit[] = $i18n['add_category'][5];
-		    }
-		    
-		    if(empty($monit)) {
-		        
-		        $query = sprintf("
-                    SELECT 
-                        max(category_order) as max_order 
-                    FROM 
-                        %1\$s",
-        
-                    TABLE_CATEGORY
-                );
-            
-                $db->query($query);
-                $db->next_record();
-			
-                // Przypisanie zmiennej $id
-                $max_order = $db->f("max_order");
-		        
-		        $query = sprintf("
-                    INSERT INTO 
-                        %1\$s 
-                    VALUES 
-                        ('', '%2\$d', '%3\$d', '%4\$s', '%5\$s', '%6\$s', '%7\$d')",
-			
-                    TABLE_CATEGORY, 
-                    $category_parent_id, 
-                    $max_order + 10, 
-                    $category_name,
-                    $category_description, 
-                    $template_name, 
-                    $category_perpage
-                );
-                
-                $db->query($query);
-                
-                $ft->assign('CONFIRM', $i18n['add_category'][1]);
-                
-                $ft->parse('ROWS', ".result_note");
-		    } else {
-
-                foreach ($monit as $error) {
+    // Obs³uga formularza, jesli go zatwierdzono
+    if($category_name == '') {
+        $monit[] = $i18n['add_category'][0];
+    }
     
-                    $ft->assign('ERROR_MONIT', $error);
-                    
-                    $ft->parse('ROWS',	".error_row");
-                }
-                        
-                $ft->parse('ROWS', "error_reporting");
-		    }
-		} else {
-		    
-		    $monit[] = $i18n['add_category'][4];
+    // Sprawdzamy czy liczba postow na stronie jest w odpowiednim przedziale
+    if(!is_int($category_perpage) && ($category_perpage < 3 || $category_perpage > 99)) {
+        $monit[] = $i18n['add_category'][5];
+    }
+    
+    if(empty($monit)) {
+        
+        $query = sprintf("
+                SELECT 
+                    max(category_order) as max_order 
+                FROM 
+                    %1\$s",
+    
+                TABLE_CATEGORY
+            );
+        
+            $db->query($query);
+            $db->next_record();
+  
+            // Przypisanie zmiennej $id
+            $max_order = $db->f("max_order");
+        
+        $query = sprintf("
+                INSERT INTO 
+                    %1\$s 
+                VALUES 
+                    ('', '%2\$d', '%3\$d', '%4\$s', '%5\$s', '%6\$s', '%7\$d')",
+  
+                TABLE_CATEGORY, 
+                $category_parent_id, 
+                $max_order + 10, 
+                $category_name,
+                $category_description, 
+                $template_name, 
+                $category_perpage
+            );
+            
+            $db->query($query);
+            
+            $ft->assign('CONFIRM', $i18n['add_category'][1]);
+            
+            $ft->parse('ROWS', ".result_note");
+    } else {
 
             foreach ($monit as $error) {
-    
+
                 $ft->assign('ERROR_MONIT', $error);
-                    
+                
                 $ft->parse('ROWS',	".error_row");
             }
-                        
+                    
             $ft->parse('ROWS', "error_reporting");
-		}
+    }
 
 		break;
 

@@ -32,6 +32,10 @@ require_once('i18n/' . $lang . '/i18n.php');
 require_once(PATH_TO_CLASSES. '/cls_fast_template.php');
 require_once(PATH_TO_CLASSES. '/cls_permissions.php');
 
+// inicjowanie klasy, wkazanie katalogu przechowuj±cego szablony
+$ft = new FastTemplate('./templates/' . $lang . '/tpl');
+
+
 // egzemplarz klasy obs³uguj±cej bazê danych Core
 $db = new DB_SQL;
 
@@ -57,23 +61,52 @@ $privileges = $db->f('permission_level');
 $perms      = new permissions();
 $permarr    = $perms->getPermissions($privileges);
 
+$ft->assign(array(
+  'PERMS_USER'      => false,
+  'PERMS_WRITER'    => false,
+  'PERMS_MODERATOR' => false,
+  'PERMS_TPLEDITOR' => false,
+  'PERMS_ADMIN'     => false,
+));
 switch ($privileges) {
     
-    case '1':   $privilege_level = 1;   break;
-    case '3':   $privilege_level = 2;   break;
-    case '7':   $privilege_level = 3;   break;
-    case '15':  $privilege_level = 4;   break;
-    case '31':  $privilege_level = 5;   break;       
+    case '1':
+      $privilege_level = 1;
+      $ft->assign('PERMS_USER', true);
+      break;
+    case '3':
+      $privilege_level = 2;
+      $ft->assign('PERMS_USER', true);
+      $ft->assign('PERMS_WRITER', true);
+      break;
+    case '7':
+      $privilege_level = 3;
+      $ft->assign('PERMS_USER', true);
+      $ft->assign('PERMS_WRITER', true);
+      $ft->assign('PERMS_MODERATOR', true);
+      break;
+    case '15':
+      $privilege_level = 4;
+      $ft->assign('PERMS_USER', true);
+      $ft->assign('PERMS_WRITER', true);
+      $ft->assign('PERMS_MODERATOR', true);
+      $ft->assign('PERMS_TPLEDITOR', true);
+      break;
+    case '31':
+      $privilege_level = 5;
+      $ft->assign('PERMS_USER', true);
+      $ft->assign('PERMS_WRITER', true);
+      $ft->assign('PERMS_MODERATOR', true);
+      $ft->assign('PERMS_TPLEDITOR', true);
+      $ft->assign('PERMS_ADMIN', true);
+      break;       
 }
-
-// inicjowanie klasy, wkazanie katalogu przechowuj±cego szablony
-$ft = new FastTemplate('./templates/' . $lang . '/tpl');
 
 // tablica definicji u¿ytych plików *.tpl
 $ft->define(array(
-    'index'         =>"index.tpl",
-    'main_loader'   =>"main_loader.tpl",
-    'result_note'   =>"result_note.tpl"
+    'index'         =>'index.tpl',
+    'main_loader'   =>'main_loader.tpl',
+    'result_note'   =>'result_note.tpl'
 ));
 		
 $ft->assign(array(
@@ -85,9 +118,13 @@ $ft->assign(array(
     'LANG'              =>$lang
 ));
 
+// prze³±cznica ³adowanej tre¶ci					
+$p = empty($_GET['p']) ? '' : $_GET['p'];
+
+
 $inc_modules = array(
-    "header_menu",
-    "subcat_menu"
+    'header_menu',
+    'subcat_menu'
 );
 
 foreach($inc_modules as $module) {
@@ -95,9 +132,6 @@ foreach($inc_modules as $module) {
     // ³adowanie dodatkowych modu³ów
     include('modules/' . $module . '.php');
 }
-
-// prze³±cznica ³adowanej tre¶ci					
-$p = empty($_GET['p']) ? '' : $_GET['p'];
 
 class loader {
     
@@ -132,7 +166,7 @@ class loader {
         
         $this->mod = $this->name_cleaner($this->mod);
         
-        if($this->mod == "") {
+        if($this->mod == '') {
             $this->return_dead();
         }
 
@@ -143,7 +177,7 @@ class loader {
     
 	function name_cleaner($name) {
 	    
-	    return preg_replace("/[^a-zA-Z0-9\-\_]/", "", $name);
+	    return preg_replace('/[^a-zA-Z0-9\-\_]/', '', $name);
 	}
 	
 	function return_dead() {
@@ -155,7 +189,7 @@ class loader {
 $loader = new loader();
 require_once(PATH_TO_MODULES . '/' . $loader->mod . $loader->MODULE_EXTENSION);
 
-$ft->parse('MAIN_CONTENT', array("main_loader", "index"));
+$ft->parse('MAIN_CONTENT', array('main_loader', 'index'));
 
 $ft->FastPrint();
 exit;

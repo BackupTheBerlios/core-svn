@@ -1,4 +1,8 @@
 <?php
+if (!$permarr['writer']) {
+  header('Location: main.php');
+  exit;
+}
 
 // deklaracja zmiennej $action::form
 $action     = empty($_GET['action']) ? '' : $_GET['action'];
@@ -219,6 +223,8 @@ switch ($action) {
 
             if($comments_allow == 1) {
                 $ft->assign('COMMENTS_YES', 'checked="checked"');
+            } else if ($comments_allow == -1) {
+                $ft->assign('COMMENTS_LOGGED', 'checked="checked"');
             } else {
                 $ft->assign('COMMENTS_NO', 'checked="checked"');
             }

@@ -1,4 +1,8 @@
 <?php
+if(!$permarr['moderator']) {
+  header('Location: main.php?p=1');
+  exit;
+}
 
 // deklaracja zmiennej $action::form
 $action = empty($_GET['action']) ? '' : $_GET['action'];
@@ -50,115 +54,74 @@ switch ($action) {
 		break;
 	
 	case "edit": // edycja wybranego wpisu
-	
-        if($permarr['moderator']) {
-	
-            $text     = parse_markers($_POST['text'], 1);
-            $author   = $_POST['author'];
-		
-            //sprawdzania daty
-            if(isset($_POST['now']) || !preg_match('#^([0-9][0-9])-([0-9][0-9])-([0-9][0-9][0-9][0-9]) ([0-9][0-9]:[0-9][0-9]:[0-9][0-9])$#', $_POST['date'], $matches)) {
-                $date = date("Y-m-d H:i:s");
-            } else {
-                $date = sprintf('%s-%s-%s %s', $matches[3], $matches[2], $matches[1], $matches[4]);
-            }
+    $text     = parse_markers($_POST['text'], 1);
+    $author   = $_POST['author'];
 
-            $query = sprintf("
-                UPDATE 
-                    %1\$s 
-                SET 
-                    author	= '%2\$s', 
-                    text	= '%3\$s',
-                    date    = '%4\$s'
-                WHERE 
-                    id = '%5\$d'", 
-		
-                TABLE_COMMENTS, 
-                $author, 
-                $text, 
-                $date,
-                $_GET['id']
-            );
-		
-            $db->query($query);
-		
-            $ft->assign('CONFIRM', $i18n['edit_comments'][0]);
-            $ft->parse('ROWS',	".result_note");
-        } else {
-            
-            $monit[] = $i18n['edit_comments'][3];
+    //sprawdzania daty
+    if(isset($_POST['now']) || !preg_match('#^([0-9][0-9])-([0-9][0-9])-([0-9][0-9][0-9][0-9]) ([0-9][0-9]:[0-9][0-9]:[0-9][0-9])$#', $_POST['date'], $matches)) {
+        $date = date("Y-m-d H:i:s");
+    } else {
+        $date = sprintf('%s-%s-%s %s', $matches[3], $matches[2], $matches[1], $matches[4]);
+    }
 
-            foreach ($monit as $error) {
-    
-                $ft->assign('ERROR_MONIT', $error);
-                    
-                $ft->parse('ROWS',	".error_row");
-            }
-                        
-            $ft->parse('ROWS', "error_reporting");
-        }
-		break;
+    $query = sprintf("
+        UPDATE 
+            %1\$s 
+        SET 
+            author	= '%2\$s', 
+            text	= '%3\$s',
+            date    = '%4\$s'
+        WHERE 
+            id = '%5\$d'", 
+
+        TABLE_COMMENTS, 
+        $author, 
+        $text, 
+        $date,
+        $_GET['id']
+    );
+
+    $db->query($query);
+
+    $ft->assign('CONFIRM', $i18n['edit_comments'][0]);
+    $ft->parse('ROWS',	".result_note");
+  break;
 	
 	case "delete": // usuwanie wybranego wpisu
-	
-        // potwierdzenie usuniecia komentarza
-        $confirm = empty($_POST['confirm']) ? '' : $_POST['confirm'];
-        switch ($confirm) {
-            
-            case $i18n['confirm'][0]:
-            
-                $post_id = empty($_POST['post_id']) ? '' : $_POST['post_id'];
-	
-                if($permarr['moderator']) {
-	
-                    $query = sprintf("
-                        DELETE FROM 
-                            %1\$s 
-                        WHERE 
-                            id = '%2\$d'", 
-            
-                        TABLE_COMMENTS, 
-                        $post_id
-                    );
-		
-                    $db->query($query);
-            
-                    $ft->assign('CONFIRM', $i18n['edit_comments'][1]);
-                    $ft->parse('ROWS', ".result_note");
-                } else {
-            
-                    $monit[] = $i18n['edit_comments'][4];
+    // potwierdzenie usuniecia komentarza
+    $confirm = empty($_POST['confirm']) ? '' : $_POST['confirm'];
+    switch ($confirm) {
+      case $i18n['confirm'][0]:
+        $post_id = empty($_POST['post_id']) ? '' : $_POST['post_id'];
+        $query = sprintf("
+            DELETE FROM 
+                %1\$s 
+            WHERE 
+                id = '%2\$d'", 
 
-                    foreach ($monit as $error) {
-    
-                        $ft->assign('ERROR_MONIT', $error);
-                    
-                        $ft->parse('ROWS',	".error_row");
-                    }
-                        
-                $ft->parse('ROWS', "error_reporting");
-                }
-            break;
-            
-        case $i18n['confirm'][1]:
+            TABLE_COMMENTS, 
+            $post_id
+        );
+
+        $db->query($query);
+
+        $ft->assign('CONFIRM', $i18n['edit_comments'][1]);
+        $ft->parse('ROWS', ".result_note");
+      break;
+      case $i18n['confirm'][1]:
+        header("Location: main.php?p=5");
+        exit;
+      default:
+        $ft->define('confirm_action', 'confirm_action.tpl');
+        $ft->assign(array(
+            'PAGE_NUMBER'   =>$p, 
+            'POST_ID'       =>$_GET['id'], 
+            'CONFIRM_YES'   =>$i18n['confirm'][0],
+            'CONFIRM_NO'    =>$i18n['confirm'][1]
+        ));
         
-            header("Location: main.php?p=5");
-            exit;
-            break;
-            
-        default:
-        
-            $ft->define('confirm_action', 'confirm_action.tpl');
-            $ft->assign(array(
-                'PAGE_NUMBER'   =>$p, 
-                'POST_ID'       =>$_GET['id'], 
-                'CONFIRM_YES'   =>$i18n['confirm'][0],
-                'CONFIRM_NO'    =>$i18n['confirm'][1]
-            ));
-            
-            $ft->parse('ROWS', ".confirm_action");
-            break;
-        }
+        $ft->parse('ROWS', ".confirm_action");
+    }
     break;
 
 	default:
@@ -206,11 +169,11 @@ switch ($action) {
 			// Pêtla wyswietlaj¹ca wszystkie wpisy + stronnicowanie ich
 			while($db->next_record()) {
 		
-				$id 		= $db->f("id");
-				$text 		= $db->f("text");
-				$date 		= $db->f("date");
-				$author		= $db->f("author");
-				$author_ip	= $db->f("author_ip");
+				$id 		= $db->f('id');
+				$text 		= $db->f('text');
+				$date 		= $db->f('date');
+				$author		= $db->f('author');
+				$author_ip	= $db->f('author_ip');
 			
 				$date = explode(' ', $date);
 			
@@ -236,21 +199,21 @@ switch ($action) {
 				
 				$idx1++;
 			
-				$ft->define("editlist_comments", "editlist_comments.tpl");
-				$ft->define_dynamic("row", "editlist_comments");
+				$ft->define('editlist_comments', 'editlist_comments.tpl');
+				$ft->define_dynamic('row', 'editlist_comments');
 				
 				// naprzemienne kolorowanie wierszy tabeli
 				$ft->assign('ID_CLASS', $idx1%2 ? 'mainList' : 'mainListAlter');
 				
-				$ft->parse('ROW', ".row");
+				$ft->parse('ROW', '.row');
 			}
 		
-			$ft->parse('ROWS', "editlist_comments");;
+			$ft->parse('ROWS', 'editlist_comments');;
 		} else {
 		
 			$ft->assign('CONFIRM', $i18n['edit_comments'][2]);
 
-			$ft->parse('ROWS',	".result_note");
+			$ft->parse('ROWS',	'.result_note');
 		}
 }
 

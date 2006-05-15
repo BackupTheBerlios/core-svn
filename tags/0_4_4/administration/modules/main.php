@@ -1,38 +1,39 @@
 <?php
 
-$file = 'http://core-cms.com/rss';       // iSyndicate RSS
-$data = !function_exists('file_get_contents') ? implode('', file($file)) : file_get_contents($file);
+$ft->define('main_site', 'main_site.tpl');
 
-$simple = 1;
+if (get_config('get_rss') == 1) {
+  $ft->assign('GET_RSS', true);
 
-$replacement = array(
-    "&",
-    "<br />", 
-    "<",
-    ">"
-);
+  $file = 'http://core-cms.com/rss';       // iSyndicate RSS
+  $data = !function_exists('file_get_contents') ? implode('', file($file)) : file_get_contents($file);
+
+  $simple = 1;
+
+  $replacement = array(
+      '&',
+      '<br />', 
+      '<',
+      '>'
+  );
     
-$pattern = array(
-    " &amp; ",
-    "&lt;br /&gt;",
-    "&lt;",
-    "&gt;"
-);
+  $pattern = array(
+      ' &amp; ',
+      '&lt;br /&gt;',
+      '&lt;',
+      '&gt;'
+  );
     
-$data   = str_replace($pattern, $replacement, $data);
-$rss    = new rss_parser($data, $simple);
+  $data   = str_replace($pattern, $replacement, $data);
+  $rss    = new rss_parser($data, $simple);
 
-$allItems   = $rss->getAllItems();
-$itemCount  = count($allItems);
+  $allItems   = $rss->getAllItems();
+  $itemCount  = count($allItems);
 
-$ft->define("main_site", "main_site.tpl");
-$ft->define_dynamic("rss_row", "main_site");
+  $ft->define_dynamic('rss_row', 'main_site');
 
-function str_cut($s, $i=110, $c=' ') {
-    return substr($s, 0, strrpos(substr($s, 0, $i), $c));
-}
 
-for($y = 0; $y < 5; $y++) {
+  for($y = 0; $y < 5; $y++) {
     
     $ft->assign(array(
         'PERMA_LINK'    =>$allItems[$y]['LINK'],
@@ -41,8 +42,11 @@ for($y = 0; $y < 5; $y++) {
         'NEWS_TEXT'     =>str_cut(strip_tags($allItems[$y]['DESCRIPTION'])) . '...'
     ));
     
-    $ft->parse('ROWS', ".rss_row");
+    $ft->parse('ROWS', '.rss_row');
     
+  }
+} else {
+  $ft->assign('GET_RSS', false);
 }
 
 // Inicjowanie egzemplarza klasy do obs³ugi Bazy Danych
@@ -65,7 +69,7 @@ $query = sprintf("
 
 $db->query($query);
 $db->next_record();
-$published_items 	= $db->f("id");
+$published_items 	= $db->f('id');
 
 // Zliczenie wszystkich nie publikowanych wpisów
 $query = sprintf("
@@ -84,7 +88,7 @@ $query = sprintf("
 
 $db->query($query);
 $db->next_record();
-$nonpublished_items 	= $db->f("id");
+$nonpublished_items 	= $db->f('id');
 
 // Zliczenie wszystkich wpisów
 $num_items 	= $published_items + $nonpublished_items;
@@ -95,6 +99,6 @@ $ft->assign(array(
     'NONPUBLISHED_NOTES'=>$nonpublished_items
 ));
 					
-$ft->parse('ROWS', "main_site");
+$ft->parse('ROWS', 'main_site');
 
 ?>

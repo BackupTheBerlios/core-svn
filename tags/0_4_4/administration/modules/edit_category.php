@@ -1,5 +1,10 @@
 <?php
 
+if(!$permarr['moderator']) {
+  header('Location: main.php');
+  exit;
+}
+
 // deklaracja zmiennej $action::form
 $action = empty($_GET['action']) ? '' : $_GET['action'];
 
@@ -32,7 +37,7 @@ switch ($action) {
         $category_tpl       = $db->f("category_tpl");
         $category_perpage   = $db->f("category_post_perpage");
 		
-		$ft->assign(array(
+        $ft->assign(array(
             'CATEGORY_ID'		=>$cat_id,
             'CATEGORY_NAME'		=>$cat_name,
             'CATEGORY_DESC'		=>br2nl($cat_description),
@@ -71,72 +76,52 @@ switch ($action) {
 		
 	case "edit":// edycja wybranego wpisu
 	
-        if($permarr['moderator']) {
-	
-            $category_description	= nl2br($_POST['category_description']);
-            $category_name			= trim($_POST['category_name']);
-            $category_perpage       = $_POST['category_post_perpage'];
-            $template_name          = $_POST['template_name'];
-            
-            $monit = array();
-            
-            // Obs³uga formularza, jesli go zatwierdzono
-		    if($category_name == '') {
-		        $monit[] = $i18n['add_category'][0];
-		    }
-		    
-		    // Sprawdzamy czy liczba postow na stronie jest w odpowiednim przedziale
-		    if(!is_int($category_perpage) && ($category_perpage < 3 || $category_perpage > 99)) {
-		        $monit[] = $i18n['add_category'][5];
-		    }
-		    
-		    if(empty($monit)) {
-		        
-		        $query = sprintf("
-                    UPDATE 
-                        %1\$s 
-                    SET 
-                        category_name = '%2\$s', 
-                        category_description = '%3\$s', 
-                        category_tpl = '%4\$s', 
-                        category_post_perpage = '%5\$d' 
-                    WHERE 
-                        category_id='%6\$d'", 
-		
-                    TABLE_CATEGORY, 
-                    $category_name, 
-                    $category_description, 
-                    $template_name, 
-                    $category_perpage, 
-                    $_GET['id']
-                );
-		
-                $db->query($query);
-		
-                $ft->assign('CONFIRM', $i18n['edit_category'][2]);
-                $ft->parse('ROWS',	".result_note");
-		    } else {
-		        
-		        foreach ($monit as $error) {
+        $category_description	= nl2br($_POST['category_description']);
+        $category_name			= trim($_POST['category_name']);
+        $category_perpage       = $_POST['category_post_perpage'];
+        $template_name          = $_POST['template_name'];
+        
+        $monit = array();
+        
+        // Obs³uga formularza, jesli go zatwierdzono
+        if($category_name == '') {
+            $monit[] = $i18n['add_category'][0];
+        }
     
-                    $ft->assign('ERROR_MONIT', $error);
-                    
-                    $ft->parse('ROWS',	".error_row");
-                }
-                        
-                $ft->parse('ROWS', "error_reporting");
-		    }
+        // Sprawdzamy czy liczba postow na stronie jest w odpowiednim przedziale
+        if(!is_int($category_perpage) && ($category_perpage < 3 || $category_perpage > 99)) {
+            $monit[] = $i18n['add_category'][5];
+        }
+    
+        if(empty($monit)) {
+            $query = sprintf("
+                UPDATE 
+                    %1\$s 
+                SET 
+                    category_name = '%2\$s', 
+                    category_description = '%3\$s', 
+                    category_tpl = '%4\$s', 
+                    category_post_perpage = '%5\$d' 
+                WHERE 
+                    category_id='%6\$d'", 
+
+                TABLE_CATEGORY, 
+                $category_name, 
+                $category_description, 
+                $template_name, 
+                $category_perpage, 
+                $_GET['id']
+            );
+            $db->query($query);
+
+            $ft->assign('CONFIRM', $i18n['edit_category'][2]);
+            $ft->parse('ROWS',	".result_note");
         } else {
-            
-            $monit[] = $i18n['edit_category'][6];
-            
+        
             foreach ($monit as $error) {
-                
                 $ft->assign('ERROR_MONIT', $error);
-                
                 $ft->parse('ROWS',	".error_row");
             }
-                        
             $ft->parse('ROWS', "error_reporting");
         }
 		break;

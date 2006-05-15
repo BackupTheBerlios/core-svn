@@ -1,4 +1,30 @@
 <?php
+/*
+//sprawdzamy upranwienia do dodania komentarza
+$query = sprintf("
+  SELECT
+    comments_allow
+  FROM
+    %s
+  WHERE
+    id = %d",
+  
+  TABLE_MAIN,
+  $_REQUEST['id']
+);
+$db->query($query);
+$db->next_record();
+switch ($db->f('comments_allow')) {
+  case 0:
+    header('Location: index.php?p=1&id=' . (int)$_REQUEST['id']);
+    exit;
+  case -1:
+    if (! (isset($_SESSION) && array_key_exists('loggedIn', $_SESSION) && $_SESSION['loggedIn'] == 1)) {
+      header('Location: index.php?p=1&id=' . (int)$_REQUEST['id']);
+      exit;
+    }
+}
+*/    
 
 // dekalracja zmiennej $page_string
 $page_string        = empty($page_string) ? '' : $page_string;
@@ -6,28 +32,22 @@ $comment_author     = empty($_COOKIE['devlog_comment_user']) ? '' : $_COOKIE['de
 
 // deklaracja zmiennej $action::form
 $action = empty($_GET['action']) ? '' : $_GET['action'];
-
 switch ($action) {
-
     case 'add':
-
         $monit = array();
 
         // Obs³uga formularza, jesli go zatwierdzono
         if(!eregi('^([^0-9]+){2,}$', $_POST['author'])) {
-            
             $monit[] = $i18n['comments_add'][0];
         }
 
         // Sprawdzenie poprawnosci adresu e-mail
         if(!empty($_POST['email']) && !check_mail($_POST['email'])) {
-            
             $monit[] = $i18n['comments_add'][1];
         }
 
         // Je¿eli dane spe³niaja wszystkie kryteria dodanie nowego komentarza
         if(empty($monit)) {
-
             $text = str_nl2br($_POST['text']);
 
             // [b] i [/b] dla tekstu pogrubionego.
@@ -89,7 +109,7 @@ switch ($action) {
                 'SUBMIT_LINK'   =>$submit_link
             ));
 
-            $ft->assign('SHOW_COMMENT_FORM', false);
+            $ft->assign('SHOW_ADDCOMMENT', false);
             $ft->define('comments_request', 'comments_request.tpl');
             
             // parsowanie szablonu::ft
@@ -165,7 +185,7 @@ switch ($action) {
                 $perma_link = '1,' . $id . ',1,item.html';
                 $form_link  = '1,3,item.html';
             } else {
-                $perma_link = 'index.php?p=1&amp;id=' . $id . '';
+                $perma_link = 'index.php?p=1&amp;id=' . $id ;
                 $form_link  = 'index.php?p=3&amp;action=add';
             }
 
@@ -227,7 +247,18 @@ switch ($action) {
             ));
         }
         
-        $ft->assign('SHOW_COMMENT_FORM', true);
+        switch ($db->f('comments_allow')) {
+          case 0:
+            $show_addcomment = false;
+          break;
+          case 1:
+            $show_addcomment = true;
+          break;
+          case -1:
+            $show_addcomment = loggedIn();
+          break;
+        }
+        $ft->assign('SHOW_ADDCOMMENT', $show_addcomment);
         $ft->define('comments_request', 'comments_request.tpl');
         
         // parsowanie szablonu::ft

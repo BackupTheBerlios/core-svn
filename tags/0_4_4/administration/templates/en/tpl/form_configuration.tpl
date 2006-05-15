@@ -70,6 +70,13 @@
 		</select>
 		</td>
 	</tr>
+  <tr>
+		<td class="form">Core RSS &nbsp;</td>
+		<td class="form" colspan="2">
+            <input class="radio" type="radio" name="corerss" value="1" align="top" {CORERSS_YES} />- tak&nbsp;
+            <input class="radio" type="radio" name="corerss" value="0" align="top" {CORERSS_NO} />- nie
+    </td>
+	</tr>
 	<tr>
       <td width="364" colspan="2"><br /><img src="templates/{LANG}/images/ar.gif" width="10" height="9" />&nbsp; <a href="#" onclick="document.getElementById('formConfig').submit()">save settings</a></td>
 	</tr>

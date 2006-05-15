@@ -1,6 +1,6 @@
 <?php
 
-switch($p = empty($_GET['p']) ? '' : $_GET['p']){
+switch($p){
 	
 	case '1':
 	case '2':

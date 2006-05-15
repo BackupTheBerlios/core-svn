@@ -20,18 +20,18 @@ switch ($action) {
 		$db->query($query);
 		$db->next_record();
 		
-		$date 		= $db->f("date");
-		$title 		= $db->f("title");
-		$text 		= $db->f("text");
-		$author		= $db->f("author");
-		$published	= $db->f("published");
+		$date 		= $db->f('date');
+		$title 		= $db->f('title');
+		$text 		= $db->f('text');
+		$author		= $db->f('author');
+		$published	= $db->f('published');
 		
 		$date	= substr($date, 0, 16);
-		$dat1	= explode(" ", $date);
-		$dat	= explode("-", $dat1[0]);
-		$date	= "$dat[2]-$dat[1]-$dat[0] $dat1[1]";
+		$dat1	= explode(' ', $date);
+		$dat	= explode('-', $dat1[0]);
+		$date	= '$dat[2]-$dat[1]-$dat[0] $dat1[1]';
 		
-		$text = str_replace("<br />", "\r\n", $text);
+		$text = str_replace('<br />', '\r\n', $text);
 		$text = preg_replace("/(\r\n)+/", "\\1\\1", $text);
 
 		
@@ -42,11 +42,11 @@ switch ($action) {
             'TEXT'		=>$text
         ));
 
-		$ft->define('form_commentsedit', "form_commentsedit.tpl");
-		$ft->parse('ROWS',	".form_commentsedit");
+		$ft->define('form_commentsedit', 'form_commentsedit.tpl');
+		$ft->parse('ROWS',	'.form_commentsedit');
 		break;
 
-	case "edit":// edycja wybranego wpisu
+	case 'edit':// edycja wybranego wpisu
 	
 		$text	= nl2br($_POST['text']);
 		$author	= $_POST['author'];

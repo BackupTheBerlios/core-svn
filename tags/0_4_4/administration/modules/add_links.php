@@ -1,4 +1,8 @@
 <?php
+if (!$permarr['moderator']) {
+  header('Location: main.php');
+  exit;
+}
 
 // deklaracja zmiennej $action::form
 $action = empty($_GET['action']) ? '' : $_GET['action'];
@@ -21,75 +25,51 @@ switch ($action) {
 		$ft->define("error_reporting", "error_reporting.tpl");
 		$ft->define_dynamic("error_row", "error_reporting");
 		
-		if($permarr['moderator']) {
-	
-            // Obs³uga formularza, jesli go zatwierdzono
-            if(!eregi("^([^0-9]+){2,}$", $link_name)) {
-                
-                $monit[] = $i18n['add_links'][0];
-            }
-            
-            if(!eregi("^(www|ftp|http)://([-a-z0-9]+\.)+([a-z]{2,})$", $link_url)) {
-                
-                $monit[] = $i18n['add_links'][1];
-            }
-            
-            if(empty($monit)) {
-                
-                $query = sprintf("
-                    SELECT 
-                        max(link_order) as max_order 
-                    FROM 
-                        %1\$s",
-        
-                    TABLE_LINKS
-                );
-            
-                $db->query($query);
-                $db->next_record();
-			
-                // Przypisanie zmiennej $id
-                $max_order = $db->f("max_order");
-                
-                $query = sprintf("
-                    INSERT INTO 
-                        %1\$s 
-                    VALUES 
-                        ('', '%2\$d', '%3\$s', '%4\$s')",
-			
-                    TABLE_LINKS, 
-                    $max_order + 10, 
-                    $link_name,
-                    $link_url
-                );
-		
-                $db->query($query);
-			
-                $ft->assign('CONFIRM', $i18n['add_links'][2]);
-                $ft->parse('ROWS', ".result_note");
-            } else {
-                
-                foreach ($monit as $error) {
+    // Obs³uga formularza, jesli go zatwierdzono
+    if(!eregi("^([^0-9]+){2,}$", $link_name)) {
+        $monit[] = $i18n['add_links'][0];
+    }
     
-                    $ft->assign('ERROR_MONIT', $error);
-                    
-                    $ft->parse('ROWS',	".error_row");
-                }
-                        
-                $ft->parse('ROWS', "error_reporting");
-		  }
-		} else {
-		    
-		    $monit[] = $i18n['add_links'][5];
-		    
-		    foreach ($monit as $error) {
-		        
-		        $ft->assign('ERROR_MONIT', $error);
-		        
-		        $ft->parse('ROWS',	".error_row");
-		    }
-		    
-		    $ft->parse('ROWS', "error_reporting");
+    if(!eregi("^(www|ftp|http)://([-a-z0-9]+\.)+([a-z]{2,})$", $link_url)) {
+        $monit[] = $i18n['add_links'][1];
+    }
+    
+    if(empty($monit)) {
+        $query = sprintf("
+            SELECT 
+                max(link_order) as max_order 
+            FROM 
+                %1\$s",
+
+            TABLE_LINKS
+        );
+        $db->query($query);
+        $db->next_record();
+
+        // Przypisanie zmiennej $id
+        $max_order = $db->f("max_order");
+        
+        $query = sprintf("
+            INSERT INTO 
+                %1\$s 
+            VALUES 
+                ('', '%2\$d', '%3\$s', '%4\$s')",
+
+            TABLE_LINKS, 
+            $max_order + 10, 
+            $link_name,
+            $link_url
+        );
+        $db->query($query);
+
+        $ft->assign('CONFIRM', $i18n['add_links'][2]);
+        $ft->parse('ROWS', ".result_note");
+    } else {
+        foreach ($monit as $error) {
+            $ft->assign('ERROR_MONIT', $error);
+            $ft->parse('ROWS',	".error_row");
+        }
+        $ft->parse('ROWS', "error_reporting");
 		}
 		
 		break;

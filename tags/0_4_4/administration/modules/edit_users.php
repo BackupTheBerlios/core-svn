@@ -1,15 +1,19 @@
 <?php
+if (!$permarr['writer']) {
+  header('Location: main.php');
+  exit;
+}
 
 // deklaracja zmiennej $action::form
 $action = empty($_GET['action']) ? '' : $_GET['action'];
 
 // definicja szablonow parsujacych wyniki bledow.
-$ft->define("error_reporting", "error_reporting.tpl");
-$ft->define_dynamic("error_row", "error_reporting");
+$ft->define('error_reporting', 'error_reporting.tpl');
+$ft->define_dynamic('error_row', 'error_reporting');
 
 switch ($action) {
 	
-	case "show":
+	case 'show':
 	
 		$query = sprintf("
             SELECT * FROM 
@@ -28,23 +32,23 @@ switch ($action) {
             'USER_ID'           =>$_GET['id'],
             
             'LOGIN'             =>$db->f('login'),
-            'EMAIL'             =>$db->f("email"),
+            'EMAIL'             =>$db->f('email'),
             
-            'NAME'              =>$db->f("name"),
-            'SURNAME'           =>$db->f("surname"),
-            'CITY'              =>$db->f("city"),
-            'COUNTRY'           =>$db->f("country"),
+            'NAME'              =>$db->f('name'),
+            'SURNAME'           =>$db->f('surname'),
+            'CITY'              =>$db->f('city'),
+            'COUNTRY'           =>$db->f('country'),
             
-            'WWW'               =>$db->f("www"),
-            'GG'                =>$db->f("gg"),
-            'TLEN'              =>$db->f("tlen"),
-            'JID'               =>$db->f("jid"),
+            'WWW'               =>$db->f('www'),
+            'GG'                =>$db->f('gg'),
+            'TLEN'              =>$db->f('tlen'),
+            'JID'               =>$db->f('jid'),
             
-            'HOBBY'             =>$db->f("hobby"),
-            'ADDITIONAL_INFO'   =>$db->f("additional_info")
+            'HOBBY'             =>$db->f('hobby'),
+            'ADDITIONAL_INFO'   =>$db->f('additional_info')
         ));
 
-		$ft->define('form_useredit', "form_useredit.tpl");
+		$ft->define('form_useredit', 'form_useredit.tpl');
 		$ft->parse('ROWS',	".form_useredit");
 		break;
 
@@ -69,103 +73,96 @@ switch ($action) {
 	
 		// sprawdzamy, czy uzytkownik ma odpowiednie uprawniania, lub czy
 		// edytuje swoje dane - wowczas access granted
-        if($permarr['admin'] || ($permarr['writer'] && $core_user == $_SESSION['login'])) {
+    if($permarr['admin'] || $core_user == $_SESSION['login']) {
 
-            // edycja wybranego wpisu
-            $u_login    = $_POST['login_name'];
-            $email      = $_POST['email'];
-        
-            $name       = $_POST['name'];
-            $surname    = $_POST['surname'];
-            $city       = $_POST['city'];
-            $country    = $_POST['country'];
-        
-            $www        = $_POST['www'];
-            $gg         = $_POST['gg'];
-            $tlen       = $_POST['tlen'];
-            $jid        = $_POST['jid'];
-        
-            $hobby      = $_POST['hobby'];
-        
-            $additional_info    = $_POST['additional_info'];
-        
-            if(!check_mail($email)){
-                $monit[] = $i18n['edit_users'][9];
-            }
-		
-            if(!empty($monit)) {
-
-                foreach ($monit as $error) {
+        // edycja wybranego wpisu
+        $u_login    = $_POST['login_name'];
+        $email      = $_POST['email'];
     
-                    $ft->assign('ERROR_MONIT', $error);
-                    
-                    $ft->parse('ROWS',	".error_row");
-                }
-                        
-                $ft->parse('ROWS', "error_reporting");
-            
-            } else {
-		
-                $query = sprintf("
-                    UPDATE 
-                        %1\$s 
-                    SET 
-                        login           = '%2\$s', 
-                        email           = '%3\$s', 
-                    
-                        name            = '%4\$s', 
-                        surname         = '%5\$s',
-                        city            = '%6\$s', 
-                        country         = '%7\$s',
-                    
-                        www             = '%8\$s',
-                        gg              = '%9\$s',
-                        tlen            = '%10\$s', 
-                        jid             = '%11\$s',
-                    
-                        hobby           = '%12\$s', 
-                        additional_info = '%13\$s'
-                    WHERE 
-                        id = '%14\$d'", 
-		
-                    TABLE_USERS, 
-                
-                    $u_login, 
-                    $email, 
-                
-                    $name,
-                    $surname,
-                    $city,
-                    $country,
-                
-                    $www,
-                    $gg,
-                    $tlen,
-                    $jid, 
-                
-                    $hobby, 
-                    $additional_info,
-                
-                    $_GET['id']
-                );
-            
-                $db->query($query);
-                $ft->assign('CONFIRM', $i18n['edit_users'][1]);
-                $ft->parse('ROWS',	".result_note");
-            }
-        } else {
-            
-            $monit[] = $i18n['edit_users'][4];
-
+        $name       = $_POST['name'];
+        $surname    = $_POST['surname'];
+        $city       = $_POST['city'];
+        $country    = $_POST['country'];
+    
+        $www        = $_POST['www'];
+        $gg         = $_POST['gg'];
+        $tlen       = $_POST['tlen'];
+        $jid        = $_POST['jid'];
+    
+        $hobby      = $_POST['hobby'];
+    
+        $additional_info    = $_POST['additional_info'];
+    
+        if(!check_mail($email)){
+            $monit[] = $i18n['edit_users'][9];
+        }
+        if(!empty($monit)) {
             foreach ($monit as $error) {
-    
                 $ft->assign('ERROR_MONIT', $error);
-                    
                 $ft->parse('ROWS',	".error_row");
             }
-                        
             $ft->parse('ROWS', "error_reporting");
+        } else {
+            $query = sprintf("
+                UPDATE 
+                    %1\$s 
+                SET 
+                    login           = '%2\$s', 
+                    email           = '%3\$s', 
+                
+                    name            = '%4\$s', 
+                    surname         = '%5\$s',
+                    city            = '%6\$s', 
+                    country         = '%7\$s',
+                
+                    www             = '%8\$s',
+                    gg              = '%9\$s',
+                    tlen            = '%10\$s', 
+                    jid             = '%11\$s',
+                
+                    hobby           = '%12\$s', 
+                    additional_info = '%13\$s'
+                WHERE 
+                    id = '%14\$d'", 
+
+                TABLE_USERS, 
+            
+                $u_login, 
+                $email, 
+            
+                $name,
+                $surname,
+                $city,
+                $country,
+            
+                $www,
+                $gg,
+                $tlen,
+                $jid, 
+            
+                $hobby, 
+                $additional_info,
+            
+                $_GET['id']
+            );
+        
+            $db->query($query);
+            $ft->assign('CONFIRM', $i18n['edit_users'][1]);
+            $ft->parse('ROWS',	".result_note");
         }
+    } else {
+        
+        $monit[] = $i18n['edit_users'][4];
+
+        foreach ($monit as $error) {
+
+            $ft->assign('ERROR_MONIT', $error);
+                
+            $ft->parse('ROWS',	".error_row");
+        }
+                    
+        $ft->parse('ROWS', "error_reporting");
+    }
 		break;
 
 	case "delete":

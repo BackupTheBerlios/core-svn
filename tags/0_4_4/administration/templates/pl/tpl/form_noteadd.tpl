@@ -11,7 +11,6 @@
             <p class="text_preview">{NT_TEXT}</p>
         </td>
     </tr>
-    <!-- ELSE -->
     <!-- ENDIF -->
 	<tr>
 		<td class="form" width="100">Tytu³ wpisu:&nbsp;</td>
@@ -19,8 +18,12 @@
 	</tr>
 	<tr>
 		<td class="form">Data:&nbsp;</td>
-		<td class="form"><input type="text" name="date" size="30" maxlength="255" value="{DATE}" /></td>
-        <td class="form"><input class="checkbox" type="checkbox" name="now" value="1" align="top" />&nbsp;- aktualna data</td>
+		<td class="form">
+      <input type="text" name="date" size="30" maxlength="255" value="{DATE}" />
+    </td>
+    <td class="form">
+      <label><input class="checkbox" type="checkbox" name="now" value="1" align="top" />&nbsp;- aktualna data</label>
+    </td>
 	</tr>
 	<tr>
 		<td class="form">Autor wpisu:&nbsp;</td>
@@ -55,15 +58,25 @@
 	</tr>
 	<tr>
 		<td class="form">Tylko w kategorii:&nbsp;</td>
-		<td class="form" colspan="2"><input class="radio" type="radio" name="only_in_category" value="1" align="top" />- tak&nbsp;<input class="radio" type="radio" name="only_in_category" value="-1" align="top" checked="checked" />- nie</td>
+		<td class="form" colspan="2">
+      <label><input class="radio" type="radio" name="only_in_category" value="1" align="top" />- tak&nbsp;</label>
+      <label><input class="radio" type="radio" name="only_in_category" value="-1" align="top" checked="checked" />- nie</label>
+    </td>
 	</tr>
 	<tr>
 		<td class="form">Komentarze:&nbsp;</td>
-		<td class="form" colspan="2"><input class="radio" type="radio" name="comments_allow" value="1" align="top" checked="checked" />- zezwalaj&nbsp;<input class="radio" type="radio" name="comments_allow" value="0" align="top" />- nie zezwalaj</td>
+		<td class="form" colspan="2">
+      <label><input class="radio" type="radio" name="comments_allow" value="1" align="top" checked="checked" />- zezwalaj&nbsp;</label>
+      <label><input class="radio" type="radio" name="comments_allow" value="0" align="top" />- nie zezwalaj&nbsp;</label>
+      <label><input class="radio" type="radio" name="comments_allow" value="-1" align="top" />- dla zalogowanych</label>
+    </td>
 	</tr>
 	<tr>
 		<td class="form">Publikowana:&nbsp;</td>
-		<td class="form" colspan="2"><input class="radio" type="radio" name="published" value="1" align="top" checked="checked" />- tak&nbsp;<input class="radio" type="radio" name="published" value="-1" align="top" />- nie</td>
+		<td class="form" colspan="2">
+      <label><input class="radio" type="radio" name="published" value="1" align="top" checked="checked" />- tak&nbsp;</label>
+      <label><input class="radio" type="radio" name="published" value="-1" align="top" />- nie</label>
+    </td>
 	</tr>
 	<tr>
 		<td class="form"></td>

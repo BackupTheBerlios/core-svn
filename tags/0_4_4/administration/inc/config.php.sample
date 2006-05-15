@@ -21,4 +21,6 @@ define('CORE_INSTALLED', true);
 //mail address to person who can repair if something in Your code is broken
 define('ADMIN_MAIL', 'email@example.com');
 
+error_reporting(2047);
+
 ?>

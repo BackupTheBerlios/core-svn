@@ -1,4 +1,9 @@
 <?php
+if (!$permarr['moderator']) {
+  header('Location: main.php');
+  exit;
+}
+
 
 // deklaracja zmiennej $action::form
 $action = empty($_GET['action']) ? '' : $_GET['action'];
@@ -39,75 +44,49 @@ switch ($action) {
 
 	case "edit":// edycja wybranego wpisu
 	
-        if($permarr['moderator']) {
-	
-            $link_name	= $_POST['link_name'];
-            $link_url	= $_POST['link_url'];
+      $link_name	= $_POST['link_name'];
+      $link_url	= $_POST['link_url'];
 
-            if(	substr($link_url, 0, 7) != 'http://' && 
-                substr($link_url, 0, 6) != 'ftp://' && 
-                substr($link_url, 0, 8) != 'https://') {
-                    
-                    $link_url = 'http://' . $link_url;
-            }
-		
-            $monit = array();
-	
-            // Obs³uga formularza, jesli go zatwierdzono
-            if(!eregi("^([^0-9]+){2,}$", $link_name)) {
-                
-                $monit[] = $i18n['edit_links'][2];
-            }
-            
-            if(!eregi("^(www|ftp|http)://([-a-z0-9]+\.)+([a-z]{2,})$", $link_url)) {
-                
-                $monit[] = $i18n['edit_links'][3];
-            }
-		
-            if(empty($monit)) {
-            
-                $query = sprintf("
-                    UPDATE 
-                        %1\$s 
-                    SET 
-                        title	= '%2\$s', 
-                        url		= '%3\$s' 
-                    WHERE 
-                        id = '%4\$d'", 
-			
-                TABLE_LINKS, 
-                $link_name, 
-                $link_url, 
-                $_GET['id']);
-			
-                $db->query($query);
-		
-                $ft->assign('CONFIRM', $i18n['edit_links'][4]);
-                $ft->parse('ROWS',	".result_note");
-            } else {
-                
-                foreach ($monit as $error) {
-			    
-                    $ft->assign('ERROR_MONIT', $error);
-                    
-                    $ft->parse('ROWS',	".error_row");
-                }
-                
-                $ft->parse('ROWS', "error_reporting");
-            }
-        } else {
-            
-            $monit[] = $i18n['edit_links'][7];
-            
-            foreach ($monit as $error) {
-			    
-			    $ft->assign('ERROR_MONIT', $error);
-			    
-			    $ft->parse('ROWS',	".error_row");
-			}
-			
-			$ft->parse('ROWS', "error_reporting");
-        }
+      if(!preg_match('#^(http|ftp)s?#i', $link_url)) {
+          $link_url = 'http://' . $link_url;
+      }
+      $monit = array();
+
+      // Obs³uga formularza, jesli go zatwierdzono
+      if(!eregi("^([^0-9]+){2,}$", $link_name)) {
+          $monit[] = $i18n['edit_links'][2];
+      }
+      
+      if(!eregi("^(ftp|http)s?://([-a-z0-9]+\.)+([a-z]{2,})$", $link_url)) {
+          $monit[] = $i18n['edit_links'][3];
+      }
+
+      if(empty($monit)) {
+          $query = sprintf("
+              UPDATE 
+                  %1\$s 
+              SET 
+                  title	= '%2\$s', 
+                  url		= '%3\$s' 
+              WHERE 
+                  id = '%4\$d'", 
+
+            TABLE_LINKS, 
+            $link_name, 
+            $link_url, 
+            $_GET['id']
+          );
+          $db->query($query);
+
+          $ft->assign('CONFIRM', $i18n['edit_links'][4]);
+          $ft->parse('ROWS',	".result_note");
+      } else {
+          foreach ($monit as $error) {
+              $ft->assign('ERROR_MONIT', $error);
+              $ft->parse('ROWS',	".error_row");
+          }
+          $ft->parse('ROWS', "error_reporting");
+      }
 		
 		break;
 		

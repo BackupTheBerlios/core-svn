@@ -14,8 +14,6 @@
 	   new window.
     </div>
     <!-- ENDIF -->
-<!-- ELSE -->
-
 <!-- ENDIF -->
 <div class="right">
 <!-- IFDEF: COMMENTS_ALLOW -->
@@ -24,8 +22,6 @@
     <!-- ELSE -->
     <a class="comments" href="{COMMENTS_LINK}">leave a word</a>
     <!-- ENDIF -->
-<!-- ELSE -->
-
 <!-- ENDIF -->
 </div>
 <div class="author">

@@ -10,12 +10,9 @@
     <!-- ELSE -->
     <div id="image">
 	   Obrazek do³±czony do wpisu jest za du¿y, aby go tu wy¶wietliæ. 
-	   <a href="javascript:foto('{PHOTO_LINK}', {WIDTH}, {HEIGHT});">Zobacz</a> go 
-	   w nowym oknie.
+	   <a href="javascript:foto('{PHOTO_LINK}', {WIDTH}, {HEIGHT});">Zobacz</a> go w nowym oknie.
     </div>
     <!-- ENDIF -->
-<!-- ELSE -->
-
 <!-- ENDIF -->
 <div class="right">
 <!-- IFDEF: COMMENTS_ALLOW -->
@@ -24,8 +21,6 @@
     <!-- ELSE -->
     <a class="comments" href="{COMMENTS_LINK}">skomentuj ten post</a>
     <!-- ENDIF -->
-<!-- ELSE -->
-
 <!-- ENDIF -->
 </div>
 <div class="author">

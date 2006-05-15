@@ -11,7 +11,6 @@
             <p class="text_preview">{NT_TEXT}</p>
         </td>
     </tr>
-    <!-- ELSE -->
     <!-- ENDIF -->
 	<tr>
 		<td class="form" width="100">News title:&nbsp;</td>
@@ -20,7 +19,9 @@
 	<tr>
 		<td class="form">Date:&nbsp;</td>
 		<td class="form"><input type="text" name="date" size="30" maxlength="255" value="{DATE}" /> (dd-mm-rrrr gg:mm:ss)</td>
-		<td class="form"><input class="checkbox" type="checkbox" name="now" value="1" align="top" />&nbsp;- current date</td>
+		<td class="form">
+      <label><input class="checkbox" type="checkbox" name="now" value="1" align="top" />&nbsp;- current date</label>
+    </td>
 	</tr>
 	<tr>
 		<td class="form">News author:&nbsp;</td>
@@ -53,27 +54,30 @@
 		<td class="form">
 		<!-- IFDEF: OVERWRITE_PHOTO -->
 		Previous picture would be overwritten
-		<!-- ELSE -->
 		<!-- ENDIF -->
 		</td>
 	</tr>
 	<tr>
 		<td class="form">Only in category:&nbsp;</td>
-		<td class="form" colspan="2"><input class="radio" type="radio" name="only_in_category" value="1" align="top" {ONLYINCAT_YES} />- yes&nbsp;<input type="radio" name="only_in_category" value="-1" align="top" {ONLYINCAT_NO} />- no</td>
+		<td class="form" colspan="2">
+      <label><input class="radio" type="radio" name="only_in_category" value="1" align="top" {ONLYINCAT_YES} />- yes&nbsp;</label>
+      <label><input type="radio" name="only_in_category" value="-1" align="top" {ONLYINCAT_NO} />- no</label>
+    </td>
 	</tr>
 	<tr>
 		<td class="form">Comments:&nbsp;</td>
 		<td class="form" colspan="2">
-            <input class="radio" type="radio" name="comments_allow" value="1" align="top" {COMMENTS_YES} />- allow&nbsp;
-            <input class="radio" type="radio" name="comments_allow" value="0" align="top" {COMMENTS_NO} />- not allow
-        </td>
+      <label><input class="radio" type="radio" name="comments_allow" value="1" align="top" {COMMENTS_YES} />- allow&nbsp;</label>
+      <label><input class="radio" type="radio" name="comments_allow" value="0" align="top" {COMMENTS_NO} />- not allow&nbsp;</label>
+      <label><input class="radio" type="radio" name="comments_allow" value="0" align="top" {COMMENTS_LOGGED} />- for logged in</label>
+    </td>
 	</tr>
 	<tr>
 		<td class="form">Published:&nbsp;</td>
 		<td class="form" colspan="2">
-            <input class="radio" type="radio" name="published" value="1" align="top" {CHECKBOX_YES} />- yes&nbsp;
-            <input class="radio" type="radio" name="published" value="-1" align="top" {CHECKBOX_NO} />- no
-        </td>
+      <label><input class="radio" type="radio" name="published" value="1" align="top" {CHECKBOX_YES} />- yes&nbsp;</label>
+      <label><input class="radio" type="radio" name="published" value="-1" align="top" {CHECKBOX_NO} />- no</label>
+    </td>
 	</tr>
 	<tr>
 		<td class="form"></td>

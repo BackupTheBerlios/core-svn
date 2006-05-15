@@ -1,4 +1,8 @@
 <?php
+if(!$permarr['writer']) {
+  header('Location: main.php');
+  exit;
+}
 
 // deklaracja zmiennej $action::form
 $post       = empty($_POST['post']) ? '' : $_POST['post'];
@@ -9,133 +13,108 @@ $ft->define("error_reporting", "error_reporting.tpl");
 $ft->define_dynamic("error_row", "error_reporting");
 
 if(!empty($post)) {
-	
-        if($permarr['writer']) {
-	
-            $text           = $_POST['text'];
-		
-            $title          = trim($_POST['title']);
-            $published      = $_POST['published'];
-            $page_id        = $_POST['category_id'];
-            $template_name  = $_POST['template_name'];
-            
-            $text = parse_markers($text, 1);
-            
-            // Sprawdzanie czy tytul strony jest wype³niony
-            if(!empty($title)) {
-                
-                $query = sprintf("
-                    SELECT 
-                        max(page_order) as max_order 
-                    FROM 
-                        %1\$s",
-        
-                    TABLE_PAGES
-                );
-            
-                $db->query($query);
-                $db->next_record();
-			
-                // Przypisanie zmiennej $id
-                $max_order = $db->f("max_order");
-		      
-                $query = sprintf("
-                    INSERT INTO 
-                        %1\$s 
-                    VALUES 
-                        ('', '%2\$d', '%3\$d', '%4\$s', '%5\$s', '', '%6\$s', '%7\$s')", 
-		
-                    TABLE_PAGES, 
-                    $page_id, 
-                    $max_order + 10, 
-                    $title, 
-                    $text, 
-                    $published, 
-                    $template_name
-                );
-            
-                $db->query($query);
-		
-                $query = sprintf("
-                    SELECT MAX(id) 
-                        as maxid 
-                    FROM 
-                        %1\$s", 
+    $text           = $_POST['text'];
 
-                    TABLE_PAGES
-                );
-            
-                $db->query($query);
-                $db->next_record();
-            
-                // Przypisanie zmiennej $id
-                $id = $db->f("0");
-            
-                if(!empty($_FILES['file']['name'])) {
-                
-                    $up = new upload;
-                    $upload_dir = "../photos";
-                
-                    // upload file.
-                    $file = $up->upload_file($upload_dir, 'file', true, true, 0, "jpg|jpeg|gif");
-                    if($file == false) {
-                    
-                        echo $up->error;
-                    } else {
-                    
-                        $query = sprintf("
-                            UPDATE 
-                                %1\$s 
-                            SET 
-                                image = '%2\$s' 
-                            WHERE 
-                                id = '%3\$d'", 
-			    
-                            TABLE_PAGES,
-                            $file,
-                            $id
-                        );
-				
-				        $db->query($query);
-				
-				        $ft->assign('CONFIRM', $i18n['add_page'][0]);
-				        $ft->parse('ROWS',	".result_note");
-                    }
-                }
-            
-                $ft->assign('CONFIRM', $i18n['add_page'][1]);
-                $ft->parse('ROWS',	".result_note");
-            
-            } else {
-		    
-                $monit    = array();
-                $monit[]  = $i18n['add_page'][2];
-		    
-                $ft->define("error_reporting", "error_reporting.tpl");
-                $ft->define_dynamic("error_row", "error_reporting");
-
-                foreach ($monit as $error) {
+    $title          = trim($_POST['title']);
+    $published      = $_POST['published'];
+    $page_id        = $_POST['category_id'];
+    $template_name  = $_POST['template_name'];
     
-                    $ft->assign('ERROR_MONIT', $error);
-                    
-                    $ft->parse('ROWS',	".error_row");
-                }
-                        
-                $ft->parse('ROWS', "error_reporting");
+    $text = parse_markers($text, 1);
+    
+    // Sprawdzanie czy tytul strony jest wype³niony
+    if(!empty($title)) {
+        $query = sprintf("
+            SELECT 
+                max(page_order) as max_order 
+            FROM 
+                %1\$s",
+
+            TABLE_PAGES
+        );
+        $db->query($query);
+        $db->next_record();
+
+        // Przypisanie zmiennej $id
+        $max_order = $db->f("max_order");
+        $query = sprintf("
+            INSERT INTO 
+                %1\$s 
+            VALUES 
+                ('', '%2\$d', '%3\$d', '%4\$s', '%5\$s', '', '%6\$s', '%7\$s')", 
+
+            TABLE_PAGES, 
+            $page_id, 
+            $max_order + 10, 
+            $title, 
+            $text, 
+            $published, 
+            $template_name
+        );
+        $db->query($query);
+
+        $query = sprintf("
+            SELECT MAX(id) 
+                as maxid 
+            FROM 
+                %1\$s", 
+
+            TABLE_PAGES
+        );
+        $db->query($query);
+        $db->next_record();
+    
+        // Przypisanie zmiennej $id
+        $id = $db->f("0");
+    
+        if(!empty($_FILES['file']['name'])) {
+            $up = new upload;
+            $upload_dir = "../photos";
+        
+            // upload file.
+            $file = $up->upload_file($upload_dir, 'file', true, true, 0, "jpg|jpeg|gif");
+            if($file == false) {
+                echo $up->error;
+            } else {
+                $query = sprintf("
+                    UPDATE 
+                        %1\$s 
+                    SET 
+                        image = '%2\$s' 
+                    WHERE 
+                        id = '%3\$d'", 
+  
+                    TABLE_PAGES,
+                    $file,
+                    $id
+                );
+                $db->query($query);
+
+                $ft->assign('CONFIRM', $i18n['add_page'][0]);
+                $ft->parse('ROWS',	".result_note");
             }
-        } else {
-            
-            $monit[] = $i18n['add_page'][3];
-            
-            foreach ($monit as $error) {
-                
-                $ft->assign('ERROR_MONIT', $error);
-                
-                $ft->parse('ROWS',	".error_row");
-            }
-                        
-            $ft->parse('ROWS', "error_reporting");
         }
+    
+        $ft->assign('CONFIRM', $i18n['add_page'][1]);
+        $ft->parse('ROWS',	".result_note");
+    
+    } else {
+
+        $monit    = array();
+        $monit[]  = $i18n['add_page'][2];
+
+        $ft->define("error_reporting", "error_reporting.tpl");
+        $ft->define_dynamic("error_row", "error_reporting");
+
+        foreach ($monit as $error) {
+
+            $ft->assign('ERROR_MONIT', $error);
+            
+            $ft->parse('ROWS',	".error_row");
+        }
+                
+        $ft->parse('ROWS', "error_reporting");
+    }
 } else {
     
     if(!empty($preview)) {

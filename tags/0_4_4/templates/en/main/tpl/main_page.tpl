@@ -30,32 +30,30 @@
 		<!-- IFDEF: SHOW_CALENDAR -->
 		<span class="title">calendar</span><br />
 		<table cellpadding="3" cellspacing="0" border="0" width="155">
-            <tr>
-                <td colspan="7" class="month">{LONGMONTHS}</td>
-            </tr>
-            <tr>
-                <!-- BEGIN DYNAMIC BLOCK: shortdays_row -->
-                <th class='week'>{SHORTDAYS}</th>
-                <!-- END DYNAMIC BLOCK: shortdays_row -->
-            </tr>
-            <tr>
-                <!-- BEGIN DYNAMIC BLOCK: days_row -->
-                <!-- IFDEF: TABLE_D -->
-                <td></td>
-                <!-- ELSE -->
-                <td class='{DAYS_CLASS}'>{DAY}</td>
-                <!-- ENDIF -->
-            <!-- IFDEF: TABLE_R -->
-            </tr>
-            <tr>
+        <tr>
+            <td colspan="7" class="month">{LONGMONTHS}</td>
+        </tr>
+        <tr>
+            <!-- BEGIN DYNAMIC BLOCK: shortdays_row -->
+            <th class='week'>{SHORTDAYS}</th>
+            <!-- END DYNAMIC BLOCK: shortdays_row -->
+        </tr>
+        <tr>
+            <!-- BEGIN DYNAMIC BLOCK: days_row -->
+            <!-- IFDEF: TABLE_D -->
+            <td></td>
             <!-- ELSE -->
+            <td class='{DAYS_CLASS}'>{DAY}</td>
             <!-- ENDIF -->
-                <!-- END DYNAMIC BLOCK: days_row -->
-            </tr>
-        </table>
-        <br />
-        <!-- ELSE -->
+        <!-- IFDEF: TABLE_R -->
+        </tr>
+        <tr>
         <!-- ENDIF -->
+            <!-- END DYNAMIC BLOCK: days_row -->
+        </tr>
+    </table>
+    <br />
+    <!-- ENDIF -->
 		
 		<!-- IFDEF: PAGE_NAME -->
 		<span class="title">menu</span><br />
@@ -65,7 +63,6 @@
             <!-- END DYNAMIC BLOCK: pages_row -->
         </ul>
         <br />
-        <!-- ELSE -->
         <!-- ENDIF -->
 
 		<span class="title">categories</span><br />

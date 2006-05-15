@@ -84,7 +84,7 @@ if(!empty($post)) {
         }
             
         $sql_query = str_replace('core_', $dbprefix, $sql_query);
-        $sql_query = $lang == 'en' ? str_replace('ogólna', 'default', $sql_query) : '';
+        $sql_query = $lang == 'en' ? str_replace('DEFAULT_CATEGORY', 'default', $sql_query) : str_replace('DEFAULT_CATEGORY', 'ogólna', $sql_query);
 
         $sql_size = sizeof($sql_query) - 1;
         for($i = 0; $i < $sql_size; $i++) {
@@ -113,7 +113,8 @@ if(!empty($post)) {
         $file .= "define('CORE_INSTALLED',  true);\n\n";
 
         $file .= '//mail address to person who can repair if something in Your code is broken' . "\n";
-        $file .= "define('ADMIN_MAIL',      'core@example.com');\n\n";
+        $file .= "define('ADMIN_MAIL',      'core@example.com');\n\n\n";
+        $file .= "error_reporting(2047);\n\n";
 
         $file .= '?' . '>';
 
