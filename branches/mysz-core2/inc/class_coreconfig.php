@@ -44,79 +44,108 @@
  * @version    SVN: $Id: class_coreconfig.php 1270 2006-02-26 11:13:34Z lark $
  * @link       $HeadURL$
  */
-final class CoreConfig extends CoreBase
+final class CoreConfig
 {
+    /**
+     * constant - SELECT prepared statement
+     */
+    const ST_SEL = 1;
 
     /**
-     * Prepared query for getting properties.
-     *
-     * @var object
-     * @access protected
+     * constant - REPLACE prepared statement
      */
-    protected $stmtGet     = null;
+    const ST_DB  = 2;
 
     /**
-     * Prepared query for setting properties.
-     *
-     * @var object
-     * @access protected
+     * constant - DELETE prepared statement
      */
-    protected $stmtSet     = null;
-
+    const ST_DEL = 3;
 
     /**
-     * Prepared query for inserting properties.
+     * Database connection handler
      *
      * @var object
-     * @access protected
+     * @access private
      */
-    protected $stmtInsert  = null;
+    private $_db            = null;
+
+    /**
+     * CoreConfig object
+     *
+     * @var object
+     * @access private
+     */
+    private static $_object = null;
+
+    /**
+     * Storage for prepared statements
+     *
+     * @var object
+     * @access private
+     */
+    private $_stmt = array();
+
+    /**
+     * Cache
+     *
+     * @var array
+     * @access private
+     */
+    private $_cache        = array();
+
+    /**
+     * Create CoreConfig object and/or return it. Singleton init method.
+     *
+     * @return object CoreConfig
+     *
+     * @access public
+     */
+    public static function init()
+    {
+        if (is_null(self::$_object)) {
+            self::$_object = new CoreConfig;
+        }
+        return self::$_object;
+    }
 
     /**
      * Constructor
      *
      * Creates prepared statements with acquire bindings.
      *
-     * @access public
+     * @access private
      */
-    public function __construct()
+    private function __construct()
     {
-        parent::__construct();
+        $this->_db = CoreDB::init();
 
-        $query = sprintf("
+        $this->_stmt[self::ST_SEL] = $this->_db->prepare(sprintf("
             SELECT
                 `value`
             FROM
                 %s
             WHERE
-                `key` = :k",
+                `key` = :key",
 
             TBL_CONFIG
-        );
-        $this->stmtGet = $this->db->prepare($query);
-
-        $query = sprintf("
-            UPDATE
+        ));
+        $this->_stmt[self::ST_DB] = $this->_db->prepare(sprintf("
+            REPLACE
                 %s
             SET
-                `value` = :v
+                `key` = :key,
+                `value` = :value",
+
+            TBL_CONFIG
+        ));
+        $this->_stmt[self::ST_DEL] = $this->_db->prepare(sprintf("
+            DELETE FROM
+                %s
             WHERE
-                `key` = :k",
+                `key` = :key",
 
             TBL_CONFIG
-        );
-        $this->stmtSet = $this->db->prepare($query);
-
-        $query = sprintf("
-            INSERT INTO
-                %s
-            SET
-                `key` = :k,
-                `value = :v",
-
-            TBL_CONFIG
-        );
-        $this->stmtInsert = $this->db->prepare($query);
+        ));
     }
 
     /**
@@ -135,18 +164,27 @@ final class CoreConfig extends CoreBase
      */
     public function __get($key)
     {
-        $silent = ('_' == substr($key, 0, 1));
+        //needed setting is in _cache already ?
+        if (array_key_exists($key, $this->_cache)) {
+            return $this->_cache[$key];
+        }
+
+
+
+        $silent = ('_' == $key[0]);
         if ($silent) {
             $key = substr($key, 1);
         }
 
+        //shortcut
+        $stmt = &$this->_stmt[self::ST_SEL];
         try {
-            $this->stmtGet->execute(array(':k'=>$key));
+            $stmt->execute(array(':key'=>$key));
         } catch (PDOException $e) {
             throw new CEDBError($e->getMessage());
         }
 
-        $row = $this->stmtGet->fetch();
+        $row = $stmt->fetch();
         if (!$row) {
             if ($silent) {
                 return false;
@@ -154,15 +192,14 @@ final class CoreConfig extends CoreBase
                 throw new CENotFound(sprintf('Config property "%s" not found.', $key));
             }
         }
+        $stmt->closeCursor();
+        $this->_cache[$key] = unserialize($row['value']);
 
-        return unserialize($row['value']);
+        return $this->_cache[$key];
     }
 
     /**
      * Overloaded setter
-     *
-     * Magic: if key name begins with underscore, it will add _new_ property
-     * to database if it doesn't exists.
      *
      * @param string $key   name of property
      * @param string $value value of property
@@ -173,17 +210,67 @@ final class CoreConfig extends CoreBase
      */
     public function __set($key, $value)
     {
+        $s_value = serialize($value);
+        //shortcut
+        $stmt = &$this->_stmt[self::ST_DB];
+
         try {
-            if ('_' != $key[0]) { //update of existing value
-                $this->stmtSet->execute(array(':k'=>$key, ':v'=>serialize($value)));
-            } else { //insert new value
-                $binds = array(':k'=>substr($key, 1), ':v'=>serialize($value));
-                $this->stmtInsert->execute($binds);
-            }
+            $stmt->execute(array(
+                ':key' => $key,
+                ':value' => $s_value
+            ));
+            $stmt->closeCursor();
         } catch (PDOException $e) {
             throw new CEDBError($e->getMessage());
         }
+
+        $this->_cache[$key] = $value;
     }
+
+    /**
+     * Overloaded __isset() for checking did property is set
+     *
+     * @param string $k name of property
+     *
+     * @return boolean
+     * 
+     * @access public
+     */
+    public function __isset($key)
+    {
+        try {
+            $this->$k;
+            return true;
+        } catch (CENotFound $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Overloaded __unset() for deleting properties
+     *
+     * @param string $k name of property
+     *
+     * @return boolean
+     *
+     * @access public
+     */
+    public function __unset($key)
+    {
+        $this->_stmt[self::ST_DEL]->execute(array(':key' => $key));
+    }
+
+    /**
+     * Overloaded method to forbid cloning of instance
+     *
+     * @throws CESyntaxError always when invoked
+     * @access public
+     */
+    public function __clone()
+    {
+        throw new CESyntaxError('Singleton cloning not allowed.');
+    }
+
 }
 
 ?>
