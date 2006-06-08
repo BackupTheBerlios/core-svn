@@ -128,10 +128,10 @@ class Upload
      * @static
      */
     protected static $types = array(
-        'jpg'  => 'image/jpeg',
-        'jpeg' => 'image/jpeg',
-        'png'  => 'image/png',
-        'gif'  => 'image/gif',
+        'jpg'  => array('image/jpeg', 'image/pjpeg'),
+        'jpeg' => array('image/jpeg', 'image/pjpeg'),
+        'png'  => array('image/png', 'image/x-png'),
+        'gif'  => array('image/gif'),
     );
 
     /**
@@ -234,19 +234,16 @@ class Upload
 
         $ext = pathinfo($this->name, PATHINFO_EXTENSION);
         $ext = strtolower($ext);
-        if (!in_array($this->type, self::$types) ||
-                !array_key_exists($ext, self::$types)) {
+        if (!array_key_exists($ext, self::$types)) {
             throw new CETypeError(sprintf('Incorrect file type "%s".',
                 $this->type
             ), 200);
         }
-        $type = self::$types[$ext];
-        if ($type != $this->type) {
-            throw new CETypeError(sprintf('WARNING: file extension "%s" is ' .
-                    'not supposed to be an "%s" mime type!',
-                $ext,
-                $type
-            ), 201);
+        $ext_mimetypes = self::$types[$ext];
+        if (!in_array($this->type, $ext_mimetypes)) {
+            throw new CETypeError(sprintf('Incorrect file type "%s".',
+                $this->type
+            ), 200);
         }
 
         if ($this->size > self::MAX_SIZE) {
