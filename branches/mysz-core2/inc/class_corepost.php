@@ -47,27 +47,19 @@
 abstract class CorePost extends CoreBase {
 
     /**
-     * Constant
-     *
-     * Default link (in author_www property) prefix.
-     */
-    const DEFAULT_LINK = 'http://';
-
-    /**
-     * Base set of properties of all kinds of entries
+     * Set of properties of all kinds of entries
      *
      * @see CoreBase::base_properties
      *
      * @var array
      * @access protected
      */
-    protected static $base_properties   =  array(
-        /* for core_posts table */
+    protected $properties   =  array(
         'id_post'           => array(null,    'integer'),
         'id_parent'         => array(null,    'integer'),
         'id_cat'            => array(null,    'integer'),
-        'id_type'           => array(null,    'integer'),
-        'id_section'        => array(null,    'integer'),
+        'id_group'          => array(null,    'integer'),
+        'id_menu'           => array(null,    'integer'),
         'title'             => array('',      'string' ),
         'permalink'         => array('',      'string' ),
         'caption'           => array(null,    'string' ),
@@ -84,7 +76,7 @@ abstract class CorePost extends CoreBase {
     );
 
     /**
-     * Base set of properties, which must have external setter
+     * Set of properties, which must have external setter
      *
      * These properties has additional correctness checking.
      *
@@ -92,44 +84,28 @@ abstract class CorePost extends CoreBase {
      * @access protected
      * @static
      */
-    protected static $base_setExternal = array(
+    protected static $setExternal  = array(
         'title', 'caption', 'body', 'author_www', 'author_mail',
         'date_add', 'date_add_ts', 'date_mod', 'date_mod_ts',
         'status'
     );
 
     /**
-     * Base set of properties, which must have external getter
+     * Set of properties, which must have external getter
      *
      * @var array
      * @access protected
      * @static
      */
-    protected static $base_getExternal = array();
+    protected static $getExternal  = array();
 
     /**
-     * All post properties together
+     * Meta data storage
      *
      * @var array
      * @access protected
      */
-    protected $properties;
-
-    /**
-     * All post external getters together
-     *
-     * @var array
-     * @access protected
-     */
-    protected $getExternal;
-
-    /**
-     * All post external setters together
-     *
-     * @var array
-     * @access protected
-     */
-    protected $setExternal;
+    protected $meta = array();
 
     /**
      * Constructor
@@ -142,19 +118,22 @@ abstract class CorePost extends CoreBase {
     public function __construct()
     {
         parent::__construct();
-        self::$base_properties  = array_merge(
-            parent::$base_properties, 
-            self::$base_properties
-        );
-        self::$base_setExternal = array_merge(
-            parent::$base_setExternal,
-            self::$base_setExternal
-        );
-        self::$base_getExternal = array_merge(
-            parent::$base_getExternal,
-            self::$base_getExternal
-        );
     }
+
+    /**
+     * Desctructor
+     *
+     * Save post data od delete post
+     *
+     * @access public
+     */
+    public function __destruct()
+    {
+        if ($this->modified) {
+            $this->save();
+        }
+    }
+
 
     /**
      * Checking for correctness of entry title
@@ -248,7 +227,7 @@ abstract class CorePost extends CoreBase {
         $data = trim($data);
 
         if ('' != $data && !preg_match('#^(http|https)://#i', $data)) {
-            $data = self::DEFAULT_LINK . $data;
+            $data = 'http://' . $data;
         }
         $this->properties['author_www'][0] = $data;
         return true;
@@ -274,7 +253,7 @@ abstract class CorePost extends CoreBase {
         $this->isType('author_mail', $data);
         $data = trim($data);
 
-        if ('' != $data && !Strings::email($data)) {
+        if ('' != $data && !Validate::email($data)) {
             $this->errorSet('Incorrect email address.');
             return false;
         } else {
@@ -440,7 +419,13 @@ abstract class CorePost extends CoreBase {
         return $ret;
     }
 
+    /**
+     * Save post data in database
+     *
+     * @access public
+     */
+    public abstract function save();
+
 }
 
 ?>
-
