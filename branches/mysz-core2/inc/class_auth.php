@@ -1,6 +1,8 @@
 <?php
 
 // vim: expandtab shiftwidth=4 softtabstop=4 tabstop=4
+// SVN: $Id$
+// $HeadURL$
 
 class Auth
 {

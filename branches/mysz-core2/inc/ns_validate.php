@@ -26,8 +26,8 @@
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
- * @version    SVN: $Id: class_parser.php 1304 2006-03-08 20:32:51Z mysz $
- * @link       $HeadURL: svn://svn.berlios.de/core/branches/mysz-core2/inc/class_parser.php $
+ * @version    SVN: $Id$
+ * @link       $HeadURL$
  */
 
 /**
@@ -39,8 +39,8 @@
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
- * @version    SVN: $Id: class_parser.php 1304 2006-03-08 20:32:51Z mysz $
- * @link       $HeadURL: svn://svn.berlios.de/core/branches/mysz-core2/inc/class_parser.php $
+ * @version    SVN: $Id$
+ * @link       $HeadURL$
  */
 abstract class Validate {
     /**

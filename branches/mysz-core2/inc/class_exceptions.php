@@ -25,7 +25,7 @@
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
- * @version    SVN: $Id: class_exceptions.php 1270 2006-02-26 11:13:34Z lark $
+ * @version    SVN: $Id$
  * @link       $HeadURL$
  */
 
@@ -38,7 +38,7 @@
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
- * @version    SVN: $Id: class_exceptions.php 1270 2006-02-26 11:13:34Z lark $
+ * @version    SVN: $Id$
  * @link       $HeadURL$
  */
 abstract class CEBase extends Exception {
@@ -92,7 +92,7 @@ abstract class CEBase extends Exception {
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
- * @version    SVN: $Id: class_exceptions.php 1270 2006-02-26 11:13:34Z lark $
+ * @version    SVN: $Id$
  * @link       $HeadURL$
  */
 class CENotFound extends CEBase {}
@@ -109,7 +109,7 @@ class CENotFound extends CEBase {}
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
- * @version    SVN: $Id: class_exceptions.php 1270 2006-02-26 11:13:34Z lark $
+ * @version    SVN: $Id$
  * @link       $HeadURL$
  */
 class CESyntaxError extends CEBase {}
@@ -125,7 +125,7 @@ class CESyntaxError extends CEBase {}
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
- * @version    SVN: $Id: class_exceptions.php 1270 2006-02-26 11:13:34Z lark $
+ * @version    SVN: $Id$
  * @link       $HeadURL$
  */
 class CEDBError extends CEBase {}
@@ -142,7 +142,7 @@ class CEDBError extends CEBase {}
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
- * @version    SVN: $Id: class_exceptions.php 1270 2006-02-26 11:13:34Z lark $
+ * @version    SVN: $Id$
  * @link       $HeadURL$
  */
 class CETypeError extends CEBase {}
@@ -156,7 +156,7 @@ class CETypeError extends CEBase {}
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
- * @version    SVN: $Id: class_exceptions.php 1270 2006-02-26 11:13:34Z lark $
+ * @version    SVN: $Id$
  * @link       $HeadURL$
  */
 class CEFileSystemError extends CEBase {}
@@ -170,7 +170,7 @@ class CEFileSystemError extends CEBase {}
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
- * @version    SVN: $Id: class_exceptions.php 1270 2006-02-26 11:13:34Z lark $
+ * @version    SVN: $Id$
  * @link       $HeadURL$
  */
 class CEUploadError extends CEBase {}
@@ -184,7 +184,7 @@ class CEUploadError extends CEBase {}
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
- * @version    SVN: $Id: class_exceptions.php 1270 2006-02-26 11:13:34Z lark $
+ * @version    SVN: $Id$
  * @link       $HeadURL$
  */
 class CEReadOnly extends CEBase {}
@@ -198,7 +198,7 @@ class CEReadOnly extends CEBase {}
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
- * @version    SVN: $Id: class_exceptions.php 1270 2006-02-26 11:13:34Z lark $
+ * @version    SVN: $Id$
  * @link       $HeadURL$
  */
 class CEIncorrectData extends CEBase {}

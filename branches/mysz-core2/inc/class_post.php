@@ -26,8 +26,8 @@
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
- * @version    SVN: $Id: class_image.php 1299 2006-03-08 19:59:18Z mysz $
- * @link       $HeadURL: svn://svn.berlios.de/core/branches/mysz-core2/inc/class_image.php $
+ * @version    SVN: $Id$
+ * @link       $HeadURL$
  */
 
 /**
@@ -44,8 +44,8 @@
  * @copyright  2006 Core Dev Team
  * @license    http://www.fsf.org/copyleft/gpl.html
  * @license    http://www.gnu.org.pl/text/licencja-gnu.html
- * @version    SVN: $Id: class_image.php 1299 2006-03-08 19:59:18Z mysz $
- * @link       $HeadURL: svn://svn.berlios.de/core/branches/mysz-core2/inc/class_image.php $
+ * @version    SVN: $Id$
+ * @link       $HeadURL$
  */
 final class Post extends CorePost
 {
