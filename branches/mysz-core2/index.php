@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 // vim: expandtab shiftwidth=4 softtabstop=4 tabstop=4
 // $Id$
@@ -10,7 +11,7 @@ function __autoload($classname)
         require_once sprintf('inc%sclass_exceptions.php', DIRECTORY_SEPARATOR);
         return;
     }
-    
+
     $fname = strtolower($classname);
     $fname = str_replace('_', '', $fname);
 
@@ -27,28 +28,53 @@ function __autoload($classname)
 }
 
 require_once 'config.php';
-$config = new CoreConfig();
-new CoreInit(
-    $config->enc_from,
-    $config->enc_to,
-    $config->comp_level,
-    $config->email
-);
+$cfg = CoreConfig::init();
 
-define('OPT_DIR', Path::join(ROOT, 'inc/opt') . DIRECTORY_SEPARATOR);
-require_once Path::join(ROOT, 'inc/opt/opt.class.php');
+# new CoreInit(
+#     $cfg->enc_from,
+#     $cfg->enc_to,
+#     $cfg->comp_level,
+#     $cfg->email
+# );
 
-$id_post = 1;
-try {
-    $post = new Post($id_post);
-    $post->title = 'asd';
-    $post->show();
-} catch (CENotFound $e) {
-    echo '<pre>';
-    echo $e;
-    echo '</pre>';
-    exit;
+define('OPT_DIR', Path::join(ROOT, 'inc', 'opt') . Path::DS);
+require_once Path::join(ROOT, 'inc', 'opt', 'opt.class.php');
+
+### $pm = new Meta('post', 1);
+### 
+### $pm->show();
+### 
+### $pm->sticky=0;
+### $pm->allow_comments=0;
+### $pm->only_in_category=0;
+### $pm->test_meta = "asd";
+### 
+### $pm->show();
+### 
+### unset($pm->sticky);
+### unset($pm->only_in_category);
+### 
+### $pm->show();
+### 
+### $pm->sticky=2;
+### 
+### $pm->show();
+### 
+### $pm->save();
+### 
+### $pm->show();
+
+### //$controller = new CoreController($_SERVER['REQUEST_URI']);
+$agg = new PostAggregate('Post');
+$a = $agg[1];
+$a->permalink = "qwe permalink qwerty";
+$agg[count($agg)+1] = new Post();
+
+
+//Arrays::debug($agg);
+printf('Ilo¶æ: %d<br />', count($agg));
+foreach ($agg as $p) {
+    printf('%d: %s<br />', $p->id_post, $p->permalink);
 }
 
-//$post->setFromDB(1);
 ?>
