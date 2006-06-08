@@ -1,0 +1,9 @@
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+  RewriteEngine on
+  RewriteCond %{REQUEST_URI} !^/core2/admin.* [NC]
+  RewriteCond %{REQUEST_URI} !^/core2/files.*  [NC]
+  RewriteCond %{REQUEST_URI} !\.(js|ico|gif|jpg|png|css)$
+  RewriteRule .* index.php [L]
+</IfModule>
