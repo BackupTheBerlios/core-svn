@@ -204,7 +204,7 @@ final class CoreInit
           set_exception_handler(array($this, 'error_handler'));
         }
 
-        ini_set('session.auto_start',          1); //do przedyskutowania
+        ini_set('session.auto_start',          1);
     }
 
 
@@ -230,7 +230,7 @@ final class CoreInit
         } else {
             $this->_incPath = $incPath;
         }
-        if (!is_null($email) && Strings::email($email)) {
+        if (!is_null($email) && Validate::email($email)) {
             $this->_email = $email;
         }
         
