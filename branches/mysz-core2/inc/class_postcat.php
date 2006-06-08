@@ -227,6 +227,7 @@ final class PostCat extends CoreBase
         try {
             $stmt = $this->db->query($query);
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $stmt->closeCursor();
         } catch (PDOException $e) {
             throw new CEDBError($e->getMessage(), 500);
         }
