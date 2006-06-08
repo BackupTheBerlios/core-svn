@@ -44,30 +44,6 @@
  */
 abstract class Strings {
     /**
-     * Validate an email address
-     *
-     * @param  string $s
-     * @access public
-     * @static
-     */
-    public static function email($s)
-    {
-        return eregi('^([a-z0-9_]|\\-|\\.)+@(((([a-z0-9_]|\\-)+\\.)+[a-z]{2,4})|localhost)$', $s);
-    }
-
-    /**
-     * Validate login
-     *
-     * @param  string $s
-     * @access public
-     * @static
-     */
-    public static function login($s)
-    {
-        return preg_match('#^[a-z0-9-.,]{4,64}#i', $s);
-    }
-
-    /**
      * Parse string using class {@link Parser}
      *
      * @param  string  $s      string to parse
@@ -108,11 +84,17 @@ abstract class Strings {
      * @staticvar array $p special chars to replace
      * @staticvar array $r html entities
      */
-    public static function entities($s)
+    public static function entities($s, $striprn=false)
     {
         static $p = array('<',    '>',    '"',       "'");
         static $r = array('&lt;', '&gt;', '&quot;', '&#39;');
-        return str_replace($p, $r, $s);
+        $ret = str_replace($p, $r, $s);
+
+        if ($striprn) {
+            $ret = str_replace(array("\r", "\n"), ' ', $ret);
+        }
+
+        return $ret;
     }
 
     /**
