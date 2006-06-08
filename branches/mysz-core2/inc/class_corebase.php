@@ -47,7 +47,7 @@
  * @version    SVN: $Id: class_corebase.php 1275 2006-02-28 15:58:36Z mysz $
  * @link       $HeadURL$
  */
-abstract class CoreBase
+abstract class CoreBase implements Iterator
 {
     /**
      * Constant
@@ -71,7 +71,7 @@ abstract class CoreBase
      * @var array
      * @access protected
      */
-    protected $errors = array();
+    protected $errors       = array();
 
     /**
      * Database connection handler
@@ -79,44 +79,7 @@ abstract class CoreBase
      * @var object
      * @access protected
      */
-    protected $db;
-
-    /**
-     * Base set of properties of this object
-     *
-     * Storing all class properties as an array. All properties must set be here
-     * in all of subclasses, as array of arrays:
-     * <samp>$properties = array(
-     *   'var1' => array(3,            'int'   ),
-     *   'var2' => array(array(1,2,3), 'array' ),
-     *   'var3' => array('asd',        'string')
-     * );</samp>
-     * It's for type checking.
-     * First item in array is value of var1 property, second - type of value.
-     *
-     * @var array
-     * @access protected
-     * @static
-     */
-    protected static $base_properties = array();
-
-    /**
-     * Base set of properties who must have an external getter method
-     *
-     * @var array
-     * @access protected
-     * @static
-     */
-    protected static $base_getExternal = array();
-
-    /**
-     * Base set of properties who must have an external setter method
-     *
-     * @var array
-     * @access protected
-     * @static
-     */
-    protected static $base_setExternal = array();
+    protected static $db    = null;
 
     /**
      * Set of properties of this object
@@ -134,7 +97,7 @@ abstract class CoreBase
      * @access protected
      * @static
      */
-    protected $getExternal  = array();
+    protected static $getExternal  = array();
 
     /**
      * Set of properties who must have an external getter method
@@ -143,7 +106,23 @@ abstract class CoreBase
      * @access protected
      * @static
      */
-    protected $setExternal  = array();
+    protected static $setExternal  = array();
+
+    /**
+     * Store flag did we have to save changed post data.
+     *
+     * @var boolean
+     * @access protected
+     */
+    protected $modified     = false;
+
+    /**
+     * Object of CoreMeta child
+     *
+     * @var object
+     * @access protected
+     */
+    protected $meta         = null;
 
     /**
      * Constructor
@@ -152,7 +131,7 @@ abstract class CoreBase
      */
     public function __construct()
     {
-        $this->db = CoreDB::connect();
+        self::$db = CoreDB::init();
     }
 
     /**
@@ -219,7 +198,7 @@ abstract class CoreBase
      * Overloaded getter
      *
      * If property doesn't have external getter (if isn't in
-     * $this->getExternal array) returns that property (from
+     * self::$getExternal array) returns that property (from
      * $this->properties array). In other case, it execute private method
      * $this->get_$property_name().
      *
@@ -233,25 +212,31 @@ abstract class CoreBase
      */
     public function __get($key)
     {
-        if (!array_key_exists($key, $this->properties)) {
-            throw new CENotFound(sprintf('"%s" property doesn\'t exists.', $key));
+        if (array_key_exists($key, $this->properties)) {
+            if (in_array($key, self::$getExternal)) {
+                $m = sprintf('get_%s', $key);
+                return $this->$m();
+            }
+            if ('string' == $this->properties[$key][1]) {
+                return stripslashes($this->properties[$key][0]);
+            } else {
+                return $this->properties[$key][0];
+            }
         }
-        if (in_array($key, $this->getExternal)) {
-            $m = sprintf('get_%s', $key);
-            return $this->$m();
+
+        $ret = $this->getMeta($key);
+        if (false !== $ret) {
+            return $ret;
         }
-        if ('string' == $this->properties[$key][1]) {
-            return stripslashes($this->properties[$key][0]);
-        } else {
-            return $this->properties[$key][0];
-        }
+
+        throw new CENotFound(sprintf('"%s" property doesn\'t exists.', $key));
     }
 
     /**
      * Overloaded setter
      *
      * If property doesn't have external setter (if isn't in
-     * $this->setExternal array) set value of this property (to
+     * self::$setExternal array) set value of this property (to
      * $this->properties array). In other case, it execute private method
      * $this->set_$property_name().
      *
@@ -261,36 +246,39 @@ abstract class CoreBase
      * @param mixed  $value value of property
      *
      * @return mixed value of property
-     * @throws CESyntaxError if type of $value is wrong
      *
      * @access public
      */
     public function __set($key, $value)
     {
-        if (!array_key_exists($key, $this->properties)) {
-            throw new CENotFound(sprintf('"%s" property doesn\'t exists.', $key));
-        }
-        if (in_array($key, $this->setExternal)) {
-            $m = sprintf('set_%s', $key);
-            return $this->$m($value);
-        }
-        if (is_null($value)) {
-            $this->properties[$key][0] = null;
-        } else {
-            if (!$this->isType($key, $value)) {
-                throw new CESyntaxError(sprintf('"%s" property must be an "%s" type, is "%s".',
-                    $key,
-                    $this->properties[$key][1],
-                    gettype($value)
-                ));
+        if (array_key_exists($key, $this->properties)) {
+            if (in_array($key, self::$setExternal)) {
+                $m = sprintf('set_%s', $key);
+                return $this->$m($value);
             }
-
-            if ('string' == $this->properties[$key][1]) {
-                $this->properties[$key][0] = addslashes($value);
+            if (is_null($value)) {
+                $this->properties[$key][0] = null;
             } else {
-                $this->properties[$key][0] = $value;
+                if (!$this->isType($key, $value)) {
+                    throw new CESyntaxError(sprintf('"%s" property must be an "%s" type, is "%s".',
+                        $key,
+                        $this->properties[$key][1],
+                        gettype($value)
+                    ));
+                }
+
+                if ('string' == $this->properties[$key][1]) {
+                    $this->properties[$key][0] = addslashes($value);
+                } else {
+                    $this->properties[$key][0] = $value;
+                }
             }
+        } else {
+            $this->setMeta($key, $value);
         }
+
+        $this->modified = true;
+
         return true;
     }
 
@@ -301,7 +289,7 @@ abstract class CoreBase
      * Better way to checking that property is set:
      * isset($entry->title)
      *
-     * returns true if title is not null.
+     * Returns true if title is not null.
      *
      * @param string $key name of property
      *
@@ -311,10 +299,11 @@ abstract class CoreBase
      */
     public function __isset($key)
     {
-        if (!array_key_exists($key, $this->properties)) {
-            return false;
+        if (array_key_exists($key, $this->properties)) {
+            return !is_null($this->properties[$key][0]);
         }
-        return !is_null($this->properties[$key][0]);
+
+        return isset($this->meta->$key);
     }
 
     /**
@@ -334,6 +323,8 @@ abstract class CoreBase
     {
         if (array_key_exists($key, $this->properties)) {
             $this->properties[$key][0] = null;
+        } else if (isset($this->meta->$key)) {
+            unset($this->meta->$key);
         } else {
             throw new CENotFound(sprintf('"%s" property doesn\'t exists.', $key));
         }
@@ -367,17 +358,6 @@ abstract class CoreBase
     }
 
     /**
-     * Return properties iterator
-     *
-     * @return object {@link PropIterator}
-     * @access public
-     */
-    public function getIterator()
-    {
-        return new PropIterator($this->properties);
-    }
-
-    /**
      * Quoting for DB with change empty strings to NULL statement
      *
      * @param string $s
@@ -385,12 +365,12 @@ abstract class CoreBase
      * @return string
      * @access public
      */
-    public function quotenull($s)
+    public function quote($s, $null=false)
     {
-        if ('' == $s) {
+        if ($null && '' == $s) {
             return 'NULL';
         } else {
-            return $this->db->quote($s);
+            return self::$db->quote($s);
         }
     }
 
@@ -406,21 +386,129 @@ abstract class CoreBase
      */
     protected function setFromArray(array &$data)
     {
+        $meta = array();
         $ret = true;
         while (list($property, $value) = each($data)) {
             if (array_key_exists($property, $this->properties)) {
                 try {
                     $this->$property = $value;
                 } catch (CEReadOnly $e) {
-                    $this->isType($property, $value);
-                    $this->properties[$property][0] = $value;
+                    if (!$this->isType($property, $value, true)) {
+                        $this->errorSet($e->getMessage());
+                        $ret = false;
+                    } else {
+                        $this->properties[$property][0] = $value;
+                    }
                 }
             } else {
-                $this->errorSet(sprintf('Property "%s" doesn\'t exists.', $property));
-                $ret = false;
+                $meta[$property] = $value;
             }
         }
+
+        if (!is_null($this->meta)) {
+            while (list($key, $value) = each($meta)) {
+                $this->setMeta($key, $value);
+            }
+        }
+
         return $ret;
+    }
+
+    /**
+     * For internal use
+     *
+     * If meta for object is provided, then getMeta() return meta value
+     * if property is not specified.
+     *
+     * @param string $key
+     * @access protected
+     */
+    protected abstract function getMeta($key);
+
+    /**
+     * For internal use
+     *
+     * If meta for object is provided, then setMeta() sets meta data to value
+     * if property is not specified.
+     *
+     * @param string $key
+     * @param string $value
+     * @access protected
+     */
+    protected abstract function setMeta($key, $value);
+
+    /**
+     * Get data from database
+     *
+     * @param integer $id
+     * @access protected
+     */
+    public abstract function setFromDb($id);
+
+    /**
+     * Return the current element of properties
+     *
+     * Implements Iterator::current()
+     *
+     * @return mixed
+     * @access public
+     */
+    public function current()
+    {
+        $c = current($this->properties);
+        if (false !== $c) {
+            return $c[0];
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Return the key of the current element
+     *
+     * Implements Iterator::current()
+     *
+     * @return string
+     * @access public
+     */
+    public function key()
+    {
+        return key($this->properties);
+    }
+
+    /**
+     * Move forward to next element. 
+     * 
+     * @return mixed
+     * @access public
+     */
+    public function next()
+    {
+        $c = next($this->properties);
+        return $c[0];
+    }
+
+    /**
+     * Rewind the Iterator to the first element
+     *
+     * @return mixed
+     * @access public
+     */
+    public function rewind()
+    {
+        $c = reset($this->properties);
+        return $c[0];
+    }
+    
+    /**
+     * Check if there is a current element after calls to rewind() or next()
+     *
+     * @return boolean
+     * @access public
+     */
+    public function valid()
+    {
+        return (bool)current($this->properties);
     }
 
 
@@ -430,12 +518,30 @@ abstract class CoreBase
      * List all properties and their values
      */
     public function show() {
-        $it = $this->getIter();
+        echo '<h1>PROPERTIES:</h2>';
         echo '<pre>';
-        foreach ($it as $k=>$prop) {
-            printf('<b>%s</b>: %s %s'."\n", Strings::left($k, 20, ' ', false), Strings::left(gettype($prop), 10), $prop);
+        foreach ($this as $k=>$prop) {
+            if ($prop === false) {
+                $p = 'false';
+            } elseif ($prop === true) {
+                $p = 'true';
+            } elseif (is_null($prop)) {
+                $p = '<i>NULL</i>';
+            } else {
+                $p = $prop;
+            }
+            printf('<b>%s</b>: %s %s'."\n",
+                Strings::left($k, 20, ' ', false),
+                Strings::left(gettype($prop), 10),
+                $p
+            );
         }
         echo '</pre>';
+
+        if (!is_null($this->meta)) {
+            echo '<h1>META:</h2>';
+            $this->meta->show();
+        }
     }
 }
 
