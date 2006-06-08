@@ -81,71 +81,19 @@ final class Post extends CorePost
     protected static $status_array = array(self::PUBLISHED, self::DRAFT, self::DISABLED);
 
     /**
-     * Post properties
+     * Post meta
      * 
-     * More info: {@link CoreBase::$properties} and {@link CoreBase::$base_properties}.
-     *
-     * @var array
-     * @access protected
-     * @static
-     */
-    protected static $base_properties = array(
-        'sticky'    => array(null, 'boolean'),
-        'cat_name'  => array(null, 'string'),
-        'grp_name'  => array(null, 'string'),
-        'id_group'  => array(null, 'integer'),
-    );
-
-    /**
-     * List of external setters
-     * 
-     * More info: {@link CoreBase::$setExternal} and {@link CoreBase::$base_setExternal}.
-     *
-     * @var array
-     * @access protected
-     * @static
-     */
-    protected static $base_setExternal = array('cat_name', 'grp_name');
-
-    /**
-     * List of external getters
-     * 
-     * More info: {@link CoreBase::$getExternal} and {@link CoreBase::$base_getExternal}.
-     *
-     * @var array
-     * @access protected
-     * @static
-     */
-    protected static $base_getExternal = array();
-
-    /**
-     * All post properties together
+     * More info: {@link CoreBase::$meta}
      *
      * @var array
      * @access protected
      */
-    protected $properties;
-
-    /**
-     * All post external getters together
-     *
-     * @var array
-     * @access protected
-     */
-    protected $getExternal;
-
-    /**
-     * All post external setters together
-     *
-     * @var array
-     * @access protected
-     */
-    protected $setExternal;
+    protected $meta = null;
 
     /**
      * Constructor
      *
-     * Merge some internal arrays (look for {@link CorePost::__construct} docs)
+     * Merge some internal arrays (look for {@link CorePost::__construct()} docs)
      * and set Post properties from arrays or database.
      *
      * If $data is integer, it will execute {@link Post::setFromDB()} method.
@@ -158,19 +106,6 @@ final class Post extends CorePost
     public function __construct(&$data=null)
     {
         parent::__construct();
-
-        $this->properties = array_merge(
-            parent::$base_properties,
-            self::$base_properties
-        );
-        $this->getExternal = array_merge(
-            parent::$base_getExternal,
-            self::$base_getExternal
-        );
-        $this->setExternal = array_merge(
-            parent::$base_setExternal,
-            self::$base_setExternal
-        );
 
         if (is_array($data)) {
             $this->setFromArray($data);
@@ -254,7 +189,7 @@ final class Post extends CorePost
                 posts.id_parent         AS id_parent,
                 posts.id_cat            AS id_cat,
                 posts.id_group          AS id_group,
-                posts.id_section        AS id_section,
+                posts.id_menu           AS id_menu,
                 posts.title             AS title,
                 posts.permalink         AS permalink,
                 posts.caption           AS caption,
@@ -290,8 +225,9 @@ final class Post extends CorePost
         );
 
         try {
-            $stmt = $this->db->query($query);
+            $stmt = self::$db->query($query);
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $stmt->closeCursor();
         } catch (PDOException $e) {
             throw new CEDBError($e->getMessage(), 500);
         }
@@ -300,9 +236,14 @@ final class Post extends CorePost
         $result['id_parent']  = (int)$result['id_parent'];
         $result['id_cat']     = (int)$result['id_cat'];
         $result['id_group']   = (int)$result['id_group'];
-        $result['id_section'] = (int)$result['id_section'];
+        $result['id_menu']    = (int)$result['id_menu'];
 
-        return $this->setFromArray($result);
+        $ret = $this->setFromArray($result);
+
+        //if we get data from database, we now thay aren't modified
+        $this->modified = false;
+
+        return $ret;
     }
 
 
@@ -319,84 +260,45 @@ final class Post extends CorePost
      */
     public function save()
     {
-        if (isset($this->id_post)) {
-            $query = sprintf("
-                UPDATE
-                    %s
-                SET
-                    id_parent    = %d,
-                    id_cat       = %d,
-                    id_group     = %d,
-                    id_section   = %d,
-                    title        = %s,
-                    permalink    = %s,
-                    caption      = %s,
-                    body         = %s,
-                    tpl_name     = %s,
-                    author_name  = %s,
-                    author_mail  = %s,
-                    author_www   = %s,
-                    date_mod     = NOW(),
-                    status       = %s
-                WHERE   
-                    id_post      = %d",
-                
-                TBL_POSTS,
-                $this->id_parent,
-                $this->id_cat,
-                $this->id_group,
-                $this->id_section,
-                $this->quotenull($this->title),
-                $this->quotenull($this->permalink),
-                $this->quotenull($this->caption),
-                $this->quotenull($this->body),
-                $this->quotenull($this->tpl_name),
-                $this->quotenull($this->author_name),
-                $this->quotenull($this->author_mail),
-                $this->quotenull($this->author_www),
-                $this->quotenull($this->status),
-                $this->id_post
-            );
-        } else {
-            $query = sprintf("
-                INSERT INTO
-                    %s
-                SET
-                    id_parent    = %d,
-                    id_cat       = %d,
-                    id_group     = %d,
-                    id_section   = %d,
-                    title        = %s,
-                    permalink    = %s,
-                    caption      = %s,
-                    body         = %s,
-                    tpl_name     = %s,
-                    author_name  = %s,
-                    author_mail  = %s,
-                    author_www   = %s,
-                    date_add     = NOW(),
-                    date_mod     = NOW(),
-                    status       = %s",
-                
-                TBL_POSTS,
-                $this->id_parent,
-                $this->id_cat,
-                $this->id_group,
-                $this->id_section,
-                $this->quotenull($this->title),
-                $this->quotenull($this->permalink),
-                $this->quotenull($this->caption),
-                $this->quotenull($this->body),
-                $this->quotenull($this->tpl_name),
-                $this->quotenull($this->author_name),
-                $this->quotenull($this->author_mail),
-                $this->quotenull($this->author_www),
-                $this->quotenull($this->status)
-            );
-        }
+        $query = sprintf("
+            REPLACE
+                %s
+            SET
+                id_post     = %s,
+                id_parent   = %d,
+                id_cat      = %d,
+                id_group    = %d,
+                id_menu     = %d,
+                title       = %s,
+                permalink   = %s,
+                caption     = %s,
+                body        = %s,
+                tpl_name    = %s,
+                author_name = %s,
+                author_mail = %s,
+                author_www  = %s,
+                date_mod    = NOW(),
+                status      = %s",
+            
+            TBL_POSTS,
+            is_null($this->id_post) ? "NULL" : $this->id_post,
+            $this->id_parent,
+            $this->id_cat,
+            $this->id_group,
+            $this->id_menu,
+            $this->quote($this->title, true),
+            $this->quote($this->permalink, true),
+            $this->quote($this->caption, true),
+            $this->quote($this->body, true),
+            $this->quote($this->tpl_name, true),
+            $this->quote($this->author_name, true),
+            $this->quote($this->author_mail, true),
+            $this->quote($this->author_www, true),
+            $this->quote($this->status, true)
+        );
 
         try {
-            $this->db->exec($query);
+            self::$db->exec($query);
         } catch (PDOException $e) {
             throw new CEDBError($e->getMessage(), 500);
         }
@@ -404,9 +306,23 @@ final class Post extends CorePost
         if (isset($this->id_post)) {
             return true;
         } else {
-            $this->id_post = (int)$this->db->lastInsertId();
+            $this->id_post = (int)self::$db->lastInsertId();
             return $this->id_post;
         }
+    }
+
+    /**
+     *
+     */
+    public function setMeta($key, $value)
+    {
+    }
+
+    /**
+     *
+     */
+    public function getMeta($key)
+    {
     }
 }
 
