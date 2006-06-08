@@ -52,7 +52,7 @@ final class CoreDB
      * @access private
      * @static
      */
-    private static $_instance = null;
+    private static $_object = null;
 
     /**
      * Constructor
@@ -67,7 +67,7 @@ final class CoreDB
      * Connecting with database.
      *
      * Function create an singleton object, and creates database connection.
-     * Connection handler is stored in self::$_instance->db variable.
+     * Connection handler is stored in self::$_object->db variable.
      *
      * @param string $type database type. Only 'mysql' like for now.
      * @return object PDO
@@ -77,9 +77,9 @@ final class CoreDB
      * @access public
      * @static
      */
-    public static function connect($type='mysql')
+    public static function init($type='mysql')
     {
-        if(!isset(self::$_instance)) {
+        if(!isset(self::$_object)) {
             try {
                 switch ($type) {
                     case 'mysql':
@@ -87,21 +87,19 @@ final class CoreDB
                             DB_HOST,
                             DB_NAME
                         );
-                        self::$_instance = new PDO($dsn, DB_USER, DB_PASS);
+                        self::$_object = new PDO($dsn, DB_USER, DB_PASS);
                     break;
                     default:
                         throw new CESyntaxError('Invalid database type.');
                 }
 
-                self::$_instance->setAttribute(PDO::ATTR_AUTOCOMMIT,
+                self::$_object->setAttribute(PDO::ATTR_AUTOCOMMIT,
                     true);
-                self::$_instance->setAttribute(PDO::ATTR_ERRMODE,
+                self::$_object->setAttribute(PDO::ATTR_ERRMODE,
                     PDO::ERRMODE_EXCEPTION);
-                self::$_instance->setAttribute(PDO::ATTR_CASE,
+                self::$_object->setAttribute(PDO::ATTR_CASE,
                     PDO::CASE_NATURAL);
-                self::$_instance->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY,
-                    true);
-                self::$_instance->setAttribute(PDO::ATTR_STRINGIFY_FETCHES,
+                self::$_object->setAttribute(PDO::ATTR_STRINGIFY_FETCHES,
                     false);
             } catch(PDOException $e) {
                 throw new CEDBError(sprintf('Connection failed: %s.',
@@ -111,7 +109,7 @@ final class CoreDB
             }
         }
 
-        return self::$_instance;
+        return self::$_object;
     }
 
     /**
