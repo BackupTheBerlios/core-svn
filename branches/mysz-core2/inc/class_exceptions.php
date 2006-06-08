@@ -53,7 +53,7 @@ abstract class CEBase extends Exception {
      *
      * @access public
      */
-    public function __construct($message, $code)
+    public function __construct($message, $code=null)
     {
         parent::__construct($message, $code);
     }
@@ -65,12 +65,14 @@ abstract class CEBase extends Exception {
      *
      * @return string
      *
-     * @access protected
+     * @access public
      */
-    protected function toString($class) {
+    public function __toString() {
         return sprintf(
-            "%s::%d:: %s\n%s",
-            $class,
+            "%s\nFile: %s\nLine: %s\nCode: %s\n%s",
+            get_class($this),
+            $this->getFile(),
+            $this->getLine(),
             $this->getCode(),
             $this->getMessage(),
             $this->getTraceAsString()
@@ -93,33 +95,7 @@ abstract class CEBase extends Exception {
  * @version    SVN: $Id: class_exceptions.php 1270 2006-02-26 11:13:34Z lark $
  * @link       $HeadURL$
  */
-class CENotFound extends CEBase {
-
-    /**
-     * Constructor
-     *
-     * @param string $message error message
-     * @param int    $code    error code
-     *
-     * @access public
-     */
-    public function __construct($message, $code = null)
-    {
-        parent::__construct($message, $code);
-    }
-
-    /**
-     * Overloaded function to create string describing the class.
-     *
-     * @return string
-     *
-     * @access public
-     */
-    public function __toString()
-    {
-        return $this->toString(__CLASS__);
-    }
-}
+class CENotFound extends CEBase {}
 
 /**
  * Syntax error exception
@@ -136,34 +112,7 @@ class CENotFound extends CEBase {
  * @version    SVN: $Id: class_exceptions.php 1270 2006-02-26 11:13:34Z lark $
  * @link       $HeadURL$
  */
-class CESyntaxError extends CEBase {
-
-    /**
-     * Constructor
-     *
-     * @param string $message error message
-     * @param int    $code    error code
-     *
-     * @access public
-     */
-    public function __construct($message, $code = null)
-    {
-        parent::__construct($message, $code);
-    }
-
-    /**
-     * Overloaded function to create string describing the class.
-     *
-     * @return string
-     *
-     * @access public
-     */
-    public function __toString()
-    {
-        return $this->toString(__CLASS__);
-    }
-}
-
+class CESyntaxError extends CEBase {}
 
 /**
  * Database error exception
@@ -179,33 +128,7 @@ class CESyntaxError extends CEBase {
  * @version    SVN: $Id: class_exceptions.php 1270 2006-02-26 11:13:34Z lark $
  * @link       $HeadURL$
  */
-class CEDBError extends CEBase {
-
-    /**
-     * Constructor
-     *
-     * @param string $message error message
-     * @param int    $code    error code
-     *
-     * @access public
-     */
-    public function __construct($message, $code = null)
-    {
-        parent::__construct($message, $code);
-    }
-
-    /**
-     * Overloaded function to create string describing the class.
-     *
-     * @return string
-     *
-     * @access public
-     */
-    public function __toString()
-    {
-        return $this->toString(__CLASS__);
-    }
-}
+class CEDBError extends CEBase {}
 
 /**
  * Incorrect type error
@@ -222,35 +145,7 @@ class CEDBError extends CEBase {
  * @version    SVN: $Id: class_exceptions.php 1270 2006-02-26 11:13:34Z lark $
  * @link       $HeadURL$
  */
-class CETypeError extends CEBase {
-
-    /**
-     * Constructor
-     *
-     * @param string $message error message
-     * @param int    $code    error code
-     *
-     * @return void
-     *
-     * @access public
-     */
-    public function __construct($message, $code = null)
-    {
-        parent::__construct($message, $code);
-    }
-
-    /**
-     * Overloaded function to create string describing the class.
-     *
-     * @return string
-     *
-     * @access public
-     */
-    public function __toString()
-    {
-        return $this->toString(__CLASS__);
-    }
-}
+class CETypeError extends CEBase {}
 
 /**
  * Filesystem error
@@ -264,35 +159,7 @@ class CETypeError extends CEBase {
  * @version    SVN: $Id: class_exceptions.php 1270 2006-02-26 11:13:34Z lark $
  * @link       $HeadURL$
  */
-class CEFileSystemError extends CEBase {
-
-    /**
-     * Constructor
-     *
-     * @param string $message error message
-     * @param int    $code    error code
-     *
-     * @return void
-     *
-     * @access public
-     */
-    public function __construct($message, $code = null)
-    {
-        parent::__construct($message, $code);
-    }
-
-    /**
-     * Overloaded function to create string describing the class.
-     *
-     * @return string
-     *
-     * @access public
-     */
-    public function __toString()
-    {
-        return $this->toString(__CLASS__);
-    }
-}
+class CEFileSystemError extends CEBase {}
 
 /**
  * Upload error
@@ -306,35 +173,7 @@ class CEFileSystemError extends CEBase {
  * @version    SVN: $Id: class_exceptions.php 1270 2006-02-26 11:13:34Z lark $
  * @link       $HeadURL$
  */
-class CEUploadError extends CEBase {
-
-    /**
-     * Constructor
-     *
-     * @param string $message error message
-     * @param int    $code    error code
-     *
-     * @return void
-     *
-     * @access public
-     */
-    public function __construct($message, $code = null)
-    {
-        parent::__construct($message, $code);
-    }
-
-    /**
-     * Overloaded function to create string describing the class.
-     *
-     * @return string
-     *
-     * @access public
-     */
-    public function __toString()
-    {
-        return $this->toString(__CLASS__);
-    }
-}
+class CEUploadError extends CEBase {}
 
 /**
  * Read only error
@@ -348,33 +187,20 @@ class CEUploadError extends CEBase {
  * @version    SVN: $Id: class_exceptions.php 1270 2006-02-26 11:13:34Z lark $
  * @link       $HeadURL$
  */
-class CEReadOnly extends CEBase {
+class CEReadOnly extends CEBase {}
 
-    /**
-     * Constructor
-     *
-     * @param string $message error message
-     * @param int    $code    error code
-     *
-     * @return void
-     *
-     * @access public
-     */
-    public function __construct($message, $code = null)
-    {
-        parent::__construct($message, $code);
-    }
+/**
+ * Incorrect data
+ *
+ * @category   Classes
+ * @package    Exceptions
+ * @author     Core Dev Team <core@core-cms.com>
+ * @copyright  2006 Core Dev Team
+ * @license    http://www.fsf.org/copyleft/gpl.html
+ * @license    http://www.gnu.org.pl/text/licencja-gnu.html
+ * @version    SVN: $Id: class_exceptions.php 1270 2006-02-26 11:13:34Z lark $
+ * @link       $HeadURL$
+ */
+class CEIncorrectData extends CEBase {}
 
-    /**
-     * Overloaded function to create string describing the class.
-     *
-     * @return string
-     *
-     * @access public
-     */
-    public function __toString()
-    {
-        return $this->toString(__CLASS__);
-    }
-}
 ?>
