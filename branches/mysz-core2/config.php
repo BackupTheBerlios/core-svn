@@ -3,6 +3,8 @@
 // vim: expandtab shiftwidth=4 softtabstop=4 tabstop=4
 
 define('ROOT', dirname(__file__));
+define('HTTPROOT', 'http://localhost/');
+define('HTTPPATH', 'core2/');
 define('DEBUG', true);
 
 define('DB_HOST', 'localhost');
