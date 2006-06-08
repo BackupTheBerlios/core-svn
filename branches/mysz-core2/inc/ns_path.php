@@ -45,14 +45,27 @@
 abstract class Path
 {
     /**
-     * Constant
-     *
      * Same as DIRECTORY_SEPARATOR
      */
-    const SEPARATOR = DIRECTORY_SEPARATOR;
+    const DS = DIRECTORY_SEPARATOR;
 
     /**
-     * Get join aguments into path
+     * Same as PATH_SEPARATOR
+     */
+    const PS = PATH_SEPARATOR;
+
+    /**
+     * Sort order - asc.
+     */
+    const SORT_ASC  = 'asc';
+
+    /**
+     * Sort order - desc.
+     */
+    const SORT_DESC = 'desc';
+
+    /**
+     * Get join aguments into path.
      *
      * Will join all elements, they can be an arrays ({@link Arrays::flat()} is used)
      * or single arguments.
@@ -73,11 +86,11 @@ abstract class Path
             $path = array_merge($path, $c);
         }
 
-        return implode(self::SEPARATOR, $path);
+        return implode(self::DS, $path);
     }
 
     /**
-     * Return array with path elements
+     * Return array with path elements.
      *
      * @param string $path
      * @access public
@@ -89,19 +102,19 @@ abstract class Path
 
         $ret = array();
         // we cut drive letter if os == windows and put it as first element
-        if ('\\' == self::SEPARATOR &&  //windows
+        if ('\\' == self::DS &&  //windows
                 preg_match('#^([a-z]:\\\\)#i', $path, $match)) {
             $ret[] = substr($match[1], 0, 2);
             $path = str_replace($match[1], '', $path);
         }
 
-        return array_merge($ret, explode(self::SEPARATOR, $path));
+        return array_merge($ret, explode(self::DS, $path));
     }
 
     /**
-     * Replace [back]slashes on correct separator, and normalize case
+     * Replace [back]slashes on correct separator, and normalize case.
      *
-     * Case normalizing in only on Windows&trade;
+     * Case normalizing in only on Windows&trade;.
      *
      * @param string $path
      * @access public
@@ -110,19 +123,19 @@ abstract class Path
     public static function normalize($path)
     {
         static $p = array('#\\\\#', '#/#');
-        static $r = array('/', self::SEPARATOR);
+        static $r = array('/', self::DS);
         $path = preg_replace($p, $r, $path);
 
-        if ('\\' == self::SEPARATOR) { //windows
+        if ('\\' == self::DS) { //windows
             $path = strtolower($path);
         }
         return $path;
     }
 
     /**
-     * Normalizing path
+     * Normalizing path.
      *
-     * Will remove any single and doubled dots ('.' and '..') with proper
+     * Will remove any single and double dots ('.' and '..') with proper
      * path elements.
      *
      * @param string $path
@@ -146,6 +159,140 @@ abstract class Path
         }
         return Path::join($newpath);
     }
+
+    /**
+     * Return true if path exists.
+     *
+     * @param string $path
+     *
+     * @return boolean
+     * @access public
+     * @static
+     */
+    public static function exists($path)
+    {
+        return ('' != realpath($path));
+    }
+
+    /**
+     * Returns content of directory.
+     *
+     * If $split == true, Path::listdir returns flat array with mixed
+     * files and directories.
+     * Otherwise, return 2-element associative array, with keys: 'files'
+     * and 'dirs'.
+     *
+     * Return doesn't include 'dots' ('.' and '..').
+     *
+     * @param string  $dir   directory to scan
+     * @param string  $order Path::SORT_ASC or Path::SORT_DESC
+     * @param boolean $split 
+     *
+     * @return array
+     * @throws CENotFound ({@link CENotFound description})
+     *
+     * @access public
+     */
+    public static function listdir($dir, $order=self::SORT_ASC, $split=false)
+    {
+        $dir = Path::real($dir);
+        if (!Path::exists($dir)) {
+            throw new CENotFound(sprintf('Directory "%s" not found.', $dir));
+        }
+
+        $files = array();
+        $dirs  = array();
+
+        $d = dir($dir);
+        while (false !== ($obj = $d->read())) {
+            if (in_array($obj, array('.', '..'))) {
+                continue;
+            }
+
+            $path = Path::join($dir, $obj);
+            if (is_link($path)) {
+                $path = readlink($path);
+                $obj  = basename($path);
+            }
+            if (is_file($path)) {
+                $files[] = $obj;
+            } else if (is_dir($path)) {
+                $dirs[] = $obj;
+            }
+        }
+        
+        if (!$split) {
+            $ret = array_merge($files, $dirs);
+            switch ($order) {
+                case self::SORT_ASC:
+                    sort($ret, SORT_STRING);
+                break;
+                case self::SORT_DESC:
+                    rsort($ret, SORT_STRING);
+                break;
+            }
+        } else {
+            switch ($order) {
+                case self::SORT_ASC:
+                    sort($files);
+                    sort($dirs);
+                break;
+                case self::SORT_DESC:
+                    rsort($files);
+                    rsort($dirs);
+                break;
+            }
+
+            $ret = array(
+                'files' => $files,
+                'dirs'  => $dirs,
+            );
+        }
+
+        return $ret;
+    }
+
+    /**
+     * Recursive walk into directory and return it's content.
+     *
+     * @param string  $dir directory to scan
+     * @param boolean $assoc return associative or normal array
+     * @param integer $maxLevel how deep scan $dir
+     *
+     * @return array
+     * @throws CENotFound ({@link CENotFound description})
+     *
+     * @access public
+     */
+    public static function walk($dir, $assoc=false, $maxLevel=false, $curLevel=1)
+    {
+        $dir = Path::real($dir);
+
+        $ret = array();
+        $data = Path::listdir($dir, self::SORT_ASC, true);
+        if ($assoc) {
+            $ret[$dir]  = array(
+                'dirs'  => $data['dirs'],
+                'files' => $data['files']
+            );
+        } else {
+            $ret[] = array(
+                $dir,
+                $data['dirs'],
+                $data['files']
+            );
+        }
+
+        if (false === $maxLevel || $maxLevel > $curLevel) {
+            foreach ($data['dirs'] as $d) {
+                $path = Path::join($dir, $d);
+                $ret = array_merge($ret, Path::walk($path, $assoc, $maxLevel, $curLevel+1));
+            }
+        }
+        
+        return $ret;
+    }
+
 }
 
 ?>
